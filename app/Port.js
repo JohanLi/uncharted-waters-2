@@ -9,34 +9,49 @@ class Port extends Phaser.State {
     }
 
     create() {
-        this.addMap();
-        this.addPlayer();
+        this.physics.startSystem(Phaser.Physics.ARCADE);
         this.addNpc();
+        this.addPlayer();
+        this.addMap();
         this.addMusic();
-        this.addControls();
+
+        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
-        if (this.upKey.isDown || this.downKey.isDown || this.leftKey.isDown || this.rightKey.isDown) {
-            if (!this.lastMoveTime || this.time.now > this.lastMoveTime + 50) {
-                this.movePlayer();
-                this.lastMoveTime = this.time.now;
-            }
-        }
+        this.movePlayer();
     }
 
     addNpc() {
-        this.npcs = {
-            market: this.add.sprite(689, 960, 'npcs', 0),
-            lodge: this.add.sprite(609, 752, 'npcs', 2),
-            pub: this.add.sprite(897, 560, 'npcs', 4)
-        };
+        this.npc = this.add.group();
+        this.npc.create(689, 960, 'npcs', 0);
+        this.npc.create(609, 752, 'npcs', 2);
+        this.npc.create(897, 560, 'npcs', 4);
+        this.physics.enable(this.npc);
 
-        for(let npc in this.npcs) {
-            let frame = this.npcs[npc].frame;
-            let walk = this.npcs[npc].animations.add('toggle', [frame, frame + 1]);
-            this.npcs[npc].animations.play('toggle', 5, true);
-        }
+        this.npc.forEach((sprite) => {
+            sprite.body.immovable = true;
+            sprite.animations.add('flash', [sprite.frame, sprite.frame + 1]);
+            sprite.animations.play('flash', 5, true);
+        });
+    }
+
+    addPlayer() {
+        this.player = this.add.sprite(868, 1088, 'joao', 0);
+        this.camera.follow(this.player);
+
+        this.physics.enable(this.player);
+        this.physics.arcade.gravity.y = 0;
+        this.player.body.collideWorldBounds = true;
+
+        this.player.animations.add('left', [2,3], 10);
+        this.player.animations.add('right', [4,5], 10);
+        this.player.animations.add('up', [6,7], 10);
+        this.player.animations.add('down', [0,1], 10);
+
+        this.player.body.setSize(24, 16, 0, 16);
+
+        this.speed = 500;
     }
 
     addMap() {
@@ -44,23 +59,13 @@ class Port extends Phaser.State {
         this.map.addTilesetImage('Tileset1.2', 'tileset1.2');
 
         this.layer = this.map.createLayer('Lisbon');
-        this.map.setCollisionBetween(29, 240);
-        //this.layer.debug = true;
         this.layer.resizeWorld();
-    }
 
-    addPlayer() {
-        // The player sprite is 24x32, but only occupies 24x16 with the lower half.
-        // However, this is still larger than the individual tiles which are 16x16.
+        this.map.setLayer(this.layer);
 
-        this.player = this.add.sprite(868, 1104, 'joao', 0);
-        this.player.anchor.setTo(0, 0.5); // only the lower half of the sprite occupies space
-        this.camera.follow(this.player);
+        this.map.setCollisionBetween(29, 240);
 
-        this.player.animations.add('left', [2,3], 20);
-        this.player.animations.add('right', [4,5], 20);
-        this.player.animations.add('up', [6,7], 20);
-        this.player.animations.add('down', [0,1], 20);
+        this.layer.debug = true;
     }
 
     addMusic() {
@@ -69,58 +74,38 @@ class Port extends Phaser.State {
         //this.music.play();
     }
 
-    addControls() {
-        this.upKey = this.input.keyboard.addKey(Phaser.Keyboard.UP);
-        this.downKey = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        this.leftKey = this.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    }
-
     movePlayer() {
-        this.checkCollision();
-        
-        let stepChange = 16;
+        this.physics.arcade.collide(this.player, this.layer);
+        this.physics.arcade.collide(this.player, this.npc);
+        this.player.body.velocity.y = 0;
+        this.player.body.velocity.x = 0;
 
-        if (this.upKey.isDown && !this.collision.up) {
-            this.player.y -= stepChange;
+        if (this.cursors.up.isDown) {
+            this.player.body.velocity.y = -this.speed;
             this.player.play('up');
-        } else if (this.downKey.isDown && !this.collision.down) {
-            this.player.y += stepChange;
+        } else if (this.cursors.down.isDown) {
+            this.player.body.velocity.y = this.speed;
             this.player.play('down');
         }
-        else if (this.leftKey.isDown && !this.collision.left) {
-            this.player.x -= stepChange;
+        else if (this.cursors.left.isDown) {
+            this.player.body.velocity.x = -this.speed;
             this.player.play('left');
         }
-        else if (this.rightKey.isDown && !this.collision.right) {
-            this.player.x += stepChange;
+        else if (this.cursors.right.isDown) {
+            this.player.body.velocity.x = this.speed;
             this.player.play('right');
         } else {
             this.player.animations.stop();
         }
     }
 
-    checkCollision() {
-        let i = this.layer.index;
-        let playerGrid = {
-            x: Math.floor(this.player.x / 16),
-            y: Math.floor(this.player.y / 16)
-        };
+    render() {
+        this.game.debug.body(this.player);
 
-        this.collision = {
-            up: !this.map.getTileAbove(i, playerGrid.x, playerGrid.y)
-                || this.map.getTileAbove(i, playerGrid.x, playerGrid.y).collides
-                || this.map.getTileAbove(i, playerGrid.x + 1, playerGrid.y).collides,
-            down: !this.map.getTileBelow(i, playerGrid.x, playerGrid.y)
-                || this.map.getTileBelow(i, playerGrid.x, playerGrid.y).collides
-                || this.map.getTileBelow(i, playerGrid.x + 1, playerGrid.y).collides,
-            left: !this.map.getTileLeft(i, playerGrid.x, playerGrid.y)
-                || this.map.getTileLeft(i, playerGrid.x, playerGrid.y).collides,
-            right: !this.map.getTileRight(i, playerGrid.x + 1, playerGrid.y)
-                || this.map.getTileRight(i, playerGrid.x + 1, playerGrid.y).collides
-        };
+        this.npc.forEach((sprite) => {
+            this.game.debug.body(sprite);
+        });
     }
-
 }
 
 export default Port;
