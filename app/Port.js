@@ -2,25 +2,40 @@ class Port extends Phaser.State {
 
     preload() {
         this.load.spritesheet('joao', '/img/joao.png', 24, 32);
-        this.load.audio('port', ['/sound/port.mp3']);
+        this.load.spritesheet('npcs', '/img/npcs.png', 32, 32);
         this.load.tilemap('lisbon', '/tilemaps/lisbon.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tileset1.2', '/img/tileset1.2.png');
+        this.load.audio('port', ['/sound/port.mp3']);
     }
 
     create() {
         this.addMap();
         this.addPlayer();
+        this.addNpc();
         this.addMusic();
         this.addControls();
     }
 
     update() {
         if (this.upKey.isDown || this.downKey.isDown || this.leftKey.isDown || this.rightKey.isDown) {
-
             if (!this.lastMoveTime || this.time.now > this.lastMoveTime + 50) {
                 this.movePlayer();
                 this.lastMoveTime = this.time.now;
             }
+        }
+    }
+
+    addNpc() {
+        this.npcs = {
+            market: this.add.sprite(689, 960, 'npcs', 0),
+            lodge: this.add.sprite(609, 752, 'npcs', 2),
+            pub: this.add.sprite(897, 560, 'npcs', 4)
+        };
+
+        for(let npc in this.npcs) {
+            let frame = this.npcs[npc].frame;
+            let walk = this.npcs[npc].animations.add('toggle', [frame, frame + 1]);
+            this.npcs[npc].animations.play('toggle', 5, true);
         }
     }
 
@@ -51,7 +66,7 @@ class Port extends Phaser.State {
     addMusic() {
         this.music = this.add.audio('port');
         this.music.loop = true;
-        this.music.play();
+        //this.music.play();
     }
 
     addControls() {
