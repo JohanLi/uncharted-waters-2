@@ -10,9 +10,10 @@ class Port extends Phaser.State {
 
     create() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
+        this.addMap();
         this.addNpc();
         this.addPlayer();
-        this.addMap();
+
         this.addMusic();
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -20,6 +21,21 @@ class Port extends Phaser.State {
 
     update() {
         this.movePlayer();
+    }
+
+    addMap() {
+        this.map = this.add.tilemap('lisbon');
+        this.map.addTilesetImage('Tileset1.2', 'tileset1.2');
+
+        this.layer = this.map.createLayer('Lisbon');
+        this.layer.resizeWorld();
+
+        this.map.setLayer(this.layer);
+
+        this.map.setCollisionBetween(29, 240);
+        this.setLeftRightTileCollisions();
+
+        this.layer.debug = true;
     }
 
     addNpc() {
@@ -52,20 +68,6 @@ class Port extends Phaser.State {
         this.player.body.setSize(24, 16, 0, 16);
 
         this.speed = 500;
-    }
-
-    addMap() {
-        this.map = this.add.tilemap('lisbon');
-        this.map.addTilesetImage('Tileset1.2', 'tileset1.2');
-
-        this.layer = this.map.createLayer('Lisbon');
-        this.layer.resizeWorld();
-
-        this.map.setLayer(this.layer);
-
-        this.map.setCollisionBetween(29, 240);
-
-        this.layer.debug = true;
     }
 
     addMusic() {
@@ -105,6 +107,25 @@ class Port extends Phaser.State {
         this.npc.forEach((sprite) => {
             this.game.debug.body(sprite);
         });
+    }
+
+
+    // a few collision tiles in the game behave in such a way that the collision don't occur
+    // over their entire area. Instead, the collision only happens on either the leftmost or rightmost pixels.
+    setLeftRightTileCollisions() {
+        const leftCollisionIndices = [31, 34];
+        const rightCollisionIndices = [39];
+
+        for (let row of this.layer.map.layers[this.layer.index].data) {
+            for (let rowTile of row) {
+                if (leftCollisionIndices.includes(rowTile.index)) {
+                    rowTile.width = 4;
+                } else if (rightCollisionIndices.includes(rowTile.index)) {
+                    rowTile.width = 4;
+                    rowTile.worldX += 12;
+                }
+            }
+        }
     }
 }
 
