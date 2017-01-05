@@ -104,6 +104,10 @@ class Port extends Phaser.State {
         let leftmostCollisionIndices = [31, 34];
         let rightmostCollisionIndices = [39, 40];
 
+        if (this.npcCollision()) {
+            return false;
+        }
+
         if (!destinationTile || !destinationTileRight)
             return false;
 
@@ -119,6 +123,16 @@ class Port extends Phaser.State {
         }
 
         return noCollision;
+    }
+
+    npcCollision() {
+        // using Phaser.Group.forEach doesn't allow us to break upon detecting a collision
+        // Array.prototype.some() and Array.prototype.every() do
+        return this.npc.children.some((sprite) => {
+            let xCollision = this.destination.x - sprite.x < sprite.width && this.destination.x - sprite.x > -sprite.width;
+            let yCollision = this.destination.y - sprite.y < sprite.height && this.destination.y - sprite.y > -sprite.height;
+            return xCollision && yCollision;
+        });
     }
 
     updatePlayerLocation() {
