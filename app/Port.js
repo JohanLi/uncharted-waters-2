@@ -6,6 +6,7 @@ class Port extends Phaser.State {
         this.load.tilemap('lisbon', '/tilemaps/lisbon.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tileset1.2', '/img/tileset1.2.png');
         this.load.audio('port', ['/sound/port.mp3']);
+        this.lastMoveTime = 0;
     }
 
     create() {
@@ -52,11 +53,6 @@ class Port extends Phaser.State {
         this.player = this.add.sprite(864, 1104, 'joao', 0);
         this.player.anchor.setTo(0, 0.5);
         this.camera.follow(this.player);
-
-        this.player.animations.add('left', [2,3], 5);
-        this.player.animations.add('right', [4,5], 5);
-        this.player.animations.add('up', [6,7], 5);
-        this.player.animations.add('down', [0,1], 5);
     }
 
     addMusic() {
@@ -66,11 +62,21 @@ class Port extends Phaser.State {
     }
 
     movePlayer() {
+        if (this.throttleMovement())
+            return;
+
         this.setDestination();
 
         if (this.noDestinationCollision()) {
             this.updatePlayerLocation();
         }
+    }
+
+    throttleMovement() {
+        if (this.time.now - this.lastMoveTime < 40)
+            return true;
+
+        this.lastMoveTime = this.time.now;
     }
 
     setDestination() {
@@ -83,14 +89,18 @@ class Port extends Phaser.State {
 
         if (this.cursors.up.isDown) {
             this.destination.y -= tileSize;
+            this.player.frame = this.player.frame === 6 ? 7 : 6;
         } else if (this.cursors.down.isDown) {
             this.destination.y += tileSize;
+            this.player.frame = this.player.frame === 0 ? 1 : 0;
         }
         else if (this.cursors.left.isDown) {
             this.destination.x -= tileSize;
+            this.player.frame = this.player.frame === 2 ? 3 : 2;
         }
         else if (this.cursors.right.isDown) {
             this.destination.x += tileSize;
+            this.player.frame = this.player.frame === 4 ? 5 : 4;
         }
 
         this.destination.tileX = this.destination.x / tileSize;
