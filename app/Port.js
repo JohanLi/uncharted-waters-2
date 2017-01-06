@@ -5,21 +5,69 @@ class Port extends Phaser.State {
         this.load.spritesheet('npcs', '/img/npcs.png', 32, 32);
         this.load.tilemap('lisbon', '/tilemaps/lisbon.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tileset1.2', '/img/tileset1.2.png');
+        this.load.image('hud', '/img/hud.png');
+
         this.load.audio('port', ['/sound/port.mp3']);
-        this.lastMoveTime = 0;
+
+        this.tileSize = 16;
+        this.collisionIndices = {
+            from: 29,
+            to: 240,
+            leftmost: [31, 34],
+            rightmost: [39, 40]
+        };
+
+        this.hudWidths = {
+            top: 16,
+            bottom: 16,
+            left: 192,
+            right: 320
+        };
+
+        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     create() {
         this.addMap();
         this.addNpc();
+        this.addHud();
         this.addPlayer();
-        this.addMusic();
 
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.addMusic();
     }
 
     update() {
-        this.movePlayer();
+        this.checkMovement();
+    }
+
+    render() {
+        /*
+         this.game.debug.spriteInfo(this.player, 32, 32, '#ffffff');
+         this.game.debug.spriteBounds(this.player, '#ce0020', false);
+
+         this.npc.forEach((sprite) => {
+         this.game.debug.spriteBounds(sprite, '#ce7524', false);
+         });
+         */
+    }
+
+    /*
+     This is a workaround for placing a fixed HUD on the map.
+     It's currently not possible/easy to have a centered TilemapLayer that is smaller than the game world.
+     The workaround expands the game world, where the expanded parts are covered by the HUD.
+     The camera is also repositioned in order to center the player.
+     */
+    addHud() {
+        let hud = this.game.add.image(0, 0, 'hud');
+        hud.fixedToCamera = true;
+        let portDimensions = 1536;
+
+        this.world.setBounds(
+            -this.hudWidths.left,
+            -this.hudWidths.top,
+            portDimensions + this.hudWidths.left + this.hudWidths.right,
+            portDimensions + this.hudWidths.top + this.hudWidths.bottom
+        );
     }
 
     addMap() {
@@ -27,13 +75,10 @@ class Port extends Phaser.State {
         this.map.addTilesetImage('Tileset1.2', 'tileset1.2');
 
         this.layer = this.map.createLayer('Lisbon');
-        this.layer.resizeWorld();
-
         this.map.setLayer(this.layer);
-
-        this.map.setCollisionBetween(29, 240);
-
         this.layer.debug = true;
+
+        this.map.setCollisionBetween(this.collisionIndices.from, this.collisionIndices.to);
     }
 
     addNpc() {
@@ -52,6 +97,7 @@ class Port extends Phaser.State {
     addPlayer() {
         this.player = this.add.sprite(864, 1104, 'joao', 0);
         this.player.anchor.setTo(0, 0.5);
+        this.cameraFocusPlayer();
         this.camera.follow(this.player);
     }
 
@@ -61,14 +107,14 @@ class Port extends Phaser.State {
         //this.music.play();
     }
 
-    movePlayer() {
+    checkMovement() {
         if (this.throttleMovement())
             return;
 
         this.setDestination();
 
         if (this.noDestinationCollision()) {
-            this.updatePlayerLocation();
+            this.movePlayer();
         }
     }
 
@@ -80,39 +126,35 @@ class Port extends Phaser.State {
     }
 
     setDestination() {
-        let tileSize = 16;
-
         this.destination = {
             x: this.player.x,
             y: this.player.y,
         };
 
         if (this.cursors.up.isDown) {
-            this.destination.y -= tileSize;
+            this.destination.y -= this.tileSize;
             this.player.frame = this.player.frame === 6 ? 7 : 6;
         } else if (this.cursors.down.isDown) {
-            this.destination.y += tileSize;
+            this.destination.y += this.tileSize;
             this.player.frame = this.player.frame === 0 ? 1 : 0;
         }
         else if (this.cursors.left.isDown) {
-            this.destination.x -= tileSize;
+            this.destination.x -= this.tileSize;
             this.player.frame = this.player.frame === 2 ? 3 : 2;
         }
         else if (this.cursors.right.isDown) {
-            this.destination.x += tileSize;
+            this.destination.x += this.tileSize;
             this.player.frame = this.player.frame === 4 ? 5 : 4;
         }
 
-        this.destination.tileX = this.destination.x / tileSize;
-        this.destination.tileY = this.destination.y / tileSize;
+        this.destination.tileX = this.destination.x / this.tileSize;
+        this.destination.tileY = this.destination.y / this.tileSize;
     }
 
     noDestinationCollision() {
         let noCollision = true;
         let destinationTile = this.map.getTile(this.destination.tileX, this.destination.tileY);
         let destinationTileRight = this.map.getTile(this.destination.tileX + 1, this.destination.tileY);
-        let leftmostCollisionIndices = [31, 34];
-        let rightmostCollisionIndices = [39, 40];
 
         if (this.npcCollision()) {
             return false;
@@ -124,11 +166,11 @@ class Port extends Phaser.State {
         if (destinationTile.collides || destinationTileRight.collides)
             noCollision = false;
 
-        if (leftmostCollisionIndices.includes(destinationTile.index)) {
+        if (this.collisionIndices.leftmost.includes(destinationTile.index)) {
             noCollision = true;
         }
 
-        if (rightmostCollisionIndices.includes(destinationTileRight.index)) {
+        if (this.collisionIndices.rightmost.includes(destinationTileRight.index)) {
             noCollision = true;
         }
 
@@ -145,18 +187,15 @@ class Port extends Phaser.State {
         });
     }
 
-    updatePlayerLocation() {
+    movePlayer() {
         this.player.x = this.destination.x;
         this.player.y = this.destination.y;
+
+        this.cameraFocusPlayer();
     }
 
-    render() {
-        this.game.debug.spriteInfo(this.player, 32, 32, '#ffffff');
-        this.game.debug.spriteBounds(this.player, '#ce0020', false);
-
-        this.npc.forEach((sprite) => {
-            this.game.debug.spriteBounds(sprite, '#ce7524', false);
-        });
+    cameraFocusPlayer() {
+        this.camera.focusOnXY(this.player.x + this.hudWidths.left/2, this.player.y);
     }
 }
 

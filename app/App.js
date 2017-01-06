@@ -5,7 +5,7 @@ import Building from './Building';
 class App extends Phaser.Game {
 
     constructor() {
-        super(1024, 768, Phaser.AUTO);
+        super(1280, 800, Phaser.AUTO);
 
         this.state.add('Port', Port, false);
         this.state.add('Building', Building, false);
