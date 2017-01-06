@@ -1,6 +1,8 @@
 class Port extends Phaser.State {
 
     preload() {
+        this.debug = false;
+
         this.load.spritesheet('joao', '/img/joao.png', 32, 32);
         this.load.spritesheet('npcs', '/img/npcs.png', 32, 32);
         this.load.tilemap('lisbon', '/tilemaps/lisbon.json', null, Phaser.Tilemap.TILED_JSON);
@@ -41,14 +43,14 @@ class Port extends Phaser.State {
     }
 
     render() {
-        /*
-         this.game.debug.spriteInfo(this.player, 32, 32, '#ffffff');
-         this.game.debug.spriteBounds(this.player, '#ce0020', false);
+        if (this.debug) {
+            this.game.debug.spriteInfo(this.player, 32, 32, '#ffffff');
+            this.game.debug.spriteBounds(this.player, '#ce0020', false);
 
-         this.npc.forEach((sprite) => {
-         this.game.debug.spriteBounds(sprite, '#ce7524', false);
-         });
-         */
+            this.npc.forEach((sprite) => {
+                this.game.debug.spriteBounds(sprite, '#ce7524', false);
+            });
+        }
     }
 
     /*
@@ -76,9 +78,11 @@ class Port extends Phaser.State {
 
         this.layer = this.map.createLayer('Lisbon');
         this.map.setLayer(this.layer);
-        this.layer.debug = true;
 
         this.map.setCollisionBetween(this.collisionIndices.from, this.collisionIndices.to);
+
+        if (this.debug)
+            this.layer.debug = true;
     }
 
     addNpc() {
@@ -98,13 +102,12 @@ class Port extends Phaser.State {
         this.player = this.add.sprite(864, 1104, 'joao', 0);
         this.player.anchor.setTo(0, 0.5);
         this.cameraFocusPlayer();
-        this.camera.follow(this.player);
     }
 
     addMusic() {
         this.music = this.add.audio('port');
         this.music.loop = true;
-        //this.music.play();
+        // this.music.play();
     }
 
     checkMovement() {
@@ -147,30 +150,35 @@ class Port extends Phaser.State {
             this.player.frame = this.player.frame === 4 ? 5 : 4;
         }
 
-        this.destination.tileX = this.destination.x / this.tileSize;
-        this.destination.tileY = this.destination.y / this.tileSize;
+        this.destination.tile = this.map.getTile(
+            this.destination.x / this.tileSize,
+            this.destination.y / this.tileSize
+        );
+
+        this.destination.tileRight = this.map.getTile(
+            this.destination.x / this.tileSize + 1,
+            this.destination.y / this.tileSize
+        );
     }
 
     noDestinationCollision() {
         let noCollision = true;
-        let destinationTile = this.map.getTile(this.destination.tileX, this.destination.tileY);
-        let destinationTileRight = this.map.getTile(this.destination.tileX + 1, this.destination.tileY);
 
         if (this.npcCollision()) {
             return false;
         }
 
-        if (!destinationTile || !destinationTileRight)
+        if (!this.destination.tile || !this.destination.tileRight)
             return false;
 
-        if (destinationTile.collides || destinationTileRight.collides)
+        if (this.destination.tile.collides || this.destination.tileRight.collides)
             noCollision = false;
 
-        if (this.collisionIndices.leftmost.includes(destinationTile.index)) {
+        if (this.collisionIndices.leftmost.includes(this.destination.tile.index)) {
             noCollision = true;
         }
 
-        if (this.collisionIndices.rightmost.includes(destinationTileRight.index)) {
+        if (this.collisionIndices.rightmost.includes(this.destination.tileRight.index)) {
             noCollision = true;
         }
 
@@ -195,7 +203,8 @@ class Port extends Phaser.State {
     }
 
     cameraFocusPlayer() {
-        this.camera.focusOnXY(this.player.x + this.hudWidths.left/2, this.player.y);
+        let xAdjustment = this.hudWidths.left / 2 - this.player.height / 2;
+        this.camera.focusOnXY(this.player.x + xAdjustment, this.player.y);
     }
 }
 
