@@ -1,7 +1,7 @@
 class Port extends Phaser.State {
 
     preload() {
-        this.debug = false;
+        this.debug = true;
 
         this.load.spritesheet('joao', '/img/joao.png', 32, 32);
         this.load.spritesheet('npcs', '/img/npcs.png', 32, 32);
@@ -44,7 +44,7 @@ class Port extends Phaser.State {
 
     render() {
         if (this.debug) {
-            this.game.debug.spriteInfo(this.player, 32, 32, '#ffffff');
+            this.game.debug.spriteInfo(this.player, 600, 40, '#ffffff');
             this.game.debug.spriteBounds(this.player, '#ce0020', false);
 
             this.npc.forEach((sprite) => {
@@ -61,7 +61,10 @@ class Port extends Phaser.State {
      */
     addHud() {
         let hud = this.game.add.image(0, 0, 'hud');
+        hud.scale.set(2);
+        hud.smoothed = false;
         hud.fixedToCamera = true;
+
         let portDimensions = 1536;
 
         this.world.setBounds(
@@ -107,7 +110,9 @@ class Port extends Phaser.State {
     addMusic() {
         this.music = this.add.audio('port');
         this.music.loop = true;
-        // this.music.play();
+
+        if (!this.debug)
+            this.music.play();
     }
 
     checkMovement() {
@@ -200,11 +205,21 @@ class Port extends Phaser.State {
         this.player.y = this.destination.y;
 
         this.cameraFocusPlayer();
+        this.checkBuilding();
     }
 
     cameraFocusPlayer() {
         let xAdjustment = this.hudWidths.left / 2 - this.player.height / 2;
         this.camera.focusOnXY(this.player.x + xAdjustment, this.player.y);
+    }
+
+    checkBuilding() {
+        if (this.player.x === 656 && this.player.y === 960) {
+            this.camera.fade('#000000', 200);
+            this.camera.onFadeComplete.add(() => {
+                this.state.start('Building');
+            });
+        }
     }
 }
 
