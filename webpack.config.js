@@ -2,18 +2,14 @@
 
 module.exports = {
     entry: {
-        app: './app/App'
+        app: './app/Game'
     },
     output: {
-        path: __dirname + '/public/js',
+        path: __dirname + '/public/',
         filename: '[name].bundle.js'
     },
     module: {
         loaders: [
-            {
-                test: /phaser\.js$/,
-                loader: 'script-loader'
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -25,7 +21,7 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: __dirname + '/public'
+        contentBase: __dirname + '/public/'
     },
     performance: {
         hints: false
