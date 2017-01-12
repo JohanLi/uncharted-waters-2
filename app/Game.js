@@ -62,7 +62,7 @@ class Game extends Preload {
                 this.player = {
                     x: 864,
                     y: 1104,
-                    pressedKeys: {
+                    move: {
                         left: false,
                         right: false,
                         up: false,
@@ -85,22 +85,22 @@ class Game extends Preload {
     update(progress) {
         this.moveSpeed = 6;
 
-        if (this.player.pressedKeys.up) {
+        if (this.player.move.up) {
             this.player.y -= this.moveSpeed;
             this.player.frame = this.player.frame === 6 ? 7 : 6;
-        } else if (this.player.pressedKeys.down) {
+        } else if (this.player.move.down) {
             this.player.y += this.moveSpeed;
             this.player.frame = this.player.frame === 0 ? 1 : 0;
-        } else if (this.player.pressedKeys.left) {
+        } else if (this.player.move.left) {
             this.player.x -= this.moveSpeed;
             this.player.frame = this.player.frame === 2 ? 3 : 2;
-        } else if (this.player.pressedKeys.right) {
+        } else if (this.player.move.right) {
             this.player.x += this.moveSpeed;
             this.player.frame = this.player.frame === 4 ? 5 : 4;
         }
 
-        this.camera.x = this.player.x - 1280 / 2;
-        this.camera.y = this.player.y - 800 / 2;
+        this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - 1280 / 2;
+        this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - 800 / 2;
 
         if (this.camera.x < 0) {
             this.camera.x = 0;
@@ -117,8 +117,6 @@ class Game extends Preload {
         if (this.camera.y < 0) {
             this.camera.y = 0;
         }
-
-        this.debug();
     }
 
     draw() {
@@ -136,6 +134,8 @@ class Game extends Preload {
         );
 
         this.camera.context.drawImage(this.world.canvas, this.camera.x, this.camera.y, 1280, 800, 0, 0, 1280, 800);
+
+        this.debug();
     }
 
     loop(timestamp) {
@@ -150,14 +150,20 @@ class Game extends Preload {
 
     keydown(e) {
         let key = this.keyMap[e.keyCode];
-        this.player.pressedKeys[key] = true;
 
-        e.preventDefault();
+        if (key) {
+            this.player.move[key] = true;
+            e.preventDefault();
+        }
     }
 
     keyup(e) {
         let key = this.keyMap[e.keyCode];
-        this.player.pressedKeys[key] = false;
+
+        if (key) {
+            this.player.move[key] = false;
+            e.preventDefault();
+        }
     }
 
     debug() {
@@ -169,6 +175,15 @@ class Game extends Preload {
 
         this.debugCamera.textContent = this.camera.x + ', ' + this.camera.y;
         this.debugPlayer.textContent = this.player.x + ', ' + this.player.y;
+
+        this.centerSize = 10;
+        this.camera.context.fillStyle = '#ff0000';
+        this.camera.context.fillRect(
+            (this.camera.canvas.width - this.centerSize) / 2,
+            (this.camera.canvas.height - this.centerSize) / 2,
+            this.centerSize,
+            this.centerSize
+        );
     }
 
 }
