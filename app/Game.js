@@ -6,9 +6,6 @@ class Game extends Preload {
     constructor(window) {
         super();
 
-        this.debugCamera = document.querySelector('.camera');
-        this.debugPlayer = document.querySelector('.player');
-
         let assets = {
             tileset: '/img/tileset1.2.png',
             player: '/img/joao.png'
@@ -17,28 +14,32 @@ class Game extends Preload {
         this.load(assets)
             .then((assets) => {
 
-                let map = document.getElementById('map');
-                map.width = 1536;
-                map.height = 1536;
+                this.map = {
+                    canvas: document.createElement('canvas')
+                };
 
-                let mapContext = map.getContext('2d');
-                let tileSize = map.width / tilemap.columns;
+                this.map.context = this.map.canvas.getContext('2d');
+                this.map.canvas.width = tilemap.columns * tilemap.tilesize;
+                this.map.canvas.height = tilemap.rows * tilemap.tilesize;
 
                 tilemap.tiles.forEach((tile, i) => {
-                    let sourceX = (tile - 1) * tileSize;
-                    let targetX = (i % tilemap.columns) * tileSize;
-                    let targetY = Math.floor(i / tilemap.columns) * tileSize;
+                    let sourceX = (tile - 1) * tilemap.tilesize;
+                    let targetX = (i % tilemap.columns) * tilemap.tilesize;
+                    let targetY = Math.floor(i / tilemap.columns) * tilemap.tilesize;
 
-                    mapContext.drawImage(assets.tileset, sourceX, 0, tileSize, tileSize, targetX, targetY, tileSize, tileSize);
+                    this.map.context.drawImage(
+                        assets.tileset, sourceX, 0, tilemap.tilesize, tilemap.tilesize,
+                        targetX, targetY, tilemap.tilesize, tilemap.tilesize
+                    );
                 });
 
                 this.world = {
-                    canvas: document.getElementById('world')
+                    canvas: document.createElement('canvas')
                 };
 
                 this.world.context = this.world.canvas.getContext('2d');
-                this.world.canvas.height = 1536;
-                this.world.canvas.width = 1536;
+                this.world.canvas.width = this.map.canvas.width;
+                this.world.canvas.height = this.map.canvas.height;
 
                 this.camera = {
                     x: 0,
@@ -67,7 +68,12 @@ class Game extends Preload {
                         up: false,
                         down: false
                     },
-                    sprite: assets.player
+                    sprite: assets.player,
+                    width: 32,
+                    height: 32,
+                    frame: 0,
+                    offsetX: 0,
+                    offsetY: -16
                 };
 
                 document.addEventListener('keydown', this.keydown.bind(this));
@@ -81,15 +87,16 @@ class Game extends Preload {
 
         if (this.player.pressedKeys.up) {
             this.player.y -= this.moveSpeed;
-        }
-        if (this.player.pressedKeys.down) {
+            this.player.frame = this.player.frame === 6 ? 7 : 6;
+        } else if (this.player.pressedKeys.down) {
             this.player.y += this.moveSpeed;
-        }
-        if (this.player.pressedKeys.left) {
+            this.player.frame = this.player.frame === 0 ? 1 : 0;
+        } else if (this.player.pressedKeys.left) {
             this.player.x -= this.moveSpeed;
-        }
-        if (this.player.pressedKeys.right) {
+            this.player.frame = this.player.frame === 2 ? 3 : 2;
+        } else if (this.player.pressedKeys.right) {
             this.player.x += this.moveSpeed;
+            this.player.frame = this.player.frame === 4 ? 5 : 4;
         }
 
         this.camera.x = this.player.x - 1280 / 2;
@@ -116,8 +123,17 @@ class Game extends Preload {
 
     draw() {
         this.world.context.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
-        this.world.context.drawImage(map, 0, 0);
-        this.world.context.drawImage(this.player.sprite, 0, 0, 32, 32, this.player.x, this.player.y - 16, 32, 32);
+        this.world.context.drawImage(this.map.canvas, 0, 0);
+        this.world.context.drawImage(
+            this.player.sprite,
+            this.player.frame * this.player.width,
+            0,
+            this.player.width,
+            this.player.height,
+            this.player.x + this.player.offsetX,
+            this.player.y + this.player.offsetY,
+            this.player.width, this.player.height
+        );
 
         this.camera.context.drawImage(this.world.canvas, this.camera.x, this.camera.y, 1280, 800, 0, 0, 1280, 800);
     }
@@ -145,6 +161,12 @@ class Game extends Preload {
     }
 
     debug() {
+        if (!this.debugCamera)
+            this.debugCamera = document.querySelector('.camera');
+
+        if (!this.debugPlayer)
+            this.debugPlayer = document.querySelector('.player');
+
         this.debugCamera.textContent = this.camera.x + ', ' + this.camera.y;
         this.debugPlayer.textContent = this.player.x + ', ' + this.player.y;
     }

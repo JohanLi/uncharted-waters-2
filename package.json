@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Remaking Uncharted Waters 2 in HTML5",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --open",
     "build": "webpack --profile -p"
   },
   "author": "Johan Li",
