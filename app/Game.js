@@ -22,8 +22,16 @@ class Game extends Preload {
                 this.map.canvas.width = tilemap.columns * tilemap.tilesize;
                 this.map.canvas.height = tilemap.rows * tilemap.tilesize;
 
+                this.collisionCoordinates = {};
+                this.collisionIndices = {
+                    from: 29,
+                    to: 240,
+                    leftmost: [30, 33],
+                    rightmost: [38, 39]
+                };
+
                 tilemap.tiles.forEach((tile, i) => {
-                    let sourceX = (tile - 1) * tilemap.tilesize;
+                    let sourceX = tile * tilemap.tilesize;
                     let targetX = (i % tilemap.columns) * tilemap.tilesize;
                     let targetY = Math.floor(i / tilemap.columns) * tilemap.tilesize;
 
@@ -31,6 +39,12 @@ class Game extends Preload {
                         assets.tileset, sourceX, 0, tilemap.tilesize, tilemap.tilesize,
                         targetX, targetY, tilemap.tilesize, tilemap.tilesize
                     );
+
+                    if (tile >= this.collisionIndices.from && tile <= this.collisionIndices.to) {
+                        if (!this.collisionCoordinates[targetX])
+                            this.collisionCoordinates[targetX] = {};
+                        this.collisionCoordinates[targetX][targetY] = tile;
+                    }
                 });
 
                 this.world = {
@@ -82,41 +96,8 @@ class Game extends Preload {
              });
     }
 
-    update(progress) {
-        this.moveSpeed = 6;
-
-        if (this.player.move.up) {
-            this.player.y -= this.moveSpeed;
-            this.player.frame = this.player.frame === 6 ? 7 : 6;
-        } else if (this.player.move.down) {
-            this.player.y += this.moveSpeed;
-            this.player.frame = this.player.frame === 0 ? 1 : 0;
-        } else if (this.player.move.left) {
-            this.player.x -= this.moveSpeed;
-            this.player.frame = this.player.frame === 2 ? 3 : 2;
-        } else if (this.player.move.right) {
-            this.player.x += this.moveSpeed;
-            this.player.frame = this.player.frame === 4 ? 5 : 4;
-        }
-
-        this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - 1280 / 2;
-        this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - 800 / 2;
-
-        if (this.camera.x < 0) {
-            this.camera.x = 0;
-        }
-
-        if (this.camera.x + 1280 > 1536) {
-            this.camera.x = 1536 - 1280;
-        }
-
-        if (this.camera.y + 800 > 1536) {
-            this.camera.y = 1536 - 800;
-        }
-
-        if (this.camera.y < 0) {
-            this.camera.y = 0;
-        }
+    update(timestamp) {
+        this.checkMovement();
     }
 
     draw() {
@@ -139,13 +120,99 @@ class Game extends Preload {
     }
 
     loop(timestamp) {
-        let progress = timestamp - this.lastRender;
-
-        this.update(progress);
+        this.update(timestamp);
         this.draw();
-
-        this.lastRender = timestamp;
         window.requestAnimationFrame(this.loop.bind(this));
+    }
+
+    checkMovement() {
+        if (this.throttleMovement())
+            return;
+
+        this.setDestination();
+
+        if (this.noDestinationCollision()) {
+            this.movePlayer();
+        }
+    }
+
+    throttleMovement() {
+        if (window.performance.now() - this.lastMoveTime < 50)
+            return true;
+
+        this.lastMoveTime = window.performance.now();
+    }
+
+    setDestination() {
+        this.destination = {
+            x: this.player.x,
+            y: this.player.y,
+        };
+
+        if (this.player.move.up) {
+            this.destination.y -= tilemap.tilesize;
+            this.player.frame = this.player.frame === 6 ? 7 : 6;
+        } else if (this.player.move.down) {
+            this.destination.y += tilemap.tilesize;
+            this.player.frame = this.player.frame === 0 ? 1 : 0;
+        } else if (this.player.move.left) {
+            this.destination.x -= tilemap.tilesize;
+            this.player.frame = this.player.frame === 2 ? 3 : 2;
+        } else if (this.player.move.right) {
+            this.destination.x += tilemap.tilesize;
+            this.player.frame = this.player.frame === 4 ? 5 : 4;
+        }
+    }
+
+    noDestinationCollision() {
+        let outOfBounds = Boolean(
+            this.destination.x < 0 || this.destination.x + this.player.width - tilemap.tilesize >= this.map.canvas.width
+            || this.destination.y < 0 || this.destination.y >= this.map.canvas.height
+        );
+        let collision = this.collisionCoordinates[this.destination.x][this.destination.y];
+        let collisionRight = this.collisionCoordinates[this.destination.x + this.player.width - tilemap.tilesize][this.destination.y];
+
+        if (outOfBounds)
+            return false;
+
+        let noCollision = true;
+
+        if (collision || collisionRight)
+            noCollision = false;
+
+        if (this.collisionIndices.leftmost.includes(collision) || this.collisionIndices.rightmost.includes(collisionRight)) {
+            noCollision = true;
+        }
+
+        return noCollision;
+    }
+
+    movePlayer() {
+        this.player.x = this.destination.x;
+        this.player.y = this.destination.y;
+
+        this.updateCamera();
+    }
+
+    updateCamera() {
+        this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - 1280 / 2;
+        this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - 800 / 2;
+
+        if (this.camera.x < 0) {
+            this.camera.x = 0;
+        }
+
+        if (this.camera.x + 1280 > 1536) {
+            this.camera.x = 1536 - 1280;
+        }
+
+        if (this.camera.y + 800 > 1536) {
+            this.camera.y = 1536 - 800;
+        }
+
+        if (this.camera.y < 0) {
+            this.camera.y = 0;
+        }
     }
 
     keydown(e) {
