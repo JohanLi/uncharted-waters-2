@@ -1,10 +1,14 @@
 class Preload {
 
-    load(images) {
+    load(assets) {
         let loadPromises = [];
 
-        Object.keys(images).forEach((key) => {
-            loadPromises.push(this.loadImage(images[key], key));
+        Object.keys(assets).forEach((key) => {
+            if (key === 'tilemap') {
+                loadPromises.push(this.loadTilemap(assets[key], key));
+            } else {
+                loadPromises.push(this.loadImage(assets[key], key));
+            }
         });
 
         return Promise.all(loadPromises)
@@ -23,6 +27,18 @@ class Preload {
                 });
             }
         });
+    }
+
+    loadTilemap(url, key) {
+        return fetch(url, {method: 'get'})
+            .then((response) => {
+                return response.json();
+            })
+            .then((tilemap) => {
+                return {
+                    [key]: tilemap
+                };
+            });
     }
 
 }

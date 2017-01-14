@@ -1,10 +1,11 @@
 export class Map {
 
-    constructor(tilemap, spritesheets, player, npcs) {
-        this.tilemap = tilemap;
-        this.spritesheets = spritesheets;
+    constructor(assets, player, npcs) {
+        this.assets = assets;
         this.player = player;
         this.npcs = npcs;
+
+        console.log(this.assets);
 
         this.setupMap();
         this.setupWorld();
@@ -17,8 +18,8 @@ export class Map {
         };
 
         this.map.context = this.map.canvas.getContext('2d');
-        this.map.canvas.width = this.tilemap.columns * this.tilemap.tilesize;
-        this.map.canvas.height = this.tilemap.rows * this.tilemap.tilesize;
+        this.map.canvas.width = this.assets.tilemap.columns * this.assets.tilemap.tilesize;
+        this.map.canvas.height = this.assets.tilemap.rows * this.assets.tilemap.tilesize;
 
         this.collisionCoordinates = {};
         this.collisionIndices = {
@@ -28,14 +29,14 @@ export class Map {
             rightmost: [38, 39]
         };
 
-        this.tilemap.tiles.forEach((tile, i) => {
-            let sourceX = tile * this.tilemap.tilesize;
-            let targetX = (i % this.tilemap.columns) * this.tilemap.tilesize;
-            let targetY = Math.floor(i / this.tilemap.columns) * this.tilemap.tilesize;
+        this.assets.tilemap.tiles.forEach((tile, i) => {
+            let sourceX = tile * this.assets.tilemap.tilesize;
+            let targetX = (i % this.assets.tilemap.columns) * this.assets.tilemap.tilesize;
+            let targetY = Math.floor(i / this.assets.tilemap.columns) * this.assets.tilemap.tilesize;
 
             this.map.context.drawImage(
-                this.spritesheets.tileset, sourceX, 0, this.tilemap.tilesize, this.tilemap.tilesize,
-                targetX, targetY, this.tilemap.tilesize, this.tilemap.tilesize
+                this.assets.tileset, sourceX, 0, this.assets.tilemap.tilesize, this.assets.tilemap.tilesize,
+                targetX, targetY, this.assets.tilemap.tilesize, this.assets.tilemap.tilesize
             );
 
             if (tile >= this.collisionIndices.from && tile <= this.collisionIndices.to) {
@@ -92,7 +93,7 @@ export class Map {
 
     noDestinationCollision() {
         let outOfBounds = Boolean(
-            this.player.destination.x < 0 || this.player.destination.x + this.player.width - this.tilemap.tilesize >= this.map.canvas.width
+            this.player.destination.x < 0 || this.player.destination.x + this.player.width - this.assets.tilemap.tilesize >= this.map.canvas.width
             || this.player.destination.y < 0 || this.player.destination.y >= this.map.canvas.height
         );
 
@@ -105,7 +106,7 @@ export class Map {
 
         let noCollision = true;
         let collision = this.collisionCoordinates[this.player.destination.x][this.player.destination.y];
-        let collisionRight = this.collisionCoordinates[this.player.destination.x + this.player.width - this.tilemap.tilesize][this.player.destination.y];
+        let collisionRight = this.collisionCoordinates[this.player.destination.x + this.player.width - this.assets.tilemap.tilesize][this.player.destination.y];
 
         if (collision || collisionRight)
             noCollision = false;
@@ -131,13 +132,13 @@ export class Map {
 
         for (let npc of this.npcs.npcs) {
             this.world.context.drawImage(
-                this.spritesheets.npcs, npc.frame * 32, 0, 32, 32,
+                this.assets.npcs, npc.frame * 32, 0, 32, 32,
                 npc.x + 0, npc.y - 16, 32, 32
             );
         }
 
         this.world.context.drawImage(
-            this.spritesheets.player,
+            this.assets.player,
             this.player.frame * this.player.width,
             0,
             this.player.width,
