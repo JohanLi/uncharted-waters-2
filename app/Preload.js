@@ -1,15 +1,15 @@
-export class Preload {
+class Preload {
 
-    load(assets) {
+    load(images) {
         let loadPromises = [];
 
-        Object.keys(assets).forEach((key) => {
-            loadPromises.push(this.loadImage(assets[key], key));
+        Object.keys(images).forEach((key) => {
+            loadPromises.push(this.loadImage(images[key], key));
         });
 
         return Promise.all(loadPromises)
-            .then((assets) => {
-                return Object.assign(...assets);
+            .then((images) => {
+                return Object.assign(...images);
             });
     }
 
@@ -26,3 +26,5 @@ export class Preload {
     }
 
 }
+
+export const preload = new Preload();
