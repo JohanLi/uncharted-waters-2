@@ -5,8 +5,6 @@ export class Map {
         this.player = player;
         this.npcs = npcs;
 
-        console.log(this.assets);
-
         this.setupMap();
         this.setupWorld();
         this.setupCamera();
@@ -149,19 +147,16 @@ export class Map {
         );
 
         this.camera.context.drawImage(this.world.canvas, this.camera.x, this.camera.y, 1280, 800, 0, 0, 1280, 800);
-
-        this.debug();
     }
 
     debug() {
-        if (!this.debugCamera)
-            this.debugCamera = document.querySelector('.camera');
+        if (!this.debugElement) {
+            this.debugElement = document.createElement('div');
+            this.debugElement.id = 'debug';
+            document.getElementById('app').appendChild(this.debugElement);
+        }
 
-        if (!this.debugPlayer)
-            this.debugPlayer = document.querySelector('.player');
-
-        this.debugCamera.textContent = this.camera.x + ', ' + this.camera.y;
-        this.debugPlayer.textContent = this.player.x + ', ' + this.player.y;
+        this.debugElement.innerHTML = `Camera ${this.camera.x}, ${this.camera.y}<br>Player ${this.player.x}, ${this.player.y}`;
 
         this.centerSize = 10;
         this.camera.context.fillStyle = '#ff0000';

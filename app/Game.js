@@ -2,10 +2,13 @@ import {preload} from './Preload';
 import {Player} from './Player';
 import {Npcs} from './Npcs';
 import {Map} from './Map';
+import {Sound} from './Sound';
 
 class Game {
 
     constructor() {
+        this.debug = true;
+
         this.assets = {
             tilemap: '/tilemaps/lisbon.json',
             tileset: '/img/tileset1.2.png',
@@ -19,6 +22,7 @@ class Game {
                 this.player = new Player();
                 this.npcs = new Npcs();
                 this.map = new Map(this.assets, this.player, this.npcs);
+                new Sound(this.debug);
 
                 window.requestAnimationFrame(this.loop.bind(this));
             });
@@ -31,6 +35,10 @@ class Game {
     loop(timestamp) {
         this.update(timestamp);
         this.map.draw();
+
+        if (this.debug)
+            this.map.debug();
+
         window.requestAnimationFrame(this.loop.bind(this));
     }
 
