@@ -22,7 +22,9 @@ class Game {
                 this.player = new Player();
                 this.npcs = new Npcs();
                 this.map = new Map(this.assets, this.player, this.npcs);
-                new Sound(this.debug);
+
+                if (!this.debug)
+                    new Sound();
 
                 window.requestAnimationFrame(this.loop.bind(this));
             });

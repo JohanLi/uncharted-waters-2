@@ -58,30 +58,38 @@ export class Map {
 
     setupCamera() {
         this.camera = {
+            canvas: document.getElementById('camera'),
             x: 0,
             y: 0,
-            canvas: document.getElementById('camera'),
+            width: 640,
+            height: 400,
+            scaleX: 2,
+            scaleY: 2
         };
 
         this.camera.context = this.camera.canvas.getContext('2d');
-        this.camera.canvas.width = 1280;
-        this.camera.canvas.height = 800;
+        this.camera.canvas.width = this.camera.width * this.camera.scaleX;
+        this.camera.canvas.height = this.camera.height * this.camera.scaleY;
+
+        this.camera.context.imageSmoothingEnabled = false;
+        this.camera.context.msImageSmoothingEnabled = false;
+        this.camera.context.scale(this.camera.scaleX, this.camera.scaleY);
     }
 
     updateCamera() {
-        this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - 1280 / 2;
-        this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - 800 / 2;
+        this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - this.camera.width / 2;
+        this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - this.camera.height / 2;
 
         if (this.camera.x < 0) {
             this.camera.x = 0;
         }
 
-        if (this.camera.x + 1280 > 1536) {
-            this.camera.x = 1536 - 1280;
+        if (this.camera.x + this.camera.width > 1536) {
+            this.camera.x = 1536 - this.camera.width;
         }
 
-        if (this.camera.y + 800 > 1536) {
-            this.camera.y = 1536 - 800;
+        if (this.camera.y + this.camera.height > 1536) {
+            this.camera.y = 1536 - this.camera.height;
         }
 
         if (this.camera.y < 0) {
@@ -146,7 +154,7 @@ export class Map {
             this.player.width, this.player.height
         );
 
-        this.camera.context.drawImage(this.world.canvas, this.camera.x, this.camera.y, 1280, 800, 0, 0, 1280, 800);
+        this.camera.context.drawImage(this.world.canvas, this.camera.x, this.camera.y, this.camera.width, this.camera.height, 0, 0, this.camera.width, this.camera.height);
     }
 
     debug() {
@@ -161,8 +169,8 @@ export class Map {
         this.centerSize = 10;
         this.camera.context.fillStyle = '#ff0000';
         this.camera.context.fillRect(
-            (this.camera.canvas.width - this.centerSize) / 2,
-            (this.camera.canvas.height - this.centerSize) / 2,
+            (this.camera.width - this.centerSize) / 2,
+            (this.camera.height - this.centerSize) / 2,
             this.centerSize,
             this.centerSize
         );
