@@ -3,17 +3,17 @@ export class Npcs {
     constructor() {
         this.npcs = [
             {
-                frame: 0,
+                frame: 16,
                 x: 688,
                 y: 976
             },
             {
-                frame: 2,
+                frame: 18,
                 x: 608,
                 y: 768
             },
             {
-                frame: 4,
+                frame: 20,
                 x: 896,
                 y: 576
             }

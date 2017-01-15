@@ -11,7 +11,7 @@ export class Player {
         };
         this.width = 32;
         this.height = 32;
-        this.frame = 0;
+        this.frame = 4;
         this.offsetX = 0;
         this.offsetY = -16;
         this.tilesize = 16;
@@ -27,16 +27,16 @@ export class Player {
 
         if (this.pressedKey.up) {
             this.destination.y -= this.tilesize;
-            this.frame = this.frame === 6 ? 7 : 6;
+            this.frame = this.frame === 0 ? 1 : 0;
         } else if (this.pressedKey.down) {
             this.destination.y += this.tilesize;
-            this.frame = this.frame === 0 ? 1 : 0;
+            this.frame = this.frame === 4 ? 5 : 4;
         } else if (this.pressedKey.left) {
             this.destination.x -= this.tilesize;
-            this.frame = this.frame === 2 ? 3 : 2;
+            this.frame = this.frame === 6 ? 7 : 6;
         } else if (this.pressedKey.right) {
             this.destination.x += this.tilesize;
-            this.frame = this.frame === 4 ? 5 : 4;
+            this.frame = this.frame === 2 ? 3 : 2;
         }
     }
 
