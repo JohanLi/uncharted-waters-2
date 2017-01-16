@@ -27,6 +27,15 @@ export class Map {
             rightmost: [38, 39]
         };
 
+        this.buildings = {};
+        this.buildingIndices = {
+            market: 80,
+            bar: 81,
+            shipyard: 83,
+            dock: 100,
+            lodge: 215
+        };
+
         this.assets.tilemap.tiles.forEach((tile, i) => {
             let sourceX = tile * this.assets.tilemap.tilesize;
             let targetX = (i % this.assets.tilemap.columns) * this.assets.tilemap.tilesize;
@@ -43,7 +52,21 @@ export class Map {
 
                 this.collisionCoordinates[targetX][targetY] = tile;
             }
+
+            Object.keys(this.buildingIndices).forEach((key) => {
+                if (this.buildingIndices[key] === tile) {
+                    delete this.buildingIndices[key];
+
+                    this.buildings[key] = {
+                        x: targetX - 32,
+                        y: targetY + 16
+                    }
+                }
+            });
         });
+
+        this.npcs.buildings = this.buildings;
+        this.npcs.setup();
     }
 
     setupWorld() {

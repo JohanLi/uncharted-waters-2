@@ -55,7 +55,9 @@ class Game {
             this.map.updateCamera();
         }
 
-        this.npcs.animate();
+        if (!this.throttleNpcMovement()) {
+            this.npcs.update();
+        }
     }
 
     throttleMovement() {
@@ -63,6 +65,14 @@ class Game {
             return true;
 
         this.lastMoveTime = window.performance.now();
+    }
+
+    throttleNpcMovement() {
+        if (window.performance.now() - this.npcLastMoveTime < 200)
+            return true;
+
+        this.npcLastMoveTime = window.performance.now();
+
     }
 
 }
