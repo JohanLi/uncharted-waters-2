@@ -1,7 +1,8 @@
 import {preload} from './Preload';
-import {Player} from './Player';
-import {Npcs} from './Npcs';
+
+import {Characters} from './Characters';
 import {Map} from './Map';
+import {Camera} from './Camera';
 import {Sound} from './Sound';
 
 class Game {
@@ -18,61 +19,38 @@ class Game {
 
         preload.load(this.assets)
             .then((assets) => {
-                this.assets = assets;
-                this.player = new Player();
-                this.npcs = new Npcs();
-                this.map = new Map(this.assets, this.player, this.npcs);
+                this.map = new Map(assets);
+                this.characters = new Characters(this.map);
+                this.camera = new Camera(assets, this.map, this.characters);
 
                 if (!this.debug)
-                    new Sound();
+                    this.sound = new Sound();
 
                 window.requestAnimationFrame(this.loop.bind(this));
             });
     }
 
     update(timestamp) {
-        this.checkMovement();
+
+        if (!this.characters.throttleMovement(50)) {
+            this.characters.updatePlayer();
+            this.camera.updateCamera();
+        }
+
+        if (!this.characters.throttleMovement(250)) {
+            this.characters.updateNpcs();
+        }
+
     }
 
     loop(timestamp) {
         this.update(timestamp);
-        this.map.draw();
+        this.camera.draw();
 
         if (this.debug)
-            this.map.debug();
+            this.camera.debug();
 
         window.requestAnimationFrame(this.loop.bind(this));
-    }
-
-    checkMovement() {
-        if (this.throttleMovement())
-            return;
-
-        this.player.setDestination();
-
-        if (this.map.noDestinationCollision()) {
-            this.player.move();
-            this.map.updateCamera();
-        }
-
-        if (!this.throttleNpcMovement()) {
-            this.npcs.update();
-        }
-    }
-
-    throttleMovement() {
-        if (window.performance.now() - this.lastMoveTime < 50)
-            return true;
-
-        this.lastMoveTime = window.performance.now();
-    }
-
-    throttleNpcMovement() {
-        if (window.performance.now() - this.npcLastMoveTime < 200)
-            return true;
-
-        this.npcLastMoveTime = window.performance.now();
-
     }
 
 }
