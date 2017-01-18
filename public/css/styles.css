@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+
+#camera {
+    margin: 60px auto 0 auto;
+    display: block;
+}
+
+#debug {
+    width: 1280px;
+    margin: 20px auto 0 auto;
+    font-size: 24px;
+}
