@@ -7,8 +7,8 @@ export class Map {
         this.collisionIndices = {
             from: 31,
             to: 240,
-            leftmost: [30, 31, 33],
-            rightmost: [36, 38, 39]
+            leftmost: [30, 31, 32, 33],
+            rightmost: [35, 36, 37, 38, 39]
         };
 
         this.buildings = {};
@@ -82,7 +82,7 @@ export class Map {
     outOfBoundsAt(destination) {
         return Boolean(
             destination.x < 0 || destination.x + 32 - this.assets.tilemap.tilesize >= this.map.canvas.width
-            || destination.y < 0 || destination.y >= this.map.canvas.height
+            || destination.y - 16 < 0 || destination.y >= this.map.canvas.height
         );
     }
 
