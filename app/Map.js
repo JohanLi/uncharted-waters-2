@@ -7,8 +7,8 @@ export class Map {
         this.collisionIndices = {
             from: 31,
             to: 240,
-            leftmost: [30, 33],
-            rightmost: [38, 39]
+            leftmost: [30, 31, 33],
+            rightmost: [36, 38, 39]
         };
 
         this.buildings = {};

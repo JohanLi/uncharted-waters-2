@@ -1,3 +1,4 @@
+require('./sass/styles.scss');
 import {preload} from './Preload';
 
 import {Characters} from './Characters';
