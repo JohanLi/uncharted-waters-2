@@ -12,8 +12,8 @@ export class Npc {
 
         this.immobile = immobile;
 
-        this.width = 32;
-        this.height = 32;
+        this.width = 64;
+        this.height = 64;
     }
 
     animate() {
@@ -37,16 +37,16 @@ export class Npc {
 
         if (this.currentDirection === 'up') {
             this.frame = this.frameUp;
-            this.destination.y -= 16;
+            this.destination.y -= 32;
         } else if (this.currentDirection === 'right') {
             this.frame = this.frameRight;
-            this.destination.x += 16;
+            this.destination.x += 32;
         } else if (this.currentDirection === 'down') {
             this.frame = this.frameDown;
-            this.destination.y += 16;
+            this.destination.y += 32;
         } else if (this.currentDirection === 'left') {
             this.frame = this.frameLeft;
-            this.destination.x -= 16;
+            this.destination.x -= 32;
         }
 
         this.frameDifference = this.frameDifference === 0 ? 1 : 0;

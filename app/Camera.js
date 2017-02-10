@@ -16,19 +16,13 @@ export class Camera {
             canvas: document.getElementById('camera'),
             x: 0,
             y: 0,
-            width: 640,
-            height: 400,
-            scaleX: 2,
-            scaleY: 2
+            width: 1280,
+            height: 800
         };
 
         this.camera.context = this.camera.canvas.getContext('2d');
-        this.camera.canvas.width = this.camera.width * this.camera.scaleX;
-        this.camera.canvas.height = this.camera.height * this.camera.scaleY;
-
-        this.camera.context.imageSmoothingEnabled = false;
-        this.camera.context.msImageSmoothingEnabled = false;
-        this.camera.context.scale(this.camera.scaleX, this.camera.scaleY);
+        this.camera.canvas.width = this.camera.width;
+        this.camera.canvas.height = this.camera.height;
     }
 
     updateCamera() {
@@ -39,12 +33,12 @@ export class Camera {
             this.camera.x = 0;
         }
 
-        if (this.camera.x + this.camera.width > 1536) {
-            this.camera.x = 1536 - this.camera.width;
+        if (this.camera.x + this.camera.width > 3072) {
+            this.camera.x = 3072 - this.camera.width;
         }
 
-        if (this.camera.y + this.camera.height > 1536) {
-            this.camera.y = 1536 - this.camera.height;
+        if (this.camera.y + this.camera.height > 3072) {
+            this.camera.y = 3072 - this.camera.height;
         }
 
         if (this.camera.y < 0) {
@@ -58,8 +52,8 @@ export class Camera {
 
         for (let npc of this.npcs) {
             this.map.world.context.drawImage(
-                this.assets.npcs, npc.frame * 32, 0, 32, 32,
-                npc.x + 0, npc.y - 16, 32, 32
+                this.assets.npcs, npc.frame * 64, 0, 64, 64,
+                npc.x + 0, npc.y - 32, 64, 64
             );
         }
 

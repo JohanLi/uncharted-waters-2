@@ -6,12 +6,12 @@ export class Player {
         this.x = x;
         this.y = y;
 
-        this.width = 32;
-        this.height = 32;
+        this.width = 64;
+        this.height = 64;
         this.frame = frame;
         this.offsetX = 0;
-        this.offsetY = -16;
-        this.tilesize = 16;
+        this.offsetY = -32;
+        this.tilesize = 32;
 
         this.controls = new Controls();
     }

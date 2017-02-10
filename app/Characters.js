@@ -6,15 +6,15 @@ export class Characters {
     constructor(map) {
         this.map = map;
 
-        this.player = new Player(this.map.buildings.harbor.x, this.map.buildings.harbor.y + 16, 4);
+        this.player = new Player(this.map.buildings.harbor.x, this.map.buildings.harbor.y + 32, 4);
         this.npcs = [
-            new Npc(this.map.buildings.market.x - 32, this.map.buildings.market.y + 16, 4, false),
+            new Npc(this.map.buildings.market.x - 64, this.map.buildings.market.y + 32, 4, false),
             new Npc(this.map.buildings.shipyard.x, this.map.buildings.shipyard.y, 4, false),
-            new Npc(this.map.buildings.bar.x - 32, this.map.buildings.bar.y + 16, 12, false),
-            new Npc(this.map.buildings.lodge.x - 32, this.map.buildings.lodge.y + 16, 12, false),
-            new Npc(this.map.buildings.market.x + 32, this.map.buildings.market.y + 16, 16, true),
-            new Npc(this.map.buildings.lodge.x + 32, this.map.buildings.lodge.y + 16, 18, true),
-            new Npc(this.map.buildings.bar.x + 32, this.map.buildings.bar.y + 16, 20, true)
+            new Npc(this.map.buildings.bar.x - 64, this.map.buildings.bar.y + 32, 12, false),
+            new Npc(this.map.buildings.lodge.x - 64, this.map.buildings.lodge.y + 32, 12, false),
+            new Npc(this.map.buildings.market.x + 64, this.map.buildings.market.y + 32, 16, true),
+            new Npc(this.map.buildings.lodge.x + 64, this.map.buildings.lodge.y + 32, 18, true),
+            new Npc(this.map.buildings.bar.x + 64, this.map.buildings.bar.y + 32, 20, true)
         ];
 
         this.lastMoveTime = {};

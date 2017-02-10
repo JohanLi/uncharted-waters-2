@@ -61,8 +61,8 @@ export class Map {
                     delete this.buildingIndices[key];
 
                     this.buildings[key] = {
-                        x: targetX - 32,
-                        y: targetY + 16
+                        x: targetX - 64,
+                        y: targetY + 32
                     }
                 }
             });
@@ -81,15 +81,15 @@ export class Map {
 
     outOfBoundsAt(destination) {
         return Boolean(
-            destination.x < 0 || destination.x + 32 - this.assets.tilemap.tilesize >= this.map.canvas.width
-            || destination.y - 16 < 0 || destination.y >= this.map.canvas.height
+            destination.x < 0 || destination.x + 64 - this.assets.tilemap.tilesize >= this.map.canvas.width
+            || destination.y - 32 < 0 || destination.y >= this.map.canvas.height
         );
     }
 
     // http://stackoverflow.com/a/4034468
     collisionAt(destination) {
         const collision = ((this.collisionCoordinates || {})[destination.x] || {})[destination.y];
-        const collisionRight = ((this.collisionCoordinates || {})[destination.x + 32 - this.assets.tilemap.tilesize] || {})[destination.y];
+        const collisionRight = ((this.collisionCoordinates || {})[destination.x + 64 - this.assets.tilemap.tilesize] || {})[destination.y];
 
         if (this.collisionIndices.leftmost.includes(collision) || this.collisionIndices.rightmost.includes(collisionRight)) {
             return false;
