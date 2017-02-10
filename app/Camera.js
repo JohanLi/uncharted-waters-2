@@ -52,8 +52,14 @@ export class Camera {
 
         for (let npc of this.npcs) {
             this.map.world.context.drawImage(
-                this.assets.npcs, npc.frame * 64, 0, 64, 64,
-                npc.x + 0, npc.y - 32, 64, 64
+                this.assets.npcs,
+                npc.frame * npc.width,
+                0,
+                npc.width,
+                npc.height,
+                npc.x + npc.offsetX,
+                npc.y + npc.offsetY,
+                npc.width, npc.height
             );
         }
 

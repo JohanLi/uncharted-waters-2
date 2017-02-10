@@ -8,9 +8,15 @@ export class Player {
 
         this.width = 64;
         this.height = 64;
-        this.frame = frame;
         this.offsetX = 0;
         this.offsetY = -32;
+
+        this.frame = frame;
+        this.frameUp = frame - 4;
+        this.frameRight = frame - 2;
+        this.frameDown = frame;
+        this.frameLeft = frame + 2;
+
         this.tilesize = 32;
 
         this.controls = new Controls();
@@ -23,30 +29,28 @@ export class Player {
         };
 
         if (this.controls.direction === 'up') {
+            this.frame = this.frameUp;
             this.destination.y -= this.tilesize;
-            this.frame = this.frame === 0 ? 1 : 0;
         } else if (this.controls.direction === 'right') {
+            this.frame = this.frameRight;
             this.destination.x += this.tilesize;
-            this.frame = this.frame === 2 ? 3 : 2;
         } else if (this.controls.direction === 'down') {
+            this.frame = this.frameDown;
             this.destination.y += this.tilesize;
-            this.frame = this.frame === 4 ? 5 : 4;
         } else if (this.controls.direction === 'left') {
+            this.frame = this.frameLeft;
             this.destination.x -= this.tilesize;
-            this.frame = this.frame === 6 ? 7 : 6;
+        }
+
+        if (this.controls.direction) {
+            this.frameDifference = this.frameDifference === 0 ? 1 : 0;
+            this.frame += this.frameDifference;
         }
     }
 
     move() {
         this.x = this.destination.x;
         this.y = this.destination.y;
-    }
-
-    collisionAt(destination) {
-        const xCollision = destination.x - this.x < this.width && destination.x - this.x > -this.width;
-        const yCollision = destination.y - this.y < this.height && destination.y - this.y > -this.height;
-
-        return xCollision && yCollision;
     }
 
 }

@@ -4,6 +4,11 @@ export class Npc {
         this.x = x;
         this.y = y;
 
+        this.width = 64;
+        this.height = 64;
+        this.offsetX = 0;
+        this.offsetY = -32;
+
         this.frame = frame;
         this.frameUp = frame - 4;
         this.frameRight = frame - 2;
@@ -11,9 +16,6 @@ export class Npc {
         this.frameLeft = frame + 2;
 
         this.immobile = immobile;
-
-        this.width = 64;
-        this.height = 64;
     }
 
     animate() {
