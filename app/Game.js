@@ -1,7 +1,6 @@
 require('./sass/styles.scss');
 import {preload} from './Preload';
 
-import {Characters} from './Characters';
 import {Map} from './Map';
 import {Camera} from './Camera';
 import {Sound} from './Sound';
@@ -14,44 +13,26 @@ class Game {
         this.assets = {
             tilemap: '/tilemaps/lisbon.json',
             tileset: '/img/tileset1.2.png',
-            player: '/img/joao.png',
-            npcs: '/img/npcs.png'
+            characters: '/img/characters.png'
         };
 
         preload.load(this.assets)
             .then((assets) => {
                 this.map = new Map(assets);
-                this.characters = new Characters(this.map);
-                this.camera = new Camera(assets, this.map, this.characters);
-
-                this.player = this.characters.player;
-                this.npcs = this.characters.npcs;
+                this.camera = new Camera(this.map, this.map.characters);
 
                 if (!this.debug)
                     this.sound = new Sound();
 
-                window.requestAnimationFrame(this.loop.bind(this));
+                window.requestAnimationFrame(() => this.loop());
             });
     }
 
-    loop(timestamp) {
-        let framePercentage = this.framePercentage();
+    loop() {
+        this.map.update(this.framePercentage());
+        this.camera.update();
 
-        this.player.interpolateDestination(framePercentage);
-
-        for (let npc of this.npcs) {
-            npc.interpolateDestination(framePercentage);
-        }
-
-        if (framePercentage < 1) {
-            this.camera.updateCamera();
-            this.camera.draw();
-        } else {
-            this.characters.updatePlayer();
-            this.characters.updateNpcs();
-        }
-
-        window.requestAnimationFrame(this.loop.bind(this));
+        window.requestAnimationFrame(() => this.loop());
     }
 
     framePercentage() {

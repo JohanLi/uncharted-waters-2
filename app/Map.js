@@ -1,3 +1,5 @@
+import {Character} from './Character';
+
 export class Map {
 
     constructor(assets) {
@@ -7,8 +9,8 @@ export class Map {
         this.collisionIndices = {
             from: 31,
             to: 240,
-            leftmost: [30, 31, 32, 33],
-            rightmost: [35, 36, 37, 38, 39]
+            leftmost: [29, 30, 31, 32, 33],
+            rightmost: [34, 35, 36, 37, 38, 39]
         };
 
         this.buildings = {};
@@ -28,6 +30,7 @@ export class Map {
 
         this.setupMap();
         this.setupWorld();
+        this.setupCharacters();
     }
 
     setupMap() {
@@ -79,15 +82,84 @@ export class Map {
         this.world.canvas.height = this.map.canvas.height;
     }
 
+    setupCharacters() {
+        this.characters = [
+            new Character(this.buildings.harbor.x, this.buildings.harbor.y + 32, 4, true),
+            new Character(this.buildings.market.x - 64, this.buildings.market.y + 32, 12),
+            new Character(this.buildings.shipyard.x, this.buildings.shipyard.y, 12),
+            new Character(this.buildings.bar.x - 64, this.buildings.bar.y + 32, 20),
+            new Character(this.buildings.lodge.x - 64, this.buildings.lodge.y + 32, 20),
+            new Character(this.buildings.market.x + 64, this.buildings.market.y + 32, 24, false, true),
+            new Character(this.buildings.lodge.x + 64, this.buildings.lodge.y + 32, 26, false, true),
+            new Character(this.buildings.bar.x + 64, this.buildings.bar.y + 32, 28, false, true)
+        ];
+
+        this.player = this.characters[0];
+    }
+
+    update(framePercentage) {
+        this.draw();
+        this.interpolateCharacters(framePercentage);
+
+        if (framePercentage === 1) {
+            this.moveCharacters();
+        }
+    }
+
+    draw() {
+        this.world.context.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
+        this.world.context.drawImage(this.map.canvas, 0, 0);
+
+        for (let character of this.characters) {
+            this.world.context.drawImage(
+                this.assets.characters,
+                character.frame * character.width,
+                0,
+                character.width,
+                character.height,
+                character.x + character.offsetX,
+                character.y + character.offsetY,
+                character.width,
+                character.height
+            );
+        }
+    }
+
+    interpolateCharacters(framePercentage) {
+        for (let character of this.characters) {
+            character.interpolateDestination(framePercentage);
+
+            if (framePercentage === 1)
+                character.removeDestination();
+        }
+    }
+
+    moveCharacters() {
+        for (let character of this.characters) {
+            if (character.isImmobile) {
+                character.animate();
+                continue;
+            }
+
+            if (!character.setDestination())
+                continue;
+
+            if (this.outOfBoundsAt(character.destination)
+                || this.tileCollisionAt(character.destination)
+                || this.characterCollisionWith(character)) {
+                character.removeDestination();
+            }
+        }
+    }
+
     outOfBoundsAt(destination) {
         return Boolean(
-            destination.x < 0 || destination.x + 64 - this.assets.tilemap.tilesize >= this.map.canvas.width
-            || destination.y - 32 < 0 || destination.y >= this.map.canvas.height
+            destination.x < 0 || destination.x + 64 - this.assets.tilemap.tilesize >= this.world.canvas.width
+            || destination.y - 32 < 0 || destination.y >= this.world.canvas.height
         );
     }
 
-    // http://stackoverflow.com/a/4034468
-    collisionAt(destination) {
+    tileCollisionAt(destination) {
         const collision = ((this.collisionCoordinates || {})[destination.x] || {})[destination.y];
         const collisionRight = ((this.collisionCoordinates || {})[destination.x + 64 - this.assets.tilemap.tilesize] || {})[destination.y];
 
@@ -97,6 +169,20 @@ export class Map {
 
         if (collision || collisionRight)
             return true;
+    }
+
+    characterCollisionWith(self) {
+        return this.characters.some((character) => {
+            if (character === self)
+                return false;
+
+            const xDifference = self.destination.x - character.x;
+            const yDifference = self.destination.y - character.y;
+            const xCollision = xDifference < character.width && xDifference > -character.width;
+            const yCollision = yDifference < character.height && yDifference > -character.height;
+
+            return xCollision && yCollision;
+        });
     }
 
 }

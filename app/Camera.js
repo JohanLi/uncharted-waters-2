@@ -1,14 +1,12 @@
 export class Camera {
 
-    constructor(assets, map, characters) {
-        this.assets = assets;
+    constructor(map, characters) {
         this.map = map;
 
-        this.player = characters.player;
-        this.npcs = characters.npcs;
+        this.characters = characters;
+        this.player = characters[0];
 
         this.setupCamera();
-        this.updateCamera();
     }
 
     setupCamera() {
@@ -25,7 +23,7 @@ export class Camera {
         this.camera.canvas.height = this.camera.height;
     }
 
-    updateCamera() {
+    update() {
         this.camera.x = this.player.x + this.player.width / 2 + this.player.offsetX - this.camera.width / 2;
         this.camera.y = this.player.y + this.player.height / 2 + this.player.offsetY - this.camera.height / 2;
 
@@ -44,37 +42,18 @@ export class Camera {
         if (this.camera.y < 0) {
             this.camera.y = 0;
         }
+
+        this.draw();
     }
 
     draw() {
-        this.map.world.context.clearRect(0, 0, this.map.world.canvas.width, this.map.world.canvas.height);
-        this.map.world.context.drawImage(this.map.map.canvas, 0, 0);
-
-        for (let npc of this.npcs) {
-            this.map.world.context.drawImage(
-                this.assets.npcs,
-                npc.frame * npc.width,
-                0,
-                npc.width,
-                npc.height,
-                npc.x + npc.offsetX,
-                npc.y + npc.offsetY,
-                npc.width, npc.height
-            );
-        }
-
-        this.map.world.context.drawImage(
-            this.assets.player,
-            this.player.frame * this.player.width,
-            0,
-            this.player.width,
-            this.player.height,
-            this.player.x + this.player.offsetX,
-            this.player.y + this.player.offsetY,
-            this.player.width, this.player.height
+        this.camera.context.drawImage(
+            this.map.world.canvas,
+            this.camera.x, this.camera.y,
+            this.camera.width, this.camera.height,
+            0, 0,
+            this.camera.width, this.camera.height
         );
-
-        this.camera.context.drawImage(this.map.world.canvas, this.camera.x, this.camera.y, this.camera.width, this.camera.height, 0, 0, this.camera.width, this.camera.height);
     }
 
     debug() {
