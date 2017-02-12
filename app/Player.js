@@ -23,9 +23,14 @@ export class Player {
     }
 
     setDestination() {
+        if (!this.controls.direction)
+            return;
+
         this.destination = {
             x: this.x,
             y: this.y,
+            fromX: this.x,
+            fromY: this.y
         };
 
         if (this.controls.direction === 'up') {
@@ -42,15 +47,25 @@ export class Player {
             this.destination.x -= this.tilesize;
         }
 
-        if (this.controls.direction) {
-            this.frameDifference = this.frameDifference === 0 ? 1 : 0;
-            this.frame += this.frameDifference;
-        }
+        this.frameDifference = this.frameDifference === 0 ? 1 : 0;
+        this.frame += this.frameDifference;
+
+        return true;
     }
 
-    move() {
-        this.x = this.destination.x;
-        this.y = this.destination.y;
+    removeDestination() {
+        this.destination = null;
+    }
+
+    interpolateDestination(framePercentage) {
+        if (this.destination) {
+            this.x = this.destination.fromX + Math.round(framePercentage * (this.destination.x - this.destination.fromX));
+            this.y = this.destination.fromY + Math.round(framePercentage * (this.destination.y - this.destination.fromY));
+        }
+
+        if (framePercentage === 1) {
+            this.removeDestination();
+        }
     }
 
 }

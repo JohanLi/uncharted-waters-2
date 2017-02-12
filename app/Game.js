@@ -24,6 +24,9 @@ class Game {
                 this.characters = new Characters(this.map);
                 this.camera = new Camera(assets, this.map, this.characters);
 
+                this.player = this.characters.player;
+                this.npcs = this.characters.npcs;
+
                 if (!this.debug)
                     this.sound = new Sound();
 
@@ -31,27 +34,33 @@ class Game {
             });
     }
 
-    update(timestamp) {
+    loop(timestamp) {
+        let framePercentage = this.framePercentage();
 
-        if (!this.characters.throttleMovement(50)) {
-            this.characters.updatePlayer();
-            this.camera.updateCamera();
+        this.player.interpolateDestination(framePercentage);
+
+        for (let npc of this.npcs) {
+            npc.interpolateDestination(framePercentage);
         }
 
-        if (!this.characters.throttleMovement(250)) {
+        if (framePercentage < 1) {
+            this.camera.updateCamera();
+            this.camera.draw();
+        } else {
+            this.characters.updatePlayer();
             this.characters.updateNpcs();
         }
 
+        window.requestAnimationFrame(this.loop.bind(this));
     }
 
-    loop(timestamp) {
-        this.update(timestamp);
-        this.camera.draw();
-
-        if (this.debug)
-            this.camera.debug();
-
-        window.requestAnimationFrame(this.loop.bind(this));
+    framePercentage() {
+        if (window.performance.now() - this.lastMoveTime < 70)
+            return (window.performance.now() - this.lastMoveTime) / 70;
+        else {
+            this.lastMoveTime = window.performance.now();
+            return 1;
+        }
     }
 
 }

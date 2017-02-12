@@ -28,12 +28,13 @@ export class Characters {
     }
 
     updatePlayer() {
-        this.player.setDestination();
+        if (!this.player.setDestination())
+            return;
 
-        if (!this.map.outOfBoundsAt(this.player.destination)
-            && !this.map.collisionAt(this.player.destination)
-            && !this.collisionWithAt(this.player)) {
-            this.player.move();
+        if (this.map.outOfBoundsAt(this.player.destination)
+            || this.map.collisionAt(this.player.destination)
+            || this.collisionWithAt(this.player)) {
+            this.player.removeDestination();
         }
     }
 
@@ -42,12 +43,13 @@ export class Characters {
             if (npc.immobile) {
                 npc.animate();
             } else {
-                npc.setDestination();
+                if (!npc.setDestination())
+                    continue;
 
-                if (!this.map.outOfBoundsAt(npc.destination)
-                    && !this.map.collisionAt(npc.destination)
-                    && !this.collisionWithAt(npc)) {
-                    npc.move();
+                if (this.map.outOfBoundsAt(npc.destination)
+                    || this.map.collisionAt(npc.destination)
+                    || this.collisionWithAt(npc)) {
+                    npc.removeDestination();
                 }
             }
         }
