@@ -98,12 +98,11 @@ export class Map {
     }
 
     update(framePercentage) {
-        this.draw();
         this.interpolateCharacters(framePercentage);
+        this.draw();
 
-        if (framePercentage === 1) {
+        if (framePercentage === 1)
             this.moveCharacters();
-        }
     }
 
     draw() {
