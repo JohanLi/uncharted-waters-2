@@ -2,14 +2,14 @@ require('./sass/styles.scss');
 import {preload} from './Preload';
 
 import {Map} from './Map';
+import {Characters} from './Characters';
+import {World} from './World';
 import {Camera} from './Camera';
 import {Sound} from './Sound';
 
 class Game {
 
     constructor() {
-        this.debug = true;
-
         this.assets = {
             tilemap: '/tilemaps/lisbon.json',
             tileset: '/img/tileset1.2.png',
@@ -19,25 +19,31 @@ class Game {
         preload.load(this.assets)
             .then((assets) => {
                 this.map = new Map(assets);
-                this.camera = new Camera(this.map, this.map.characters);
-
-                if (!this.debug)
-                    this.sound = new Sound();
+                this.characters = new Characters(this.map);
+                this.world = new World(this.map, this.characters);
+                this.camera = new Camera(this.world);
+                //this.sound = new Sound();
 
                 window.requestAnimationFrame(() => this.loop());
             });
     }
 
     loop() {
-        this.map.update(this.framePercentage());
-        this.camera.update();
+        let framePercentage = this.framePercentage();
+
+        this.characters.interpolateMovement(framePercentage);
+        this.world.draw();
+        this.camera.draw();
+
+        if (framePercentage === 1)
+            this.characters.move();
 
         window.requestAnimationFrame(() => this.loop());
     }
 
     framePercentage() {
-        if (window.performance.now() - this.lastMoveTime < 70)
-            return (window.performance.now() - this.lastMoveTime) / 70;
+        if (window.performance.now() - this.lastMoveTime < 67)
+            return (window.performance.now() - this.lastMoveTime) / 67;
         else {
             this.lastMoveTime = window.performance.now();
             return 1;
