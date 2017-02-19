@@ -29,19 +29,14 @@ class Game {
     }
 
     loop() {
-        let framePercentage = this.framePercentage();
-
-        this.characters.interpolateMovement(framePercentage);
+        this.characters.update(this.percentNextMove());
         this.world.draw();
         this.camera.draw();
-
-        if (framePercentage === 1)
-            this.characters.move();
 
         window.requestAnimationFrame(() => this.loop());
     }
 
-    framePercentage() {
+    percentNextMove() {
         if (window.performance.now() - this.lastMoveTime < 67)
             return (window.performance.now() - this.lastMoveTime) / 67;
         else {

@@ -1,4 +1,4 @@
-export class Controls {
+export class Input {
 
     constructor() {
         this.direction = '';

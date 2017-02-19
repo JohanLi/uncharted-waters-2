@@ -43,7 +43,7 @@ export class Character {
         return this.direction;
     }
 
-    setDestination(direction) {
+    move(direction) {
         this.fromX = this.x;
         this.fromY = this.y;
 
@@ -55,6 +55,25 @@ export class Character {
             this.y += this.tilesize;
         } else if (direction === 'left') {
             this.x -= this.tilesize;
+        }
+    }
+
+    undoMove() {
+        this.x = this.fromX;
+        this.y = this.fromY;
+        this.fromX = null;
+        this.fromY = null;
+    }
+
+    interpolatePosition(percentNextMove) {
+        if (this.fromX && this.fromY) {
+            this.visualX = this.fromX + Math.round(percentNextMove * (this.x - this.fromX));
+            this.visualY = this.fromY + Math.round(percentNextMove * (this.y - this.fromY));
+        }
+
+        if (percentNextMove === 1) {
+            this.fromX = null;
+            this.fromY = null;
         }
     }
 
@@ -71,25 +90,6 @@ export class Character {
 
         this.frameDifference = this.frameDifference === 0 ? 1 : 0;
         this.frame += this.frameDifference;
-    }
-
-
-    interpolateDestination(framePercentage) {
-        if (this.fromX && this.fromY) {
-            this.visualX = this.fromX + Math.round(framePercentage * (this.x - this.fromX));
-            this.visualY = this.fromY + Math.round(framePercentage * (this.y - this.fromY));
-        }
-    }
-
-    removeDestination() {
-        if (this.fromX && this.fromY) {
-            this.x = this.fromX;
-            this.y = this.fromY;
-            this.visualX = this.fromX;
-            this.visualY = this.fromY;
-            this.fromX = null;
-            this.fromY = null;
-        }
     }
 
 }

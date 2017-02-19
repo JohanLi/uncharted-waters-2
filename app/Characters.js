@@ -1,5 +1,5 @@
 import {Character} from './Character';
-import {Controls} from './Controls';
+import {Input} from './Input';
 
 export class Characters {
 
@@ -20,31 +20,38 @@ export class Characters {
 
         this.player = this.characters[0];
         this.npcs = this.characters.slice(1);
-        this.controls = new Controls();
+        this.input = new Input();
     }
 
-    move() {
-        this.movePlayer();
-        this.moveNpcs();
+    update(percentNextMove) {
+        for (let character of this.characters) {
+            character.interpolatePosition(percentNextMove);
+        }
+
+        if (percentNextMove === 1) {
+            this.movePlayer();
+            this.moveNpcs();
+        }
     }
 
     movePlayer() {
-        let direction = this.controls.direction;
+        let direction = this.input.direction;
 
         if (!direction)
             return;
 
-        this.player.setDestination(direction);
+        this.player.move(direction);
 
         if (this.collision(this.player)) {
-            this.player.removeDestination();
+            this.player.undoMove();
 
-            direction = this.alternateDirection(this.player, this.controls.direction);
+            let alternateDirection = this.alternateDirection(this.player, this.input.direction);
 
-            if (!direction)
+            if (alternateDirection) {
+                this.player.move(alternateDirection);
+                this.player.setFrame(alternateDirection);
                 return;
-
-            this.player.setDestination(direction);
+            }
         }
 
         this.player.setFrame(direction);
@@ -62,25 +69,13 @@ export class Characters {
             if (!direction)
                 continue;
 
-            npc.setDestination(direction);
+            npc.move(direction);
 
             if (this.collision(npc)) {
-                npc.removeDestination()
+                npc.undoMove()
             }
 
             npc.setFrame(direction);
-        }
-    }
-
-    interpolateMovement(framePercentage) {
-        for (let character of this.characters) {
-            character.interpolateDestination(framePercentage);
-
-            if (framePercentage === 1) {
-                character.fromX = null;
-                character.fromY = null;
-            }
-
         }
     }
 
@@ -103,8 +98,6 @@ export class Characters {
                 return destinations[3];
             }
         }
-
-        return '';
     }
 
     alternateDirectionDestinations(direction, character, i) {
