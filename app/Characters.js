@@ -32,18 +32,22 @@ export class Characters {
         let direction = this.controls.direction;
 
         if (!direction)
-            return false;
+            return;
 
         this.player.setDestination(direction);
 
         if (this.collision(this.player)) {
             this.player.removeDestination();
 
-            let alternateDirection = this.alternateDirection(this.player, this.controls.direction);
+            direction = this.alternateDirection(this.player, this.controls.direction);
 
-            this.player.setDestination(alternateDirection);
-            //this.player.setDestination(alternateDirection);
+            if (!direction)
+                return;
+
+            this.player.setDestination(direction);
         }
+
+        this.player.setFrame(direction);
     }
 
     moveNpcs() {
@@ -61,8 +65,10 @@ export class Characters {
             npc.setDestination(direction);
 
             if (this.collision(npc)) {
-                npc.removeDestination();
+                npc.removeDestination()
             }
+
+            npc.setFrame(direction);
         }
     }
 
@@ -97,6 +103,8 @@ export class Characters {
                 return destinations[3];
             }
         }
+
+        return '';
     }
 
     alternateDirectionDestinations(direction, character, i) {

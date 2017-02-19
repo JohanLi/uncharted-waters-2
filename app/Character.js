@@ -7,19 +7,13 @@ export class Character {
         this.visualY = y;
 
         this.frame = frame;
+        this.startFrame = frame;
         this.isImmobile = isImmobile;
 
         this.width = 64;
         this.height = 64;
         this.offsetX = 0;
         this.offsetY = -32;
-
-        if (!this.isImmobile) {
-            this.frameUp = this.frame - 4;
-            this.frameRight = this.frame - 2;
-            this.frameDown = this.frame;
-            this.frameLeft = this.frame + 2;
-        }
 
         this.tilesize = 32;
     }
@@ -50,24 +44,29 @@ export class Character {
     }
 
     setDestination(direction) {
-        if (!direction)
-            return false;
-
         this.fromX = this.x;
         this.fromY = this.y;
 
         if (direction === 'up') {
-            this.frame = this.frameUp;
             this.y -= this.tilesize;
         } else if (direction === 'right') {
-            this.frame = this.frameRight;
             this.x += this.tilesize;
         } else if (direction === 'down') {
-            this.frame = this.frameDown;
             this.y += this.tilesize;
         } else if (direction === 'left') {
-            this.frame = this.frameLeft;
             this.x -= this.tilesize;
+        }
+    }
+
+    setFrame(direction) {
+        if (direction === 'up') {
+            this.frame = this.startFrame - 4;
+        } else if (direction === 'right') {
+            this.frame = this.startFrame - 2;
+        } else if (direction === 'down') {
+            this.frame = this.startFrame;
+        } else if (direction === 'left') {
+            this.frame = this.startFrame + 2;
         }
 
         this.frameDifference = this.frameDifference === 0 ? 1 : 0;
