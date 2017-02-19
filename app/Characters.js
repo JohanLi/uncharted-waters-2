@@ -36,13 +36,13 @@ export class Characters {
 
         this.player.setDestination(direction);
 
-        if (this.collision(this.player.destination, this.player)) {
+        if (this.collision(this.player)) {
             this.player.removeDestination();
 
             let alternateDirection = this.alternateDirection(this.player, this.controls.direction);
 
             this.player.setDestination(alternateDirection);
-            this.player.setDestination(alternateDirection);
+            //this.player.setDestination(alternateDirection);
         }
     }
 
@@ -60,7 +60,7 @@ export class Characters {
 
             npc.setDestination(direction);
 
-            if (this.collision(npc.destination, npc)) {
+            if (this.collision(npc)) {
                 npc.removeDestination();
             }
         }
@@ -70,8 +70,11 @@ export class Characters {
         for (let character of this.characters) {
             character.interpolateDestination(framePercentage);
 
-            if (framePercentage === 1)
-                character.removeDestination();
+            if (framePercentage === 1) {
+                character.fromX = null;
+                character.fromY = null;
+            }
+
         }
     }
 
@@ -130,19 +133,19 @@ export class Characters {
         return destinations;
     }
 
-    collision(destination, self) {
-        return this.map.outOfBoundsAt(destination)
-            || this.map.tileCollisionAt(destination)
-            || this.collisionWithOthers(destination, self);
+    collision(position, self = position) {
+        return this.map.outOfBoundsAt(position)
+            || this.map.tileCollisionAt(position)
+            || this.collisionWith(position, self);
     }
 
-    collisionWithOthers(destination, self) {
+    collisionWith(position, self) {
         return this.characters.some(character => {
             if (character === self)
                 return false;
 
-            const xDifference = destination.x - character.x;
-            const yDifference = destination.y - character.y;
+            const xDifference = position.x - character.x;
+            const yDifference = position.y - character.y;
             const xCollision = xDifference < character.width && xDifference > -character.width;
             const yCollision = yDifference < character.height && yDifference > -character.height;
 

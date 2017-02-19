@@ -16,8 +16,8 @@ export class Camera {
     }
 
     update() {
-        this.x = this.player.x + this.player.width / 2 + this.player.offsetX - this.width / 2;
-        this.y = this.player.y + this.player.height / 2 + this.player.offsetY - this.height / 2;
+        this.x = this.player.visualX + this.player.width / 2 + this.player.offsetX - this.width / 2;
+        this.y = this.player.visualY + this.player.height / 2 + this.player.offsetY - this.height / 2;
 
         if (this.x < 0) {
             this.x = 0;

@@ -81,20 +81,19 @@ export class Map {
         });
     }
 
-    outOfBoundsAt(destination) {
+    outOfBoundsAt(position) {
         return Boolean(
-            destination.x < 0 || destination.x + 64 - this.tilesize >= this.canvas.width
-            || destination.y - 32 < 0 || destination.y >= this.canvas.height
+            position.x < 0 || position.x + 64 - this.tilesize >= this.canvas.width
+            || position.y - 32 < 0 || position.y >= this.canvas.height
         );
     }
 
-    tileCollisionAt(destination) {
-        const collision = ((this.collisionCoordinates || {})[destination.x] || {})[destination.y];
-        const collisionRight = ((this.collisionCoordinates || {})[destination.x + 64 - this.tilesize] || {})[destination.y];
+    tileCollisionAt(position) {
+        const collision = ((this.collisionCoordinates || {})[position.x] || {})[position.y];
+        const collisionRight = ((this.collisionCoordinates || {})[position.x + 64 - this.tilesize] || {})[position.y];
 
-        if (this.collisionIndices.leftmost.includes(collision) || this.collisionIndices.rightmost.includes(collisionRight)) {
+        if (this.collisionIndices.leftmost.includes(collision) || this.collisionIndices.rightmost.includes(collisionRight))
             return false;
-        }
 
         if (collision || collisionRight)
             return true;

@@ -19,7 +19,7 @@ export class World {
                 this.map.assets.characters,
                 character.frame * character.width, 0,
                 character.width, character.height,
-                character.x + character.offsetX, character.y + character.offsetY,
+                character.visualX + character.offsetX, character.visualY + character.offsetY,
                 character.width, character.height
             );
         }

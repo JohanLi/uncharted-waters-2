@@ -3,6 +3,9 @@ export class Character {
     constructor(x, y, frame, isImmobile = false) {
         this.x = x;
         this.y = y;
+        this.visualX = x;
+        this.visualY = y;
+
         this.frame = frame;
         this.isImmobile = isImmobile;
 
@@ -50,25 +53,21 @@ export class Character {
         if (!direction)
             return false;
 
-        this.destination = {
-            x: this.x,
-            y: this.y,
-            fromX: this.x,
-            fromY: this.y
-        };
+        this.fromX = this.x;
+        this.fromY = this.y;
 
         if (direction === 'up') {
             this.frame = this.frameUp;
-            this.destination.y -= this.tilesize;
+            this.y -= this.tilesize;
         } else if (direction === 'right') {
             this.frame = this.frameRight;
-            this.destination.x += this.tilesize;
+            this.x += this.tilesize;
         } else if (direction === 'down') {
             this.frame = this.frameDown;
-            this.destination.y += this.tilesize;
+            this.y += this.tilesize;
         } else if (direction === 'left') {
             this.frame = this.frameLeft;
-            this.destination.x -= this.tilesize;
+            this.x -= this.tilesize;
         }
 
         this.frameDifference = this.frameDifference === 0 ? 1 : 0;
@@ -77,14 +76,21 @@ export class Character {
 
 
     interpolateDestination(framePercentage) {
-        if (this.destination) {
-            this.x = this.destination.fromX + Math.round(framePercentage * (this.destination.x - this.destination.fromX));
-            this.y = this.destination.fromY + Math.round(framePercentage * (this.destination.y - this.destination.fromY));
+        if (this.fromX && this.fromY) {
+            this.visualX = this.fromX + Math.round(framePercentage * (this.x - this.fromX));
+            this.visualY = this.fromY + Math.round(framePercentage * (this.y - this.fromY));
         }
     }
 
     removeDestination() {
-        this.destination = null;
+        if (this.fromX && this.fromY) {
+            this.x = this.fromX;
+            this.y = this.fromY;
+            this.visualX = this.fromX;
+            this.visualY = this.fromY;
+            this.fromX = null;
+            this.fromY = null;
+        }
     }
 
 }
