@@ -2,7 +2,7 @@ export class World {
 
     constructor(map, characters) {
         this.map = map;
-        this.characters = characters.characters;
+        this.characters = characters;
 
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
@@ -14,7 +14,7 @@ export class World {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.drawImage(this.map.canvas, 0, 0);
 
-        for (let character of this.characters) {
+        for (let character of this.characters.characters) {
             this.context.drawImage(
                 this.map.assets.characters,
                 character.frame * character.width, 0,

@@ -1,25 +1,15 @@
-import {Controls} from './Controls';
-
 export class Character {
 
-    constructor(x, y, frame, isPlayer = false, isImmobile = false) {
+    constructor(x, y, frame, isImmobile = false) {
         this.x = x;
         this.y = y;
         this.frame = frame;
-
-        this.isPlayer = isPlayer;
         this.isImmobile = isImmobile;
 
         this.width = 64;
         this.height = 64;
         this.offsetX = 0;
         this.offsetY = -32;
-
-        if (this.isPlayer) {
-            this.controls = new Controls();
-        } else {
-            this.controls = {};
-        }
 
         if (!this.isImmobile) {
             this.frameUp = this.frame - 4;
@@ -36,7 +26,7 @@ export class Character {
         this.frame += this.frameDifference;
     }
 
-    randomizeDirection() {
+    randomDirection() {
         let randomSameDirection = Math.random();
         let randomDirection = Math.random();
 
@@ -44,26 +34,21 @@ export class Character {
             return false;
 
         if (randomDirection < 0.25) {
-            this.controls.direction = 'up';
+            this.direction = 'up';
         } else if (randomDirection < 0.5) {
-            this.controls.direction = 'right';
+            this.direction = 'right';
         } else if (randomDirection < 0.75) {
-            this.controls.direction = 'down';
+            this.direction = 'down';
         } else {
-            this.controls.direction = 'left'
+            this.direction = 'left'
         }
 
-        return true;
+        return this.direction;
     }
 
-    setDestination() {
-        if (this.isPlayer) {
-            if (!this.controls.direction)
-                return false;
-        } else {
-            if ((!this.randomizeDirection()))
-                return false;
-        }
+    setDestination(direction) {
+        if (!direction)
+            return false;
 
         this.destination = {
             x: this.x,
@@ -72,25 +57,24 @@ export class Character {
             fromY: this.y
         };
 
-        if (this.controls.direction === 'up') {
+        if (direction === 'up') {
             this.frame = this.frameUp;
             this.destination.y -= this.tilesize;
-        } else if (this.controls.direction === 'right') {
+        } else if (direction === 'right') {
             this.frame = this.frameRight;
             this.destination.x += this.tilesize;
-        } else if (this.controls.direction === 'down') {
+        } else if (direction === 'down') {
             this.frame = this.frameDown;
             this.destination.y += this.tilesize;
-        } else if (this.controls.direction === 'left') {
+        } else if (direction === 'left') {
             this.frame = this.frameLeft;
             this.destination.x -= this.tilesize;
         }
 
         this.frameDifference = this.frameDifference === 0 ? 1 : 0;
         this.frame += this.frameDifference;
-
-        return true;
     }
+
 
     interpolateDestination(framePercentage) {
         if (this.destination) {

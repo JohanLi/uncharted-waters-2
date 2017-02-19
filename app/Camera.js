@@ -2,7 +2,7 @@ export class Camera {
 
     constructor(world) {
         this.worldCanvas = world.canvas;
-        this.player = world.characters[0];
+        this.player = world.characters.player;
 
         this.canvas = document.getElementById('camera');
         this.x = 0;
