@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack --profile -p",
-    "lint": "eslint app/**/**/*.js"
+    "lint": "eslint app/**/*.js"
   },
   "author": "Johan Li",
   "devDependencies": {

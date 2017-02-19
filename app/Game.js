@@ -1,49 +1,47 @@
 require('./sass/styles.scss');
-import {preload} from './Preload';
+import { preload } from './Preload';
 
-import {Map} from './Map';
-import {Characters} from './Characters';
-import {World} from './World';
-import {Camera} from './Camera';
-import {Sound} from './Sound';
+import { Map } from './Map';
+import { Characters } from './Characters';
+import { World } from './World';
+import { Camera } from './Camera';
+import { Sound } from './Sound';
 
 class Game {
 
-    constructor() {
-        this.assets = {
-            tilemap: '/tilemaps/lisbon.json',
-            tileset: '/img/tileset1.2.png',
-            characters: '/img/characters.png'
-        };
+  constructor() {
+    this.assets = {
+      tilemap: '/tilemaps/lisbon.json',
+      tileset: '/img/tileset1.2.png',
+      characters: '/img/characters.png'
+    };
 
-        preload.load(this.assets)
+    preload.load(this.assets)
             .then((assets) => {
-                this.map = new Map(assets);
-                this.characters = new Characters(this.map);
-                this.world = new World(this.map, this.characters);
-                this.camera = new Camera(this.world);
-                //this.sound = new Sound();
+              this.map = new Map(assets);
+              this.characters = new Characters(this.map);
+              this.world = new World(this.map, this.characters);
+              this.camera = new Camera(this.world);
+                // this.sound = new Sound();
 
-                window.requestAnimationFrame(() => this.loop());
+              window.requestAnimationFrame(() => this.loop());
             });
-    }
+  }
 
-    loop() {
-        this.characters.update(this.percentNextMove());
-        this.world.draw();
-        this.camera.draw();
+  loop() {
+    this.characters.update(this.percentNextMove());
+    this.world.draw();
+    this.camera.draw();
 
-        window.requestAnimationFrame(() => this.loop());
-    }
+    window.requestAnimationFrame(() => this.loop());
+  }
 
-    percentNextMove() {
-        if (window.performance.now() - this.lastMoveTime < 67)
-            return (window.performance.now() - this.lastMoveTime) / 67;
-        else {
-            this.lastMoveTime = window.performance.now();
-            return 1;
-        }
-    }
+  percentNextMove() {
+    if (window.performance.now() - this.lastMoveTime < 67) { return (window.performance.now() - this.lastMoveTime) / 67; }
+
+    this.lastMoveTime = window.performance.now();
+    return 1;
+  }
 
 }
 
