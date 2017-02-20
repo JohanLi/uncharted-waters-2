@@ -1,4 +1,4 @@
-export class Character {
+export default class Character {
 
   constructor(x, y, frame, isImmobile = false) {
     this.x = x;

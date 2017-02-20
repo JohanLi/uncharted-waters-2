@@ -1,7 +1,7 @@
-import { Character } from './Character';
-import { Input } from './Input';
+import Character from './Character';
+import Input from './Input';
 
-export class Characters {
+export default class Characters {
 
   constructor(map) {
     this.map = map;
@@ -24,9 +24,9 @@ export class Characters {
   }
 
   update(percentNextMove) {
-    for (const character of this.characters) {
+    this.characters.forEach((character) => {
       character.interpolatePosition(percentNextMove);
-    }
+    });
 
     if (percentNextMove === 1) {
       this.movePlayer();
@@ -57,15 +57,17 @@ export class Characters {
   }
 
   moveNpcs() {
-    for (const npc of this.npcs) {
+    this.npcs.forEach((npc) => {
       if (npc.isImmobile) {
         npc.animate();
-        continue;
+        return;
       }
 
       const direction = npc.randomDirection();
 
-      if (!direction) { continue; }
+      if (!direction) {
+        return;
+      }
 
       npc.move(direction);
 
@@ -74,14 +76,14 @@ export class Characters {
       }
 
       npc.setFrame(direction);
-    }
+    });
   }
 
   alternateDirection(character, direction) {
     let direction1 = true;
     let direction2 = true;
 
-    for (let i = 1; i <= 19; i++) {
+    for (let i = 1; i <= 19; i += 1) {
       const destinations = this.alternateDirectionDestinations(direction, character, i);
 
       if (!direction1 || this.collision(destinations[1], character)) {
@@ -96,6 +98,8 @@ export class Characters {
         return destinations[3];
       }
     }
+
+    return '';
   }
 
   alternateDirectionDestinations(direction, character, i) {
@@ -104,9 +108,11 @@ export class Characters {
     if (direction === 'up' || direction === 'down') {
       destinations = [
         'right',
-                { x: character.x + 32 * i, y: character.y }, { x: character.x + 32 * i, y: character.y - 32 },
+        { x: character.x + (32 * i), y: character.y },
+        { x: character.x + (32 * i), y: character.y - 32 },
         'left',
-                { x: character.x - 32 * i, y: character.y }, { x: character.x - 32 * i, y: character.y - 32 }
+        { x: character.x - (32 * i), y: character.y },
+        { x: character.x - (32 * i), y: character.y - 32 }
       ];
 
       if (direction === 'down') {
@@ -118,9 +124,11 @@ export class Characters {
     if (direction === 'right' || direction === 'left') {
       destinations = [
         'up',
-                { x: character.x, y: character.y - 32 * i }, { x: character.x + 32, y: character.y - 32 * i },
+        { x: character.x, y: character.y - (32 * i) },
+        { x: character.x + 32, y: character.y - (32 * i) },
         'down',
-                { x: character.x, y: character.y + 32 * i }, { x: character.x + 32, y: character.y + 32 * i }
+        { x: character.x, y: character.y + (32 * i) },
+        { x: character.x + 32, y: character.y + (32 * i) }
       ];
 
       if (direction === 'left') {

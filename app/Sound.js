@@ -1,4 +1,4 @@
-export class Sound {
+export default class Sound {
 
   constructor() {
     const sound = document.createElement('audio');

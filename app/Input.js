@@ -1,4 +1,4 @@
-export class Input {
+export default class Input {
 
   constructor() {
     this.direction = '';
@@ -126,6 +126,7 @@ export class Input {
     if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds) { return true; }
 
     this.lastMoveTime[milliseconds] = window.performance.now();
+    return false;
   }
 
 }

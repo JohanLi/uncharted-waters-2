@@ -1,4 +1,4 @@
-export class World {
+export default class World {
 
   constructor(map, characters) {
     this.map = map;
@@ -14,15 +14,15 @@ export class World {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.drawImage(this.map.canvas, 0, 0);
 
-    for (const character of this.characters.characters) {
+    this.characters.characters.forEach((character) => {
       this.context.drawImage(
-                this.map.assets.characters,
-                character.frame * character.width, 0,
-                character.width, character.height,
-                character.visualX + character.offsetX, character.visualY + character.offsetY,
-                character.width, character.height
-            );
-    }
+        this.map.assets.characters,
+        character.frame * character.width, 0,
+        character.width, character.height,
+        character.visualX + character.offsetX, character.visualY + character.offsetY,
+        character.width, character.height
+      );
+    });
   }
 
 }

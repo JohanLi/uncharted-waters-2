@@ -1,11 +1,12 @@
-require('./sass/styles.scss');
-import { preload } from './Preload';
+import preload from './Preload';
 
-import { Map } from './Map';
-import { Characters } from './Characters';
-import { World } from './World';
-import { Camera } from './Camera';
-import { Sound } from './Sound';
+import Map from './Map';
+import Characters from './Characters';
+import World from './World';
+import Camera from './Camera';
+import Sound from './Sound';
+
+require('./sass/styles.scss');
 
 class Game {
 
@@ -22,7 +23,7 @@ class Game {
               this.characters = new Characters(this.map);
               this.world = new World(this.map, this.characters);
               this.camera = new Camera(this.world);
-                // this.sound = new Sound();
+              // this.sound = new Sound();
 
               window.requestAnimationFrame(() => this.loop());
             });
@@ -37,7 +38,9 @@ class Game {
   }
 
   percentNextMove() {
-    if (window.performance.now() - this.lastMoveTime < 67) { return (window.performance.now() - this.lastMoveTime) / 67; }
+    if (window.performance.now() - this.lastMoveTime < 67) {
+      return (window.performance.now() - this.lastMoveTime) / 67;
+    }
 
     this.lastMoveTime = window.performance.now();
     return 1;

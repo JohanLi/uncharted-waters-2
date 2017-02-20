@@ -12,7 +12,15 @@ class Preload {
     });
 
     return Promise.all(loadPromises)
-            .then(images => Object.assign(...images));
+      .then(images => Object.assign(...images));
+  }
+
+  loadTilemap(url, key) {
+    return fetch(url, { method: 'get' })
+      .then(response => response.json())
+      .then(tilemap => ({
+        [key]: tilemap
+      }));
   }
 
   loadImage(url, key) {
@@ -27,14 +35,6 @@ class Preload {
     });
   }
 
-  loadTilemap(url, key) {
-    return fetch(url, { method: 'get' })
-            .then(response => response.json())
-            .then(tilemap => ({
-              [key]: tilemap
-            }));
-  }
-
 }
 
-export const preload = new Preload();
+export default new Preload();

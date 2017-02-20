@@ -1,4 +1,4 @@
-export class Map {
+export default class Map {
 
   constructor(assets) {
     this.assets = assets;
@@ -47,12 +47,12 @@ export class Map {
       const targetY = Math.floor(i / this.assets.tilemap.columns) * this.tilesize;
 
       this.context.drawImage(
-                this.assets.tileset,
-                tile * this.tilesize, 0,
-                this.tilesize, this.tilesize,
-                targetX, targetY,
-                this.tilesize, this.tilesize
-            );
+        this.assets.tileset,
+        tile * this.tilesize, 0,
+        this.tilesize, this.tilesize,
+        targetX, targetY,
+        this.tilesize, this.tilesize
+      );
 
       this.updateCollision(tile, targetX, targetY);
       this.updateBuilding(tile, targetX, targetY);
@@ -61,7 +61,9 @@ export class Map {
 
   updateCollision(tile, x, y) {
     if (tile >= this.collisionIndices.from && tile <= this.collisionIndices.to) {
-      if (!this.collisionCoordinates[x]) { this.collisionCoordinates[x] = {}; }
+      if (!this.collisionCoordinates[x]) {
+        this.collisionCoordinates[x] = {};
+      }
 
       this.collisionCoordinates[x][y] = tile;
     }
@@ -82,18 +84,23 @@ export class Map {
 
   outOfBoundsAt(position) {
     return Boolean(
-            position.x < 0 || position.x + 64 - this.tilesize >= this.canvas.width
-            || position.y - 32 < 0 || position.y >= this.canvas.height
-        );
+      position.x < 0 || (position.x + 64) - this.tilesize >= this.canvas.width
+      || position.y - 32 < 0 || position.y >= this.canvas.height
+    );
   }
 
   tileCollisionAt(position) {
-    const collision = ((this.collisionCoordinates || {})[position.x] || {})[position.y];
-    const collisionRight = ((this.collisionCoordinates || {})[position.x + 64 - this.tilesize] || {})[position.y];
+    const collision =
+      ((this.collisionCoordinates || {})[position.x] || {})[position.y];
+    const collisionRight =
+      ((this.collisionCoordinates || {})[(position.x + 64) - this.tilesize] || {})[position.y];
 
-    if (this.collisionIndices.leftmost.includes(collision) || this.collisionIndices.rightmost.includes(collisionRight)) { return false; }
+    if (this.collisionIndices.leftmost.includes(collision)
+      || this.collisionIndices.rightmost.includes(collisionRight)) {
+      return false;
+    }
 
-    if (collision || collisionRight) { return true; }
+    return collision || collisionRight;
   }
 
 }
