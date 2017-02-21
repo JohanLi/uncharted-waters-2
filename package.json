@@ -8,6 +8,7 @@
     "lint": "eslint app/**/*.js"
   },
   "author": "Johan Li",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
