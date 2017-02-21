@@ -48,9 +48,9 @@ export default class Character {
       return 'right';
     } else if (newDirection < 0.75) {
       return 'down';
-    } else {
-      return 'left';
     }
+
+    return 'left';
   }
 
   move(direction) {

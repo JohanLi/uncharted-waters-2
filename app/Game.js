@@ -1,5 +1,4 @@
 import Preload from './Preload';
-
 import Map from './Map';
 import Characters from './Characters';
 import World from './World';
@@ -23,7 +22,7 @@ class Game {
         this.characters = new Characters(this.map);
         this.world = new World(this.map, this.characters);
         this.camera = new Camera(this.world);
-        // this.sound = new Sound();
+        this.sound = new Sound();
 
         window.requestAnimationFrame(() => this.loop());
       });
