@@ -1,4 +1,4 @@
-import preload from './Preload';
+import Preload from './Preload';
 
 import Map from './Map';
 import Characters from './Characters';
@@ -17,16 +17,16 @@ class Game {
       characters: '/img/characters.png'
     };
 
-    preload.load(this.assets)
-            .then((assets) => {
-              this.map = new Map(assets);
-              this.characters = new Characters(this.map);
-              this.world = new World(this.map, this.characters);
-              this.camera = new Camera(this.world);
-              // this.sound = new Sound();
+    Preload.load(this.assets)
+      .then((assets) => {
+        this.map = new Map(assets);
+        this.characters = new Characters(this.map);
+        this.world = new World(this.map, this.characters);
+        this.camera = new Camera(this.world);
+        // this.sound = new Sound();
 
-              window.requestAnimationFrame(() => this.loop());
-            });
+        window.requestAnimationFrame(() => this.loop());
+      });
   }
 
   loop() {

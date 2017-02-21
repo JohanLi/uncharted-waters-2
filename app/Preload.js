@@ -1,13 +1,13 @@
-class Preload {
+export default class Preload {
 
-  load(assets) {
+  static load(assets) {
     const loadPromises = [];
 
     Object.keys(assets).forEach((key) => {
       if (key === 'tilemap') {
-        loadPromises.push(this.loadTilemap(assets[key], key));
+        loadPromises.push(Preload.loadTilemap(assets[key], key));
       } else {
-        loadPromises.push(this.loadImage(assets[key], key));
+        loadPromises.push(Preload.loadImage(assets[key], key));
       }
     });
 
@@ -15,7 +15,7 @@ class Preload {
       .then(images => Object.assign(...images));
   }
 
-  loadTilemap(url, key) {
+  static loadTilemap(url, key) {
     return fetch(url, { method: 'get' })
       .then(response => response.json())
       .then(tilemap => ({
@@ -23,7 +23,7 @@ class Preload {
       }));
   }
 
-  loadImage(url, key) {
+  static loadImage(url, key) {
     return new Promise((resolve) => {
       const img = new Image();
       img.src = url;
@@ -36,5 +36,3 @@ class Preload {
   }
 
 }
-
-export default new Preload();

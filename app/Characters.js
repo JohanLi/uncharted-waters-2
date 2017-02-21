@@ -58,6 +58,10 @@ export default class Characters {
 
   moveNpcs() {
     this.npcs.forEach((npc) => {
+      if (npc.randomMovementThrottle()) {
+        return;
+      }
+
       if (npc.isImmobile) {
         npc.animate();
         return;

@@ -23,28 +23,40 @@ export default class Character {
     this.frame += this.frameDifference;
   }
 
-  randomDirection() {
-    const randomSameDirection = Math.random();
-    const randomDirection = Math.random();
-
-    if (randomSameDirection < 0.75) { return false; }
-
-    if (randomDirection < 0.25) {
-      this.direction = 'up';
-    } else if (randomDirection < 0.5) {
-      this.direction = 'right';
-    } else if (randomDirection < 0.75) {
-      this.direction = 'down';
-    } else {
-      this.direction = 'left';
+  randomMovementThrottle() {
+    if (!this.skipMovement || this.skipped === this.skipMovement) {
+      this.skipMovement = Math.floor(Math.random() * (6 - 2)) + 2;
+      this.skipped = 0;
+      return false;
     }
 
-    return this.direction;
+    this.skipped += 1;
+    return true;
+  }
+
+  randomDirection() {
+    const sameDirection = Math.random();
+    const newDirection = Math.random();
+
+    if (this.lastDirection && sameDirection < 0.75) {
+      return this.lastDirection;
+    }
+
+    if (newDirection < 0.25) {
+      return 'up';
+    } else if (newDirection < 0.5) {
+      return 'right';
+    } else if (newDirection < 0.75) {
+      return 'down';
+    } else {
+      return 'left';
+    }
   }
 
   move(direction) {
     this.fromX = this.x;
     this.fromY = this.y;
+    this.lastDirection = direction;
 
     if (direction === 'up') {
       this.y -= this.tilesize;
@@ -62,6 +74,7 @@ export default class Character {
     this.y = this.fromY;
     this.fromX = null;
     this.fromY = null;
+    this.lastDirection = null;
   }
 
   interpolatePosition(percentNextMove) {
