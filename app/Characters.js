@@ -1,86 +1,166 @@
-import {Player} from './Player';
-import {Npc} from './Npc';
+import Character from './Character';
+import Input from './Input';
 
-export class Characters {
+export default class Characters {
 
-    constructor(map) {
-        this.map = map;
+  constructor(map) {
+    this.map = map;
+    this.buildings = map.buildings;
 
-        this.player = new Player(this.map.buildings.harbor.x, this.map.buildings.harbor.y + 16, 4);
-        this.npcs = [
-            new Npc(this.map.buildings.market.x - 32, this.map.buildings.market.y + 16, 4, false),
-            new Npc(this.map.buildings.shipyard.x, this.map.buildings.shipyard.y, 4, false),
-            new Npc(this.map.buildings.bar.x - 32, this.map.buildings.bar.y + 16, 12, false),
-            new Npc(this.map.buildings.lodge.x - 32, this.map.buildings.lodge.y + 16, 12, false),
-            new Npc(this.map.buildings.market.x + 32, this.map.buildings.market.y + 16, 16, true),
-            new Npc(this.map.buildings.lodge.x + 32, this.map.buildings.lodge.y + 16, 18, true),
-            new Npc(this.map.buildings.bar.x + 32, this.map.buildings.bar.y + 16, 20, true)
-        ];
+    this.characters = [
+      new Character(this.buildings.harbor.x, this.buildings.harbor.y + 32, 4),
+      new Character(this.buildings.market.x - 64, this.buildings.market.y + 32, 12),
+      new Character(this.buildings.shipyard.x, this.buildings.shipyard.y, 12),
+      new Character(this.buildings.bar.x - 64, this.buildings.bar.y + 32, 20),
+      new Character(this.buildings.lodge.x - 64, this.buildings.lodge.y + 32, 20),
+      new Character(this.buildings.market.x + 64, this.buildings.market.y + 32, 24, true),
+      new Character(this.buildings.lodge.x + 64, this.buildings.lodge.y + 32, 26, true),
+      new Character(this.buildings.bar.x + 64, this.buildings.bar.y + 32, 28, true)
+    ];
 
-        this.lastMoveTime = {};
+    this.player = this.characters[0];
+    this.npcs = this.characters.slice(1);
+    this.input = new Input();
+  }
+
+  update(percentNextMove) {
+    this.characters.forEach((character) => {
+      character.interpolatePosition(percentNextMove);
+    });
+
+    if (percentNextMove === 1) {
+      this.movePlayer();
+      this.moveNpcs();
+    }
+  }
+
+  movePlayer() {
+    const direction = this.input.direction;
+
+    if (!direction) { return; }
+
+    this.player.move(direction);
+
+    if (this.collision(this.player)) {
+      this.player.undoMove();
+
+      const alternateDirection = this.alternateDirection(this.player, this.input.direction);
+
+      if (alternateDirection) {
+        this.player.move(alternateDirection);
+        this.player.setFrame(alternateDirection);
+        return;
+      }
     }
 
-    throttleMovement(milliseconds) {
-        if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds)
-            return true;
+    this.player.setFrame(direction);
+  }
 
-        this.lastMoveTime[milliseconds] = window.performance.now();
+  moveNpcs() {
+    this.npcs.forEach((npc) => {
+      if (npc.randomMovementThrottle()) {
+        return;
+      }
+
+      if (npc.isImmobile) {
+        npc.animate();
+        return;
+      }
+
+      const direction = npc.randomDirection();
+
+      if (!direction) {
+        return;
+      }
+
+      npc.move(direction);
+
+      if (this.collision(npc)) {
+        npc.undoMove();
+      }
+
+      npc.setFrame(direction);
+    });
+  }
+
+  alternateDirection(character, direction) {
+    let direction1 = true;
+    let direction2 = true;
+
+    for (let i = 1; i <= 19; i += 1) {
+      const destinations = this.alternateDirectionDestinations(direction, character, i);
+
+      if (!direction1 || this.collision(destinations[1], character)) {
+        direction1 = false;
+      } else if (!this.collision(destinations[2], character)) {
+        return destinations[0];
+      }
+
+      if (!direction2 || this.collision(destinations[4], character)) {
+        direction2 = false;
+      } else if (!this.collision(destinations[5], character)) {
+        return destinations[3];
+      }
     }
 
-    updatePlayer() {
-        this.player.setDestination();
+    return '';
+  }
 
-        if (!this.map.outOfBoundsAt(this.player.destination)
-            && !this.map.collisionAt(this.player.destination)
-            && !this.collisionWithAt(this.player)) {
-            this.player.move();
-        }
+  alternateDirectionDestinations(direction, character, i) {
+    let destinations;
+
+    if (direction === 'up' || direction === 'down') {
+      destinations = [
+        'right',
+        { x: character.x + (32 * i), y: character.y },
+        { x: character.x + (32 * i), y: character.y - 32 },
+        'left',
+        { x: character.x - (32 * i), y: character.y },
+        { x: character.x - (32 * i), y: character.y - 32 }
+      ];
+
+      if (direction === 'down') {
+        destinations[2].y += 64;
+        destinations[5].y += 64;
+      }
     }
 
-    updateNpcs() {
-        for (let npc of this.npcs) {
-            if (npc.immobile) {
-                npc.animate();
-            } else {
-                npc.setDestination();
+    if (direction === 'right' || direction === 'left') {
+      destinations = [
+        'up',
+        { x: character.x, y: character.y - (32 * i) },
+        { x: character.x + 32, y: character.y - (32 * i) },
+        'down',
+        { x: character.x, y: character.y + (32 * i) },
+        { x: character.x + 32, y: character.y + (32 * i) }
+      ];
 
-                if (!this.map.outOfBoundsAt(npc.destination)
-                    && !this.map.collisionAt(npc.destination)
-                    && !this.collisionWithAt(npc)) {
-                    npc.move();
-                }
-            }
-        }
+      if (direction === 'left') {
+        destinations[2].x -= 64;
+        destinations[5].x -= 64;
+      }
     }
 
-    collisionWithAt(character) {
-        return this.playerCollision(character) || this.npcCollision(character);
-    }
+    return destinations;
+  }
 
-    playerCollision(character) {
-        if (character === this.player)
-            return false;
+  collision(position, self = position) {
+    return this.map.outOfBoundsAt(position)
+            || this.map.tileCollisionAt(position)
+            || this.collisionWith(position, self);
+  }
 
-        const xDifference = character.destination.x - this.player.x;
-        const yDifference = character.destination.y - this.player.y;
-        const xCollision = xDifference < this.player.width && xDifference > -this.player.width;
-        const yCollision = yDifference < this.player.height && yDifference > -this.player.height;
+  collisionWith(position, self) {
+    return this.characters.some((character) => {
+      if (character === self) { return false; }
 
-        return xCollision && yCollision;
-    }
+      const xDifference = position.x - character.x;
+      const yDifference = position.y - character.y;
+      const xCollision = xDifference < character.width && xDifference > -character.width;
+      const yCollision = yDifference < character.height && yDifference > -character.height;
 
-    npcCollision(character) {
-        return this.npcs.some((npc) => {
-            if (character === npc)
-               return false;
-
-            const xDifference = character.destination.x - npc.x;
-            const yDifference = character.destination.y - npc.y;
-            const xCollision = xDifference < npc.width && xDifference > -npc.width;
-            const yCollision = yDifference < npc.height && yDifference > -npc.height;
-
-            return xCollision && yCollision;
-        });
-    }
+      return xCollision && yCollision;
+    });
+  }
 
 }

@@ -1,57 +1,49 @@
-import {preload} from './Preload';
+import Preload from './Preload';
+import Map from './Map';
+import Characters from './Characters';
+import World from './World';
+import Camera from './Camera';
+import Sound from './Sound';
 
-import {Characters} from './Characters';
-import {Map} from './Map';
-import {Camera} from './Camera';
-import {Sound} from './Sound';
+require('./sass/styles.scss');
 
 class Game {
 
-    constructor() {
-        this.debug = true;
+  constructor() {
+    this.assets = {
+      tilemap: '/tilemaps/lisbon.json',
+      tileset: '/img/tileset1.2.png',
+      characters: '/img/characters.png'
+    };
 
-        this.assets = {
-            tilemap: '/tilemaps/lisbon.json',
-            tileset: '/img/tileset1.2.png',
-            player: '/img/joao.png',
-            npcs: '/img/npcs.png'
-        };
+    Preload.load(this.assets)
+      .then((assets) => {
+        this.map = new Map(assets);
+        this.characters = new Characters(this.map);
+        this.world = new World(this.map, this.characters);
+        this.camera = new Camera(this.world);
+        this.sound = new Sound();
 
-        preload.load(this.assets)
-            .then((assets) => {
-                this.map = new Map(assets);
-                this.characters = new Characters(this.map);
-                this.camera = new Camera(assets, this.map, this.characters);
+        window.requestAnimationFrame(() => this.loop());
+      });
+  }
 
-                if (!this.debug)
-                    this.sound = new Sound();
+  loop() {
+    this.characters.update(this.percentNextMove());
+    this.world.draw();
+    this.camera.draw();
 
-                window.requestAnimationFrame(this.loop.bind(this));
-            });
+    window.requestAnimationFrame(() => this.loop());
+  }
+
+  percentNextMove() {
+    if (window.performance.now() - this.lastMoveTime < 67) {
+      return (window.performance.now() - this.lastMoveTime) / 67;
     }
 
-    update(timestamp) {
-
-        if (!this.characters.throttleMovement(50)) {
-            this.characters.updatePlayer();
-            this.camera.updateCamera();
-        }
-
-        if (!this.characters.throttleMovement(250)) {
-            this.characters.updateNpcs();
-        }
-
-    }
-
-    loop(timestamp) {
-        this.update(timestamp);
-        this.camera.draw();
-
-        if (this.debug)
-            this.camera.debug();
-
-        window.requestAnimationFrame(this.loop.bind(this));
-    }
+    this.lastMoveTime = window.performance.now();
+    return 1;
+  }
 
 }
 

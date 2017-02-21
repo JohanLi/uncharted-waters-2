@@ -4,13 +4,24 @@
   "description": "Remaking Uncharted Waters 2 in HTML5",
   "scripts": {
     "start": "webpack-dev-server --open",
-    "build": "webpack --profile -p"
+    "build": "webpack --profile -p",
+    "lint": "eslint app/**/*.js"
   },
   "author": "Johan Li",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
+    "node-sass": "^4.3.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
     "webpack": "^2.2.0-rc.3",
     "webpack-dev-server": "^2.2.0-rc.0"
   }
