@@ -96,8 +96,8 @@ export default class Input {
 
   updateCursor() {
     if (this.lastCursorDirection !== this.cursorDirection) {
-      document.body.classList.remove(`cursor-${this.lastCursorDirection}`);
-      document.body.classList.add(`cursor-${this.cursorDirection}`);
+      document.getElementById('app').classList.remove(`cursor-${this.lastCursorDirection}`);
+      document.getElementById('app').classList.add(`cursor-${this.cursorDirection}`);
       this.lastCursorDirection = this.cursorDirection;
     }
   }

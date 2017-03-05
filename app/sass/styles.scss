@@ -1,25 +1,28 @@
-html {
-    height: 100%;
+* {
+  box-sizing: border-box;
+}
+
+img, canvas {
+  display: block;
 }
 
 body {
-    margin: 0;
-    min-height: 100%;
-
-    @import 'cursor';
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  background: #0a0a0a;
+  min-width: 1280px;
 }
 
 #app {
-    padding-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 50px);
+  min-height: 920px;
+  @import 'cursor';
 }
 
-#camera {
-    margin: 0 auto 0 auto;
-    display: block;
-}
-
-#debug {
-    width: 1280px;
-    margin: 20px auto 0 auto;
-    font-size: 24px;
-}
+@import 'footer';
+@import 'fonts';
