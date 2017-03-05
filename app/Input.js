@@ -1,6 +1,7 @@
 export default class Input {
 
   constructor() {
+    this.gameElement = document.getElementById('app');
     this.direction = '';
     this.lastMoveTime = {};
 
@@ -22,8 +23,13 @@ export default class Input {
   }
 
   setupMouse() {
+    this.mouseLeft = 1;
     this.mouseSensitivity = 5;
     this.mouseLastPosition = {};
+
+    this.gameElement.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
 
     document.addEventListener('mousemove', this.setCursorDirection.bind(this));
     document.addEventListener('mousedown', this.mouse.bind(this));
@@ -65,7 +71,9 @@ export default class Input {
   }
 
   setCursorDirection(e) {
-    if (this.throttleMovement(20)) { return; }
+    if (this.throttleMovement(20)) {
+      return;
+    }
 
     const xDifference = e.clientX - this.mouseLastPosition.x;
     const yDifference = e.clientY - this.mouseLastPosition.y;
@@ -96,25 +104,25 @@ export default class Input {
 
   updateCursor() {
     if (this.lastCursorDirection !== this.cursorDirection) {
-      document.getElementById('app').classList.remove(`cursor-${this.lastCursorDirection}`);
-      document.getElementById('app').classList.add(`cursor-${this.cursorDirection}`);
+      this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
+      this.gameElement.classList.add(`cursor-${this.cursorDirection}`);
       this.lastCursorDirection = this.cursorDirection;
     }
   }
 
   mouse(e) {
-    if (e.buttons === 1) {
+    if (e.which === this.mouseLeft) {
+      e.preventDefault();
+
       if (e.type === 'mousedown') {
-        e.preventDefault();
         this.mouseSetDirection();
         this.mousedownInterval = setInterval(this.mouseSetDirection.bind(this), 20);
       }
-    }
 
-    if (e.type === 'mouseup') {
-      e.preventDefault();
-      this.direction = '';
-      clearInterval(this.mousedownInterval);
+      if (e.type === 'mouseup') {
+        this.direction = '';
+        clearInterval(this.mousedownInterval);
+      }
     }
   }
 
