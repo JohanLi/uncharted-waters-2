@@ -2,7 +2,7 @@
 
 module.exports = {
     entry: {
-        app: './app/Game'
+        app: ['babel-polyfill', 'whatwg-fetch', './app/Game']
     },
     output: {
         path: __dirname + '/public/',
@@ -19,7 +19,7 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2016']
+                    presets: ['es2015']
                 }
             }
         ]
