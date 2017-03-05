@@ -30,7 +30,9 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: __dirname + '/public/'
+    contentBase: __dirname + '/public/',
+    compress: true,
+    port: 8081
   },
   performance: {
     hints: false
