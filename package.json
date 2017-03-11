@@ -1,7 +1,7 @@
 {
   "name": "uncharter-waters-2",
   "version": "1.0.0",
-  "description": "Remaking Uncharted Waters 2 in HTML5",
+  "description": "Remaking Uncharted Waters 2 using web technologies",
   "scripts": {
     "start": "webpack-dev-server --open",
     "lint": "eslint app/**/*.js",
