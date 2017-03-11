@@ -1,0 +1,35 @@
+footer {
+  color: #666;
+  min-height: 300px;
+  background: #000 url(/img/artwork/side-characters.png) bottom right no-repeat;
+
+  > div {
+    width: 1280px;
+    margin: 0 auto;
+    padding: 40px 0 40px 20px;
+    display: flex;
+
+    > div {
+      width: calc(50% - (450px - (100vw - 1280px) / 2) / 2);
+    }
+
+    @media (min-width: 1320px) {
+      padding-left: 0;
+    }
+  }
+
+  h2 {
+    color: #999;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  a {
+    color: #41b7d8;
+    text-decoration: none;
+
+    &:hover {
+      border-bottom: 1px solid #41b7d8;
+    }
+  }
+}

@@ -37,7 +37,9 @@ export default class Characters {
   movePlayer() {
     const direction = this.input.direction;
 
-    if (!direction) { return; }
+    if (!direction) {
+      return;
+    }
 
     this.player.move(direction);
 
@@ -88,7 +90,7 @@ export default class Characters {
     let direction2 = true;
 
     for (let i = 1; i <= 19; i += 1) {
-      const destinations = this.alternateDirectionDestinations(direction, character, i);
+      const destinations = Characters.alternateDirectionDestinations(direction, character, i);
 
       if (!direction1 || this.collision(destinations[1], character)) {
         direction1 = false;
@@ -106,7 +108,7 @@ export default class Characters {
     return '';
   }
 
-  alternateDirectionDestinations(direction, character, i) {
+  static alternateDirectionDestinations(direction, character, i) {
     let destinations;
 
     if (direction === 'up' || direction === 'down') {

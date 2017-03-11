@@ -5,6 +5,7 @@ export default class Character {
     this.y = y;
     this.visualX = x;
     this.visualY = y;
+    this.isMoving = false;
 
     this.frame = frame;
     this.startFrame = frame;
@@ -54,6 +55,7 @@ export default class Character {
   }
 
   move(direction) {
+    this.isMoving = true;
     this.fromX = this.x;
     this.fromY = this.y;
     this.lastDirection = direction;
@@ -72,20 +74,18 @@ export default class Character {
   undoMove() {
     this.x = this.fromX;
     this.y = this.fromY;
-    this.fromX = null;
-    this.fromY = null;
+    this.isMoving = false;
     this.lastDirection = null;
   }
 
   interpolatePosition(percentNextMove) {
-    if (this.fromX && this.fromY) {
+    if (this.isMoving) {
       this.visualX = this.fromX + Math.round(percentNextMove * (this.x - this.fromX));
       this.visualY = this.fromY + Math.round(percentNextMove * (this.y - this.fromY));
     }
 
     if (percentNextMove === 1) {
-      this.fromX = null;
-      this.fromY = null;
+      this.isMoving = false;
     }
   }
 
