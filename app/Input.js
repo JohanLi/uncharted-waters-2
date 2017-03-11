@@ -39,7 +39,9 @@ export default class Input {
   keyboard(e) {
     const key = this.keyMap[e.keyCode];
 
-    if (!key) { return; }
+    if (!key) {
+      return;
+    }
 
     e.preventDefault();
 
@@ -48,7 +50,9 @@ export default class Input {
       this.pressedKeys.last = key;
     }
 
-    if (e.type === 'keyup') { this.pressedKeys[key] = false; }
+    if (e.type === 'keyup') {
+      this.pressedKeys[key] = false;
+    }
 
     if (this.pressedKeys[this.pressedKeys.last]) {
       this.direction = this.pressedKeys.last;
@@ -64,10 +68,7 @@ export default class Input {
       this.direction = '';
     }
 
-    if (this.direction) {
-      this.cursorDirection = this.direction;
-      this.updateCursor();
-    }
+    this.hideCursor();
   }
 
   setCursorDirection(e) {
@@ -78,26 +79,31 @@ export default class Input {
     const xDifference = e.clientX - this.mouseLastPosition.x;
     const yDifference = e.clientY - this.mouseLastPosition.y;
 
-    if (Math.abs(xDifference) - Math.abs(yDifference) >= 0) {
-      if (xDifference > this.mouseSensitivity) {
-        this.cursorDirection = 'right';
-      }
-      if (xDifference < -this.mouseSensitivity) {
-        this.cursorDirection = 'left';
-      }
-    } else {
-      if (yDifference > this.mouseSensitivity) {
-        this.cursorDirection = 'down';
-      }
-      if (yDifference < -this.mouseSensitivity) {
-        this.cursorDirection = 'up';
-      }
-    }
-
     this.mouseLastPosition = {
       x: e.clientX,
       y: e.clientY
     };
+
+    if (Math.abs(xDifference) < this.mouseSensitivity
+      && Math.abs(yDifference) < this.mouseSensitivity) {
+      return;
+    }
+
+    if (Math.abs(xDifference) >= Math.abs(yDifference)) {
+      if (xDifference > 0) {
+        this.cursorDirection = 'right';
+      }
+      if (xDifference < 0) {
+        this.cursorDirection = 'left';
+      }
+    } else {
+      if (yDifference > 0) {
+        this.cursorDirection = 'down';
+      }
+      if (yDifference < 0) {
+        this.cursorDirection = 'up';
+      }
+    }
 
     this.updateCursor();
   }
@@ -107,6 +113,13 @@ export default class Input {
       this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
       this.gameElement.classList.add(`cursor-${this.cursorDirection}`);
       this.lastCursorDirection = this.cursorDirection;
+    }
+  }
+
+  hideCursor() {
+    if (this.lastCursorDirection) {
+      this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
+      this.lastCursorDirection = '';
     }
   }
 
