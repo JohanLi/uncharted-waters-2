@@ -11,6 +11,15 @@
   },
   "author": "Johan Li",
   "license": "MIT",
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": "airbnb",
+    "rules": {
+      "comma-dangle": ["error", "never"]
+    }
+  },
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",

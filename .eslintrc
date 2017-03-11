@@ -1,9 +1,0 @@
-{
-  "env": {
-    "browser": true
-  },
-  "extends": "airbnb",
-  "rules": {
-    "comma-dangle": ["error", "never"]
-  }
-}
