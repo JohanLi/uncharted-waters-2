@@ -105,14 +105,14 @@
     }
   }
 
-  > div {
+  .select > div {
     text-align: center;
     color: #000;
     line-height: 32px;
     font-size: 24px;
     margin: 16px 0;
 
-    &.selected {
+    &.active {
       background: #000;
       color: #fff;
     }

@@ -80,15 +80,29 @@ function Building() {
       <div id="shop">
         <img src="/img/buildings/market.png" alt="" />
       </div>
-      <div id="dialog" className="dialog">
+      <Dialog id="dialog">
         This feature is not implemented yet. Press ESC to exit this building.
-      </div>
-      <div id="options" className="dialog">
-        <div className="selected">Buy Goods</div>
-        <div>Sell Goods</div>
-        <div>Invest</div>
-        <div>Market Rate</div>
-      </div>
+      </Dialog>
+      <Dialog id="options">
+        <div className="select">
+          <div className="active">Buy Goods</div>
+          <div>Sell Goods</div>
+          <div>Invest</div>
+          <div>Market Rate</div>
+        </div>
+      </Dialog>
+    </div>
+  );
+}
+
+function Dialog(props) {
+  return (
+    <div id={props.id} className="dialog">
+      <div className="corner top-left" />
+      <div className="corner top-right" />
+      <div className="corner bottom-left" />
+      <div className="corner bottom-right" />
+      {props.children}
     </div>
   );
 }
