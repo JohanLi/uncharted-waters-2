@@ -15,14 +15,23 @@ body {
   min-width: 1280px;
 }
 
-#app {
+#center {
   display: flex;
   align-items: center;
   justify-content: center;
   height: calc(100vh - 50px);
   min-height: 920px;
+}
+
+#app {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #aaa;
+  position: relative;
+
   @import 'cursor';
 }
 
+@import 'interface';
 @import 'footer';
 @import 'fonts';

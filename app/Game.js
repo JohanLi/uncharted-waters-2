@@ -4,6 +4,7 @@ import Characters from './Characters';
 import World from './World';
 import Camera from './Camera';
 import Sound from './Sound';
+import './game.jsx';
 
 require('./sass/styles.scss');
 
