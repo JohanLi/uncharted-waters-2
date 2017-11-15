@@ -32,6 +32,22 @@ body {
   @import 'cursor';
 }
 
+.loading {
+  box-sizing: border-box;
+  width: 160px;
+  height: 160px;
+  border-radius: 100%;
+  border: 20px solid #111;
+  border-top-color: #666;
+  animation: spin 1.5s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @import 'interface';
 @import 'footer';
 @import 'fonts';
