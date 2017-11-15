@@ -7,9 +7,6 @@ ReactDOM.render(
   <div>
     <div id="center">
       <main id="app">
-        <Left />
-        <Right />
-        <Building />
         <canvas id="camera" width="1280" height="800" />
       </main>
     </div>

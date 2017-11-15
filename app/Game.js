@@ -8,6 +8,17 @@ import './game.jsx';
 
 require('./sass/styles.scss');
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('/service-worker.js');
+      console.log('Service Worker registration succeeded');
+    } catch (error) {
+      console.log('Service Worker registration failed: ', error);
+    }
+  });
+}
+
 class Game {
 
   constructor() {
