@@ -8,6 +8,9 @@ module.exports = {
     path: `${__dirname}/public/`,
     filename: '[name].bundle.js',
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js']
+  },
   module: {
     loaders: [
       {
@@ -24,6 +27,10 @@ module.exports = {
         query: {
           presets: ['es2015', 'react']
         },
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
       },
     ]
   },

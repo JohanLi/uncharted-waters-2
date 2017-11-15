@@ -1,7 +1,7 @@
 import Preload from './Preload';
 import Map from './Map';
 import Characters from './Characters';
-import World from './World';
+import World from './World.ts';
 import Camera from './Camera';
 import Sound from './Sound';
 import './game.jsx';
