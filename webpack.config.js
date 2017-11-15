@@ -1,14 +1,12 @@
-'use strict';
-
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: ['babel-polyfill', 'whatwg-fetch', './app/Game']
+    app: ['babel-polyfill', 'whatwg-fetch', './app/Game'],
   },
   output: {
-    path: __dirname + '/public/',
-    filename: '[name].bundle.js'
+    path: `${__dirname}/public/`,
+    filename: '[name].bundle.js',
   },
   module: {
     loaders: [
@@ -25,19 +23,19 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react']
-        }
-      }
+        },
+      },
     ]
   },
   devServer: {
-    contentBase: __dirname + '/public/',
+    contentBase: `${__dirname}/public/`,
     compress: true,
-    port: 8081
+    port: 8081,
   },
   performance: {
-    hints: false
+    hints: false,
   },
   plugins: [
     new ExtractTextPlugin('styles.css'),
-  ]
+  ],
 };
