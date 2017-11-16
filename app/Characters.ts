@@ -1,9 +1,57 @@
-import Character from './Character';
-import Input from './Input';
+import Character from "./Character";
+import Input from "./Input";
+
+interface IMap {
+  buildings: IBuildings;
+  outOfBoundsAt(position: IPosition): boolean;
+  tileCollisionAt(position: IPosition): boolean;
+}
+
+interface IPosition {
+  x: number;
+  y: number;
+}
+
+interface ICharacter {
+  x: number;
+  y: number;
+  visualX: number;
+  visualY: number;
+  frame: number;
+  width: number;
+  height: number;
+  offsetX: number;
+  offsetY: number;
+  isImmobile: boolean;
+  interpolatePosition(percentNextMove: number);
+  move(direction: string);
+  undoMove();
+  setFrame(direction: string);
+  randomMovementThrottle(): boolean;
+  animate();
+  randomDirection();
+}
+
+interface IInput {
+  direction: string;
+}
+
+interface IBuildings {
+  [key: string]: {
+    x: number;
+    y: number;
+  };
+}
 
 export default class Characters {
+  private map: IMap;
+  private buildings: IBuildings;
+  private characters: ICharacter[];
+  private player: ICharacter;
+  private npcs: ICharacter[];
+  private input: IInput;
 
-  constructor(map) {
+  constructor(map: IMap) {
     this.map = map;
     this.buildings = map.buildings;
 
@@ -23,7 +71,7 @@ export default class Characters {
     this.input = new Input();
   }
 
-  update(percentNextMove) {
+  private update(percentNextMove: number) {
     this.characters.forEach((character) => {
       character.interpolatePosition(percentNextMove);
     });
@@ -34,7 +82,7 @@ export default class Characters {
     }
   }
 
-  movePlayer() {
+  private movePlayer() {
     const direction = this.input.direction;
 
     if (!direction) {
@@ -58,7 +106,7 @@ export default class Characters {
     this.player.setFrame(direction);
   }
 
-  moveNpcs() {
+  private moveNpcs() {
     this.npcs.forEach((npc) => {
       if (npc.randomMovementThrottle()) {
         return;
@@ -85,12 +133,12 @@ export default class Characters {
     });
   }
 
-  alternateDirection(character, direction) {
+  private alternateDirection(character: ICharacter, direction: string): string {
     let direction1 = true;
     let direction2 = true;
 
     for (let i = 1; i <= 19; i += 1) {
-      const destinations = Characters.alternateDirectionDestinations(direction, character, i);
+      const destinations = this.alternateDirectionDestinations(direction, character, i);
 
       if (!direction1 || this.collision(destinations[1], character)) {
         direction1 = false;
@@ -105,39 +153,39 @@ export default class Characters {
       }
     }
 
-    return '';
+    return "";
   }
 
-  static alternateDirectionDestinations(direction, character, i) {
+  private alternateDirectionDestinations(direction: string, character: ICharacter, i: number): any[] {
     let destinations;
 
-    if (direction === 'up' || direction === 'down') {
+    if (direction === "up" || direction === "down") {
       destinations = [
-        'right',
+        "right",
         { x: character.x + (32 * i), y: character.y },
         { x: character.x + (32 * i), y: character.y - 32 },
-        'left',
+        "left",
         { x: character.x - (32 * i), y: character.y },
-        { x: character.x - (32 * i), y: character.y - 32 }
+        { x: character.x - (32 * i), y: character.y - 32 },
       ];
 
-      if (direction === 'down') {
+      if (direction === "down") {
         destinations[2].y += 64;
         destinations[5].y += 64;
       }
     }
 
-    if (direction === 'right' || direction === 'left') {
+    if (direction === "right" || direction === "left") {
       destinations = [
-        'up',
+        "up",
         { x: character.x, y: character.y - (32 * i) },
         { x: character.x + 32, y: character.y - (32 * i) },
-        'down',
+        "down",
         { x: character.x, y: character.y + (32 * i) },
-        { x: character.x + 32, y: character.y + (32 * i) }
+        { x: character.x + 32, y: character.y + (32 * i) },
       ];
 
-      if (direction === 'left') {
+      if (direction === "left") {
         destinations[2].x -= 64;
         destinations[5].x -= 64;
       }
@@ -146,13 +194,13 @@ export default class Characters {
     return destinations;
   }
 
-  collision(position, self = position) {
+  private collision(position: IPosition, self: IPosition = position): boolean {
     return this.map.outOfBoundsAt(position)
             || this.map.tileCollisionAt(position)
             || this.collisionWith(position, self);
   }
 
-  collisionWith(position, self) {
+  private collisionWith(position: IPosition, self: IPosition): boolean {
     return this.characters.some((character) => {
       if (character === self) { return false; }
 
@@ -164,5 +212,4 @@ export default class Characters {
       return xCollision && yCollision;
     });
   }
-
 }

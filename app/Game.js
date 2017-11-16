@@ -1,9 +1,9 @@
 import preload from './preload.ts';
 import Map from './Map';
-import Characters from './Characters';
+import Characters from './Characters.ts';
 import World from './World.ts';
-import Camera from './Camera';
-import Sound from './Sound';
+import Camera from './Camera.ts';
+import Sound from './Sound.ts';
 import './game.jsx';
 
 require('./sass/styles.scss');
