@@ -1,4 +1,4 @@
-import Preload from './Preload';
+import preload from './preload.ts';
 import Map from './Map';
 import Characters from './Characters';
 import World from './World.ts';
@@ -28,7 +28,7 @@ class Game {
       characters: '/img/characters.png'
     };
 
-    Preload.load(this.assets)
+    preload(this.assets)
       .then((assets) => {
         this.map = new Map(assets);
         this.characters = new Characters(this.map);
