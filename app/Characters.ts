@@ -1,4 +1,5 @@
 import Character from "./Character";
+import ports from "./data/ports";
 import Input from "./Input";
 
 interface IMap {
@@ -55,16 +56,12 @@ export default class Characters {
     this.map = map;
     this.buildings = map.buildings;
 
-    this.characters = [
-      new Character(this.buildings.harbor.x, this.buildings.harbor.y + 32, 4),
-      new Character(this.buildings.market.x - 64, this.buildings.market.y + 32, 12),
-      new Character(this.buildings.shipyard.x, this.buildings.shipyard.y, 12),
-      new Character(this.buildings.bar.x - 64, this.buildings.bar.y + 32, 20),
-      new Character(this.buildings.lodge.x - 64, this.buildings.lodge.y + 32, 20),
-      new Character(this.buildings.market.x + 64, this.buildings.market.y + 32, 24, true),
-      new Character(this.buildings.lodge.x + 64, this.buildings.lodge.y + 32, 26, true),
-      new Character(this.buildings.bar.x + 64, this.buildings.bar.y + 32, 28, true),
-    ];
+    this.characters = ports.characters.map((character) => new Character(
+      this.buildings[character.spawn.building].x + character.spawn.offset.x,
+      this.buildings[character.spawn.building].y + character.spawn.offset.y,
+      character.frame,
+      character.isImmobile,
+    ));
 
     this.player = this.characters[0];
     this.npcs = this.characters.slice(1);

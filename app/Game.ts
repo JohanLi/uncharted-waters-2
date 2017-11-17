@@ -25,9 +25,10 @@ class Game {
 
   constructor() {
     this.assets = {
-      characters: "/img/characters.png",
       tilemap: "/tilemaps/lisbon.json",
-      tileset: "/img/tileset0.2.png",
+      characters: "/img/characters.png",
+      tileset0: "/img/tileset0.2.png",
+      tileset2: "/img/tileset2.2.png",
     };
 
     preload(this.assets)

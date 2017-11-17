@@ -1,6 +1,12 @@
+import ports from "./data/ports";
+import state from "./state";
+
 export default class Map {
   private assets: object;
-  private tilesize: number;
+  private port: object;
+  private tilesize: number = 32;
+  private columns: number = 96;
+  private rows: number = 96;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private collisionCoordinates: object;
@@ -10,12 +16,12 @@ export default class Map {
 
   constructor(assets) {
     this.assets = assets;
-    this.tilesize = this.assets.tilemap.tilesize;
+    this.port = ports.ports[state.portId];
 
     this.canvas = document.createElement("canvas");
     this.context = this.canvas.getContext("2d");
-    this.canvas.width = this.assets.tilemap.columns * this.tilesize;
-    this.canvas.height = this.assets.tilemap.rows * this.tilesize;
+    this.canvas.width = this.columns * this.tilesize;
+    this.canvas.height = this.rows * this.tilesize;
 
     this.setupCollision();
     this.setupBuildings();
@@ -24,38 +30,23 @@ export default class Map {
 
   private setupCollision() {
     this.collisionCoordinates = {};
-    this.collisionIndices = {
-      from: 31,
-      to: 240,
-      leftmost: [29, 30, 31, 32, 33],
-      rightmost: [34, 35, 36, 37, 38, 39],
-    };
+    this.collisionIndices = ports.tilesets[this.port.tileset].collisionIndices;
   }
 
   private setupBuildings() {
     this.buildings = {};
-    this.buildingIndices = {
-      market: 80,
-      bar: 81,
-      shipyard: 83,
-      harbor: 100,
-      lodge: 215,
-      guild: 224,
-      special: 233,
-      bank: 234,
-      itemShop: 235,
-      church: 236,
-      fortune: 237,
-    };
+    this.buildingIndices = ports.tilesets[this.port.tileset].buildingIndices;
   }
 
   private draw() {
-    this.assets.tilemap.tiles.forEach((tile, i) => {
-      const targetX = (i % this.assets.tilemap.columns) * this.tilesize;
-      const targetY = Math.floor(i / this.assets.tilemap.columns) * this.tilesize;
+    const tileset = this.assets[`tileset${this.port.tileset}`];
+
+    this.port.tiles.forEach((tile, i) => {
+      const targetX = (i % this.columns) * this.tilesize;
+      const targetY = Math.floor(i / this.columns) * this.tilesize;
 
       this.context.drawImage(
-        this.assets.tileset,
+        tileset,
         tile * this.tilesize, 0,
         this.tilesize, this.tilesize,
         targetX, targetY,
