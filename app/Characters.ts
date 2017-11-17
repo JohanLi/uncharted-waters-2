@@ -63,7 +63,7 @@ export default class Characters {
       new Character(this.buildings.lodge.x - 64, this.buildings.lodge.y + 32, 20),
       new Character(this.buildings.market.x + 64, this.buildings.market.y + 32, 24, true),
       new Character(this.buildings.lodge.x + 64, this.buildings.lodge.y + 32, 26, true),
-      new Character(this.buildings.bar.x + 64, this.buildings.bar.y + 32, 28, true)
+      new Character(this.buildings.bar.x + 64, this.buildings.bar.y + 32, 28, true),
     ];
 
     this.player = this.characters[0];

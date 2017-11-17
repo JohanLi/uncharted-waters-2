@@ -1,31 +1,33 @@
-import preload from './preload.ts';
-import Map from './Map';
-import Characters from './Characters.ts';
-import World from './World.ts';
-import Camera from './Camera.ts';
-import Sound from './Sound.ts';
-import './game.jsx';
+import "./game.jsx";
+import "./sass/styles.scss";
 
-require('./sass/styles.scss');
+import Camera from "./Camera";
+import Characters from "./Characters";
+import Map from "./Map";
+import preload from "./preload";
+import Sound from "./Sound";
+import World from "./World";
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      await navigator.serviceWorker.register('/service-worker.js');
-      console.log('Service Worker registration succeeded');
-    } catch (error) {
-      console.log('Service Worker registration failed: ', error);
-    }
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    await navigator.serviceWorker.register("/service-worker.js");
   });
 }
 
 class Game {
+  private assets: object;
+  private map: object;
+  private characters: object;
+  private world: object;
+  private camera: object;
+  private sound: object;
+  private lastMoveTime: number;
 
   constructor() {
     this.assets = {
-      tilemap: '/tilemaps/lisbon.json',
-      tileset: '/img/tileset1.2.png',
-      characters: '/img/characters.png'
+      characters: "/img/characters.png",
+      tilemap: "/tilemaps/lisbon.json",
+      tileset: "/img/tileset0.2.png",
     };
 
     preload(this.assets)
@@ -40,7 +42,7 @@ class Game {
       });
   }
 
-  loop() {
+  private loop() {
     this.characters.update(this.percentNextMove());
     this.world.draw();
     this.camera.draw();
@@ -48,7 +50,7 @@ class Game {
     window.requestAnimationFrame(() => this.loop());
   }
 
-  percentNextMove() {
+  private percentNextMove() {
     if (window.performance.now() - this.lastMoveTime < 67) {
       return (window.performance.now() - this.lastMoveTime) / 67;
     }
@@ -56,7 +58,6 @@ class Game {
     this.lastMoveTime = window.performance.now();
     return 1;
   }
-
 }
 
 new Game();

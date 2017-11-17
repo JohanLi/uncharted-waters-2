@@ -1,11 +1,19 @@
 export default class Map {
+  private assets: object;
+  private tilesize: number;
+  private canvas: HTMLCanvasElement;
+  private context: CanvasRenderingContext2D;
+  private collisionCoordinates: object;
+  private collisionIndices: object;
+  private buildings: object;
+  private buildingIndices: object;
 
   constructor(assets) {
     this.assets = assets;
     this.tilesize = this.assets.tilemap.tilesize;
 
-    this.canvas = document.createElement('canvas');
-    this.context = this.canvas.getContext('2d');
+    this.canvas = document.createElement("canvas");
+    this.context = this.canvas.getContext("2d");
     this.canvas.width = this.assets.tilemap.columns * this.tilesize;
     this.canvas.height = this.assets.tilemap.rows * this.tilesize;
 
@@ -14,17 +22,17 @@ export default class Map {
     this.draw();
   }
 
-  setupCollision() {
+  private setupCollision() {
     this.collisionCoordinates = {};
     this.collisionIndices = {
       from: 31,
       to: 240,
       leftmost: [29, 30, 31, 32, 33],
-      rightmost: [34, 35, 36, 37, 38, 39]
+      rightmost: [34, 35, 36, 37, 38, 39],
     };
   }
 
-  setupBuildings() {
+  private setupBuildings() {
     this.buildings = {};
     this.buildingIndices = {
       market: 80,
@@ -37,11 +45,11 @@ export default class Map {
       bank: 234,
       itemShop: 235,
       church: 236,
-      fortune: 237
+      fortune: 237,
     };
   }
 
-  draw() {
+  private draw() {
     this.assets.tilemap.tiles.forEach((tile, i) => {
       const targetX = (i % this.assets.tilemap.columns) * this.tilesize;
       const targetY = Math.floor(i / this.assets.tilemap.columns) * this.tilesize;
@@ -51,7 +59,7 @@ export default class Map {
         tile * this.tilesize, 0,
         this.tilesize, this.tilesize,
         targetX, targetY,
-        this.tilesize, this.tilesize
+        this.tilesize, this.tilesize,
       );
 
       this.updateCollision(tile, targetX, targetY);
@@ -59,7 +67,7 @@ export default class Map {
     });
   }
 
-  updateCollision(tile, x, y) {
+  private updateCollision(tile, x, y) {
     if (tile >= this.collisionIndices.from && tile <= this.collisionIndices.to) {
       if (!this.collisionCoordinates[x]) {
         this.collisionCoordinates[x] = {};
@@ -69,27 +77,27 @@ export default class Map {
     }
   }
 
-  updateBuilding(tile, x, y) {
+  private updateBuilding(tile, x, y) {
     Object.keys(this.buildingIndices).forEach((key) => {
       if (this.buildingIndices[key] === tile) {
         delete this.buildingIndices[key];
 
         this.buildings[key] = {
           x: x - 64,
-          y: y + 32
+          y: y + 32,
         };
       }
     });
   }
 
-  outOfBoundsAt(position) {
+  private outOfBoundsAt(position) {
     return Boolean(
       position.x < 0 || (position.x + 64) - this.tilesize >= this.canvas.width
-      || position.y - 32 < 0 || position.y >= this.canvas.height
+      || position.y - 32 < 0 || position.y >= this.canvas.height,
     );
   }
 
-  tileCollisionAt(position) {
+  private tileCollisionAt(position) {
     const collision =
       ((this.collisionCoordinates || {})[position.x] || {})[position.y];
     const collisionRight =
