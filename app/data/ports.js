@@ -25,10 +25,9 @@ export default {
   "tilesets": {
     0: {
       "collisionIndices": {
-        "from": 29,
-        "to": 240,
-        "leftmost": [29, 30, 31, 32, 33],
-        "rightmost": [34, 35, 36, 37, 38, 39]
+        "leftmost": 29,
+        "rightmost": 34,
+        "full": 40
       },
       "buildingIndices": {
         "market": 80,
@@ -46,10 +45,9 @@ export default {
     },
     2: {
       "collisionIndices": {
-        "from": 20,
-        "to": 240,
-        "leftmost": [20, 21, 22, 23, 24],
-        "rightmost": [25, 26, 27, 28, 29]
+        "leftmost": 20,
+        "rightmost": 25,
+        "full": 30
       },
       "buildingIndices": {
         "market": 143,
