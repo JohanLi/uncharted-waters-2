@@ -51,6 +51,7 @@ export default class Characters {
   private player: ICharacter;
   private npcs: ICharacter[];
   private input: IInput;
+  private lastMoveTime: number;
 
   constructor(map: IMap) {
     this.map = map;
@@ -68,7 +69,9 @@ export default class Characters {
     this.input = new Input();
   }
 
-  private update(percentNextMove: number) {
+  private update() {
+    const percentNextMove = this.percentNextMove();
+
     this.characters.forEach((character) => {
       character.interpolatePosition(percentNextMove);
     });
@@ -77,6 +80,15 @@ export default class Characters {
       this.movePlayer();
       this.moveNpcs();
     }
+  }
+
+  private percentNextMove(): number {
+    if (window.performance.now() - this.lastMoveTime < 67) {
+      return (window.performance.now() - this.lastMoveTime) / 67;
+    }
+
+    this.lastMoveTime = window.performance.now();
+    return 1;
   }
 
   private movePlayer() {
