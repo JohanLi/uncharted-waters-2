@@ -27,5 +27,6 @@ export default async (assets: object): Promise<object> => {
   });
 
   const loadedAssets = await Promise.all(loadPromises);
-  return Object.assign(...loadedAssets); // compiler error https://github.com/Microsoft/TypeScript/issues/4130
+  return loadedAssets.reduce((prev, curr) => Object.assign(prev, curr), {});
+  // Object.assign(...loadedAssets) causes a compiler error https://github.com/Microsoft/TypeScript/issues/4130
 };
