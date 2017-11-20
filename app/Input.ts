@@ -1,42 +1,56 @@
+/* tslint:disable:object-literal-sort-keys */
+
 export default class Input {
+  public direction: string;
+  private gameElement: HTMLElement;
+  private lastMoveTime: object = {};
+  private pressedKeys = {
+    up: false,
+    right: false,
+    down: false,
+    left: false,
+    last: "",
+  };
+  private keyMap: object;
+  private mouseLeft: number = 1;
+  private mouseSensitivity: number = 5;
+  private mouseLastPosition: {x: number, y: number} = {x: 0, y: 0};
+  private cursorDirection: string;
+  private lastCursorDirection: string;
+  private mousedownInterval: number;
 
   constructor() {
-    this.gameElement = document.getElementById('app');
-    this.direction = '';
+    this.gameElement = document.getElementById("app");
+    this.direction = "";
     this.lastMoveTime = {};
 
     this.setupKeyboard();
     this.setupMouse();
   }
 
-  setupKeyboard() {
-    this.pressedKeys = {};
+  private setupKeyboard() {
     this.keyMap = {
-      87: 'up',
-      68: 'right',
-      83: 'down',
-      65: 'left'
+      87: "up",
+      68: "right",
+      83: "down",
+      65: "left",
     };
 
-    document.addEventListener('keydown', this.keyboard.bind(this));
-    document.addEventListener('keyup', this.keyboard.bind(this));
+    document.addEventListener("keydown", this.keyboard.bind(this));
+    document.addEventListener("keyup", this.keyboard.bind(this));
   }
 
-  setupMouse() {
-    this.mouseLeft = 1;
-    this.mouseSensitivity = 5;
-    this.mouseLastPosition = {};
-
-    this.gameElement.addEventListener('contextmenu', (e) => {
+  private setupMouse() {
+    this.gameElement.addEventListener("contextmenu", (e) => {
       e.preventDefault();
     });
 
-    document.addEventListener('mousemove', this.setCursorDirection.bind(this));
-    document.addEventListener('mousedown', this.mouse.bind(this));
-    document.addEventListener('mouseup', this.mouse.bind(this));
+    document.addEventListener("mousemove", this.setCursorDirection.bind(this));
+    document.addEventListener("mousedown", this.mouse.bind(this));
+    document.addEventListener("mouseup", this.mouse.bind(this));
   }
 
-  keyboard(e) {
+  private keyboard(e: KeyboardEvent) {
     const key = this.keyMap[e.keyCode];
 
     if (!key) {
@@ -45,33 +59,33 @@ export default class Input {
 
     e.preventDefault();
 
-    if (e.type === 'keydown') {
+    if (e.type === "keydown") {
       this.pressedKeys[key] = true;
       this.pressedKeys.last = key;
     }
 
-    if (e.type === 'keyup') {
+    if (e.type === "keyup") {
       this.pressedKeys[key] = false;
     }
 
     if (this.pressedKeys[this.pressedKeys.last]) {
       this.direction = this.pressedKeys.last;
     } else if (this.pressedKeys.up) {
-      this.direction = 'up';
+      this.direction = "up";
     } else if (this.pressedKeys.right) {
-      this.direction = 'right';
+      this.direction = "right";
     } else if (this.pressedKeys.down) {
-      this.direction = 'down';
+      this.direction = "down";
     } else if (this.pressedKeys.left) {
-      this.direction = 'left';
+      this.direction = "left";
     } else {
-      this.direction = '';
+      this.direction = "";
     }
 
     this.hideCursor();
   }
 
-  setCursorDirection(e) {
+  private setCursorDirection(e: MouseEvent) {
     if (this.throttleMovement(20)) {
       return;
     }
@@ -81,7 +95,7 @@ export default class Input {
 
     this.mouseLastPosition = {
       x: e.clientX,
-      y: e.clientY
+      y: e.clientY,
     };
 
     if (Math.abs(xDifference) < this.mouseSensitivity
@@ -91,24 +105,24 @@ export default class Input {
 
     if (Math.abs(xDifference) >= Math.abs(yDifference)) {
       if (xDifference > 0) {
-        this.cursorDirection = 'right';
+        this.cursorDirection = "right";
       }
       if (xDifference < 0) {
-        this.cursorDirection = 'left';
+        this.cursorDirection = "left";
       }
     } else {
       if (yDifference > 0) {
-        this.cursorDirection = 'down';
+        this.cursorDirection = "down";
       }
       if (yDifference < 0) {
-        this.cursorDirection = 'up';
+        this.cursorDirection = "up";
       }
     }
 
     this.updateCursor();
   }
 
-  updateCursor() {
+  private updateCursor() {
     if (this.lastCursorDirection !== this.cursorDirection) {
       this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
       this.gameElement.classList.add(`cursor-${this.cursorDirection}`);
@@ -116,34 +130,34 @@ export default class Input {
     }
   }
 
-  hideCursor() {
+  private hideCursor() {
     if (this.lastCursorDirection) {
       this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
-      this.lastCursorDirection = '';
+      this.lastCursorDirection = "";
     }
   }
 
-  mouse(e) {
+  private mouse(e: MouseEvent) {
     if (e.which === this.mouseLeft) {
       e.preventDefault();
 
-      if (e.type === 'mousedown') {
+      if (e.type === "mousedown") {
         this.mouseSetDirection();
         this.mousedownInterval = setInterval(this.mouseSetDirection.bind(this), 20);
       }
 
-      if (e.type === 'mouseup') {
-        this.direction = '';
+      if (e.type === "mouseup") {
+        this.direction = "";
         clearInterval(this.mousedownInterval);
       }
     }
   }
 
-  mouseSetDirection() {
+  private mouseSetDirection() {
     this.direction = this.cursorDirection;
   }
 
-  throttleMovement(milliseconds) {
+  private throttleMovement(milliseconds: number): boolean {
     if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds) { return true; }
 
     this.lastMoveTime[milliseconds] = window.performance.now();
