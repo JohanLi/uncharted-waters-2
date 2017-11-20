@@ -1,54 +1,14 @@
 import Character from "./Character";
 import ports from "./data/ports";
 import Input from "./Input";
-
-interface IMap {
-  buildings: IBuildings;
-  outOfBoundsAt(position: IPosition): boolean;
-  tileCollisionAt(position: IPosition): boolean;
-}
-
-interface IPosition {
-  x: number;
-  y: number;
-}
-
-interface ICharacter {
-  x: number;
-  y: number;
-  visualX: number;
-  visualY: number;
-  frame: number;
-  width: number;
-  height: number;
-  offsetX: number;
-  offsetY: number;
-  isImmobile: boolean;
-  interpolatePosition(percentNextMove: number);
-  move(direction: string);
-  undoMove();
-  setFrame(direction: string);
-  randomMovementThrottle(): boolean;
-  animate();
-  randomDirection();
-}
-
-interface IInput {
-  direction: string;
-}
-
-interface IBuildings {
-  [key: string]: {
-    x: number;
-    y: number;
-  };
-}
+import { IBuildings, ICharacter, IInput, IMap, IPosition } from "./types";
 
 export default class Characters {
+  public characters: ICharacter[];
+  public player: ICharacter;
+
   private map: IMap;
   private buildings: IBuildings;
-  private characters: ICharacter[];
-  private player: ICharacter;
   private npcs: ICharacter[];
   private input: IInput;
   private lastMoveTime: number;
@@ -69,7 +29,7 @@ export default class Characters {
     this.input = new Input();
   }
 
-  private update() {
+  public update() {
     const percentNextMove = this.percentNextMove();
 
     this.characters.forEach((character) => {

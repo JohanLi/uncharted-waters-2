@@ -1,17 +1,19 @@
 import ports from "./data/ports";
 import state from "./state";
 
+import { IBuildings, IPort, ICollisionIndices, IAssets } from "./types";
+
 export default class Map {
-  private assets: object;
-  private port: object;
+  public canvas: HTMLCanvasElement;
+  public buildings: IBuildings;
+  private assets: IAssets;
+  private port: IPort;
   private tilesize: number = 32;
   private columns: number = 96;
   private rows: number = 96;
-  private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private collisionCoordinates: object;
-  private collisionIndices: object;
-  private buildings: object;
+  private collisionIndices: ICollisionIndices;
   private buildingIndices: object;
 
   constructor(assets) {
@@ -26,6 +28,32 @@ export default class Map {
     this.setupCollision();
     this.setupBuildings();
     this.draw();
+  }
+
+  public outOfBoundsAt(position) {
+    return Boolean(
+      position.x < 0 || (position.x + 64) - this.tilesize >= this.canvas.width
+      || position.y - 32 < 0 || position.y >= this.canvas.height,
+    );
+  }
+
+  public tileCollisionAt(position) {
+    const collision = ((this.collisionCoordinates || {})[position.x] || {})[position.y];
+    const collisionRight = ((this.collisionCoordinates || {})[(position.x + 64) - this.tilesize] || {})[position.y];
+
+    if (collision) {
+      const isLeftmost = collision >= this.collisionIndices.leftmost
+        && collision < this.collisionIndices.rightmost;
+      return !isLeftmost;
+    }
+
+    if (collisionRight) {
+      const isRightmost = collisionRight >= this.collisionIndices.rightmost
+        && collisionRight < this.collisionIndices.full;
+      return !isRightmost;
+    }
+
+    return false;
   }
 
   private setupCollision() {
@@ -79,31 +107,5 @@ export default class Map {
         };
       }
     });
-  }
-
-  private outOfBoundsAt(position) {
-    return Boolean(
-      position.x < 0 || (position.x + 64) - this.tilesize >= this.canvas.width
-      || position.y - 32 < 0 || position.y >= this.canvas.height,
-    );
-  }
-
-  private tileCollisionAt(position) {
-    const collision = ((this.collisionCoordinates || {})[position.x] || {})[position.y];
-    const collisionRight = ((this.collisionCoordinates || {})[(position.x + 64) - this.tilesize] || {})[position.y];
-
-    if (collision) {
-      const isLeftmost = collision >= this.collisionIndices.leftmost
-        && collision < this.collisionIndices.rightmost;
-      return !isLeftmost;
-    }
-
-    if (collisionRight) {
-      const isRightmost = collisionRight >= this.collisionIndices.rightmost
-        && collisionRight < this.collisionIndices.full;
-      return !isRightmost;
-    }
-
-    return false;
   }
 }

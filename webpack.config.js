@@ -2,7 +2,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: ['babel-polyfill', 'whatwg-fetch', './app/Game'],
+    app: ['babel-polyfill', 'whatwg-fetch', './app/Port'],
   },
   output: {
     path: `${__dirname}/public/`,

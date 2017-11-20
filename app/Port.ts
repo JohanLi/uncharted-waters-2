@@ -1,9 +1,13 @@
 import "./game.jsx";
 import "./sass/styles.scss";
 
+import Camera from "./Camera";
+import Characters from "./Characters";
+import Map from "./Map";
 import preload from "./preload";
-import Sound from "./Sound";
-import World from "./World";
+import sound from "./sound";
+
+import {IMap, ICharacters, ICamera} from "./types";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
@@ -12,30 +16,31 @@ if ("serviceWorker" in navigator) {
 }
 
 class Game {
-  private assets: object;
-  private world: object;
-  private sound: object;
+  private map: IMap;
+  private characters: ICharacters;
+  private camera: ICamera;
 
   constructor() {
-    this.assets = {
+    preload({
       tilemap: "/tilemaps/lisbon.json",
       characters: "/img/characters.png",
       tileset0: "/img/tileset0.2.png",
       tileset2: "/img/tileset2.2.png",
-    };
-
-    preload(this.assets)
+    })
       .then((assets) => {
-        this.world = new World(assets);
-        this.sound = new Sound();
+        this.map = new Map(assets);
+        this.characters = new Characters(this.map);
+        this.camera = new Camera(this.map, this.characters, assets);
+        sound();
 
         window.requestAnimationFrame(() => this.loop());
       });
   }
 
   private loop() {
-    this.world.update();
-    this.world.draw();
+    this.characters.update();
+    this.camera.update();
+    this.camera.draw();
 
     window.requestAnimationFrame(() => this.loop());
   }

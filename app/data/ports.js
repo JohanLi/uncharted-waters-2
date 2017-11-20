@@ -1,4 +1,4 @@
-{
+export default {
   "ports": {
     "0": {
       "name": "Lisbon",
