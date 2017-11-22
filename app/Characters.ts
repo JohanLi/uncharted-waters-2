@@ -1,7 +1,7 @@
 import Character from "./Character";
 import ports from "./data/ports";
 import Input from "./Input";
-import { IBuildings, ICharacter, IInput, IMap, IPosition } from "./types";
+import { IBuildings, ICharacter, IInput, IMap, IPosition, IAlternativeDestinations, Direction } from "./types";
 
 export default class Characters {
   public characters: ICharacter[];
@@ -63,11 +63,11 @@ export default class Characters {
     if (this.collision(this.player)) {
       this.player.undoMove();
 
-      const alternateDirection = this.alternateDirection(this.player, this.input.direction);
+      const alternativeDirection = this.alternativeDirection(this.input.direction, this.player);
 
-      if (alternateDirection) {
-        this.player.move(alternateDirection);
-        this.player.setFrame(alternateDirection);
+      if (alternativeDirection) {
+        this.player.move(alternativeDirection);
+        this.player.setFrame(alternativeDirection);
         return;
       }
     }
@@ -102,65 +102,73 @@ export default class Characters {
     });
   }
 
-  private alternateDirection(character: ICharacter, direction: string): string {
+  private alternativeDirection(direction: Direction, character: ICharacter): string {
+    const alternativeDestinations = this.alternativeDestinations(direction, character);
     let direction1 = true;
     let direction2 = true;
 
     for (let i = 1; i <= 19; i += 1) {
-      const destinations = this.alternateDirectionDestinations(direction, character, i);
+      const destinations = alternativeDestinations(i);
 
-      if (!direction1 || this.collision(destinations[1], character)) {
+      if (!direction1 || this.collision(destinations[0].step1, character)) {
         direction1 = false;
-      } else if (!this.collision(destinations[2], character)) {
-        return destinations[0];
+      } else if (!this.collision(destinations[0].step2, character)) {
+        return destinations[0].direction;
       }
 
-      if (!direction2 || this.collision(destinations[4], character)) {
+      if (!direction2 || this.collision(destinations[1].step1, character)) {
         direction2 = false;
-      } else if (!this.collision(destinations[5], character)) {
-        return destinations[3];
+      } else if (!this.collision(destinations[1].step2, character)) {
+        return destinations[1].direction;
       }
     }
 
     return "";
   }
 
-  private alternateDirectionDestinations(direction: string, character: ICharacter, i: number): any[] {
-    let destinations;
-
+  private alternativeDestinations(
+    direction: Direction,
+    character: ICharacter,
+  ): (i: number) => IAlternativeDestinations[] {
     if (direction === "up" || direction === "down") {
-      destinations = [
-        "right",
-        { x: character.x + (32 * i), y: character.y },
-        { x: character.x + (32 * i), y: character.y - 32 },
-        "left",
-        { x: character.x - (32 * i), y: character.y },
-        { x: character.x - (32 * i), y: character.y - 32 },
-      ];
+      const step2Y = direction === "up"
+        ? character.y - 32
+        : character.y + 32;
 
-      if (direction === "down") {
-        destinations[2].y += 64;
-        destinations[5].y += 64;
-      }
+      return (i) => [
+        {
+          direction: "right",
+          step1: {x: character.x + (32 * i), y: character.y},
+          step2: {x: character.x + (32 * i), y: step2Y},
+        },
+        {
+          direction: "left",
+          step1: {x: character.x - (32 * i), y: character.y},
+          step2: {x: character.x - (32 * i), y: step2Y},
+        },
+      ];
     }
 
     if (direction === "right" || direction === "left") {
-      destinations = [
-        "up",
-        { x: character.x, y: character.y - (32 * i) },
-        { x: character.x + 32, y: character.y - (32 * i) },
-        "down",
-        { x: character.x, y: character.y + (32 * i) },
-        { x: character.x + 32, y: character.y + (32 * i) },
-      ];
+      const step2X = direction === "right"
+        ? character.x + 32
+        : character.x - 32;
 
-      if (direction === "left") {
-        destinations[2].x -= 64;
-        destinations[5].x -= 64;
-      }
+      return (i) => [
+        {
+          direction: "up",
+          step1: { x: character.x, y: character.y - (32 * i) },
+          step2: { x: step2X, y: character.y - (32 * i) },
+        },
+        {
+          direction: "down",
+          step1: { x: character.x, y: character.y + (32 * i) },
+          step2: { x: step2X, y: character.y + (32 * i) },
+        },
+      ];
     }
 
-    return destinations;
+    return (i) => [];
   }
 
   private collision(position: IPosition, self: IPosition = position): boolean {

@@ -31,7 +31,7 @@ export interface ICharacter {
 }
 
 export interface IInput {
-  direction: string;
+  direction: Direction;
 }
 
 export interface IBuildings {
@@ -68,4 +68,12 @@ export interface ICollisionIndices {
 export interface ICamera {
   update();
   draw();
+}
+
+export type Direction = "up" | "down" | "right" | "left" | "";
+
+export interface IAlternativeDestinations {
+  direction: Direction;
+  step1: IPosition;
+  step2: IPosition;
 }
