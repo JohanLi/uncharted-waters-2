@@ -77,3 +77,11 @@ export interface IAlternativeDestinations {
   step1: IPosition;
   step2: IPosition;
 }
+
+export interface IPressedKeys {
+  up: boolean;
+  right: boolean;
+  down: boolean;
+  left: boolean;
+  last: Direction;
+}

@@ -1,40 +1,38 @@
-import { IPosition, Direction } from "./types";
+import { IPosition, IPressedKeys, Direction } from "./types";
 
 export default class Input {
-  public direction: string;
+  public direction: Direction = "";
   private gameElement: HTMLElement = document.getElementById("app");
-  private lastMoveTime: object = {};
-  private pressedKeys = {
+  private lastMoveTime = {};
+  private pressedKeys: IPressedKeys = {
     up: false,
     right: false,
     down: false,
     left: false,
     last: "",
   };
-  private keyMap: object;
-  private mouseLeft: number = 1;
-  private mouseSensitivity: number = 5;
-  private mouseLastPosition: IPosition = {x: 0, y: 0};
+  private keyMap = {
+    87: "up",
+    68: "right",
+    83: "down",
+    65: "left",
+  };
+  private mouseLeft = 1;
+  private mouseSensitivity = 5;
+  private mouseLastPosition: IPosition = {
+    x: 0,
+    y: 0,
+  };
   private cursorDirection: Direction;
-  private lastCursorDirection: string;
+  private lastCursorDirection: Direction;
   private mousedownIntervals: number[] = [];
 
   constructor() {
-    this.direction = "";
-    this.lastMoveTime = {};
-
     this.setupKeyboard();
     this.setupMouse();
   }
 
   private setupKeyboard() {
-    this.keyMap = {
-      87: "up",
-      68: "right",
-      83: "down",
-      65: "left",
-    };
-
     document.addEventListener("keydown", this.keyboard.bind(this));
     document.addEventListener("keyup", this.keyboard.bind(this));
   }
@@ -145,8 +143,8 @@ export default class Input {
       e.preventDefault();
 
       if (e.type === "mousedown") {
-        this.mouseSetDirection();
-        this.mousedownIntervals.push(setInterval(this.mouseSetDirection.bind(this), 20));
+        this.direction = this.cursorDirection;
+        this.mousedownIntervals.push(setInterval(() => this.direction = this.cursorDirection, 20));
       }
 
       if (e.type === "mouseup") {
@@ -157,15 +155,12 @@ export default class Input {
     }
   }
 
-  private mouseSetDirection() {
-    this.direction = this.cursorDirection;
-  }
-
   private throttleMovement(milliseconds: number): boolean {
-    if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds) { return true; }
+    if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds) {
+      return true;
+    }
 
     this.lastMoveTime[milliseconds] = window.performance.now();
     return false;
   }
-
 }
