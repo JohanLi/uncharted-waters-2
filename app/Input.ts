@@ -144,12 +144,12 @@ export default class Input {
 
       if (e.type === "mousedown") {
         this.direction = this.cursorDirection;
-        this.mousedownIntervals.push(setInterval(() => this.direction = this.cursorDirection, 20));
+        this.mousedownIntervals.push(window.setInterval(() => this.direction = this.cursorDirection, 20));
       }
 
       if (e.type === "mouseup") {
         this.direction = "";
-        this.mousedownIntervals.forEach((interval) => clearInterval(interval));
+        this.mousedownIntervals.forEach((interval) => window.clearInterval(interval));
         this.mousedownIntervals = [];
       }
     }
