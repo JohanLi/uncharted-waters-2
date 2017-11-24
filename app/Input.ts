@@ -1,8 +1,8 @@
-/* tslint:disable:object-literal-sort-keys */
+import { IPosition, Direction } from "./types";
 
 export default class Input {
   public direction: string;
-  private gameElement: HTMLElement;
+  private gameElement: HTMLElement = document.getElementById("app");
   private lastMoveTime: object = {};
   private pressedKeys = {
     up: false,
@@ -14,13 +14,12 @@ export default class Input {
   private keyMap: object;
   private mouseLeft: number = 1;
   private mouseSensitivity: number = 5;
-  private mouseLastPosition: {x: number, y: number} = {x: 0, y: 0};
-  private cursorDirection: string;
+  private mouseLastPosition: IPosition = {x: 0, y: 0};
+  private cursorDirection: Direction;
   private lastCursorDirection: string;
-  private mousedownInterval: number;
+  private mousedownIntervals: number[] = [];
 
   constructor() {
-    this.gameElement = document.getElementById("app");
     this.direction = "";
     this.lastMoveTime = {};
 
@@ -41,13 +40,17 @@ export default class Input {
   }
 
   private setupMouse() {
-    this.gameElement.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-    });
+    this.disableRightClick();
 
     document.addEventListener("mousemove", this.setCursorDirection.bind(this));
     document.addEventListener("mousedown", this.mouse.bind(this));
     document.addEventListener("mouseup", this.mouse.bind(this));
+  }
+
+  private disableRightClick() {
+    this.gameElement.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+    });
   }
 
   private keyboard(e: KeyboardEvent) {
@@ -143,12 +146,13 @@ export default class Input {
 
       if (e.type === "mousedown") {
         this.mouseSetDirection();
-        this.mousedownInterval = setInterval(this.mouseSetDirection.bind(this), 20);
+        this.mousedownIntervals.push(setInterval(this.mouseSetDirection.bind(this), 20));
       }
 
       if (e.type === "mouseup") {
         this.direction = "";
-        clearInterval(this.mousedownInterval);
+        this.mousedownIntervals.forEach((interval) => clearInterval(interval));
+        this.mousedownIntervals = [];
       }
     }
   }
