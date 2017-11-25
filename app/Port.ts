@@ -1,4 +1,4 @@
-import "./game.jsx";
+import "./game";
 import "./sass/styles.scss";
 
 import Camera from "./Camera";

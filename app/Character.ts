@@ -1,12 +1,4 @@
-interface ICharacter {
-  visualX: number;
-  visualY: number;
-  frame: number;
-  width: number;
-  height: number;
-  offsetX: number;
-  offsetY: number;
-}
+import { Direction } from "./types";
 
 export default class Character {
   public x: number;
@@ -26,11 +18,11 @@ export default class Character {
   private frameDifference: number;
   private skipMovement: number;
   private skipped: number;
-  private lastDirection: string;
+  private lastDirection: Direction;
   private fromX: number;
   private fromY: number;
 
-  constructor(x, y, frame, isImmobile = false) {
+  constructor(x: number, y: number, frame: number, isImmobile = false) {
     this.x = x;
     this.y = y;
     this.visualX = x;
@@ -42,7 +34,7 @@ export default class Character {
     this.isImmobile = isImmobile;
   }
 
-  public move(direction: string) {
+  public move(direction: Direction) {
     this.isMoving = true;
     this.fromX = this.x;
     this.fromY = this.y;
@@ -63,7 +55,7 @@ export default class Character {
     this.x = this.fromX;
     this.y = this.fromY;
     this.isMoving = false;
-    this.lastDirection = null;
+    this.lastDirection = "";
   }
 
   public interpolatePosition(percentNextMove: number) {
@@ -108,7 +100,7 @@ export default class Character {
     return true;
   }
 
-  public randomDirection() {
+  public randomDirection(): Direction {
     const sameDirection = Math.random();
     const newDirection = Math.random();
 

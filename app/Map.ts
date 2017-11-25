@@ -1,7 +1,7 @@
 import ports from "./data/ports";
 import state from "./state";
 
-import { IBuildings, IPort, ICollisionIndices, IAssets } from "./types";
+import { IBuildings, IPort, ICollisionIndices, IBuildingIndices, IAssets, IPosition } from "./types";
 
 export default class Map {
   public canvas: HTMLCanvasElement;
@@ -12,11 +12,11 @@ export default class Map {
   private columns: number = 96;
   private rows: number = 96;
   private context: CanvasRenderingContext2D;
-  private collisionCoordinates: object;
+  private collisionCoordinates: {[key: number]: {[key: number]: number}};
   private collisionIndices: ICollisionIndices;
-  private buildingIndices: object;
+  private buildingIndices: IBuildingIndices;
 
-  constructor(assets) {
+  constructor(assets: IAssets) {
     this.assets = assets;
     this.port = ports.ports[state.portId];
 
@@ -30,14 +30,14 @@ export default class Map {
     this.draw();
   }
 
-  public outOfBoundsAt(position) {
+  public outOfBoundsAt(position: IPosition) {
     return Boolean(
       position.x < 0 || (position.x + 64) - this.tilesize >= this.canvas.width
       || position.y - 32 < 0 || position.y >= this.canvas.height,
     );
   }
 
-  public tileCollisionAt(position) {
+  public tileCollisionAt(position: IPosition) {
     const collision = ((this.collisionCoordinates || {})[position.x] || {})[position.y];
     const collisionRight = ((this.collisionCoordinates || {})[(position.x + 64) - this.tilesize] || {})[position.y];
 
@@ -86,7 +86,7 @@ export default class Map {
     });
   }
 
-  private updateCollision(tile, x, y) {
+  private updateCollision(tile: number, x: number, y: number) {
     if (tile >= this.collisionIndices.leftmost) {
       if (!this.collisionCoordinates[x]) {
         this.collisionCoordinates[x] = {};
@@ -96,7 +96,7 @@ export default class Map {
     }
   }
 
-  private updateBuilding(tile, x, y) {
+  private updateBuilding(tile: number, x: number, y: number) {
     Object.keys(this.buildingIndices).forEach((key) => {
       if (this.buildingIndices[key] === tile) {
         delete this.buildingIndices[key];

@@ -1,4 +1,6 @@
-export default async (assets: object): Promise<object> => {
+import { IAssets } from "./types";
+
+export default async (assets: IAssets): Promise<object> => {
   const image = (url: string, key: string): Promise<object> =>
     new Promise((resolve, reject) => {
       const img = new Image();
@@ -16,7 +18,7 @@ export default async (assets: object): Promise<object> => {
 
   const isImage = (url: string): boolean => url.substr(-4) === ".png";
 
-  const loadPromises = [];
+  const loadPromises: Array<Promise<object>> = [];
 
   Object.keys(assets).forEach((key) => {
     if (isImage(assets[key])) {

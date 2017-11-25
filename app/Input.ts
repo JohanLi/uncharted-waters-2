@@ -3,15 +3,14 @@ import { IPosition, IPressedKeys, Direction } from "./types";
 export default class Input {
   public direction: Direction = "";
   private gameElement: HTMLElement = document.getElementById("app");
-  private lastMoveTime = {};
+  private lastMoveTime: {[key: number]: number} = {};
   private pressedKeys: IPressedKeys = {
     up: false,
     right: false,
     down: false,
     left: false,
-    last: "",
   };
-  private keyMap = {
+  private keyMap: {[key: number]: Direction}  = {
     87: "up",
     68: "right",
     83: "down",
@@ -52,25 +51,24 @@ export default class Input {
   }
 
   private keyboard(e: KeyboardEvent) {
-    const key = this.keyMap[e.keyCode];
+    const pressedKey = this.keyMap[e.keyCode];
 
-    if (!key) {
+    if (!pressedKey) {
       return;
     }
 
     e.preventDefault();
 
     if (e.type === "keydown") {
-      this.pressedKeys[key] = true;
-      this.pressedKeys.last = key;
+      this.pressedKeys[pressedKey] = true;
     }
 
     if (e.type === "keyup") {
-      this.pressedKeys[key] = false;
+      this.pressedKeys[pressedKey] = false;
     }
 
-    if (this.pressedKeys[this.pressedKeys.last]) {
-      this.direction = this.pressedKeys.last;
+    if (this.pressedKeys[pressedKey]) {
+      this.direction = pressedKey;
     } else if (this.pressedKeys.up) {
       this.direction = "up";
     } else if (this.pressedKeys.right) {
