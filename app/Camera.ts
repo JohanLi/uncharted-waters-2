@@ -6,7 +6,7 @@ export default class Camera {
   private map: IMap;
   private characters: ICharacters;
 
-  private width: number = 1200;
+  private width: number = 1280;
   private height: number = 800;
   private x: number = 0;
   private y: number = 0;
