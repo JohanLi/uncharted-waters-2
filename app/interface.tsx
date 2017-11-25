@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 
 function Left() {
   return (
@@ -95,7 +95,7 @@ function Building() {
   );
 }
 
-function Dialog(props) {
+function Dialog(props: any) {
   return (
     <div id={props.id} className="dialog">
       <div className="corner top-left" />

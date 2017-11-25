@@ -5,6 +5,8 @@
       "es6",
       "dom"
     ],
+    "noImplicitAny": true,
+    "jsx": "react",
     "sourceMap": true
   }
 }

@@ -21,24 +21,30 @@ export interface ICharacter {
   offsetX: number;
   offsetY: number;
   isImmobile: boolean;
-  interpolatePosition(percentNextMove: number);
-  move(direction: string);
-  undoMove();
-  setFrame(direction: string);
+  interpolatePosition(percentNextMove: number): void;
+  move(direction: string): void;
+  undoMove(): void;
+  setFrame(direction: string): void;
   randomMovementThrottle(): boolean;
-  animate();
-  randomDirection();
+  animate(): void;
+  randomDirection(): Direction;
+}
+
+export interface ICharacterData {
+  frame: number;
+  spawn: {
+    building: string;
+    offset: IPosition;
+  };
+  isImmobile: boolean;
 }
 
 export interface IInput {
-  direction: string;
+  direction: Direction;
 }
 
 export interface IBuildings {
-  [key: string]: {
-    x: number;
-    y: number;
-  };
+  [key: string]: IPosition;
 }
 
 export interface IAssets {
@@ -48,7 +54,7 @@ export interface IAssets {
 export interface ICharacters {
   characters: ICharacter[];
   player: ICharacter;
-  update();
+  update(): void;
 }
 
 export interface IPort {
@@ -65,7 +71,26 @@ export interface ICollisionIndices {
   full: number;
 }
 
+export interface IBuildingIndices {
+  [key: string]: number;
+}
+
 export interface ICamera {
-  update();
-  draw();
+  update(): void;
+  draw(): void;
+}
+
+export type Direction = "up" | "down" | "right" | "left" | "";
+
+export interface IAlternativeDestinations {
+  direction: Direction;
+  step1: IPosition;
+  step2: IPosition;
+}
+
+export interface IPressedKeys {
+  up: boolean;
+  right: boolean;
+  down: boolean;
+  left: boolean;
 }
