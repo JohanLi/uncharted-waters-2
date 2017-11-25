@@ -1,4 +1,4 @@
-import ports from "./data/ports";
+import assets from "./assets";
 import state from "./state";
 
 import { IBuildings, IPort, ICollisionIndices, IBuildingIndices, IAssets, IPosition } from "./types";
@@ -6,7 +6,6 @@ import { IBuildings, IPort, ICollisionIndices, IBuildingIndices, IAssets, IPosit
 export default class Map {
   public canvas: HTMLCanvasElement;
   public buildings: IBuildings;
-  private assets: IAssets;
   private port: IPort;
   private tilesize: number = 32;
   private columns: number = 96;
@@ -16,9 +15,8 @@ export default class Map {
   private collisionIndices: ICollisionIndices;
   private buildingIndices: IBuildingIndices;
 
-  constructor(assets: IAssets) {
-    this.assets = assets;
-    this.port = ports.ports[state.portId];
+  constructor() {
+    this.port = assets.ports.ports[state.portId];
 
     this.canvas = document.createElement("canvas");
     this.context = this.canvas.getContext("2d");
@@ -58,16 +56,16 @@ export default class Map {
 
   private setupCollision() {
     this.collisionCoordinates = {};
-    this.collisionIndices = ports.tilesets[this.port.tileset].collisionIndices;
+    this.collisionIndices = assets.ports.tilesets[this.port.tileset].collisionIndices;
   }
 
   private setupBuildings() {
     this.buildings = {};
-    this.buildingIndices = ports.tilesets[this.port.tileset].buildingIndices;
+    this.buildingIndices = assets.ports.tilesets[this.port.tileset].buildingIndices;
   }
 
   private draw() {
-    const tileset = this.assets[`tileset${this.port.tileset}`];
+    const tileset = assets[`tileset${this.port.tileset}`];
 
     this.port.tiles.forEach((tile, i) => {
       const targetX = (i % this.columns) * this.tilesize;

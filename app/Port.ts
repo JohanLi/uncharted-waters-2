@@ -1,10 +1,10 @@
 import "./game";
 import "./sass/styles.scss";
 
+import assets from "./assets";
 import Camera from "./Camera";
 import Characters from "./Characters";
 import Map from "./Map";
-import preload from "./preload";
 import sound from "./sound";
 
 import {IMap, ICharacters, ICamera} from "./types";
@@ -21,16 +21,11 @@ class Game {
   private camera: ICamera;
 
   constructor() {
-    preload({
-      tilemap: "/tilemaps/lisbon.json",
-      characters: "/img/characters.png",
-      tileset0: "/img/tileset0.2.png",
-      tileset2: "/img/tileset2.2.png",
-    })
-      .then((assets) => {
-        this.map = new Map(assets);
+    assets.load()
+      .then(() => {
+        this.map = new Map();
         this.characters = new Characters(this.map);
-        this.camera = new Camera(this.map, this.characters, assets);
+        this.camera = new Camera(this.map, this.characters);
         sound();
 
         window.requestAnimationFrame(() => this.loop());

@@ -1,6 +1,7 @@
+import assets from "./assets";
 import Character from "./Character";
-import ports from "./data/ports";
 import Input from "./Input";
+
 import {
   IBuildings,
   ICharacter,
@@ -26,7 +27,7 @@ export default class Characters {
     this.map = map;
     this.buildings = map.buildings;
 
-    this.characters = ports.characters.map((character: ICharacterData) => new Character(
+    this.characters = assets.ports.characters.map((character: ICharacterData) => new Character(
       this.buildings[character.spawn.building].x + character.spawn.offset.x,
       this.buildings[character.spawn.building].y + character.spawn.offset.y,
       character.frame,

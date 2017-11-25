@@ -1,9 +1,10 @@
-import { IMap, ICharacters, IAssets } from "./types";
+import assets from "./assets";
+
+import { IMap, ICharacters } from "./types";
 
 export default class Camera {
   private map: IMap;
   private characters: ICharacters;
-  private assets: IAssets;
 
   private width: number = 1200;
   private height: number = 800;
@@ -12,10 +13,9 @@ export default class Camera {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  constructor(map: IMap, characters: ICharacters, assets: IAssets) {
+  constructor(map: IMap, characters: ICharacters) {
     this.map = map;
     this.characters = characters;
-    this.assets = assets;
 
     this.canvas = document.getElementById("camera") as HTMLCanvasElement;
     this.context = this.canvas.getContext("2d");
@@ -60,7 +60,7 @@ export default class Camera {
       const y = character.visualY + character.offsetY - this.y;
 
       this.context.drawImage(
-        this.assets.characters,
+        assets.characters,
         character.frame * character.width, 0,
         character.width, character.height,
         x, y,
