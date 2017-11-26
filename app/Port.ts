@@ -1,4 +1,4 @@
-import "./game";
+import render from "./interface/game";
 import "./sass/styles.scss";
 
 import assets from "./assets";
@@ -23,6 +23,7 @@ class Game {
   constructor() {
     assets.load()
       .then(() => {
+        render();
         this.map = new Map();
         this.characters = new Characters(this.map);
         this.camera = new Camera(this.map, this.characters);
