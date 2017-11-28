@@ -1,6 +1,6 @@
-import assets from "./assets";
+import assets from "../assets";
 
-import { IMap, ICharacters } from "./types";
+import { IMap, ICharacters } from "../types";
 
 export default class Camera {
   private map: IMap;

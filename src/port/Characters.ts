@@ -1,4 +1,5 @@
-import assets from "./assets";
+import assets from "../assets";
+import state from "../state";
 import Character from "./Character";
 import Input from "./Input";
 
@@ -11,25 +12,24 @@ import {
   IPosition,
   IAlternativeDestinations,
   Direction,
-} from "./types";
+} from "../types";
 
 export default class Characters {
   public characters: ICharacter[];
   public player: ICharacter;
 
   private map: IMap;
-  private buildings: IBuildings;
   private npcs: ICharacter[];
   private input: IInput;
   private lastMoveTime: number;
 
   constructor(map: IMap) {
     this.map = map;
-    this.buildings = map.buildings;
+    const buildings: IBuildings = map.buildings;
 
     this.characters = assets.ports.characters.map((character: ICharacterData) => new Character(
-      this.buildings[character.spawn.building].x + character.spawn.offset.x,
-      this.buildings[character.spawn.building].y + character.spawn.offset.y,
+      buildings[character.spawn.building].x + character.spawn.offset.x,
+      buildings[character.spawn.building].y + character.spawn.offset.y,
       character.frame,
       character.isImmobile,
     ));
@@ -47,6 +47,10 @@ export default class Characters {
     });
 
     if (percentNextMove === 1) {
+      if (this.enteredBuilding()) {
+        return;
+      }
+
       this.movePlayer();
       this.moveNpcs();
     }
@@ -59,6 +63,17 @@ export default class Characters {
 
     this.lastMoveTime = window.performance.now();
     return 1;
+  }
+
+  private enteredBuilding(): boolean {
+    const type = this.map.buildingAt(this.player);
+
+    if (type) {
+      state.enterBuilding(type);
+      return true;
+    }
+
+    return false;
   }
 
   private movePlayer() {
@@ -183,8 +198,8 @@ export default class Characters {
 
   private collision(position: IPosition, self: IPosition = position): boolean {
     return this.map.outOfBoundsAt(position)
-            || this.map.tileCollisionAt(position)
-            || this.collisionWith(position, self);
+      || this.map.tileCollisionAt(position)
+      || this.collisionWith(position, self);
   }
 
   private collisionWith(position: IPosition, self: IPosition): boolean {

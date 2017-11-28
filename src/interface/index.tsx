@@ -7,15 +7,13 @@ import Right from "./Right";
 
 import state from "../state";
 
-const render = () => {
-  const building = state.building;
-
+const renderInterface = () => {
   ReactDOM.render(
     <div id="center">
       <main id="app">
         <Left />
         <Right />
-        <Building type={building} />
+        <Building state={state} />
         <canvas id="camera" width="1280" height="800" />
       </main>
     </div>,
@@ -23,4 +21,4 @@ const render = () => {
   );
 };
 
-export default render;
+export default renderInterface;

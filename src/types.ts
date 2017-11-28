@@ -1,6 +1,7 @@
 export interface IMap {
   canvas: HTMLCanvasElement;
   buildings: IBuildings;
+  buildingAt(position: IPosition): string;
   outOfBoundsAt(position: IPosition): boolean;
   tileCollisionAt(position: IPosition): boolean;
 }

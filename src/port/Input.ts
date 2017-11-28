@@ -1,4 +1,4 @@
-import { IPosition, IPressedKeys, Direction } from "./types";
+import { IPosition, IPressedKeys, Direction } from "../types";
 
 export default class Input {
   public direction: Direction = "";

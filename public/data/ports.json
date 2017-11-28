@@ -41,9 +41,9 @@
         "guild": 224,
         "special": 233,
         "bank": 234,
-        "itemShop": 235,
+        "item-shop": 235,
         "church": 236,
-        "fortune": 237
+        "fortune-teller": 237
       }
     },
     "2": {
@@ -61,9 +61,9 @@
         "guild": 145,
         "special": 88,
         "bank": 58,
-        "itemShop": 123,
+        "item-shop": 123,
         "church": 89,
-        "fortune": 77
+        "fortune-teller": 77
       }
     }
   },

@@ -1,4 +1,4 @@
-import { Direction } from "./types";
+import { Direction } from "../types";
 
 export default class Character {
   public x: number;

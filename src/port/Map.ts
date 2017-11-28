@@ -1,7 +1,7 @@
-import assets from "./assets";
-import state from "./state";
+import assets from "../assets";
+import state from "../state";
 
-import { IBuildings, IPort, ICollisionIndices, IBuildingIndices, IAssets, IPosition } from "./types";
+import { IBuildings, IPort, ICollisionIndices, IBuildingIndices, IAssets, IPosition, ICharacter } from "../types";
 
 export default class Map {
   public canvas: HTMLCanvasElement;
@@ -11,9 +11,10 @@ export default class Map {
   private columns: number = 96;
   private rows: number = 96;
   private context: CanvasRenderingContext2D;
-  private collisionCoordinates: {[key: number]: {[key: number]: number}};
   private collisionIndices: ICollisionIndices;
   private buildingIndices: IBuildingIndices;
+  private collisionCoordinates: {[key: number]: {[key: number]: number}};
+  private buildingCoordinates: {[key: number]: {[key: number]: string}};
 
   constructor() {
     this.port = assets.ports.ports[state.portId];
@@ -26,6 +27,10 @@ export default class Map {
     this.setupCollision();
     this.setupBuildings();
     this.draw();
+  }
+
+  public buildingAt(position: IPosition): string {
+    return ((this.buildingCoordinates || {})[position.x] || {})[position.y];
   }
 
   public outOfBoundsAt(position: IPosition) {
@@ -60,6 +65,7 @@ export default class Map {
   }
 
   private setupBuildings() {
+    this.buildingCoordinates = {};
     this.buildings = {};
     this.buildingIndices = assets.ports.tilesets[this.port.tileset].buildingIndices;
   }
@@ -99,10 +105,19 @@ export default class Map {
       if (this.buildingIndices[key] === tile) {
         delete this.buildingIndices[key];
 
+        const entranceX = x - 64;
+        const entranceY = y + 32;
+
         this.buildings[key] = {
-          x: x - 64,
-          y: y + 32,
+          x: entranceX,
+          y: entranceY,
         };
+
+        if (!this.buildingCoordinates[entranceX]) {
+          this.buildingCoordinates[entranceX] = {};
+        }
+
+        this.buildingCoordinates[entranceX][entranceY] = key;
       }
     });
   }
