@@ -1,0 +1,15 @@
+$directions: ('up', 'right', 'down', 'left');
+
+#camera {
+  & {
+    cursor: none;
+  }
+
+  @each $direction in $directions {
+
+    &.cursor-#{$direction} {
+      cursor: url(/img/cursor/#{$direction}.png) 22 22, auto;
+    }
+
+  }
+}

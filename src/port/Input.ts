@@ -2,7 +2,7 @@ import { IPosition, IPressedKeys, Direction } from "../types";
 
 export default class Input {
   public direction: Direction = "";
-  private gameElement: HTMLElement = document.getElementById("app");
+  private canvasElement: HTMLElement = document.getElementById("camera");
   private lastMoveTime: {[key: number]: number} = {};
   private pressedKeys: IPressedKeys = {
     up: false,
@@ -10,11 +10,11 @@ export default class Input {
     down: false,
     left: false,
   };
-  private keyMap: {[key: number]: Direction}  = {
-    87: "up",
-    68: "right",
-    83: "down",
-    65: "left",
+  private keyMap: {[key: string]: Direction}  = {
+    w: "up",
+    d: "right",
+    s: "down",
+    a: "left",
   };
   private mouseLeft = 1;
   private mouseSensitivity = 5;
@@ -39,19 +39,19 @@ export default class Input {
   private setupMouse() {
     this.disableRightClick();
 
-    document.addEventListener("mousemove", this.setCursorDirection.bind(this));
-    document.addEventListener("mousedown", this.mouse.bind(this));
-    document.addEventListener("mouseup", this.mouse.bind(this));
+    this.canvasElement.addEventListener("mousemove", this.setCursorDirection.bind(this));
+    this.canvasElement.addEventListener("mousedown", this.mouse.bind(this));
+    this.canvasElement.addEventListener("mouseup", this.mouse.bind(this));
   }
 
   private disableRightClick() {
-    this.gameElement.addEventListener("contextmenu", (e) => {
+    this.canvasElement.addEventListener("contextmenu", (e) => {
       e.preventDefault();
     });
   }
 
   private keyboard(e: KeyboardEvent) {
-    const pressedKey = this.keyMap[e.keyCode];
+    const pressedKey = this.keyMap[e.key];
 
     if (!pressedKey) {
       return;
@@ -123,15 +123,15 @@ export default class Input {
 
   private updateCursor() {
     if (this.lastCursorDirection !== this.cursorDirection) {
-      this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
-      this.gameElement.classList.add(`cursor-${this.cursorDirection}`);
+      this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
+      this.canvasElement.classList.add(`cursor-${this.cursorDirection}`);
       this.lastCursorDirection = this.cursorDirection;
     }
   }
 
   private hideCursor() {
     if (this.lastCursorDirection) {
-      this.gameElement.classList.remove(`cursor-${this.lastCursorDirection}`);
+      this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
       this.lastCursorDirection = "";
     }
   }

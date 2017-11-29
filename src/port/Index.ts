@@ -3,6 +3,8 @@ import Camera from "./Camera";
 import Characters from "./Characters";
 import Map from "./Map";
 
+import "./styles.scss";
+
 import {IMap, ICharacters, ICamera} from "../types";
 
 const renderPort = () => {
