@@ -39,9 +39,9 @@ export default class Input {
   private setupMouse() {
     this.disableRightClick();
 
-    this.canvasElement.addEventListener("mousemove", this.setCursorDirection.bind(this));
-    this.canvasElement.addEventListener("mousedown", this.mouse.bind(this));
-    this.canvasElement.addEventListener("mouseup", this.mouse.bind(this));
+    document.addEventListener("mousemove", this.setCursorDirection.bind(this));
+    document.addEventListener("mousedown", this.mouse.bind(this));
+    document.addEventListener("mouseup", this.mouse.bind(this));
   }
 
   private disableRightClick() {
