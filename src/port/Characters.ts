@@ -70,6 +70,8 @@ export default class Characters {
 
     if (type) {
       state.enterBuilding(type);
+      this.player.move("down");
+      this.player.setFrame("down");
       return true;
     }
 

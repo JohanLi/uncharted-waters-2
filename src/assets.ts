@@ -2,6 +2,7 @@ import { IAssets } from "./types";
 
 const urls: { [key: string]: string } = {
   ports: "/data/ports.json",
+  buildings: "/data/buildings.json",
   characters: "/img/characters.png",
   tileset0: "/img/tileset0.2.png",
   tileset2: "/img/tileset2.2.png",

@@ -1,0 +1,81 @@
+{
+  "harbor": {
+    "menu": [
+      "Sail",
+      "Supply",
+      "Moor"
+    ]
+  },
+  "market": {
+    "menu": [
+      "Buy Goods",
+      "Sell Goods",
+      "Invest",
+      "Market Rate"
+    ]
+  },
+  "shipyard": {
+    "menu": [
+      "New Ship",
+      "Used Ship",
+      "Repair",
+      "Sell",
+      "Remodel",
+      "Invest"
+    ]
+  },
+  "bar": {
+    "menu": [
+      "Recruit Crew",
+      "Dismiss Crew",
+      "Treat",
+      "Meet",
+      "Waitress",
+      "Gamble"
+    ]
+  },
+  "bank": {
+    "menu": [
+      "Deposit",
+      "Withdraw",
+      "Borrow",
+      "Repay"
+    ]
+  },
+  "church": {
+    "menu": [
+      "Pray",
+      "Donate"
+    ]
+  },
+  "item-shop": {
+    "menu": [
+      "Buy",
+      "Sell"
+    ]
+  },
+  "guild": {
+    "menu": [
+      "Job Assignment",
+      "Country Info"
+    ]
+  },
+  "lodge": {
+    "menu": [
+      "Check In",
+      "Gossip",
+      "Port Info"
+    ]
+  },
+  "palace": {
+    "menu": [
+      "Meet Ruler",
+      "Defect",
+      "Gold",
+      "Ship"
+    ]
+  },
+  "special": {
+    "menu": []
+  }
+}
