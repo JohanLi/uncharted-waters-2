@@ -3,10 +3,17 @@ const urls = [
   '/',
   '/styles.css',
   '/app.bundle.js',
-  '/tilemaps/lisbon.json',
-  '/img/tileset1.2.png',
+  '/data/buildings.json',
+  '/data/ports.json',
+  '/img/tileset0.2.png',
+  '/img/tileset2.2.png',
   '/img/characters.png',
-  '/img/artwork/side-characters.png'
+  '/img/artwork/side-characters.png',
+  '/img/cursor/up.png',
+  '/img/cursor/down.png',
+  '/img/cursor/left.png',
+  '/img/cursor/right.png',
+  '/img/cursor/normal.png',
 ];
 
 addEventListener('install', (event) => {

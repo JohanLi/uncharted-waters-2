@@ -16,4 +16,5 @@ if ("serviceWorker" in navigator) {
   await assets.load();
   renderInterface();
   renderPort();
+  sound();
 })();
