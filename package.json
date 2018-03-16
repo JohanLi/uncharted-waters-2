@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Remaking Uncharted Waters 2 using web technologies",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --mode development --open",
     "lint": "eslint app/**/*.{js,jsx}",
     "setup": "ansible-playbook -i ansible/hosts ansible/setup.yml",
-    "build": "webpack --profile -p",
+    "build": "webpack --profile -p --mode production",
     "deploy": "rsync -a public/ root@johanli.com:/var/www/unchartedwaters2.com"
   },
   "author": "Johan Li",
@@ -37,7 +37,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.3",

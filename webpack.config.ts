@@ -17,21 +17,24 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ["css-loader", "sass-loader"],
-        }),
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          { loader: "sass-loader" },
+        ],
       },
       {
-        test: /\.jsx?$/,
+        test: /\.jsx$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
-        query: {
-          presets: ["es2015", "react"],
-        },
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["es2015", "react"],
+          }
+        }
       },
       {
         test: /\.tsx?$/,
