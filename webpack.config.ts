@@ -1,5 +1,6 @@
-// tslint:disable-next-line
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// tslint:disable:no-var-requires
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -10,7 +11,7 @@ module.exports = {
     ],
   },
   output: {
-    path: `${__dirname}/public/`,
+    path: `${__dirname}/dist/`,
     filename: "[name].bundle.js",
   },
   resolve: {
@@ -21,9 +22,9 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
-          { loader: "sass-loader" },
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
         ],
       },
       {
@@ -33,8 +34,8 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["es2015", "react"],
-          }
-        }
+          },
+        },
       },
       {
         test: /\.tsx?$/,
@@ -51,6 +52,11 @@ module.exports = {
     hints: false,
   },
   plugins: [
-    new ExtractTextPlugin("styles.css"),
+    new MiniCssExtractPlugin({
+      filename: "styles-[hash].css",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/assets/index.html",
+    }),
   ],
 };
