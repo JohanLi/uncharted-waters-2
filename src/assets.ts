@@ -1,11 +1,18 @@
 import { IAssets } from "./types";
 
+import * as buildings from "./assets/data/buildings.json";
+import * as ports from "./assets/data/ports.json";
+
+import * as characters from "./assets/img/characters.png";
+import * as tileset0 from "./assets/img/tileset0.2.png";
+import * as tileset2 from "./assets/img/tileset2.2.png";
+
 const urls: { [key: string]: string } = {
-  ports: "/data/ports.json",
-  buildings: "/data/buildings.json",
-  characters: "/img/characters.png",
-  tileset0: "/img/tileset0.2.png",
-  tileset2: "/img/tileset2.2.png",
+  buildings,
+  ports,
+  characters,
+  tileset0,
+  tileset2,
 };
 
 const toPromise = async (url: string, key: string): Promise<object> => {

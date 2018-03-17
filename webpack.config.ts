@@ -20,6 +20,15 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(png|json)$/,
+        type: "javascript/auto", // https://github.com/webpack/webpack/issues/6586
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
+      {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,

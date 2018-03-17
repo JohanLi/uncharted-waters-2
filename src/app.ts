@@ -3,7 +3,6 @@ import "./sass/styles.scss";
 
 import assets from "./assets";
 import renderPort from "./port/";
-import state from "./state";
 import sound from "./sound";
 
 if ("serviceWorker" in navigator) {
