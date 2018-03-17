@@ -1,6 +1,7 @@
 // tslint:disable:no-var-requires
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -70,6 +71,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/assets/index.html",
       favicon: "./src/assets/favicon.ico",
+    }),
+    new WorkboxPlugin.GenerateSW({
+      swDest: "sw.js",
+      clientsClaim: true,
+      skipWaiting: true,
     }),
   ],
 };
