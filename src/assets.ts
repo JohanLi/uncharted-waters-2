@@ -48,7 +48,7 @@ export const loadAssets = async (): Promise<void> => {
   };
 
   const importBuildings = () => {
-    const requireContext = require.context("../", true, /\/buildings\/[a-z-]+.png$/);
+    const requireContext = require.context("./", true, /\/buildings\/[a-z-]+.png$/);
     const output: IAssets = {};
 
     requireContext.keys().forEach((key) => {

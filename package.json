@@ -7,7 +7,7 @@
     "lint": "eslint app/**/*.{js,jsx}",
     "setup": "ansible-playbook -i ansible/hosts ansible/setup.yml",
     "build": "rm -rf dist && webpack --profile -p --mode production",
-    "deploy": "rsync -a public/ root@johanli.com:/var/www/unchartedwaters2.com"
+    "deploy": "rsync -a --delete dist/ root@johanli.com:/var/www/unchartedwaters2.com"
   },
   "author": "Johan Li",
   "license": "MIT",
