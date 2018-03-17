@@ -1,7 +1,7 @@
 import renderInterface from "./interface";
 import "./sass/styles.scss";
 
-import assets from "./assets";
+import { loadAssets } from "./assets";
 import renderPort from "./port/";
 import sound from "./sound";
 
@@ -12,7 +12,7 @@ if ("serviceWorker" in navigator) {
 }
 
 (async () => {
-  await assets.load();
+  await loadAssets();
   renderInterface();
   renderPort();
   sound();

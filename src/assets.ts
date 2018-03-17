@@ -7,14 +7,6 @@ import * as characters from "./assets/img/characters.png";
 import * as tileset0 from "./assets/img/tileset0.2.png";
 import * as tileset2 from "./assets/img/tileset2.2.png";
 
-const urls: { [key: string]: string } = {
-  buildings,
-  ports,
-  characters,
-  tileset0,
-  tileset2,
-};
-
 const toPromise = async (url: string, key: string): Promise<object> => {
   const response = await fetch(url);
   const data = await response.json();
@@ -30,23 +22,53 @@ const imageToPromise = (url: string, key: string): Promise<object> =>
     img.onerror = reject;
   });
 
+const isObject = (url: object): boolean => typeof url === "object";
 const isImage = (url: string): boolean => url.substr(-4) === ".png";
 
-const assets: IAssets = {
-  load: async (): Promise<void> => {
+const assets: IAssets = {};
+export default assets;
+
+export const loadAssets = async (): Promise<void> => {
+  const load = async (unloadedAssets: IAssets): Promise<object> => {
+    const output: IAssets = {};
     const promises: Array<Promise<object>> = [];
 
-    Object.keys(urls).forEach((key) => {
-      if (isImage(urls[key])) {
-        promises.push(imageToPromise(urls[key], key));
-      } else {
-        promises.push(toPromise(urls[key], key));
+    Object.keys(unloadedAssets).forEach(async (key) => {
+      if (isObject(unloadedAssets[key])) {
+        output[key] = await load(unloadedAssets[key]);
+      } else if (isImage(unloadedAssets[key])) {
+        promises.push(imageToPromise(unloadedAssets[key], key));
+      }  else {
+        promises.push(toPromise(unloadedAssets[key], key));
       }
     });
 
     const loaded = await Promise.all(promises);
-    Object.assign(assets, loaded.reduce((prev, curr) => Object.assign(prev, curr), {}));
-  },
-};
+    return loaded.reduce((prev, curr) => Object.assign(prev, curr), output);
+  };
 
-export default assets;
+  const importBuildings = () => {
+    const requireContext = require.context("../", true, /\/buildings\/[a-z-]+.png$/);
+    const output: IAssets = {};
+
+    requireContext.keys().forEach((key) => {
+      output[key.match(/([a-z-]+).png$/)[1]] = requireContext(key);
+    });
+
+    return output;
+  };
+
+  Object.assign(
+    assets,
+    await load({
+      buildings,
+      ports,
+      characters,
+      tileset0,
+      tileset2,
+      buildingAssets: {
+        ...importBuildings(),
+      },
+    }),
+  );
+};
