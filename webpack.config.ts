@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(png|json)$/,
+        test: /\.(json|mp3|png)$/,
         type: "javascript/auto", // https://github.com/webpack/webpack/issues/6586
         use: [
           {
@@ -57,7 +57,6 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: `${__dirname}/public/`,
     compress: true,
     port: 8081,
   },
@@ -70,6 +69,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: "./src/assets/index.html",
+      favicon: "./src/assets/favicon.ico",
     }),
   ],
 };
