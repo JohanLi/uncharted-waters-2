@@ -19,7 +19,7 @@ const Building: React.SFC<{}> = observer(() => {
   return (
     <div id="building-hud">
       <div id="shop">
-        <img src={`/img/buildings/${type}.png`} alt=""/>
+        <img src={assets.buildingAssets[type].src} alt=""/>
       </div>
       <Dialog id="dialog">
         This feature is not implemented yet. Press ESC to exit this building.

@@ -34,8 +34,8 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url(/img/interface/background.png);
-  cursor: url(/img/cursor/normal.png) 16 24, auto;
+  background: url("../assets/img/interface/background.png");
+  cursor: url("../assets/img/interface/cursor/normal.png") 16 24, auto;
 }
 
 #shop {
@@ -78,7 +78,7 @@
   .corner {
     width: 16px;
     height: 16px;
-    background: url(/img/interface/dialog-corner.png) no-repeat;
+    background: url("../assets/img/interface/dialog-corner.png") no-repeat;
     position: absolute;
 
     &.top-left {
