@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     path: `${__dirname}/dist/`,
-    filename: "[name].bundle.js",
+    filename: "[name]-[hash].bundle.js",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
