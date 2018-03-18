@@ -8,7 +8,7 @@ $directions: ('up', 'right', 'down', 'left');
   @each $direction in $directions {
 
     &.cursor-#{$direction} {
-      cursor: url("../assets/img/cursor/#{$direction}.png") 22 22, auto;
+      cursor: url("../assets/img/interface/cursor/#{$direction}.png") 22 22, auto;
     }
 
   }
