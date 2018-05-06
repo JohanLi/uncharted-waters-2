@@ -6,13 +6,7 @@
   - name: add server block
     template:
       src: templates/server-block.conf
-      dest: /etc/nginx/sites-available/{{ domain }}.conf
-
-  - name: enable server block
-    file:
-      src: /etc/nginx/sites-available/{{ domain }}.conf
-      dest: /etc/nginx/sites-enabled/{{ domain }}.conf
-      state: link
+      dest: /etc/nginx/conf.d/{{ domain }}.conf
 
   - name: reload nginx
     service:
