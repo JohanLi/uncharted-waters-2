@@ -1,2 +1,0 @@
-[webservers]
-178.62.116.245 ansible_user=root domain=unchartedwaters2.com
