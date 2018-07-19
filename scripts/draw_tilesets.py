@@ -4,7 +4,7 @@ import pathlib
 import tileset_regular
 import tileset_large
 import tileset_ship
-from apply_tilemap import apply_tilemap
+from apply_tilemap_to_tileset import apply_tilemap_to_tileset
 
 pathlib.Path('./output').mkdir(parents=True, exist_ok=True)
 
@@ -26,7 +26,7 @@ def large_tileset():
     large_tileset = numpy.concatenate(large_tileset, axis=1)
     large_tileset = numpy.concatenate(large_tileset, axis=1)
 
-    large_tileset = apply_tilemap(large_tileset, regular_tileset)
+    large_tileset = apply_tilemap_to_tileset(large_tileset, regular_tileset)
 
     img = Image.fromarray(large_tileset)
     img.save('./output/large_tileset.png')

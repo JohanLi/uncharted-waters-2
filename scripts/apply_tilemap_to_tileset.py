@@ -1,15 +1,14 @@
 import numpy
-from PIL import Image
 
 
-def apply_tilemap(tiles, tilemap):
-    width, height = tiles.shape
+def apply_tilemap_to_tileset(tilemap, tileset):
+    width, height = tilemap.shape
 
-    if len(tilemap[0].shape) == 3:
-        width_tilemap, height_tilemap, depth = tilemap[0].shape
+    if len(tileset[0].shape) == 3:
+        width_tilemap, height_tilemap, depth = tileset[0].shape
         output = numpy.zeros((width * width_tilemap, height * height_tilemap, depth), 'uint8')
     else:
-        width_tilemap, height_tilemap = tilemap[0].shape
+        width_tilemap, height_tilemap = tileset[0].shape
         output = numpy.zeros((width * width_tilemap, height * height_tilemap), 'uint8')
 
     for x in range(width):
@@ -19,6 +18,6 @@ def apply_tilemap(tiles, tilemap):
             output[
                 x_new:x_new + width_tilemap,
                 y_new:y_new + height_tilemap,
-            ] = tilemap[tiles[x, y]]
+            ] = tileset[tilemap[x, y]]
 
     return output

@@ -1,12 +1,12 @@
 import numpy
-import coast
 
 land_tiles = list(range(51, 65 + 1)) + [73, 81, 89, 97] + list(range(105, 127 + 1))
 desert_tiles = [25, 26, 28, 29, 30, 31, 32, 89, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
-possible_desert_edges = []
+possible_desert_coasts = []
+coastal_map = numpy.fromfile('./raw/DATA1.010', 'uint8')
 
 
-def apply_desert_tiles(worldmap):
+def fill_deserts(worldmap):
     rows, columns = worldmap.shape
 
     for column in range(columns):
@@ -24,7 +24,7 @@ def apply_desert_tiles(worldmap):
     return worldmap
 
 
-def apply_edges(worldmap):
+def replace_coasts(worldmap):
     worldmap_copy = numpy.copy(worldmap)
     rows, columns = worldmap_copy.shape
 
@@ -54,22 +54,22 @@ def apply_edges(worldmap):
                         x += '1'
 
                         if worldmap_copy[offset[0], offset[1]] in desert_tiles:
-                            if [row, column] not in possible_desert_edges:
-                                possible_desert_edges.append([row, column])
+                            if [row, column] not in possible_desert_coasts:
+                                possible_desert_coasts.append([row, column])
                     else:
                         x += '0'
 
-            tile = coast.raw_bytes[int(x, 2)]
+            tile = coastal_map[int(x, 2)]
             worldmap[row, column] = tile
 
     return worldmap
 
 
-def apply_desert_edges(worldmap):
-    for edge in possible_desert_edges:
-        edge_tile = worldmap[edge[0], edge[1]]
+def replace_desert_coasts(worldmap):
+    for coast in possible_desert_coasts:
+        coast_tile = worldmap[coast[0], coast[1]]
 
-        offsets = desert_edge_offsets(edge_tile, edge[0], edge[1])
+        offsets = desert_coast_offsets(coast_tile, coast[0], coast[1])
 
         if not offsets:
             continue
@@ -80,13 +80,13 @@ def apply_desert_edges(worldmap):
             if worldmap[offset['offset'][0], offset['offset'][1]] not in offset['desert_tiles']:
                 is_desert = False
 
-        if is_desert and worldmap[edge[0], edge[1]] != 0:
-            worldmap[edge[0], edge[1]] = worldmap[edge[0], edge[1]] + 24
+        if is_desert and worldmap[coast[0], coast[1]] != 0:
+            worldmap[coast[0], coast[1]] = worldmap[coast[0], coast[1]] + 24
 
     return worldmap
 
 
-def desert_edge_offsets(tile, row, column):
+def desert_coast_offsets(tile, row, column):
     adjacents_to_check = {
         1: [1, 2, 8],
         2: [8],
@@ -144,7 +144,7 @@ def desert_edge_offsets(tile, row, column):
         return []
 
 
-def apply_frigid_and_temperate_tiles(worldmap):
+def update_frigid_and_temperate_terrain(worldmap):
     rows, columns = worldmap.shape
 
     for row in range(rows):
@@ -158,3 +158,18 @@ def apply_frigid_and_temperate_tiles(worldmap):
                 worldmap[row, column] = worldmap[row, column] + 8
 
     return worldmap
+
+
+def manual_corrections(worldmap, worldmap_part):
+    if worldmap_part == 0:
+        worldmap[444, 366] = 28
+        worldmap[445, 366] = 28
+        worldmap[489, 415] = 27
+        worldmap[1055, 266] = 23
+        worldmap[1055, 267] = 23
+
+    if worldmap_part == 2:
+        worldmap[890, 134] = 26
+        worldmap[890, 135] = 26
+        worldmap[1056, 417] = 13
+        worldmap[1061, 435] = 12
