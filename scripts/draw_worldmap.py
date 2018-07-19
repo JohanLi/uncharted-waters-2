@@ -1,7 +1,7 @@
 import numpy
 from PIL import Image
-from tiles import get_tiles
-from tileset import get_tileset
+import tileset_large
+import tileset_regular
 from worldmap import get_worldmap
 from worldmap_helpers import apply_desert_tiles, apply_edges, apply_desert_edges, apply_frigid_and_temperate_tiles
 from apply_tilemap import apply_tilemap
@@ -19,7 +19,7 @@ for i in range(3):
 
     worldmap = numpy.concatenate(vertical, axis=0)
 
-    worldmap = apply_tilemap(worldmap, get_tiles())
+    worldmap = apply_tilemap(worldmap, tileset_large.get())
     worldmap = apply_desert_tiles(worldmap)
     worldmap = apply_edges(worldmap)
     worldmap = apply_desert_edges(worldmap)
@@ -42,6 +42,6 @@ for i in range(3):
 
     numpy.save('./output/' + i, worldmap)
 
-    worldmap = apply_tilemap(worldmap, get_tileset())
+    worldmap = apply_tilemap(worldmap, tileset_regular.get())
     img = Image.fromarray(worldmap)
     img.save('./output/' + i + '.png')
