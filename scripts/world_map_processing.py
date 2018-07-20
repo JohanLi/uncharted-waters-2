@@ -6,31 +6,31 @@ possible_desert_coasts = []
 coastal_map = numpy.fromfile('./raw/DATA1.010', 'uint8')
 
 
-def fill_deserts(worldmap):
-    rows, columns = worldmap.shape
+def fill_deserts(world_map):
+    rows, columns = world_map.shape
 
     for column in range(columns):
         for row in range(rows):
             try:
-                if worldmap[row, column] == 89:
-                    if worldmap[row, column + 1] == 65:
-                        worldmap[row, column + 1] = 89
+                if world_map[row, column] == 89:
+                    if world_map[row, column + 1] == 65:
+                        world_map[row, column + 1] = 89
 
-                    if worldmap[row + 1, column] == 65:
-                        worldmap[row + 1, column] = 89
+                    if world_map[row + 1, column] == 65:
+                        world_map[row + 1, column] = 89
             except IndexError:
                 pass
 
-    return worldmap
+    return world_map
 
 
-def replace_coasts(worldmap):
-    worldmap_copy = numpy.copy(worldmap)
-    rows, columns = worldmap_copy.shape
+def replace_coasts(world_map):
+    world_map_copy = numpy.copy(world_map)
+    rows, columns = world_map_copy.shape
 
     for row in range(rows):
         for column in range(columns):
-            if worldmap_copy[row, column] != 0:
+            if world_map_copy[row, column] != 0:
                 continue
 
             x = '1'
@@ -50,24 +50,24 @@ def replace_coasts(worldmap):
                 if offset[0] < 0 or offset[1] < 0 or offset[0] >= rows or offset[1] >= columns:
                     x += '0'
                 else:
-                    if worldmap_copy[offset[0], offset[1]] in land_tiles:
+                    if world_map_copy[offset[0], offset[1]] in land_tiles:
                         x += '1'
 
-                        if worldmap_copy[offset[0], offset[1]] in desert_tiles:
+                        if world_map_copy[offset[0], offset[1]] in desert_tiles:
                             if [row, column] not in possible_desert_coasts:
                                 possible_desert_coasts.append([row, column])
                     else:
                         x += '0'
 
             tile = coastal_map[int(x, 2)]
-            worldmap[row, column] = tile
+            world_map[row, column] = tile
 
-    return worldmap
+    return world_map
 
 
-def replace_desert_coasts(worldmap):
+def replace_desert_coasts(world_map):
     for coast in possible_desert_coasts:
-        coast_tile = worldmap[coast[0], coast[1]]
+        coast_tile = world_map[coast[0], coast[1]]
 
         offsets = desert_coast_offsets(coast_tile, coast[0], coast[1])
 
@@ -77,13 +77,13 @@ def replace_desert_coasts(worldmap):
         is_desert = True
 
         for offset in offsets:
-            if worldmap[offset['offset'][0], offset['offset'][1]] not in offset['desert_tiles']:
+            if world_map[offset['offset'][0], offset['offset'][1]] not in offset['desert_tiles']:
                 is_desert = False
 
-        if is_desert and worldmap[coast[0], coast[1]] != 0:
-            worldmap[coast[0], coast[1]] = worldmap[coast[0], coast[1]] + 24
+        if is_desert and world_map[coast[0], coast[1]] != 0:
+            world_map[coast[0], coast[1]] = world_map[coast[0], coast[1]] + 24
 
-    return worldmap
+    return world_map
 
 
 def desert_coast_offsets(tile, row, column):
@@ -144,32 +144,32 @@ def desert_coast_offsets(tile, row, column):
         return []
 
 
-def update_frigid_and_temperate_terrain(worldmap):
-    rows, columns = worldmap.shape
+def update_frigid_and_temperate_terrain(world_map):
+    rows, columns = world_map.shape
 
     for row in range(rows):
         for column in range(columns):
-            if worldmap[row, column] not in list(range(1, 8 + 1)) + list(range(65, 72 + 1)):
+            if world_map[row, column] not in list(range(1, 8 + 1)) + list(range(65, 72 + 1)):
                 continue
 
             if row < 24 or row >= rows - 24: # frigid
-                worldmap[row, column] = worldmap[row, column] + 16
+                world_map[row, column] = world_map[row, column] + 16
             elif row < 24 * 14 or row >= 24 * 31: # temperate
-                worldmap[row, column] = worldmap[row, column] + 8
+                world_map[row, column] = world_map[row, column] + 8
 
-    return worldmap
+    return world_map
 
 
-def manual_corrections(worldmap, worldmap_part):
-    if worldmap_part == 0:
-        worldmap[444, 366] = 28
-        worldmap[445, 366] = 28
-        worldmap[489, 415] = 27
-        worldmap[1055, 266] = 23
-        worldmap[1055, 267] = 23
+def manual_corrections(world_map, world_map_part):
+    if world_map_part == 0:
+        world_map[444, 366] = 28
+        world_map[445, 366] = 28
+        world_map[489, 415] = 27
+        world_map[1055, 266] = 23
+        world_map[1055, 267] = 23
 
-    if worldmap_part == 2:
-        worldmap[890, 134] = 26
-        worldmap[890, 135] = 26
-        worldmap[1056, 417] = 13
-        worldmap[1061, 435] = 12
+    if world_map_part == 2:
+        world_map[890, 134] = 26
+        world_map[890, 135] = 26
+        world_map[1056, 417] = 13
+        world_map[1061, 435] = 12

@@ -1,7 +1,7 @@
 import numpy
 
 
-def apply_tilemap_to_tileset(tilemap, tileset):
+def tilemap_to_tileset(tilemap, tileset):
     width, height = tilemap.shape
 
     if len(tileset[0].shape) == 3:

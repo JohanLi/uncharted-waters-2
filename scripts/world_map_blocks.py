@@ -1,8 +1,8 @@
 import numpy
 
 
-def get(worldmap_part):
-    raw_bytes = numpy.fromfile('./raw/WORLDMAP.00' + str(worldmap_part), 'uint8')
+def get(world_map_part):
+    raw_bytes = numpy.fromfile('./raw/WORLDMAP.00' + str(world_map_part), 'uint8')
     raw_bits = numpy.unpackbits(raw_bytes)
 
     blocks = []
