@@ -15,7 +15,7 @@ def regular_tileset():
     tileset = numpy.concatenate(tileset, axis=1)
     tileset = numpy.concatenate(tileset, axis=1)
     img = Image.fromarray(tileset)
-    img.save('./output/regular_tileset.png')
+    img.save('./output/regular-tileset.png')
 
 
 def large_tileset():
@@ -29,7 +29,7 @@ def large_tileset():
     large_tileset = helpers.tilemap_to_tileset(large_tileset, regular_tileset)
 
     img = Image.fromarray(large_tileset)
-    img.save('./output/large_tileset.png')
+    img.save('./output/large-tileset.png')
 
 
 def ship_tileset():
@@ -39,7 +39,7 @@ def ship_tileset():
     tileset = numpy.concatenate(tileset, axis=1)
 
     img = Image.fromarray(tileset)
-    img.save('./output/ship_tileset.png')
+    img.save('./output/ship-tileset.png')
 
 
 regular_tileset()
