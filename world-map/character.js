@@ -1,5 +1,6 @@
-import input from './input';
-import collision from './collision';
+import Input from './input';
+import Map from './map';
+import PercentNextMove from './percent-next-move';
 
 const directionToMetadata = {
   'nw': {
@@ -52,64 +53,67 @@ const directionToMetadata = {
   },
 };
 
-const character = {
-  update: (percentNextMove, tiles) => {
-    if (percentNextMove !== 0) {
+const position = {
+  x: 838,
+  y: 358,
+  toX: 838,
+  toY: 358,
+};
+
+const tileset = {
+  offset: 0,
+  direction: 'up',
+  frame: 0,
+};
+
+const isMoving = () => position.toX !== position.x || position.toY !== position.y;
+
+export default {
+  update: () => {
+    if (PercentNextMove.percentNextMove !== 0) {
       return;
     }
 
-    if (character.isMoving()) {
-      character.position.x = character.position.toX;
-      character.position.y = character.position.toY;
+    if (isMoving()) {
+      position.x = position.toX;
+      position.y = position.toY;
 
-      if (character.position.x < 0) {
-        character.position.x = 2160 + character.position.x;
+      if (position.x < 0) {
+        position.x = 2160 + position.x;
       }
 
-      if (character.position.x > 2160) {
-        character.position.x = character.position.x - 2160;
+      if (position.x > 2160) {
+        position.x = position.x - 2160;
       }
     }
 
-    character.tileset.frame = character.tileset.frame ? 0 : 1;
+    tileset.frame = tileset.frame ? 0 : 1;
 
-    const inputDirection = input();
+    const inputDirection = Input.get();
     const directionMetadata = directionToMetadata[inputDirection];
 
     if (!directionMetadata) {
       return;
     }
 
-    character.tileset.direction = directionMetadata.tilesetDirection;
+    tileset.direction = directionMetadata.tilesetDirection;
 
     const noCollision = [inputDirection, ...directionMetadata.alternateDirections].some((direction) => {
       const directionMetadata = directionToMetadata[direction];
 
-      character.position.toX = character.position.x + directionMetadata.deltaX;
-      character.position.toY = character.position.y + directionMetadata.deltaY;
+      position.toX = position.x + directionMetadata.deltaX;
+      position.toY = position.y + directionMetadata.deltaY;
 
-      if (!collision(tiles, { x: character.position.toX, y: character.position.toY })) {
+      if (!Map.collisionAt({ x: position.toX, y: position.toY })) {
         return true;
       }
     });
 
     if (!noCollision) {
-      character.position.toX = character.position.x;
-      character.position.toY = character.position.y;
+      position.toX = position.x;
+      position.toY = position.y;
     }
   },
-  isMoving: () => character.position.toX !== character.position.x || character.position.toY !== character.position.y,
-  tileset: {
-    offset: 0,
-    direction: 'up',
-    frame: 0,
-  },
-  position: {
-    x: 838,
-    y: 358,
-    toX: 838,
-    toY: 358,
-  },
+  position,
+  tileset,
 };
-
-export default character;

@@ -98,14 +98,12 @@ const mouse = (e) => {
   }
 };
 
-const readDirection = () => {
-  return direction;
-};
-
 disableRightClick();
 
 canvas.addEventListener('mousemove', setCursorDirection);
 document.addEventListener('mousedown', mouse);
 document.addEventListener('mouseup', mouse);
 
-export default readDirection;
+export default {
+  get: () => direction,
+};
