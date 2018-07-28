@@ -79,11 +79,11 @@ export default {
       position.y = position.toY;
 
       if (position.x < 0) {
-        position.x = 2160 + position.x;
+        position.x += 2160;
       }
 
-      if (position.x > 2160) {
-        position.x = position.x - 2160;
+      if (position.x >= 2160) {
+        position.x -= 2160;
       }
     }
 
