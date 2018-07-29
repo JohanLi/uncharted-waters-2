@@ -6,26 +6,63 @@ import PercentNextMove from './percent-next-move';
 const canvas = document.getElementById('camera');
 const context = canvas.getContext('2d');
 
-context.imageSmoothingEnabled = false;
+const paddedCanvas = document.createElement('canvas');
+const paddedContext = paddedCanvas.getContext('2d');
+
+paddedCanvas.width = 1344;
+paddedCanvas.height = 896;
+paddedContext.imageSmoothingEnabled = false;
 
 let map;
 
+const characterAndCameraRelative = () => {
+  const characterXInterpolationOffset = (Character.position.toX - Character.position.x) * PercentNextMove.percentNextMove;
+  const characterYInterpolationOffset = (Character.position.toY - Character.position.y) * PercentNextMove.percentNextMove;
+
+  const characterXRelativePadded = Math.floor((21 + characterXInterpolationOffset) * 32) - (64 / 2);
+  let characterYRelativePadded = Math.floor((14 + characterYInterpolationOffset) * 32) - (64 / 2);
+
+  const cameraXRelativePadded = ((1344 - 1280) / 2) + Math.floor(characterXInterpolationOffset * 32);
+  let cameraYRelativePadded = ((896 - 800) / 2) + Math.floor(characterYInterpolationOffset * 32);
+
+  if (northernBoundary()) {
+    characterYRelativePadded = Math.floor((Character.position.y + characterYInterpolationOffset) * 32);
+    cameraYRelativePadded = ((896 - 800) / 2) + Math.floor((Character.position.y + characterYInterpolationOffset - 13) * 32);
+    cameraYRelativePadded = Math.max(cameraYRelativePadded, 0);
+  }
+
+  if (southernBoundary()) {
+    characterYRelativePadded = Math.floor((Character.position.y + characterYInterpolationOffset - 1052) * 32);
+    cameraYRelativePadded = ((896 - 800) / 2) + Math.floor((Character.position.y + characterYInterpolationOffset - 1065) * 32);
+    cameraYRelativePadded = Math.min(cameraYRelativePadded, 96);
+  }
+
+  return {
+    characterXRelativePadded,
+    characterYRelativePadded,
+    cameraXRelativePadded,
+    cameraYRelativePadded,
+  }
+};
+
+const northernBoundary = () => Character.position.y < 13 || (Character.position.y === 13 && Character.position.toY === 12);
+const southernBoundary = () => Character.position.y > 1065 || (Character.position.y === 1065 && Character.position.toY === 1066);
+
 export default {
   update: () => {
-    if (!map || PercentNextMove.percentNextMove === 0) {
-      map = Map.draw();
-    }
+    map = Map.draw();
 
-    context.drawImage(
+    const {
+      characterXRelativePadded,
+      characterYRelativePadded,
+      cameraXRelativePadded,
+      cameraYRelativePadded,
+    } = characterAndCameraRelative();
+
+    paddedContext.drawImage(
       map,
-      16 + Math.floor((Character.position.toX - Character.position.x) * 16 * PercentNextMove.percentNextMove),
-      16 + Math.floor((Character.position.toY - Character.position.y) * 16 * PercentNextMove.percentNextMove) + (16 / 2),
-      640,
-      400,
       0,
       0,
-      640 * 2,
-      400 * 2,
     );
 
     const directionToOffset = {
@@ -35,16 +72,28 @@ export default {
       left: 6,
     };
 
-    context.drawImage(
+    paddedContext.drawImage(
       Assets.assets.worldMap.tilesetShips,
       (directionToOffset[Character.tileset.direction] + Character.tileset.frame) * 32,
       0,
       32,
       32,
-      (1280 / 2) - (64 / 2),
-      (800 / 2) - (64 / 2),
-      32 * 2,
-      32 * 2,
+      characterXRelativePadded,
+      characterYRelativePadded,
+      64,
+      64,
+    );
+
+    context.drawImage(
+      paddedCanvas,
+      cameraXRelativePadded,
+      cameraYRelativePadded,
+      1280,
+      800,
+      0,
+      0,
+      1280,
+      800,
     );
   },
 };
