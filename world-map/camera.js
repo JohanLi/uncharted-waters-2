@@ -96,4 +96,5 @@ export default {
       800,
     );
   },
+  characterAndCameraRelative, // for testing
 };
