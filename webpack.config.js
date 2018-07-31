@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(json|mp3|png)$/,
+        test: /\.(json|mp3|png|bin)$/,
         type: 'javascript/auto', // https://github.com/webpack/webpack/issues/6586
         use: [
           {

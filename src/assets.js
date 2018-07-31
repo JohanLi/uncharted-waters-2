@@ -1,12 +1,14 @@
 import * as buildings from './assets/data/buildings.json';
 import * as ports from './assets/data/ports.json';
+import * as portTilemaps from './assets/data/port-tilemaps.bin';
 
 import * as characters from './assets/img/characters.png';
 import * as tileset0 from './assets/img/tileset0.2.png';
 import * as tileset2 from './assets/img/tileset2.2.png';
 
-const isObject = (url) => typeof url === 'object';
-const isImage = (url) => url.substr(-4) === '.png';
+const isObject = url => typeof url === 'object';
+const isImage = url => url.substr(-4) === '.png';
+const isBinary = url => url.substr(-4) === '.bin';
 
 const toPromise = async (url, key) => {
   if (isImage(url)) {
@@ -16,12 +18,19 @@ const toPromise = async (url, key) => {
       img.onload = () => resolve({ [key]: img });
       img.onerror = reject;
     });
-  } else {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    return { [key]: data };
   }
+
+  const response = await fetch(url);
+  let data;
+
+  if (isBinary(url)) {
+    data = await response.arrayBuffer();
+    data = new Uint8Array(data);
+  } else {
+    data = await response.json();
+  }
+
+  return { [key]: data };
 };
 
 const load = async (unloadedAssets) => {
@@ -65,6 +74,7 @@ export const loadAssets = async () => new Promise((resolve) => {
   load({
     buildings,
     ports,
+    portTilemaps,
     characters,
     tileset0,
     tileset2,

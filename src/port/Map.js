@@ -4,6 +4,7 @@ import state from '../state';
 export default class Map {
   constructor() {
     this.port = assets.ports.ports[state.portId];
+    this.port.tiles = assets.portTilemaps.slice(state.portId * 9216, (state.portId + 1) * 9216);
 
     this.tilesize = 32;
     this.columns = 96;
