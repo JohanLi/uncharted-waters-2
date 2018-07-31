@@ -1,56 +1,52 @@
-import { IPosition, IPressedKeys, Direction } from "../types";
-
 export default class Input {
-  public direction: Direction = "";
-  private canvasElement: HTMLElement = document.getElementById("camera");
-  private lastMoveTime: {[key: number]: number} = {};
-  private pressedKeys: IPressedKeys = {
-    up: false,
-    right: false,
-    down: false,
-    left: false,
-  };
-  private keyMap: {[key: string]: Direction}  = {
-    w: "up",
-    d: "right",
-    s: "down",
-    a: "left",
-  };
-  private mouseLeft = 1;
-  private mouseSensitivity = 5;
-  private mouseLastPosition: IPosition = {
-    x: 0,
-    y: 0,
-  };
-  private cursorDirection: Direction;
-  private lastCursorDirection: Direction;
-  private mousedownIntervals: number[] = [];
-
   constructor() {
+    this.direction = '';
+    this.canvasElement = document.getElementById('camera');
+    this.lastMoveTime = {};
+    this.pressedKeys = {
+      up: false,
+      right: false,
+      down: false,
+      left: false,
+    };
+    this.keyMap = {
+      w: 'up',
+      d: 'right',
+      s: 'down',
+      a: 'left',
+    };
+    this.mouseLeft = 1;
+    this.mouseSensitivity = 5;
+    this.mouseLastPosition = {
+      x: 0,
+      y: 0,
+    };
+    this.mousedownIntervals = [];
+
     this.setupKeyboard();
     this.setupMouse();
   }
 
-  private setupKeyboard() {
-    document.addEventListener("keydown", this.keyboard.bind(this));
-    document.addEventListener("keyup", this.keyboard.bind(this));
+  setupKeyboard() {
+    document.addEventListener('keydown', this.keyboard.bind(this));
+    document.addEventListener('keyup', this.keyboard.bind(this));
   }
 
-  private setupMouse() {
+  setupMouse() {
     this.disableRightClick();
 
-    document.addEventListener("mousemove", this.setCursorDirection.bind(this));
-    document.addEventListener("mousedown", this.mouse.bind(this));
-    document.addEventListener("mouseup", this.mouse.bind(this));
+    document.addEventListener('mousemove', this.setCursorDirection.bind(this));
+    document.addEventListener('mousedown', this.mouse.bind(this));
+    document.addEventListener('mouseup', this.mouse.bind(this));
   }
 
-  private disableRightClick() {
-    this.canvasElement.addEventListener("contextmenu", (e) => {
+  disableRightClick() {
+    this.canvasElement.addEventListener('contextmenu', (e) => {
       e.preventDefault();
     });
   }
 
-  private keyboard(e: KeyboardEvent) {
+  keyboard(e) {
     const pressedKey = this.keyMap[e.key];
 
     if (!pressedKey) {
@@ -59,32 +55,32 @@ export default class Input {
 
     e.preventDefault();
 
-    if (e.type === "keydown") {
+    if (e.type === 'keydown') {
       this.pressedKeys[pressedKey] = true;
     }
 
-    if (e.type === "keyup") {
+    if (e.type === 'keyup') {
       this.pressedKeys[pressedKey] = false;
     }
 
     if (this.pressedKeys[pressedKey]) {
       this.direction = pressedKey;
     } else if (this.pressedKeys.up) {
-      this.direction = "up";
+      this.direction = 'up';
     } else if (this.pressedKeys.right) {
-      this.direction = "right";
+      this.direction = 'right';
     } else if (this.pressedKeys.down) {
-      this.direction = "down";
+      this.direction = 'down';
     } else if (this.pressedKeys.left) {
-      this.direction = "left";
+      this.direction = 'left';
     } else {
-      this.direction = "";
+      this.direction = '';
     }
 
     this.hideCursor();
   }
 
-  private setCursorDirection(e: MouseEvent) {
+  setCursorDirection(e) {
     if (this.throttleMovement(20)) {
       return;
     }
@@ -104,24 +100,24 @@ export default class Input {
 
     if (Math.abs(xDifference) >= Math.abs(yDifference)) {
       if (xDifference > 0) {
-        this.cursorDirection = "right";
+        this.cursorDirection = 'right';
       }
       if (xDifference < 0) {
-        this.cursorDirection = "left";
+        this.cursorDirection = 'left';
       }
     } else {
       if (yDifference > 0) {
-        this.cursorDirection = "down";
+        this.cursorDirection = 'down';
       }
       if (yDifference < 0) {
-        this.cursorDirection = "up";
+        this.cursorDirection = 'up';
       }
     }
 
     this.updateCursor();
   }
 
-  private updateCursor() {
+  updateCursor() {
     if (this.lastCursorDirection !== this.cursorDirection) {
       this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
       this.canvasElement.classList.add(`cursor-${this.cursorDirection}`);
@@ -129,31 +125,31 @@ export default class Input {
     }
   }
 
-  private hideCursor() {
+  hideCursor() {
     if (this.lastCursorDirection) {
       this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
-      this.lastCursorDirection = "";
+      this.lastCursorDirection = '';
     }
   }
 
-  private mouse(e: MouseEvent) {
+  mouse(e) {
     if (e.which === this.mouseLeft) {
       e.preventDefault();
 
-      if (e.type === "mousedown") {
+      if (e.type === 'mousedown') {
         this.direction = this.cursorDirection;
         this.mousedownIntervals.push(window.setInterval(() => this.direction = this.cursorDirection, 20));
       }
 
-      if (e.type === "mouseup") {
-        this.direction = "";
+      if (e.type === 'mouseup') {
+        this.direction = '';
         this.mousedownIntervals.forEach((interval) => window.clearInterval(interval));
         this.mousedownIntervals = [];
       }
     }
   }
 
-  private throttleMovement(milliseconds: number): boolean {
+  throttleMovement(milliseconds) {
     if (window.performance.now() - this.lastMoveTime[milliseconds] < milliseconds) {
       return true;
     }

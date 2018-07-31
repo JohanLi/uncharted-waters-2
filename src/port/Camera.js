@@ -1,29 +1,22 @@
-import assets from "../assets";
-
-import { IMap, ICharacters } from "../types";
+import assets from '../assets';
 
 export default class Camera {
-  private map: IMap;
-  private characters: ICharacters;
-
-  private width: number = 1280;
-  private height: number = 800;
-  private x: number = 0;
-  private y: number = 0;
-  private canvas: HTMLCanvasElement;
-  private context: CanvasRenderingContext2D;
-
-  constructor(map: IMap, characters: ICharacters) {
+  constructor(map, characters) {
     this.map = map;
     this.characters = characters;
 
-    this.canvas = document.getElementById("camera") as HTMLCanvasElement;
-    this.context = this.canvas.getContext("2d");
+    this.width = 1280;
+    this.height = 800;
+    this.x = 0;
+    this.y = 0;
+
+    this.canvas = document.getElementById('camera');
+    this.context = this.canvas.getContext('2d');
     this.canvas.width = this.width;
     this.canvas.height = this.height;
   }
 
-  public update() {
+  update() {
     const player = this.characters.player;
 
     this.x = (player.visualX + (player.width / 2) + player.offsetX) - (this.width / 2);
@@ -46,7 +39,7 @@ export default class Camera {
     }
   }
 
-  public draw() {
+  draw() {
     this.context.drawImage(
       this.map.canvas,
       this.x, this.y,

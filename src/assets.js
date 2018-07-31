@@ -1,16 +1,14 @@
-import { IAssets } from "./types";
+import * as buildings from './assets/data/buildings.json';
+import * as ports from './assets/data/ports.json';
 
-import * as buildings from "./assets/data/buildings.json";
-import * as ports from "./assets/data/ports.json";
+import * as characters from './assets/img/characters.png';
+import * as tileset0 from './assets/img/tileset0.2.png';
+import * as tileset2 from './assets/img/tileset2.2.png';
 
-import * as characters from "./assets/img/characters.png";
-import * as tileset0 from "./assets/img/tileset0.2.png";
-import * as tileset2 from "./assets/img/tileset2.2.png";
+const isObject = (url) => typeof url === 'object';
+const isImage = (url) => url.substr(-4) === '.png';
 
-const isObject = (url: object): boolean => typeof url === "object";
-const isImage = (url: string): boolean => url.substr(-4) === ".png";
-
-const toPromise = async (url: string, key: string): Promise<object> => {
+const toPromise = async (url, key) => {
   if (isImage(url)) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -26,8 +24,8 @@ const toPromise = async (url: string, key: string): Promise<object> => {
   }
 };
 
-const load = async (unloadedAssets: IAssets): Promise<object> => {
-  const promises: Array<Promise<object>> = Object.keys(unloadedAssets).map(async (key) => {
+const load = async (unloadedAssets) => {
+  const promises = Object.keys(unloadedAssets).map(async (key) => {
     if (isObject(unloadedAssets[key])) {
       return {[key]: await load(unloadedAssets[key])};
     }
@@ -39,12 +37,12 @@ const load = async (unloadedAssets: IAssets): Promise<object> => {
   return loaded.reduce((prev, curr) => Object.assign(prev, curr), {});
 };
 
-const assets: IAssets = {};
+const assets = {};
 
-export const loadAssets = async (): Promise<object> => new Promise((resolve) => {
+export const loadAssets = async () => new Promise((resolve) => {
   const importBuildings = () => {
-    const requireContext = require.context("./", true, /\/buildings\/[a-z-]+.png$/);
-    const output: IAssets = {};
+    const requireContext = require.context('./', true, /\/buildings\/[a-z-]+.png$/);
+    const output = {};
 
     requireContext.keys().forEach((key) => {
       output[key.match(/([a-z-]+).png$/)[1]] = requireContext(key);
@@ -54,8 +52,8 @@ export const loadAssets = async (): Promise<object> => new Promise((resolve) => 
   };
 
   const importInterface = () => {
-    const requireContext = require.context("./", true, /\/(interface|cursor)\/[a-z-]+.png$/);
-    const output: IAssets = {};
+    const requireContext = require.context('./', true, /\/(interface|cursor)\/[a-z-]+.png$/);
+    const output = {};
 
     requireContext.keys().forEach((key) => {
       output[key.match(/([a-z-]+).png$/)[1]] = requireContext(key);

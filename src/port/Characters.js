@@ -1,33 +1,14 @@
-import assets from "../assets";
-import state from "../state";
-import Character from "./Character";
-import Input from "./Input";
-
-import {
-  IBuildings,
-  ICharacter,
-  ICharacterData,
-  IInput,
-  IMap,
-  IPosition,
-  IAlternativeDestinations,
-  Direction,
-} from "../types";
+import assets from '../assets';
+import state from '../state';
+import Character from './Character';
+import Input from './Input';
 
 export default class Characters {
-  public characters: ICharacter[];
-  public player: ICharacter;
-
-  private map: IMap;
-  private npcs: ICharacter[];
-  private input: IInput;
-  private lastMoveTime: number;
-
-  constructor(map: IMap) {
+  constructor(map) {
     this.map = map;
-    const buildings: IBuildings = map.buildings;
+    const buildings = map.buildings;
 
-    this.characters = assets.ports.characters.map((character: ICharacterData) => new Character(
+    this.characters = assets.ports.characters.map((character) => new Character(
       buildings[character.spawn.building].x + character.spawn.offset.x,
       buildings[character.spawn.building].y + character.spawn.offset.y,
       character.frame,
@@ -39,7 +20,7 @@ export default class Characters {
     this.input = new Input();
   }
 
-  public update() {
+  update() {
     const percentNextMove = this.percentNextMove();
 
     this.characters.forEach((character) => {
@@ -56,7 +37,7 @@ export default class Characters {
     }
   }
 
-  private percentNextMove(): number {
+  percentNextMove() {
     if (window.performance.now() - this.lastMoveTime < 67) {
       return (window.performance.now() - this.lastMoveTime) / 67;
     }
@@ -65,20 +46,20 @@ export default class Characters {
     return 1;
   }
 
-  private enteredBuilding(): boolean {
+  enteredBuilding() {
     const type = this.map.buildingAt(this.player);
 
     if (type) {
       state.enterBuilding(type);
-      this.player.move("down");
-      this.player.setFrame("down");
+      this.player.move('down');
+      this.player.setFrame('down');
       return true;
     }
 
     return false;
   }
 
-  private movePlayer() {
+  movePlayer() {
     const direction = this.input.direction;
 
     if (!direction) {
@@ -102,7 +83,7 @@ export default class Characters {
     this.player.setFrame(direction);
   }
 
-  private moveNpcs() {
+  moveNpcs() {
     this.npcs.forEach((npc) => {
       if (npc.randomMovementThrottle()) {
         return;
@@ -129,7 +110,7 @@ export default class Characters {
     });
   }
 
-  private alternativeDirection(direction: Direction, character: ICharacter): string {
+  alternativeDirection(direction, character) {
     const alternativeDestinations = this.alternativeDestinations(direction, character);
     let direction1 = true;
     let direction2 = true;
@@ -150,45 +131,42 @@ export default class Characters {
       }
     }
 
-    return "";
+    return '';
   }
 
-  private alternativeDestinations(
-    direction: Direction,
-    character: ICharacter,
-  ): (i: number) => IAlternativeDestinations[] {
-    if (direction === "up" || direction === "down") {
-      const step2Y = direction === "up"
+  alternativeDestinations(direction, character) {
+    if (direction === 'up' || direction === 'down') {
+      const step2Y = direction === 'up'
         ? character.y - 32
         : character.y + 32;
 
       return (i) => [
         {
-          direction: "right",
+          direction: 'right',
           step1: {x: character.x + (32 * i), y: character.y},
           step2: {x: character.x + (32 * i), y: step2Y},
         },
         {
-          direction: "left",
+          direction: 'left',
           step1: {x: character.x - (32 * i), y: character.y},
           step2: {x: character.x - (32 * i), y: step2Y},
         },
       ];
     }
 
-    if (direction === "right" || direction === "left") {
-      const step2X = direction === "right"
+    if (direction === 'right' || direction === 'left') {
+      const step2X = direction === 'right'
         ? character.x + 32
         : character.x - 32;
 
       return (i) => [
         {
-          direction: "up",
+          direction: 'up',
           step1: { x: character.x, y: character.y - (32 * i) },
           step2: { x: step2X, y: character.y - (32 * i) },
         },
         {
-          direction: "down",
+          direction: 'down',
           step1: { x: character.x, y: character.y + (32 * i) },
           step2: { x: step2X, y: character.y + (32 * i) },
         },
@@ -198,13 +176,13 @@ export default class Characters {
     return (i) => [];
   }
 
-  private collision(position: IPosition, self: IPosition = position): boolean {
+  collision(position, self = position) {
     return this.map.outOfBoundsAt(position)
       || this.map.tileCollisionAt(position)
       || this.collisionWith(position, self);
   }
 
-  private collisionWith(position: IPosition, self: IPosition): boolean {
+  collisionWith(position, self) {
     return this.characters.some((character) => {
       if (character === self) { return false; }
 

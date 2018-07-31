@@ -11,6 +11,14 @@
   },
   "author": "Johan Li",
   "license": "MIT",
+  "babel": {
+    "presets": [
+      [
+        "es2015",
+        "react"
+      ]
+    ]
+  },
   "eslintConfig": {
     "env": {
       "browser": true
