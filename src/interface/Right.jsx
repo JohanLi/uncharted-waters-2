@@ -3,8 +3,8 @@ import assets from '../assets';
 import state from '../state';
 
 const Right = () => {
-  const { name, economy, industry, type } = assets.ports.ports[state.portId];
-  const territory = assets.ports.types[type];
+  const { name, economy, industry, economyId } = assets.ports[state.portId];
+  const territory = assets.ports.markets[economyId];
 
   return (
     <div id='right-hud'>

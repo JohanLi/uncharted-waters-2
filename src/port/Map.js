@@ -3,7 +3,7 @@ import state from '../state';
 
 export default class Map {
   constructor() {
-    this.port = assets.ports.ports[state.portId];
+    this.port = assets.ports[state.portId];
     this.port.tiles = assets.portTilemaps.slice(state.portId * 9216, (state.portId + 1) * 9216);
 
     this.tilesize = 32;
@@ -52,32 +52,50 @@ export default class Map {
 
   setupCollision() {
     this.collisionCoordinates = {};
-    this.collisionIndices = assets.ports.tilesets[this.port.tileset].collisionIndices;
+    this.collisionIndices = assets.ports.tilesetCollisionIndices[this.port.tileset];
   }
 
   setupBuildings() {
     this.buildingCoordinates = {};
     this.buildings = {};
-    this.buildingIndices = assets.ports.tilesets[this.port.tileset].buildingIndices;
+
+    Object.keys(this.port.buildings).forEach((key) => {
+      const x = this.port.buildings[key].x * this.tilesize;
+      // Uncharted Waters 2 treats the top of the character sprite as base, while this remake has not.
+      // Will be addressed when refactoring the port code
+      const y = (this.port.buildings[key].y + 1) * this.tilesize;
+
+      this.buildings[key] = {
+        x,
+        y,
+      };
+
+      if (!this.buildingCoordinates[x]) {
+        this.buildingCoordinates[x] = {};
+      }
+
+      this.buildingCoordinates[x][y] = key;
+    });
   }
 
   draw() {
-    const tileset = assets[`tileset${this.port.tileset}`];
-
     this.port.tiles.forEach((tile, i) => {
       const targetX = (i % this.columns) * this.tilesize;
       const targetY = Math.floor(i / this.columns) * this.tilesize;
 
       this.context.drawImage(
-        tileset,
-        tile * this.tilesize, 0,
-        this.tilesize, this.tilesize,
-        targetX, targetY,
-        this.tilesize, this.tilesize,
+        assets.tileset,
+        tile * this.tilesize,
+        this.port.tileset * this.tilesize,
+        this.tilesize,
+        this.tilesize,
+        targetX,
+        targetY,
+        this.tilesize,
+        this.tilesize,
       );
 
       this.updateCollision(tile, targetX, targetY);
-      this.updateBuilding(tile, targetX, targetY);
     });
   }
 
@@ -89,27 +107,5 @@ export default class Map {
 
       this.collisionCoordinates[x][y] = tile;
     }
-  }
-
-  updateBuilding(tile, x, y) {
-    Object.keys(this.buildingIndices).forEach((key) => {
-      if (this.buildingIndices[key] === tile) {
-        delete this.buildingIndices[key];
-
-        const entranceX = x - 64;
-        const entranceY = y + 32;
-
-        this.buildings[key] = {
-          x: entranceX,
-          y: entranceY,
-        };
-
-        if (!this.buildingCoordinates[entranceX]) {
-          this.buildingCoordinates[entranceX] = {};
-        }
-
-        this.buildingCoordinates[entranceX][entranceY] = key;
-      }
-    });
   }
 }

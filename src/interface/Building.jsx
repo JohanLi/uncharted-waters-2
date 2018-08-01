@@ -13,13 +13,15 @@ const Building = observer(() => {
     return null;
   }
 
+  const key = assets.ports.buildings[type].replace(/\s+/g, '-').toLowerCase();
+
   const options = assets.buildings[type].menu;
   state.menuLength = options.length;
 
   return (
     <div id='building-hud'>
       <div id='shop'>
-        <img src={assets.buildingAssets[type].src} alt=''/>
+        <img src={assets.buildingAssets[key].src} alt=''/>
       </div>
       <Dialog id='dialog'>
         This feature is not implemented yet. Press ESC to exit this building.

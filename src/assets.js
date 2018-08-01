@@ -3,8 +3,7 @@ import * as ports from './assets/data/ports.json';
 import * as portTilemaps from './assets/data/port-tilemaps.bin';
 
 import * as characters from './assets/img/characters.png';
-import * as tileset0 from './assets/img/tileset0.2.png';
-import * as tileset2 from './assets/img/tileset2.2.png';
+import * as tileset from './assets/img/port-tilesets.png';
 
 const isObject = url => typeof url === 'object';
 const isImage = url => url.substr(-4) === '.png';
@@ -76,8 +75,7 @@ export const loadAssets = async () => new Promise((resolve) => {
     ports,
     portTilemaps,
     characters,
-    tileset0,
-    tileset2,
+    tileset,
     buildingAssets: {
       ...importBuildings(),
     },
