@@ -96,6 +96,18 @@ with open('./raw/CHIP_NO.DAT', 'rb') as file:
 for i in range(100):
     ports[i]['tileset'] = raw_bytes[i]
 
+ports['tilesetCollisionIndices'] = {}
+
+for i in range(7):
+    with open('./raw/tilesets/PORTCHIP.' + f'{(i * 2) + 1:03}', 'rb') as file:
+        raw_bytes = file.read()
+
+    ports['tilesetCollisionIndices'][i] = {
+        'leftmost': raw_bytes[1],
+        'rightmost': raw_bytes[2],
+        'full': raw_bytes[3],
+    }
+
 ports['buildings'] = [
     'Market',
     'Pub',
