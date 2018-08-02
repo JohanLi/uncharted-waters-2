@@ -5,7 +5,7 @@ const canvas = document.getElementById('camera');
 let direction = '';
 let cursorDirection = '';
 let mousedownIntervals = [];
-let cursors = [
+const cursors = [
   { direction: 'nw' },
   { direction: 'n' },
   { direction: 'ne' },
@@ -42,6 +42,12 @@ const cursorImages = () => {
   });
 };
 
+const setCursorDirection = (e) => {
+  const octant = octantRelativeNw(e);
+  cursorDirection = cursors[octant].direction;
+  canvas.style.cursor = `url(${cursors[octant].img}) 24 24, auto`;
+};
+
 const octantRelativeNw = (e) => {
   const { x, y } = e.target.getBoundingClientRect();
   const mouseX = e.clientX - x;
@@ -56,29 +62,25 @@ const octantRelativeNw = (e) => {
   return Math.floor(radiansFromNw / (Math.PI / 4));
 };
 
-const setCursorDirection = (e) => {
-  const octant = octantRelativeNw(e);
-  cursorDirection = cursors[octant].direction;
-  canvas.style.cursor = `url(${cursors[octant].img}) 24 24, auto`;
-};
-
-const leftClick = (e) => e.button === 0;
-
 const mouse = (e) => {
   if (leftClick(e)) {
     e.preventDefault();
 
     if (e.type === 'mousedown') {
       direction = cursorDirection;
-      mousedownIntervals.push(window.setInterval(() => direction = cursorDirection, 20));
+      mousedownIntervals.push(window.setInterval(() => {
+        direction = cursorDirection;
+      }, 20));
     }
 
     if (e.type === 'mouseup') {
-      mousedownIntervals.forEach((interval) => window.clearInterval(interval));
+      mousedownIntervals.forEach(interval => window.clearInterval(interval));
       mousedownIntervals = [];
     }
   }
 };
+
+const leftClick = e => e.button === 0;
 
 export default {
   setup,

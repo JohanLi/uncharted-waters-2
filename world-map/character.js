@@ -3,49 +3,49 @@ import Map from './map';
 import PercentNextMove from './percent-next-move';
 
 const directionToMetadata = {
-  'nw': {
+  nw: {
     deltaX: -1,
     deltaY: -1,
     tilesetDirection: 'left',
     alternateDirections: ['w', 'n'],
   },
-  'n': {
+  n: {
     deltaX: 0,
     deltaY: -1,
     tilesetDirection: 'up',
     alternateDirections: ['ne', 'nw'],
   },
-  'ne': {
+  ne: {
     deltaX: 1,
     deltaY: -1,
     tilesetDirection: 'right',
     alternateDirections: ['n', 'e'],
   },
-  'e': {
+  e: {
     deltaX: 1,
     deltaY: 0,
     tilesetDirection: 'right',
     alternateDirections: ['ne', 'se'],
   },
-  'se': {
+  se: {
     deltaX: 1,
     deltaY: 1,
     tilesetDirection: 'right',
     alternateDirections: ['e', 's'],
   },
-  's': {
+  s: {
     deltaX: 0,
     deltaY: 1,
     tilesetDirection: 'down',
     alternateDirections: ['se', 'sw'],
   },
-  'sw': {
+  sw: {
     deltaX: -1,
     deltaY: 1,
     tilesetDirection: 'left',
     alternateDirections: ['s', 'w'],
   },
-  'w': {
+  w: {
     deltaX: -1,
     deltaY: 0,
     tilesetDirection: 'left',
@@ -98,18 +98,18 @@ export default {
 
     tileset.direction = directionMetadata.tilesetDirection;
 
-    const noCollision = [inputDirection, ...directionMetadata.alternateDirections].some((direction) => {
-      const directionMetadata = directionToMetadata[direction];
+    const directionPossible = [inputDirection, ...directionMetadata.alternateDirections]
+      .some((direction) => {
+        const { deltaX, deltaY } = directionToMetadata[direction];
 
-      position.toX = position.x + directionMetadata.deltaX;
-      position.toY = position.y + directionMetadata.deltaY;
+        position.toX = position.x + deltaX;
+        position.toY = position.y + deltaY;
 
-      if (!Map.collisionAt({ x: position.toX, y: position.toY })) {
-        return true;
-      }
-    });
+        return !Map.collisionAt({ x: position.toX, y: position.toY });
+      });
 
-    if (!noCollision) {
+
+    if (!directionPossible) {
       position.toX = position.x;
       position.toY = position.y;
     }

@@ -7,22 +7,18 @@ const isObject = url => typeof url === 'object';
 const isImage = url => url.substr(-4) === '.png';
 const isBinary = url => url.substr(-4) === '.bin';
 
-const loadImage = (image) => new Promise((resolve, reject) => {
+const loadImage = image => new Promise((resolve, reject) => {
   const img = new Image();
   img.src = image;
 
-  img.onload = () => {
-    return resolve(img);
-  };
+  img.onload = () => resolve(img);
 
-  img.onerror = () => {
-    return reject(Error(`${image} could not be loaded!`));
-  };
+  img.onerror = () => reject(Error(`${image} could not be loaded!`));
 });
 
-const loadBinary = (binary) => fetch(binary)
-  .then((response) => response.arrayBuffer())
-  .then((response) => new Uint8Array(response));
+const loadBinary = binary => fetch(binary)
+  .then(response => response.arrayBuffer())
+  .then(response => new Uint8Array(response));
 
 const assets = {
   worldMap: {

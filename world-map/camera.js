@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import Map from './map';
 import Assets from './assets';
 import Character from './character';
@@ -42,7 +44,7 @@ const characterAndCameraRelative = () => {
     characterYRelativePadded,
     cameraXRelativePadded,
     cameraYRelativePadded,
-  }
+  };
 };
 
 const northernBoundary = () => Character.position.y < 13 || (Character.position.y === 13 && Character.position.toY === 12);

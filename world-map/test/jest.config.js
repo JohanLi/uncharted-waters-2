@@ -3,5 +3,5 @@ module.exports = {
   setupTestFrameworkScriptFile: '<rootDir>/setupFile.js',
   moduleNameMapper: {
     '\\.(mp3|png|bin)$': '<rootDir>/mocks/file.js',
-  }
+  },
 };

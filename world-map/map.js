@@ -11,15 +11,17 @@ context.imageSmoothingEnabled = false;
 context.scale(2, 2);
 
 const tiles = (x, y) => {
+  let adjustedX = x;
+
   if (x < 0) {
-    x += 2160;
+    adjustedX += 2160;
   }
 
   if (x >= 2160) {
-    x -= 2160;
+    adjustedX -= 2160;
   }
 
-  return Assets.assets.worldMap.tiles[y * 2160 + x] || 0;
+  return Assets.assets.worldMap.tiles[y * 2160 + adjustedX] || 0;
 };
 
 export default {
@@ -64,6 +66,6 @@ export default {
       tiles(x + 1, y + 1),
     ];
 
-    return tilesToCheck.some((tile) => tile >= 50);
+    return tilesToCheck.some(tile => tile >= 50);
   },
 };
