@@ -1,6 +1,5 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const path = require('path');
 
 module.exports = {
   entry: {
@@ -19,6 +18,18 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.(mp3|png|bin)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name]-[hash].[ext]",
+              useRelativePath: true,
+            },
+          },
+        ],
+      },
       {
         test: /\.scss$/,
         use: [
@@ -42,7 +53,6 @@ module.exports = {
   devServer: {
     compress: true,
     port: 8081,
-    contentBase: path.join(__dirname, 'world-map'),
   },
   performance: {
     hints: false,

@@ -1,6 +1,7 @@
 import Assets from './assets';
 import Camera from './camera';
 import Character from './character';
+import Input from './input';
 import PercentNextMove from './percent-next-move';
 
 Assets.load()
@@ -10,8 +11,9 @@ Assets.load()
       Character.update();
       Camera.update();
 
-      requestAnimationFrame(loop)
+      requestAnimationFrame(loop);
     };
 
-    requestAnimationFrame(loop)
+    Input.setup();
+    requestAnimationFrame(loop);
   });

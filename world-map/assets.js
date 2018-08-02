@@ -1,3 +1,8 @@
+import tileset from './assets/world-map-tileset.png';
+import tilesetShips from './assets/world-map-tileset-ships.png';
+import tiles from './assets/world-map.bin';
+import cursors from './assets/cursors.png';
+
 const isObject = url => typeof url === 'object';
 const isImage = url => url.substr(-4) === '.png';
 const isBinary = url => url.substr(-4) === '.bin';
@@ -21,10 +26,11 @@ const loadBinary = (binary) => fetch(binary)
 
 const assets = {
   worldMap: {
-    tileset: '/assets/world-map-tileset.png',
-    tilesetShips: '/assets/world-map-tileset-ships.png',
-    tiles: '/assets/world-map.bin',
+    tileset,
+    tilesetShips,
+    tiles,
   },
+  cursors,
 };
 
 export default {
