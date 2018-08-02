@@ -1,20 +1,19 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
     app: [
-      "babel-polyfill",
-      "whatwg-fetch",
-      "./world-map/app",
+      'babel-polyfill',
+      'whatwg-fetch',
+      './world-map/app',
     ],
   },
   output: {
     path: `${__dirname}/dist/`,
-    filename: "[name]-[hash].bundle.js",
+    filename: '[name]-[hash].bundle.js',
   },
   resolve: {
-    extensions: [".js"],
+    extensions: ['.js'],
   },
   module: {
     rules: [
@@ -22,31 +21,13 @@ module.exports = {
         test: /\.(mp3|png|bin)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              name: "[name]-[hash].[ext]",
+              name: '[name]-[hash].[ext]',
               useRelativePath: true,
             },
           },
         ],
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader",
-        ],
-      },
-      {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["es2015", "react"],
-          },
-        },
       },
     ],
   },
@@ -58,12 +39,9 @@ module.exports = {
     hints: false,
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "styles-[hash].css",
-    }),
     new HtmlWebpackPlugin({
-      template: "./world-map/index.html",
-      favicon: "./src/assets/favicon.ico",
+      template: './world-map/index.html',
+      favicon: './src/assets/favicon.ico',
     }),
   ],
 };
