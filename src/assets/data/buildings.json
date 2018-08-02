@@ -1,12 +1,5 @@
-{
-  "harbor": {
-    "menu": [
-      "Sail",
-      "Supply",
-      "Moor"
-    ]
-  },
-  "market": {
+[
+  {
     "menu": [
       "Buy Goods",
       "Sell Goods",
@@ -14,17 +7,7 @@
       "Market Rate"
     ]
   },
-  "shipyard": {
-    "menu": [
-      "New Ship",
-      "Used Ship",
-      "Repair",
-      "Sell",
-      "Remodel",
-      "Invest"
-    ]
-  },
-  "bar": {
+  {
     "menu": [
       "Recruit Crew",
       "Dismiss Crew",
@@ -34,40 +17,31 @@
       "Gamble"
     ]
   },
-  "bank": {
+  {
     "menu": [
-      "Deposit",
-      "Withdraw",
-      "Borrow",
-      "Repay"
+      "New Ship",
+      "Used Ship",
+      "Repair",
+      "Sell",
+      "Remodel",
+      "Invest"
     ]
   },
-  "church": {
+  {
     "menu": [
-      "Pray",
-      "Donate"
+      "Sail",
+      "Supply",
+      "Moor"
     ]
   },
-  "item-shop": {
-    "menu": [
-      "Buy",
-      "Sell"
-    ]
-  },
-  "guild": {
-    "menu": [
-      "Job Assignment",
-      "Country Info"
-    ]
-  },
-  "lodge": {
+  {
     "menu": [
       "Check In",
       "Gossip",
       "Port Info"
     ]
   },
-  "palace": {
+  {
     "menu": [
       "Meet Ruler",
       "Defect",
@@ -75,7 +49,33 @@
       "Ship"
     ]
   },
-  "special": {
+  {
+    "menu": [
+      "Job Assignment",
+      "Country Info"
+    ]
+  },
+  {
     "menu": []
+  },
+  {
+    "menu": [
+      "Deposit",
+      "Withdraw",
+      "Borrow",
+      "Repay"
+    ]
+  },
+  {
+    "menu": [
+      "Buy",
+      "Sell"
+    ]
+  },
+  {
+    "menu": [
+      "Pray",
+      "Donate"
+    ]
   }
-}
+]
