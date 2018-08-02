@@ -1,8 +1,9 @@
 import Assets from './assets';
-import Camera from './camera';
-import Character from './character';
-import Input from './input';
 import PercentNextMove from './percent-next-move';
+import Character from './character';
+import Camera from './camera';
+import Input from './input';
+import Sound from './sound';
 
 Assets.load()
   .then(() => {
@@ -15,5 +16,6 @@ Assets.load()
     };
 
     Input.setup();
+    Sound.setup();
     requestAnimationFrame(loop);
   });
