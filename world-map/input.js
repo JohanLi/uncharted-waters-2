@@ -5,100 +5,26 @@ const canvas = document.getElementById('camera');
 let direction = '';
 let cursorDirection = '';
 let mousedownIntervals = [];
-let cursors = {};
+let cursors = [
+  { direction: 'nw' },
+  { direction: 'n' },
+  { direction: 'ne' },
+  { direction: 'e' },
+  { direction: 'se' },
+  { direction: 's' },
+  { direction: 'sw' },
+  { direction: 'w' },
+];
 
 const setup = () => {
   canvas.addEventListener('contextmenu', (e) => {
     e.preventDefault();
   });
 
-  setupCursors();
-  setupCursorImages();
+  cursorImages();
 };
 
-const setupCursors = () => {
-  const xHalf = 1280 / 2;
-  const xEighth = 1280 / 4 / 2;
-  const yHalf = 800 / 2;
-  const yEighth = 800 / 4 / 2;
-
-  cursors = {
-    'nw': {
-      boundingRectangle: {
-        x: 0,
-        x2: xHalf - xEighth,
-        y: 0,
-        y2: yHalf - yEighth,
-      },
-    },
-    'n': {
-      boundingRectangle: {
-        x: xHalf - xEighth,
-        x2: xHalf + xEighth,
-        y: 0,
-        y2: yHalf - yEighth,
-      }
-    },
-    'ne': {
-      boundingRectangle: {
-        x: xHalf + xEighth,
-        x2: 1280,
-        y: 0,
-        y2: yHalf - yEighth,
-      }
-    },
-    'e': {
-      boundingRectangle: {
-        x: xHalf + xEighth,
-        x2: 1280,
-        y: yHalf - yEighth,
-        y2: yHalf + yEighth,
-      }
-    },
-    'se': {
-      boundingRectangle: {
-        x: xHalf + xEighth,
-        x2: 1280,
-        y: yHalf + yEighth,
-        y2: 800,
-      }
-    },
-    's': {
-      boundingRectangle: {
-        x: xHalf - xEighth,
-        x2: xHalf + xEighth,
-        y: yHalf + yEighth,
-        y2: 800,
-      }
-    },
-    'sw': {
-      boundingRectangle: {
-        x: 0,
-        x2: xHalf - xEighth,
-        y: yHalf + yEighth,
-        y2: 800,
-      }
-    },
-    'w': {
-      boundingRectangle: {
-        x: 0,
-        x2: xHalf - xEighth,
-        y: yHalf - yEighth,
-        y2: yHalf + yEighth,
-      }
-    },
-    'wheel': {
-      boundingRectangle: {
-        x: xHalf - xEighth,
-        x2: xHalf + xEighth,
-        y: yHalf - yEighth,
-        y2: yHalf + yEighth,
-      }
-    },
-  };
-};
-
-const setupCursorImages = () => {
+const cursorImages = () => {
   canvas.addEventListener('mousemove', setCursorDirection);
   document.addEventListener('mousedown', mouse);
   document.addEventListener('mouseup', mouse);
@@ -109,31 +35,31 @@ const setupCursorImages = () => {
   cursorContext.scale(2, 2);
   cursorContext.imageSmoothingEnabled = false;
 
-  Object.keys(cursors).forEach((direction, i) => {
+  cursors.forEach((cursor, i) => {
     cursorContext.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
     cursorContext.drawImage(Assets.assets.cursors, i * 24, 0, 24, 24, 0, 0, 24, 24);
-    cursors[direction].img = cursorCanvas.toDataURL();
+    cursor.img = cursorCanvas.toDataURL();
   });
 };
 
-const setCursorDirection = (e) => {
-  const {x, y} = e.target.getBoundingClientRect();
+const octantRelativeNw = (e) => {
+  const { x, y } = e.target.getBoundingClientRect();
   const mouseX = e.clientX - x;
   const mouseY = e.clientY - y;
 
-  cursorDirection = 'wheel';
+  const mouseXRelativeCenter = mouseX - (canvas.width / 2);
+  const mouseYRelativeCenter = -(mouseY - (canvas.height / 2));
+  const radiansFromCenterWithNegative = Math.atan2(mouseYRelativeCenter, mouseXRelativeCenter);
 
-  Object.keys(cursors).some((direction) => {
-    const {x, x2, y, y2} = cursors[direction].boundingRectangle;
+  const twoPi = 2 * Math.PI;
+  const radiansFromNw = (twoPi - radiansFromCenterWithNegative + Math.PI - (Math.PI / 8)) % twoPi;
+  return Math.floor(radiansFromNw / (Math.PI / 4));
+};
 
-    if (mouseX >= x && mouseX <= x2 && mouseY >= y && mouseY <= y2) {
-      cursorDirection = direction;
-      return true;
-    }
-  });
-
-
-  canvas.style.cursor = `url(${cursors[cursorDirection].img}) 24 24, auto`;
+const setCursorDirection = (e) => {
+  const octant = octantRelativeNw(e);
+  cursorDirection = cursors[octant].direction;
+  canvas.style.cursor = `url(${cursors[octant].img}) 24 24, auto`;
 };
 
 const leftClick = (e) => e.button === 0;
