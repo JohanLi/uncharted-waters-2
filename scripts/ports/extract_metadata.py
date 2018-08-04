@@ -28,7 +28,7 @@ with open('./raw/DATA1.015', 'rb') as file:
 
 byte_cursor = 20286
 
-for i in range(130):
+for i in range(1, 131):
     x = (raw_bytes[byte_cursor + 3] << 8) | raw_bytes[byte_cursor + 2]
     y = (raw_bytes[byte_cursor + 5] << 8) | raw_bytes[byte_cursor + 4]
     name = raw_bytes[byte_cursor + 6:byte_cursor + 20].decode('utf-8').strip('\u0000')
@@ -44,7 +44,7 @@ for i in range(130):
 
 byte_cursor = 22886
 
-for i in range(100):
+for i in range(1, 101):
     ports[i]['economy'] = (raw_bytes[byte_cursor + 3] << 8) | raw_bytes[byte_cursor + 2]
     ports[i]['industry'] = (raw_bytes[byte_cursor + 7] << 8) | raw_bytes[byte_cursor + 6]
     ports[i]['allegiances'] = [int(x) for x in raw_bytes[byte_cursor + 10:byte_cursor + 16]]
@@ -73,28 +73,28 @@ with open('./raw/ZA_DAT.DAT', 'rb') as file:
 
 byte_cursor = 0
 
-for i in range(101):
-    building_coordinates = {}
+for i in range(1, 102):
+    buildings = {}
 
-    for j in range(12):
+    for j in range(1, 13):
         x = raw_bytes[byte_cursor]
         y = raw_bytes[byte_cursor + 1]
 
         byte_cursor += 2
 
         if building_type_exists(x, y):
-            building_coordinates[j] = {
+            buildings[j] = {
                 'x': x,
                 'y': y,
             }
 
-    ports[i]['buildingCoordinates'] = building_coordinates
+    ports[i]['buildings'] = buildings
 
 with open('./raw/CHIP_NO.DAT', 'rb') as file:
     raw_bytes = file.read()
 
-for i in range(100):
-    ports[i]['tileset'] = raw_bytes[i]
+for i in range(1, 101):
+    ports[i]['tileset'] = raw_bytes[i - 1]
 
 ports['tilesetCollisionIndices'] = {}
 
@@ -108,19 +108,90 @@ for i in range(7):
         'full': raw_bytes[3],
     }
 
-ports['buildings'] = [
-    'Market',
-    'Pub',
-    'Shipyard',
-    'Harbor',
-    'Lodge',
-    'Palace',
-    'Guild',
-    'Misc',
-    'Bank',
-    'Item Shop',
-    'Church',
-    'Fortune Teller',
+ports['characters'] = [
+    {
+        "frame": 4,
+        "spawn": {
+            "building": 4,
+            "offset": {
+                "x": 0,
+                "y": 32
+            }
+        }
+    },
+    {
+        "frame": 12,
+        "spawn": {
+            "building": 1,
+            "offset": {
+                "x": -64,
+                "y": 32
+            }
+        }
+    },
+    {
+        "frame": 12,
+        "spawn": {
+            "building": 3,
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    },
+    {
+        "frame": 20,
+        "spawn": {
+            "building": 2,
+            "offset": {
+                "x": -64,
+                "y": 32
+            }
+        }
+    },
+    {
+        "frame": 20,
+        "spawn": {
+            "building": 5,
+            "offset": {
+                "x": -64,
+                "y": 32
+            }
+        }
+    },
+    {
+        "frame": 24,
+        "spawn": {
+            "building": 1,
+            "offset": {
+                "x": 64,
+                "y": 32
+            }
+        },
+        "isImmobile": True
+    },
+    {
+        "frame": 26,
+        "spawn": {
+            "building": 5,
+            "offset": {
+                "x": 64,
+                "y": 32
+            }
+        },
+        "isImmobile": True
+    },
+    {
+        "frame": 28,
+        "spawn": {
+            "building": 2,
+            "offset": {
+                "x": 64,
+                "y": 32
+            }
+        },
+        "isImmobile": True
+    }
 ]
 
 ports['regions'] = [
