@@ -18,9 +18,6 @@ const Building = observer(() => {
   const key = assets.ports.buildings[type].replace(/\s+/g, '-').toLowerCase();
 
   const options = assets.buildings[type].menu.map((option, i) => {
-    console.log(state.selectedMenu);
-    console.log(i);
-
     const optionClass = classNames({
       [styles.option]: true,
       [styles.active]: state.selectedMenu === i,

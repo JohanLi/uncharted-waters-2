@@ -1,9 +1,10 @@
 import renderInterface from './interface';
-import './sass/styles.scss';
 
 import { loadAssets } from './assets';
 import renderPort from './port/';
 import sound from './sound';
+
+import './app.css'
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {

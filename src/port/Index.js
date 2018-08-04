@@ -3,8 +3,6 @@ import Camera from './Camera';
 import Characters from './Characters';
 import Map from './Map';
 
-import './styles.scss';
-
 const renderPort = () => {
   const map = new Map();
   const characters = new Characters(map);

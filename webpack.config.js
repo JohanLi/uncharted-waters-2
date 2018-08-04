@@ -1,4 +1,3 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
@@ -35,9 +34,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: "style-loader"
-          },
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -45,14 +42,6 @@ module.exports = {
               localIdentName: '[path][name]__[local]--[hash:base64:5]',
             },
           },
-        ],
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
         ],
       },
       {
@@ -70,9 +59,6 @@ module.exports = {
     hints: false,
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'styles-[hash].css',
-    }),
     new HtmlWebpackPlugin({
       template: './src/assets/index.html',
       favicon: './src/assets/favicon.ico',
