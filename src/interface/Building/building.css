@@ -3,7 +3,7 @@
   height: 100%;
   position: absolute;
   background: url('../../assets/img/interface/background.png');
-  cursor: url('../../assets/img/interface/cursor/normal.png') 16 24, auto;
+  cursor: url('../../assets/img/interface/pointer.png') 0 0, auto;
 }
 
 .building {
@@ -12,23 +12,12 @@
   left: 16px;
 }
 
-#dialog {
-  width: 480px;
-  height: 256px;
-  top: 0;
-  left: 288px;
-  padding-left: 32px;
-  padding-right: 32px;
-  font-size: 24px;
-  color: #000;
-}
-
 .option {
   text-align: center;
   color: #000;
-  line-height: 32px;
   font-size: 24px;
-  margin: 16px 0;
+  padding: 2px 0;
+  margin: 8px 0;
 }
 
 .option.active {

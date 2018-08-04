@@ -1,10 +1,31 @@
-import * as port from './assets/sound/port.mp3';
+import State from './state';
 
-export default () => {
-  const sound = new Audio();
-  sound.autoplay = true;
-  sound.loop = true;
-  sound.src = port;
+import mastInTheMist from './assets/sound/mast-in-the-mist.mp3';
+import capriceForLute from './assets/sound/caprice-for-lute.mp3';
 
-  document.getElementById('app').appendChild(sound);
+const audio = new Audio();
+
+const sound = {
+  setup: () => {
+    document.addEventListener('click', () => audio.play(), {
+      once: true,
+    });
+  },
+  play: () => {
+    audio.loop = true;
+
+    if (State.portId) {
+      audio.src = mastInTheMist;
+    } else {
+      audio.src = capriceForLute;
+    }
+
+    if (!audio.paused) {
+      document.body.appendChild(audio);
+    }
+
+    audio.play();
+  },
 };
+
+export default sound;

@@ -54,8 +54,7 @@
   left: 288px;
   font-size: 24px;
   color: #000;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding: 24px 32px;
 }
 
 .buildingMenu {

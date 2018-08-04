@@ -1,12 +1,11 @@
 /* eslint-disable max-len */
 
 import Map from './map';
-import Assets from './assets';
+import Assets from '../assets';
 import Character from './character';
 import PercentNextMove from './percent-next-move';
 
-const canvas = document.getElementById('camera');
-const context = canvas.getContext('2d');
+let map;
 
 const paddedCanvas = document.createElement('canvas');
 const paddedContext = paddedCanvas.getContext('2d');
@@ -14,8 +13,6 @@ const paddedContext = paddedCanvas.getContext('2d');
 paddedCanvas.width = 1344;
 paddedCanvas.height = 896;
 paddedContext.imageSmoothingEnabled = false;
-
-let map;
 
 const characterAndCameraRelative = () => {
   const characterXInterpolationOffset = (Character.position.toX - Character.position.x) * PercentNextMove.percentNextMove;
@@ -50,7 +47,11 @@ const characterAndCameraRelative = () => {
 const northernBoundary = () => Character.position.y < 13 || (Character.position.y === 13 && Character.position.toY === 12);
 const southernBoundary = () => Character.position.y > 1065 || (Character.position.y === 1065 && Character.position.toY === 1066);
 
-export default {
+const camera = {
+  setup: () => {
+    camera.canvas = document.getElementById('camera');
+    camera.context = camera.canvas.getContext('2d');
+  },
   update: () => {
     map = Map.draw();
 
@@ -86,7 +87,7 @@ export default {
       64,
     );
 
-    context.drawImage(
+    camera.context.drawImage(
       paddedCanvas,
       cameraXRelativePadded,
       cameraYRelativePadded,
@@ -100,3 +101,5 @@ export default {
   },
   characterAndCameraRelative, // for testing
 };
+
+export default camera;

@@ -1,6 +1,6 @@
-import Camera from '../camera';
-import Character from '../character';
-import PercentNextMove from '../percent-next-move';
+import Camera from '../src/world-map/camera';
+import Character from '../src/world-map/character';
+import PercentNextMove from '../src/world-map/percent-next-move';
 
 const defaultCameraAndCharacterPlacement = {
   characterXRelativePadded: 640,

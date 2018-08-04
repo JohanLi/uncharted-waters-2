@@ -40,7 +40,7 @@ body {
 }
 
 
-:global(#center) {
+#center {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,14 +48,14 @@ body {
   min-height: 920px;
 }
 
-:global(#app) {
+#app {
   font-size: 18px;
   line-height: 1.5;
   color: #aaa;
   position: relative;
 }
 
-:global(.loading) {
+.loading {
   box-sizing: border-box;
   width: 160px;
   height: 160px;
@@ -109,22 +109,6 @@ a:hover {
   border-bottom: 1px solid #41b7d8;
 }
 
-:global(#camera) {
+#camera {
   cursor: none;
-}
-
-:global(#camera.cursor-up) {
-  cursor: url('./assets/img/interface/cursor/up.png') 24 24, auto;
-}
-
-:global(#camera.cursor-right) {
-  cursor: url('./assets/img/interface/cursor/right.png') 24 24, auto;
-}
-
-:global(#camera.cursor-down) {
-  cursor: url('./assets/img/interface/cursor/down.png') 24 24, auto;
-}
-
-:global(#camera.cursor-left) {
-  cursor: url('./assets/img/interface/cursor/left.png') 24 24, auto;
 }

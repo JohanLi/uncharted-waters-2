@@ -1,9 +1,14 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import state from '../../state';
 
 import styles from './hud.css';
 
-const Left = () => {
+const Left = observer(() => {
+  if (!state.portId) {
+    return null;
+  }
+
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const d = new Date(state.date);
 
@@ -63,6 +68,6 @@ const Left = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Left;

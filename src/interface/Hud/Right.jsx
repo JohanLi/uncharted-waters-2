@@ -1,10 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import Assets from '../../assets';
 import state from '../../state';
 
 import styles from './hud.css';
 
-const Right = () => {
+const Right = observer(() => {
+  if (!state.portId) {
+    return null;
+  }
+
   const { name, economy, industry, economyId } = Assets.assets.ports[state.portId];
   const territory = Assets.assets.ports.markets[economyId];
 
@@ -48,6 +53,6 @@ const Right = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Right;

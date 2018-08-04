@@ -41,6 +41,15 @@ const state = observable({
     document.removeEventListener('keydown', keydown);
     state.building = 0;
   }),
+
+  setSail: action(() => {
+    state.portId = 0;
+    state.building = 0;
+  }),
+
+  goAshore: action((portId) => {
+    state.portId = portId;
+  }),
 });
 
 export default state;

@@ -5,6 +5,66 @@ import portTilemaps from './assets/data/port-tilemaps.bin';
 import characters from './assets/img/characters.png';
 import tileset from './assets/img/port-tilesets.png';
 
+import worldMapTileset from './world-map/assets/world-map-tileset.png';
+import tilesetShips from './world-map/assets/world-map-tileset-ships.png';
+import tiles from './world-map/assets/world-map.bin';
+import cursors from './world-map/assets/cursors.png';
+
+import market from './assets/img/buildings/market.png';
+import pub from './assets/img/buildings/pub.png';
+import shipyard from './assets/img/buildings/shipyard.png';
+import harbor from './assets/img/buildings/harbor.png';
+import lodge from './assets/img/buildings/lodge.png';
+import palace from './assets/img/buildings/palace.png';
+import guild from './assets/img/buildings/guild.png';
+import misc from './assets/img/buildings/misc.png';
+import bank from './assets/img/buildings/bank.png';
+import itemShop from './assets/img/buildings/item-shop.png';
+import church from './assets/img/buildings/church.png';
+import fortuneTeller from './assets/img/buildings/fortune-teller.png';
+
+import background from './assets/img/interface/background.png';
+import dialogCorner from './assets/img/interface/dialog-corner.png';
+import hudLeft from './assets/img/interface/hud-left.png';
+import hudRight from './assets/img/interface/hud-right.png';
+import pointer from './assets/img/interface/pointer.png';
+
+
+const assets = {
+  buildingData,
+  ports,
+  portTilemaps,
+  characters,
+  tileset,
+  buildings: {
+    market,
+    pub,
+    shipyard,
+    harbor,
+    lodge,
+    palace,
+    guild,
+    misc,
+    bank,
+    itemShop,
+    church,
+    fortuneTeller,
+  },
+  interface: {
+    background,
+    dialogCorner,
+    hudLeft,
+    hudRight,
+    pointer,
+  },
+  worldMap: {
+    tileset: worldMapTileset,
+    tilesetShips,
+    tiles,
+  },
+  cursors,
+};
+
 const isObject = url => typeof url === 'object';
 const isImage = url => url.substr(-4) === '.png';
 const isBinary = url => url.substr(-4) === '.bin';
@@ -25,42 +85,6 @@ const loadBinary = binary => fetch(binary)
 
 const loadJson = json => fetch(json)
   .then(response => response.json());
-
-const camelCase = input => input.replace(/-([a-z])/g, match => match[1].toUpperCase());
-
-const requireBuildings = () => {
-  const requireContext = require.context('./assets/img/buildings', false, /[a-z-]+.png$/);
-  const output = {};
-
-  requireContext.keys().forEach((key) => {
-    const filenameWithoutExtension = key.match(/([a-z-]+).png$/)[1];
-    output[camelCase(filenameWithoutExtension)] = requireContext(key);
-  });
-
-  return output;
-};
-
-const requireInterface = () => {
-  const requireContext = require.context('./assets/img/interface', true, /[a-z-]+.png$/);
-  const output = {};
-
-  requireContext.keys().forEach((key) => {
-    const filenameWithoutExtension = key.match(/([a-z-]+).png$/)[1];
-    output[camelCase(filenameWithoutExtension)] = requireContext(key);
-  });
-
-  return output;
-};
-
-const assets = {
-  buildingData,
-  ports,
-  portTilemaps,
-  characters,
-  tileset,
-  buildings: requireBuildings(),
-  interface: requireInterface(),
-};
 
 export default {
   load: async () => {

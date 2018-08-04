@@ -1,4 +1,4 @@
-import Assets from './assets';
+import Assets from '../assets';
 import Character from './character';
 
 const canvas = document.createElement('canvas');
@@ -67,5 +67,18 @@ export default {
     ];
 
     return tilesToCheck.some(tile => tile >= 50);
+  },
+  portAdjacentAt: () => {
+    const x = Character.position.x;
+    const y = Character.position.y;
+
+    const ports = Assets.assets.ports;
+
+    return Object.keys(ports).find((portId) => {
+      const deltaX = Math.abs(ports[portId].x - x);
+      const deltaY = Math.abs(ports[portId].y - y);
+
+      return deltaX + deltaY <= 3 && deltaX < 3 && deltaY < 3;
+    });
   },
 };

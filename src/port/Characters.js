@@ -51,8 +51,8 @@ export default class Characters {
 
     if (id) {
       state.enterBuilding(id);
-      this.player.move('down');
-      this.player.setFrame('down');
+      this.player.move('s');
+      this.player.setFrame('s');
       return true;
     }
 
@@ -135,38 +135,38 @@ export default class Characters {
   }
 
   alternativeDestinations(direction, character) {
-    if (direction === 'up' || direction === 'down') {
-      const step2Y = direction === 'up'
+    if (direction === 'n' || direction === 's') {
+      const step2Y = direction === 'n'
         ? character.y - 32
         : character.y + 32;
 
       return (i) => [
         {
-          direction: 'right',
+          direction: 'e',
           step1: {x: character.x + (32 * i), y: character.y},
           step2: {x: character.x + (32 * i), y: step2Y},
         },
         {
-          direction: 'left',
+          direction: 'w',
           step1: {x: character.x - (32 * i), y: character.y},
           step2: {x: character.x - (32 * i), y: step2Y},
         },
       ];
     }
 
-    if (direction === 'right' || direction === 'left') {
-      const step2X = direction === 'right'
+    if (direction === 'e' || direction === 'w') {
+      const step2X = direction === 'e'
         ? character.x + 32
         : character.x - 32;
 
       return (i) => [
         {
-          direction: 'up',
+          direction: 'n',
           step1: { x: character.x, y: character.y - (32 * i) },
           step2: { x: step2X, y: character.y - (32 * i) },
         },
         {
-          direction: 'down',
+          direction: 's',
           step1: { x: character.x, y: character.y + (32 * i) },
           step2: { x: step2X, y: character.y + (32 * i) },
         },

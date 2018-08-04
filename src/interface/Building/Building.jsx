@@ -10,6 +10,12 @@ import styles from './building.css';
 
 const nameToKey = input => input[0].toLowerCase() + input.slice(1).replace(/\s/g, '');
 
+const interact = (option) => {
+  if (option === 'Sail') {
+    state.setSail();
+  }
+};
+
 const Building = observer(() => {
   const id = state.building;
 
@@ -30,6 +36,7 @@ const Building = observer(() => {
       <div
         key={option}
         className={optionClass}
+        onClick={() => interact(option)}
       >
         {option}
       </div>
@@ -42,10 +49,10 @@ const Building = observer(() => {
       <div className={styles.building}>
         <img src={Assets.assets.buildings[key].src} alt=''/>
       </div>
-      <Dialog position='building'>
+      <Dialog position="building">
         This feature is not implemented yet. Press ESC to exit this building.
       </Dialog>
-      <Dialog position='buildingMenu'>
+      <Dialog position="buildingMenu">
         {options}
       </Dialog>
     </div>
