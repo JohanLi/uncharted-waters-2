@@ -6,7 +6,7 @@ import sound from './sound';
 
 import './app.css'
 
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     await navigator.serviceWorker.register('/sw.js');
   });
