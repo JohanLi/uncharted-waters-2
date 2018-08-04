@@ -1,5 +1,7 @@
-import * as React from 'react';
-import state from '../state';
+import React from 'react';
+import state from '../../state';
+
+import styles from './hud.css';
 
 const Left = () => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -34,29 +36,29 @@ const Left = () => {
   const coins = () => state.gold % 10000;
 
   return (
-    <div id='left-hud'>
-      <div className='date'>
+    <div className={styles.leftHud}>
+      <div className={styles.date}>
         {date()}
       </div>
-      <div className='time-of-day'>
+      <div className={styles.timeOfDay}>
         {timeOfDay()}
       </div>
       <div>
         Fame in<br />Adventure
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         0
       </div>
       <div>
         Gold Coins
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         {coins()}
       </div>
       <div>
         Gold Ingots
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         {ingots()}
       </div>
     </div>

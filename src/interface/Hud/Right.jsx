@@ -1,47 +1,49 @@
-import * as React from 'react';
-import assets from '../assets';
-import state from '../state';
+import React from 'react';
+import assets from '../../assets';
+import state from '../../state';
+
+import styles from './hud.css';
 
 const Right = () => {
   const { name, economy, industry, economyId } = assets.ports[state.portId];
   const territory = assets.ports.markets[economyId];
 
   return (
-    <div id='right-hud'>
-      <div className='port'>
+    <div className={styles.rightHud}>
+      <div className={styles.port}>
         {name}
       </div>
-      <div className='time-of-day'>
+      <div className={styles.timeOfDay}>
         {territory}
       </div>
       <div>
         Economy
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         {economy}
       </div>
       <div>
         Investment
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         0
       </div>
       <div>
         Industry
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         {industry}
       </div>
       <div>
         Investment
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         0
       </div>
       <div>
         Price Index
       </div>
-      <div className='value'>
+      <div className={styles.value}>
         100%
       </div>
     </div>

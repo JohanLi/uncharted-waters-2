@@ -1,0 +1,37 @@
+.hud {
+  position: absolute;
+  background: #070707;
+  padding: 20px;
+}
+
+.leftHud {
+  composes: hud;
+  top: 0;
+  left: -180px;
+  width: 180px;
+}
+
+.rightHud {
+  composes: hud;
+  left: auto;
+  right: -200px;
+  width: 200px;
+}
+
+.value {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.value:last-child {
+  margin-bottom: 0;
+}
+
+.timeOfDay {
+  margin-bottom: 80px;
+}
+
+.date,
+.port {
+  font-size: 24px;
+}
