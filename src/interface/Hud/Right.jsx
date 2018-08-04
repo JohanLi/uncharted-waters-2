@@ -1,12 +1,12 @@
 import React from 'react';
-import assets from '../../assets';
+import Assets from '../../assets';
 import state from '../../state';
 
 import styles from './hud.css';
 
 const Right = () => {
-  const { name, economy, industry, economyId } = assets.ports[state.portId];
-  const territory = assets.ports.markets[economyId];
+  const { name, economy, industry, economyId } = Assets.assets.ports[state.portId];
+  const territory = Assets.assets.ports.markets[economyId];
 
   return (
     <div className={styles.rightHud}>

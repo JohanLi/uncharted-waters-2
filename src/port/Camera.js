@@ -1,4 +1,4 @@
-import assets from '../assets';
+import Assets from '../assets';
 
 export default class Camera {
   constructor(map, characters) {
@@ -53,7 +53,7 @@ export default class Camera {
       const y = character.visualY + character.offsetY - this.y;
 
       this.context.drawImage(
-        assets.characters,
+        Assets.assets.characters,
         character.frame * character.width, 0,
         character.width, character.height,
         x, y,

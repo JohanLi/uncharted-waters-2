@@ -3,21 +3,24 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Dialog from '../Dialog/Dialog';
-import assets from '../../assets';
+import Assets from '../../assets';
 import state from '../../state';
 
 import styles from './building.css';
 
-const Building = observer(() => {
-  const type = state.building;
+const nameToKey = input => input[0].toLowerCase() + input.slice(1).replace(/\s/g, '');
 
-  if (type === '') {
+const Building = observer(() => {
+  const id = state.building;
+
+  if (!id) {
     return null;
   }
 
-  const key = assets.ports.buildings[type].replace(/\s+/g, '-').toLowerCase();
+  const name = Assets.assets.buildingData[id].name;
+  const key = nameToKey(name);
 
-  const options = assets.buildings[type].menu.map((option, i) => {
+  const options = Assets.assets.buildingData[id].menu.map((option, i) => {
     const optionClass = classNames({
       [styles.option]: true,
       [styles.active]: state.selectedMenu === i,
@@ -37,7 +40,7 @@ const Building = observer(() => {
   return (
     <div className={styles.hud}>
       <div className={styles.building}>
-        <img src={assets.buildingAssets[key].src} alt=''/>
+        <img src={Assets.assets.buildings[key].src} alt=''/>
       </div>
       <Dialog position='building'>
         This feature is not implemented yet. Press ESC to exit this building.

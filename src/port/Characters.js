@@ -1,4 +1,4 @@
-import assets from '../assets';
+import Assets from '../assets';
 import state from '../state';
 import Character from './Character';
 import Input from './Input';
@@ -8,7 +8,7 @@ export default class Characters {
     this.map = map;
     const buildings = map.buildings;
 
-    this.characters = assets.ports.characters.map((character) => new Character(
+    this.characters = Assets.assets.ports.characters.map((character) => new Character(
       buildings[character.spawn.building].x + character.spawn.offset.x,
       buildings[character.spawn.building].y + character.spawn.offset.y,
       character.frame,
@@ -47,10 +47,10 @@ export default class Characters {
   }
 
   enteredBuilding() {
-    const type = this.map.buildingAt(this.player);
+    const id = this.map.buildingAt(this.player);
 
-    if (type) {
-      state.enterBuilding(type);
+    if (id) {
+      state.enterBuilding(id);
       this.player.move('down');
       this.player.setFrame('down');
       return true;

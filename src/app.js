@@ -1,6 +1,6 @@
 import renderInterface from './interface';
 
-import { loadAssets } from './assets';
+import Assets from './assets';
 import renderPort from './port/';
 import sound from './sound';
 
@@ -13,7 +13,7 @@ if ('serviceWorker' in navigator) {
 }
 
 (async () => {
-  await loadAssets();
+  await Assets.load();
   renderInterface();
   renderPort();
   sound();
