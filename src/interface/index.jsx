@@ -1,11 +1,9 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import Building from './Building';
-import Left from './Left';
-import Right from './Right';
-
-import './styles.scss';
+import Building from './Building/Building';
+import Left from './Hud/Left';
+import Right from './Hud/Right';
 
 const Interface = () => (
   <div id='center'>

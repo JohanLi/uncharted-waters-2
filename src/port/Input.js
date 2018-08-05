@@ -1,3 +1,6 @@
+import EventListener from '../event-listener';
+import Cursors from '../cursors';
+
 export default class Input {
   constructor() {
     this.direction = '';
@@ -10,10 +13,10 @@ export default class Input {
       left: false,
     };
     this.keyMap = {
-      w: 'up',
-      d: 'right',
-      s: 'down',
-      a: 'left',
+      w: 'n',
+      d: 'e',
+      s: 's',
+      a: 'w',
     };
     this.mouseLeft = 1;
     this.mouseSensitivity = 5;
@@ -28,22 +31,24 @@ export default class Input {
   }
 
   setupKeyboard() {
-    document.addEventListener('keydown', this.keyboard.bind(this));
-    document.addEventListener('keyup', this.keyboard.bind(this));
+    EventListener.add('keydown', this.keyboard.bind(this));
+    EventListener.add('keyup', this.keyboard.bind(this));
   }
 
   setupMouse() {
     this.disableRightClick();
 
-    document.addEventListener('mousemove', this.setCursorDirection.bind(this));
-    document.addEventListener('mousedown', this.mouse.bind(this));
-    document.addEventListener('mouseup', this.mouse.bind(this));
+    EventListener.add('mousemove', this.setCursorDirection.bind(this));
+    EventListener.add('mousedown', this.mouse.bind(this));
+    EventListener.add('mouseup', this.mouse.bind(this));
+  }
+
+  preventDefault(e) {
+    e.preventDefault();
   }
 
   disableRightClick() {
-    this.canvasElement.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-    });
+    EventListener.add('contextmenu', this.preventDefault, this.canvasElement);
   }
 
   keyboard(e) {
@@ -65,19 +70,19 @@ export default class Input {
 
     if (this.pressedKeys[pressedKey]) {
       this.direction = pressedKey;
-    } else if (this.pressedKeys.up) {
-      this.direction = 'up';
-    } else if (this.pressedKeys.right) {
-      this.direction = 'right';
-    } else if (this.pressedKeys.down) {
-      this.direction = 'down';
-    } else if (this.pressedKeys.left) {
-      this.direction = 'left';
+    } else if (this.pressedKeys.n) {
+      this.direction = 'n';
+    } else if (this.pressedKeys.e) {
+      this.direction = 'e';
+    } else if (this.pressedKeys.s) {
+      this.direction = 's';
+    } else if (this.pressedKeys.w) {
+      this.direction = 'w';
     } else {
       this.direction = '';
     }
 
-    this.hideCursor();
+    Cursors.reset();
   }
 
   setCursorDirection(e) {
@@ -100,36 +105,21 @@ export default class Input {
 
     if (Math.abs(xDifference) >= Math.abs(yDifference)) {
       if (xDifference > 0) {
-        this.cursorDirection = 'right';
+        this.cursorDirection = 'e';
       }
       if (xDifference < 0) {
-        this.cursorDirection = 'left';
+        this.cursorDirection = 'w';
       }
     } else {
       if (yDifference > 0) {
-        this.cursorDirection = 'down';
+        this.cursorDirection = 's';
       }
       if (yDifference < 0) {
-        this.cursorDirection = 'up';
+        this.cursorDirection = 'n';
       }
     }
 
-    this.updateCursor();
-  }
-
-  updateCursor() {
-    if (this.lastCursorDirection !== this.cursorDirection) {
-      this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
-      this.canvasElement.classList.add(`cursor-${this.cursorDirection}`);
-      this.lastCursorDirection = this.cursorDirection;
-    }
-  }
-
-  hideCursor() {
-    if (this.lastCursorDirection) {
-      this.canvasElement.classList.remove(`cursor-${this.lastCursorDirection}`);
-      this.lastCursorDirection = '';
-    }
+    Cursors.update(this.cursorDirection);
   }
 
   mouse(e) {

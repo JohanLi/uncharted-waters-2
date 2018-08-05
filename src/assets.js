@@ -1,92 +1,121 @@
-import * as buildings from './assets/data/buildings.json';
-import * as ports from './assets/data/ports.json';
-import * as portTilemaps from './assets/data/port-tilemaps.bin';
+import buildingData from './assets/data/buildings.json';
+import ports from './assets/data/ports.json';
+import portTilemaps from './assets/data/port-tilemaps.bin';
 
-import * as characters from './assets/img/characters.png';
-import * as tileset from './assets/img/port-tilesets.png';
+import characters from './assets/img/characters.png';
+import tileset from './assets/img/port-tilesets.png';
+
+import worldMapTileset from './world-map/assets/world-map-tileset.png';
+import tilesetShips from './world-map/assets/world-map-tileset-ships.png';
+import tiles from './world-map/assets/world-map.bin';
+import cursors from './world-map/assets/cursors.png';
+
+import market from './assets/img/buildings/market.png';
+import pub from './assets/img/buildings/pub.png';
+import shipyard from './assets/img/buildings/shipyard.png';
+import harbor from './assets/img/buildings/harbor.png';
+import lodge from './assets/img/buildings/lodge.png';
+import palace from './assets/img/buildings/palace.png';
+import guild from './assets/img/buildings/guild.png';
+import misc from './assets/img/buildings/misc.png';
+import bank from './assets/img/buildings/bank.png';
+import itemShop from './assets/img/buildings/item-shop.png';
+import church from './assets/img/buildings/church.png';
+import fortuneTeller from './assets/img/buildings/fortune-teller.png';
+
+import background from './assets/img/interface/background.png';
+import dialogCorner from './assets/img/interface/dialog-corner.png';
+import hudLeft from './assets/img/interface/hud-left.png';
+import hudRight from './assets/img/interface/hud-right.png';
+import pointer from './assets/img/interface/pointer.png';
+
+
+const assets = {
+  buildingData,
+  ports,
+  portTilemaps,
+  characters,
+  tileset,
+  buildings: {
+    market,
+    pub,
+    shipyard,
+    harbor,
+    lodge,
+    palace,
+    guild,
+    misc,
+    bank,
+    itemShop,
+    church,
+    fortuneTeller,
+  },
+  interface: {
+    background,
+    dialogCorner,
+    hudLeft,
+    hudRight,
+    pointer,
+  },
+  worldMap: {
+    tileset: worldMapTileset,
+    tilesetShips,
+    tiles,
+  },
+  cursors,
+};
 
 const isObject = url => typeof url === 'object';
 const isImage = url => url.substr(-4) === '.png';
 const isBinary = url => url.substr(-4) === '.bin';
+const isJson = url => url.substr(-5) === '.json';
 
-const toPromise = async (url, key) => {
-  if (isImage(url)) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve({ [key]: img });
-      img.onerror = reject;
-    });
-  }
+const loadImage = image => new Promise((resolve, reject) => {
+  const img = new Image();
+  img.src = image;
 
-  const response = await fetch(url);
-  let data;
+  img.onload = () => resolve(img);
 
-  if (isBinary(url)) {
-    data = await response.arrayBuffer();
-    data = new Uint8Array(data);
-  } else {
-    data = await response.json();
-  }
-
-  return { [key]: data };
-};
-
-const load = async (unloadedAssets) => {
-  const promises = Object.keys(unloadedAssets).map(async (key) => {
-    if (isObject(unloadedAssets[key])) {
-      return {[key]: await load(unloadedAssets[key])};
-    }
-
-    return toPromise(unloadedAssets[key], key);
-  });
-
-  const loaded = await Promise.all(promises);
-  return loaded.reduce((prev, curr) => Object.assign(prev, curr), {});
-};
-
-const assets = {};
-
-export const loadAssets = async () => new Promise((resolve) => {
-  const importBuildings = () => {
-    const requireContext = require.context('./', true, /\/buildings\/[a-z-]+.png$/);
-    const output = {};
-
-    requireContext.keys().forEach((key) => {
-      output[key.match(/([a-z-]+).png$/)[1]] = requireContext(key);
-    });
-
-    return output;
-  };
-
-  const importInterface = () => {
-    const requireContext = require.context('./', true, /\/(interface|cursor)\/[a-z-]+.png$/);
-    const output = {};
-
-    requireContext.keys().forEach((key) => {
-      output[key.match(/([a-z-]+).png$/)[1]] = requireContext(key);
-    });
-
-    return output;
-  };
-
-  load({
-    buildings,
-    ports,
-    portTilemaps,
-    characters,
-    tileset,
-    buildingAssets: {
-      ...importBuildings(),
-    },
-    interfaceAssets: {
-      ...importInterface(),
-    },
-  })
-    .then((loadedAssets) => {
-      Object.assign(assets, loadedAssets);
-      resolve();
-    });
+  img.onerror = () => reject(Error(`${image} could not be loaded!`));
 });
 
-export default assets;
+const loadBinary = binary => fetch(binary)
+  .then(response => response.arrayBuffer())
+  .then(response => new Uint8Array(response));
+
+const loadJson = json => fetch(json)
+  .then(response => response.json());
+
+export default {
+  load: async () => {
+    const toPromises = (a) => {
+      Object.keys(a).forEach((key) => {
+        if (isObject(a[key])) {
+          toPromises(a[key]);
+        } else if (isImage(a[key])) {
+          promises.push(loadImage(a[key]));
+        } else if (isBinary(a[key])) {
+          promises.push(loadBinary(a[key]));
+        } else if (isJson(a[key])) {
+          promises.push(loadJson(a[key]));
+        }
+      });
+    };
+
+    const updateProperties = (a) => {
+      Object.keys(a).forEach((key) => {
+        if (isObject(a[key])) {
+          updateProperties(a[key]);
+        } else {
+          a[key] = resolvedPromises.shift();
+        }
+      });
+    };
+
+    const promises = [];
+    toPromises(assets);
+    const resolvedPromises = await Promise.all(promises);
+    updateProperties(assets);
+  },
+  assets,
+};

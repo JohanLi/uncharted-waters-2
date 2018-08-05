@@ -25,21 +25,30 @@ const keydown = (e) => {
 const state = observable({
   date: '1522-05-17T08:00:00+00:00',
   gold: 49273,
-  portId: 0,
-  building: '',
+  portId: 1,
+  building: 0,
   characters: [],
   selectedMenu: 0,
   menuLength: 0,
 
-  enterBuilding: action((type) => {
+  enterBuilding: action((id) => {
     document.addEventListener('keydown', keydown);
     state.selectedMenu = 0;
-    state.building = type;
+    state.building = id;
   }),
 
   exitBuilding: action(() => {
     document.removeEventListener('keydown', keydown);
-    state.building = '';
+    state.building = 0;
+  }),
+
+  setSail: action(() => {
+    state.portId = 0;
+    state.building = 0;
+  }),
+
+  goAshore: action((portId) => {
+    state.portId = portId;
   }),
 });
 

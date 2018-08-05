@@ -24,13 +24,13 @@ export default class Character {
     this.fromY = this.y;
     this.lastDirection = direction;
 
-    if (direction === 'up') {
+    if (direction === 'n') {
       this.y -= this.tilesize;
-    } else if (direction === 'right') {
+    } else if (direction === 'e') {
       this.x += this.tilesize;
-    } else if (direction === 'down') {
+    } else if (direction === 's') {
       this.y += this.tilesize;
-    } else if (direction === 'left') {
+    } else if (direction === 'w') {
       this.x -= this.tilesize;
     }
   }
@@ -54,13 +54,13 @@ export default class Character {
   }
 
   setFrame(direction) {
-    if (direction === 'up') {
+    if (direction === 'n') {
       this.frame = this.startFrame - 4;
-    } else if (direction === 'right') {
+    } else if (direction === 'e') {
       this.frame = this.startFrame - 2;
-    } else if (direction === 'down') {
+    } else if (direction === 's') {
       this.frame = this.startFrame;
-    } else if (direction === 'left') {
+    } else if (direction === 'w') {
       this.frame = this.startFrame + 2;
     }
 
@@ -93,13 +93,13 @@ export default class Character {
     }
 
     if (newDirection < 0.25) {
-      return 'up';
+      return 'n';
     } else if (newDirection < 0.5) {
-      return 'right';
+      return 'e';
     } else if (newDirection < 0.75) {
-      return 'down';
+      return 's';
     }
 
-    return 'left';
+    return 'w';
   }
 }

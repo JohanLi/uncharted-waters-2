@@ -1,0 +1,114 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2'),
+  url(https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url(https://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexge8UUVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2'),
+  url(https://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexge8UUT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2'),
+  url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, canvas {
+  display: block;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  background: #0a0a0a;
+  min-width: 1280px;
+}
+
+
+#center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 50px);
+  min-height: 920px;
+}
+
+#app {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #aaa;
+  position: relative;
+}
+
+.loading {
+  box-sizing: border-box;
+  width: 160px;
+  height: 160px;
+  border-radius: 100%;
+  border: 20px solid #111;
+  border-top-color: #666;
+  animation: spin 1.5s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+footer {
+  color: #666;
+  min-height: 300px;
+  background: #000 url('./assets/img/artwork/side-characters.png') bottom right no-repeat;
+}
+
+footer > div {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 40px 0 40px 20px;
+  display: flex;
+}
+
+footer > div > div {
+  width: calc(50% - (450px - (100vw - 1280px) / 2) / 2);
+}
+
+@media (min-width: 1320px) {
+  footer > div {
+    padding-left: 0;
+  }
+}
+
+h2 {
+  color: #999;
+  font-size: 18px;
+  margin: 0;
+}
+
+a {
+  color: #41b7d8;
+  text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 1px solid #41b7d8;
+}
+
+#camera {
+  cursor: none;
+}

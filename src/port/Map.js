@@ -1,10 +1,12 @@
-import assets from '../assets';
+import Assets from '../assets';
 import state from '../state';
 
 export default class Map {
   constructor() {
-    this.port = assets.ports[state.portId];
-    this.port.tiles = assets.portTilemaps.slice(state.portId * 9216, (state.portId + 1) * 9216);
+    this.port = Assets.assets.ports[state.portId];
+    const portTilemapsFrom = (state.portId - 1) * 9216;
+    const portTilemapsTo = state.portId * 9216;
+    this.port.tiles = Assets.assets.portTilemaps.slice(portTilemapsFrom, portTilemapsTo);
 
     this.tilesize = 32;
     this.columns = 96;
@@ -52,7 +54,7 @@ export default class Map {
 
   setupCollision() {
     this.collisionCoordinates = {};
-    this.collisionIndices = assets.ports.tilesetCollisionIndices[this.port.tileset];
+    this.collisionIndices = Assets.assets.ports.tilesetCollisionIndices[this.port.tileset];
   }
 
   setupBuildings() {
@@ -84,7 +86,7 @@ export default class Map {
       const targetY = Math.floor(i / this.columns) * this.tilesize;
 
       this.context.drawImage(
-        assets.tileset,
+        Assets.assets.tileset,
         tile * this.tilesize,
         this.port.tileset * this.tilesize,
         this.tilesize,
