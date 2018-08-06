@@ -4,7 +4,6 @@
   "description": "Remaking and reworking Uncharted Waters: New Horizons (大航海時代II) using web technologies",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
-    "start-world-map": "webpack-dev-server --config webpack-world-map.config.js --mode development --open",
     "lint": "eslint world-map/**/*.{js,jsx}",
     "test": "jest --config=test/jest.config.js",
     "setup": "ansible-playbook -i ansible/hosts ansible/setup.yml",

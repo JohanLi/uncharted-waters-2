@@ -85,9 +85,21 @@ module.exports = (env, argv) => {
   if (argv.mode === 'production') {
     config.plugins.push(
       new WorkboxPlugin.GenerateSW({
-        swDest: 'sw.js',
+        swDest: 'service-worker.js',
         clientsClaim: true,
         skipWaiting: true,
+        runtimeCaching: [
+          {
+            urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
+            handler: 'cacheFirst',
+            options: {
+              cacheName: 'google-fonts',
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
       }),
     );
   }
