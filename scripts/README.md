@@ -13,9 +13,17 @@ Using this directory as root:
 
     pip install -r requirements.txt
 
-The scripts to run are **draw_tilesets.py**,  **draw_world_map.py** and
-**draw_winds_current_anomalies.py**, and will produce files in a newly
-created **output** directory.
+The scripts available to run, which all produce files in a newly created
+**output** directory are:
+
+* draw_tilesets.py
+* draw_world_map.py
+* draw_winds_current_anomalies.py
+* combine_world_map_parts.py
+* ports/combine_tilemaps.py
+* ports/draw_tilesets.py
+* ports/extract_metadata.py
+* ships/extract_metadata.py
 
 Python 3.6.5 was used.
 
