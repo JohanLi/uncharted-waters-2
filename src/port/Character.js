@@ -4,7 +4,6 @@ export default class Character {
     this.height = 64;
     this.offsetX = 0;
     this.offsetY = -32;
-    this.isImmobile;
     this.tilesize = 32;
 
     this.x = x;
