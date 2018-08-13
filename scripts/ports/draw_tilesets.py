@@ -106,9 +106,10 @@ def get(tileset, time='day'):
 tilesets = []
 
 for i in range(7):
-    tileset = get(i)
-    tileset = numpy.concatenate(tileset, axis=1)
-    tilesets.append(tileset)
+    for time in color_map.keys():
+        tileset = get(i, time)
+        tileset = numpy.concatenate(tileset, axis=1)
+        tilesets.append(tileset)
 
 tileset = numpy.concatenate(tilesets, axis=0)
 img = Image.fromarray(tileset)

@@ -1,196 +1,179 @@
-import Assets from '../assets';
-import state from '../state';
-import Character from './Character';
+import Data from './data';
+import State from '../state';
+import Character from './character';
 import Input from './input';
 import Map from './map';
 
+const collision = (position, character) => Map.collisionAt(position)
+  || Map.outOfBoundsAt(position)
+  || collisionWith(position, character);
 
-const percentNextMove = () => {
-  if (window.performance.now() - characters.lastMoveTime < 67) {
-    return (window.performance.now() - characters.lastMoveTime) / 67;
+const collisionWith = (position, self) => characters.characters.some((character) => {
+  if (character === self) {
+    return false;
   }
 
-  characters.lastMoveTime = window.performance.now();
-  return 1;
-};
+  const { x, y } = character.destination();
 
-const enteredBuilding = () => {
-  const id = Map.buildingAt(characters.player);
+  const distanceX = Math.abs(position.x - x);
+  const distanceY = Math.abs(position.y - y);
 
-  if (id) {
-    state.enterBuilding(id);
-    characters.player.move('s');
-    characters.player.setFrame('s');
-    return true;
-  }
-
-  return false;
-};
-
-const movePlayer = () => {
-  const direction = Input.direction;
-
-  if (!direction) {
-    return;
-  }
-
-  characters.player.move(direction);
-
-  if (collision(characters.player)) {
-    characters.player.undoMove();
-
-    const a = alternativeDirection(direction, characters.player);
-
-    if (a) {
-      characters.player.move(a);
-      characters.player.setFrame(a);
-      return;
-    }
-  }
-
-  characters.player.setFrame(direction);
-};
-
-const moveNpcs = () => {
-  characters.npcs.forEach((npc) => {
-    if (npc.randomMovementThrottle()) {
-      return;
-    }
-
-    if (npc.isImmobile) {
-      npc.animate();
-      return;
-    }
-
-    const direction = npc.randomDirection();
-
-    if (!direction) {
-      return;
-    }
-
-    npc.move(direction);
-
-    if (collision(npc)) {
-      npc.undoMove();
-    }
-
-    npc.setFrame(direction);
-  });
-};
+  return distanceX < 2 && distanceY < 2;
+});
 
 const alternativeDirection = (direction, character) => {
-  const a = alternativeDestinations(direction, character);
-  let direction1 = true;
-  let direction2 = true;
+  let firstDirectionPossible = true;
+  let secondDirectionPossible = true;
 
   for (let i = 1; i <= 19; i += 1) {
-    const destinations = a(i);
+    const destinations = alternativeDestinations(direction, character.position())(i);
 
-    if (!direction1 || collision(destinations[0].step1, character)) {
-      direction1 = false;
-    } else if (!collision(destinations[0].step2, character)) {
-      return destinations[0].direction;
+    if (firstDirectionPossible) {
+      if (collision(destinations[0].step1, character)) {
+        firstDirectionPossible = false;
+      } else if (!collision(destinations[0].step2, character)) {
+        return destinations[0].direction;
+      }
     }
 
-    if (!direction2 || collision(destinations[1].step1, character)) {
-      direction2 = false;
-    } else if (!collision(destinations[1].step2, character)) {
-      return destinations[1].direction;
+    if (secondDirectionPossible) {
+      if (collision(destinations[1].step1, character)) {
+        secondDirectionPossible = false;
+      } else if (!collision(destinations[1].step2, character)) {
+        return destinations[1].direction;
+      }
     }
   }
 
   return '';
 };
 
-const alternativeDestinations = (direction, character) => {
+const alternativeDestinations = (direction, position) => {
   if (direction === 'n' || direction === 's') {
-    const step2Y = direction === 'n'
-      ? character.y - 32
-      : character.y + 32;
+    const secondStepY = direction === 'n' ? position.y - 1 : position.y + 1;
 
-    return (i) => [
+    return i => [
       {
         direction: 'e',
-        step1: {x: character.x + (32 * i), y: character.y},
-        step2: {x: character.x + (32 * i), y: step2Y},
+        step1: {
+          x: position.x + i,
+          y: position.y,
+        },
+        step2: {
+          x: position.x + i,
+          y: secondStepY,
+        },
       },
       {
         direction: 'w',
-        step1: {x: character.x - (32 * i), y: character.y},
-        step2: {x: character.x - (32 * i), y: step2Y},
+        step1: {
+          x: position.x - i,
+          y: position.y,
+        },
+        step2: {
+          x: position.x - i,
+          y: secondStepY,
+        },
       },
     ];
   }
 
   if (direction === 'e' || direction === 'w') {
-    const step2X = direction === 'e'
-      ? character.x + 32
-      : character.x - 32;
+    const secondStepX = direction === 'e' ? position.x + 1 : position.x - 1;
 
-    return (i) => [
+    return i => [
       {
         direction: 'n',
-        step1: { x: character.x, y: character.y - (32 * i) },
-        step2: { x: step2X, y: character.y - (32 * i) },
+        step1: {
+          x: position.x,
+          y: position.y - i,
+        },
+        step2: {
+          x: secondStepX,
+          y: position.y - i,
+        },
       },
       {
         direction: 's',
-        step1: { x: character.x, y: character.y + (32 * i) },
-        step2: { x: step2X, y: character.y + (32 * i) },
+        step1: {
+          x: position.x,
+          y: position.y + i,
+        },
+        step2: {
+          x: secondStepX,
+          y: position.y + i,
+        },
       },
     ];
   }
 
-  return (i) => [];
+  return () => [];
 };
 
-const collision = (position, self = position) => {
-  return Map.outOfBoundsAt(position)
-    || Map.tileCollisionAt(position)
-    || collisionWith(position, self);
-};
+const enteredBuilding = () => {
+  const id = Map.buildingAt(characters.player().destination());
 
-const collisionWith = (position, self) => {
-  return characters.characters.some((character) => {
-    if (character === self) { return false; }
+  if (id) {
+    State.enterBuilding(id);
+    characters.player().update();
+    characters.player().move('s', false);
+    return true;
+  }
 
-    const xDifference = position.x - character.x;
-    const yDifference = position.y - character.y;
-    const xCollision = xDifference < character.width && xDifference > -character.width;
-    const yCollision = yDifference < character.height && yDifference > -character.height;
-
-    return xCollision && yCollision;
-  });
+  return false;
 };
 
 const characters = {
-  setup: () => {
-    characters.characters = Assets.assets.ports.characters.map((character) => new Character(
-      Map.buildings[character.spawn.building].x + character.spawn.offset.x,
-      Map.buildings[character.spawn.building].y + character.spawn.offset.y,
-      character.frame,
-      character.isImmobile,
-    ));
+  setup() {
+    characters.characters = Object.keys(Data.characters).map((id) => {
+      const {
+        spawn,
+        startFrame,
+        isPlayer = false,
+        isImmobile = false,
+      } = Data.characters[id];
+      const building = Data.ports[State.portId].buildings[spawn.building];
 
-    characters.player = characters.characters[0];
-    characters.npcs = characters.characters.slice(1);
+      return Character({
+        x: building.x + spawn.offset.x,
+        y: building.y + spawn.offset.y,
+        startFrame,
+        isPlayer,
+        isImmobile,
+      });
+    });
   },
   update() {
-    const p = percentNextMove();
+    if (enteredBuilding()) {
+      return;
+    }
 
     characters.characters.forEach((character) => {
-      character.interpolatePosition(p);
-    });
+      character.update();
 
-    if (p === 1) {
-      if (enteredBuilding()) {
-        return;
+      let direction;
+
+      if (character.isPlayer) {
+        ({ direction } = Input);
+      } else if (!character.isImmobile) {
+        direction = character.randomDirection();
       }
 
-      movePlayer();
-      moveNpcs();
-    }
-  }
+      const hasMoved = character.move(direction);
+
+      if (hasMoved && collision(character.destination(), character)) {
+        character.undoMove();
+
+        if (character.isPlayer) {
+          const newDirection = alternativeDirection(direction, character);
+          character.move(newDirection, false);
+        }
+      }
+    });
+  },
+  player() {
+    return characters.characters.find(character => character.isPlayer);
+  },
 };
 
 export default characters;

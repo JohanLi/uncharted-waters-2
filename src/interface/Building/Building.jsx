@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import classNames from 'classnames';
 
 import Dialog from '../Dialog/Dialog';
-import Assets from '../../assets';
 import State from '../../state';
 
 import styles from './building.css';
@@ -11,10 +10,12 @@ import styles from './building.css';
 const Building = observer(class Building extends React.Component {
   componentDidMount() {
     document.addEventListener('keydown', State.buildingKeydown);
+    document.addEventListener('mousedown', State.buildingMousedown);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', State.buildingKeydown);
+    document.removeEventListener('mousedown', State.buildingMousedown);
   }
 
   render() {

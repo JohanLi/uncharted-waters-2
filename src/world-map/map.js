@@ -1,4 +1,5 @@
 import Assets from '../assets';
+import Data from '../port/data';
 import Character from './character';
 
 const canvas = document.createElement('canvas');
@@ -72,7 +73,7 @@ export default {
     const x = Character.position.x;
     const y = Character.position.y;
 
-    const ports = Assets.assets.ports;
+    const { ports } = Data;
 
     return Object.keys(ports).find((portId) => {
       const deltaX = Math.abs(ports[portId].x - x);

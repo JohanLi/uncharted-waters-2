@@ -1,9 +1,6 @@
-import buildingData from './assets/data/buildings.json';
-import ports from './assets/data/ports.json';
+import portTilesets from './assets/img/port-tilesets.png';
 import portTilemaps from './assets/data/port-tilemaps.bin';
-
-import characters from './assets/img/characters.png';
-import tileset from './assets/img/port-tilesets.png';
+import portCharacters from './assets/img/characters.png';
 
 import worldMapTileset from './world-map/assets/world-map-tileset.png';
 import tilesetShips from './world-map/assets/world-map-tileset-ships.png';
@@ -31,11 +28,11 @@ import pointer from './assets/img/interface/pointer.png';
 
 
 const assets = {
-  buildingData,
-  ports,
-  portTilemaps,
-  characters,
-  tileset,
+  port: {
+    tilesets: portTilesets,
+    tilemaps: portTilemaps,
+    characters: portCharacters,
+  },
   buildings: {
     market,
     pub,

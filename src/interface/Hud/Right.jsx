@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import Assets from '../../assets';
+import Data from '../../port/data';
 import state from '../../state';
 
 import styles from './hud.css';
@@ -10,8 +10,8 @@ const Right = observer(() => {
     return null;
   }
 
-  const { name, economy, industry, economyId } = Assets.assets.ports[state.portId];
-  const territory = Assets.assets.ports.markets[economyId];
+  const { name, economy, industry, economyId } = Data.ports[state.portId];
+  const territory = Data.markets[economyId];
 
   return (
     <div className={styles.rightHud}>

@@ -1,111 +1,99 @@
 import Assets from '../assets';
-import state from '../state';
-
-const setupCollision = () => {
-  map.collisionCoordinates = {};
-  map.collisionIndices = Assets.assets.ports.tilesetCollisionIndices[map.port.tileset];
-};
-
-const setupBuildings = () => {
-  map.buildingCoordinates = {};
-  map.buildings = {};
-
-  Object.keys(map.port.buildings).forEach((key) => {
-    const x = map.port.buildings[key].x * map.tilesize;
-    // Uncharted Waters 2 treats the top of the character sprite as base, while this remake has not.
-    // Will be addressed when refactoring the port code
-    const y = (map.port.buildings[key].y + 1) * map.tilesize;
-
-    map.buildings[key] = {
-      x,
-      y,
-    };
-
-    if (!map.buildingCoordinates[x]) {
-      map.buildingCoordinates[x] = {};
-    }
-
-    map.buildingCoordinates[x][y] = key;
-  });
-};
-
-const updateCollision = (tile, x, y) => {
-  if (tile >= map.collisionIndices.leftmost) {
-    if (!map.collisionCoordinates[x]) {
-      map.collisionCoordinates[x] = {};
-    }
-
-    map.collisionCoordinates[x][y] = tile;
-  }
-};
+import Data from './data';
+import State from '../state';
 
 const map = {
   setup: () => {
-    map.port = Assets.assets.ports[state.portId];
-    const portTilemapsFrom = (state.portId - 1) * 9216;
-    const portTilemapsTo = state.portId * 9216;
-    map.port.tiles = Assets.assets.portTilemaps.slice(portTilemapsFrom, portTilemapsTo);
-
-    map.tilesize = 32;
+    map.tilesize = 16;
     map.columns = 96;
     map.rows = 96;
+    map.scale = 2;
 
-    map.canvas = document.createElement('canvas');
-    map.context = map.canvas.getContext('2d');
-    map.canvas.width = map.columns * map.tilesize;
-    map.canvas.height = map.rows * map.tilesize;
+    const { portId } = State;
+    const port = Data.ports[portId];
 
-    setupCollision();
-    setupBuildings();
-    map.draw();
-  },
-  buildingAt: (position) => {
-    return ((map.buildingCoordinates || {})[position.x] || {})[position.y];
-  },
-  outOfBoundsAt: (position) => {
-    return Boolean(
-      position.x < 0 || (position.x + 64) - map.tilesize >= map.canvas.width
-      || position.y - 32 < 0 || position.y >= map.canvas.height,
+    map.tilemap = Assets.assets.port.tilemaps.slice(
+      portId * 9216 - 9216,
+      portId * 9216,
     );
-  },
-  tileCollisionAt: (position) => {
-    const collision = ((map.collisionCoordinates || {})[position.x] || {})[position.y];
-    const collisionRight = ((map.collisionCoordinates || {})[(position.x + 64) - map.tilesize] || {})[position.y];
 
-    if (collision) {
-      const isLeftmost = collision >= map.collisionIndices.leftmost
-        && collision < map.collisionIndices.rightmost;
-      return !isLeftmost;
+    map.tilesets = Assets.assets.port.tilesets;
+    map.tileset = port.tileset;
+    map.buildings = port.buildings;
+    map.collisionIndices = Data.tilesets[map.tileset].collisionIndices;
+
+    map.canvas = {};
+  },
+  get: () => {
+    const timeOfDay = State.timeOfDay();
+
+    if (!map.canvas[timeOfDay]) {
+      map.canvas[timeOfDay] = draw(timeOfDay);
     }
 
-    if (collisionRight) {
-      const isRightmost = collisionRight >= map.collisionIndices.rightmost
-        && collisionRight < map.collisionIndices.full;
-      return !isRightmost;
-    }
-
-    return false;
+    return map.canvas[timeOfDay];
   },
-  draw: () => {
-    map.port.tiles.forEach((tile, i) => {
-      const targetX = (i % map.columns) * map.tilesize;
-      const targetY = Math.floor(i / map.columns) * map.tilesize;
+  buildingAt: position => Object.keys(map.buildings).find((id) => {
+    const { x, y } = map.buildings[id];
+    return position.x === x && position.y === y;
+  }),
+  outOfBoundsAt: (position) => {
+    const { x, y } = position;
+    return (x < 0 || x + 1 >= map.columns) || (y < 0 || y + 1 >= map.rows);
+  },
+  collisionAt: (position) => {
+    const offsetsToCheck = [
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+    ];
 
-      map.context.drawImage(
-        Assets.assets.tileset,
-        tile * map.tilesize,
-        map.port.tileset * map.tilesize,
-        map.tilesize,
-        map.tilesize,
-        targetX,
-        targetY,
-        map.tilesize,
-        map.tilesize,
-      );
+    return offsetsToCheck.some(({ x, y }, i) => {
+      const tile = tiles(position.x + x, position.y + y);
 
-      updateCollision(tile, targetX, targetY);
+      if (tile >= map.collisionIndices.either) {
+        return true;
+      }
+
+      if (i === 0) {
+        return tile >= map.collisionIndices.left;
+      }
+
+      return tile >= map.collisionIndices.right && tile < map.collisionIndices.left;
     });
   },
 };
+
+const tiles = (x, y) => map.tilemap[y * map.columns + x];
+
+const draw = (timeOfDay) => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  canvas.width = map.columns * map.tilesize * 2;
+  canvas.height = map.rows * map.tilesize * 2;
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.scale(map.scale, map.scale);
+
+  for (let x = 0; x < map.columns; x += 1) {
+    for (let y = 0; y < map.rows; y += 1) {
+      ctx.drawImage(
+        map.tilesets,
+        tiles(x, y) * map.tilesize,
+        tilesetOffset(timeOfDay) * map.tilesize,
+        map.tilesize,
+        map.tilesize,
+        x * map.tilesize,
+        y * map.tilesize,
+        map.tilesize,
+        map.tilesize,
+      );
+    }
+  }
+
+  return canvas;
+};
+
+const timesOfDay = ['dawn', 'day', 'dusk', 'night'];
+const tilesetOffset = timeOfDay => map.tileset * timesOfDay.length + timesOfDay.indexOf(timeOfDay);
 
 export default map;

@@ -4,8 +4,8 @@ import State from './state';
 import Assets from './assets';
 import Cursors from './cursors';
 import EventListener from './event-listener';
-import Port from './port/';
-import WorldMap from './world-map/';
+import Port from './port';
+import WorldMap from './world-map';
 import Sound from './sound';
 
 import './app.css?inline';

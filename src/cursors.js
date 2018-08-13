@@ -1,14 +1,14 @@
 import Assets from './assets';
 
 const cursors = {
-  'nw': {},
-  'n': {},
-  'ne': {},
-  'e': {},
-  'se': {},
-  's': {},
-  'sw': {},
-  'w': {},
+  nw: {},
+  n: {},
+  ne: {},
+  e: {},
+  se: {},
+  s: {},
+  sw: {},
+  w: {},
 };
 
 let camera;
@@ -44,4 +44,4 @@ export default {
     camera.style.removeProperty('cursor');
   },
   cursors,
-}
+};

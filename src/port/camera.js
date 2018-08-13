@@ -1,63 +1,66 @@
 import Assets from '../assets';
 import Map from './map';
 import Characters from './characters';
+import PercentNextMove from './percent-next-move';
 
 const camera = {
   setup: () => {
-    camera.width = 1280;
-    camera.height = 800;
+    camera.width = 40;
+    camera.height = 25;
     camera.x = 0;
     camera.y = 0;
 
     camera.canvas = document.getElementById('camera');
     camera.context = camera.canvas.getContext('2d');
-    camera.canvas.width = camera.width;
-    camera.canvas.height = camera.height;
+    camera.canvas.width = camera.width * 32;
+    camera.canvas.height = camera.height * 32;
   },
   update: () => {
-    const player = Characters.player;
-
-    camera.x = (player.visualX + (player.width / 2) + player.offsetX) - (camera.width / 2);
-    camera.y = (player.visualY + (player.height / 2) + player.offsetY) - (camera.height / 2);
+    const player = Characters.player();
+    const { x, y } = player.position(PercentNextMove.percentNextMove);
+    camera.x = x + (player.width / 2) - (camera.width / 2);
+    camera.y = y + (player.height / 2) - (camera.height / 2);
 
     if (camera.x < 0) {
       camera.x = 0;
     }
 
-    if (camera.x + camera.width > 3072) {
-      camera.x = 3072 - camera.width;
+    if (camera.x + camera.width > 96) {
+      camera.x = 96 - camera.width;
     }
 
-    if (camera.y + camera.height > 3072) {
-      camera.y = 3072 - camera.height;
+    if (camera.y + camera.height > 96) {
+      camera.y = 96 - camera.height;
     }
 
     if (camera.y < 0) {
       camera.y = 0;
     }
+
+    draw();
   },
-  draw: () => {
+};
+
+const draw = () => {
+  camera.context.drawImage(
+    Map.get(),
+    Math.floor(camera.x * 32), Math.floor(camera.y * 32),
+    camera.canvas.width, camera.canvas.height,
+    0, 0,
+    camera.canvas.width, camera.canvas.height,
+  );
+
+  Characters.characters.forEach((character) => {
+    const { x, y } = character.position(PercentNextMove.percentNextMove);
+
     camera.context.drawImage(
-      Map.canvas,
-      camera.x, camera.y,
-      camera.width, camera.height,
-      0, 0,
-      camera.width, camera.height,
+      Assets.assets.port.characters,
+      character.frame() * character.width * 32, 0,
+      character.width * 32, character.height * 32,
+      Math.floor((x - camera.x) * 32), Math.floor((y - camera.y) * 32),
+      character.width * 32, character.height * 32,
     );
-
-    Characters.characters.forEach((character) => {
-      const x = character.visualX + character.offsetX - camera.x;
-      const y = character.visualY + character.offsetY - camera.y;
-
-      camera.context.drawImage(
-        Assets.assets.characters,
-        character.frame * character.width, 0,
-        character.width, character.height,
-        x, y,
-        character.width, character.height,
-      );
-    });
-  },  
+  });
 };
 
 export default camera;

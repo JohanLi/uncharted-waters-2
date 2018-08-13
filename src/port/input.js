@@ -99,12 +99,16 @@ const mouse = (e) => {
 
     if (e.type === 'mousedown') {
       input.direction = input.cursorDirection;
-      input.mousedownIntervals.push(window.setInterval(() => input.direction = input.cursorDirection, 20));
+      input.mousedownIntervals.push(
+        window.setInterval(() => {
+          input.direction = input.cursorDirection;
+        }, 20),
+      );
     }
 
     if (e.type === 'mouseup') {
       input.direction = '';
-      input.mousedownIntervals.forEach((interval) => window.clearInterval(interval));
+      input.mousedownIntervals.forEach(interval => window.clearInterval(interval));
       input.mousedownIntervals = [];
     }
   }

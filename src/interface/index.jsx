@@ -16,12 +16,12 @@ const Interface = observer(() => {
   }
 
   return (
-    <div id='center'>
-      <main id='app'>
+    <div id="center">
+      <main id="app">
         <Left />
         <Right />
         {building}
-        <canvas id='camera' width='1280' height='800' />
+        <canvas id="camera" width="1280" height="800" />
       </main>
     </div>
   );
