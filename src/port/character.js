@@ -35,7 +35,8 @@ export default (options) => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
   };
 
-  let lastDirection;
+  let currentDirection = 's';
+  let directionWasCollision = false;
   let movesToSkip;
   let movesSkipped;
 
@@ -60,7 +61,8 @@ export default (options) => {
       toX = x + deltaX;
       toY = y + deltaY;
 
-      lastDirection = direction;
+      currentDirection = direction;
+      directionWasCollision = false;
 
       if (shouldAnimate) {
         animate();
@@ -68,8 +70,12 @@ export default (options) => {
 
       return true;
     },
-    x,
-    y,
+    undoMove() {
+      toX = x;
+      toY = y;
+
+      directionWasCollision = true;
+    },
     update() {
       if (isImmobile && !throttleMovement()) {
         animate();
@@ -84,11 +90,12 @@ export default (options) => {
       }
 
       const sameDirection = Math.random();
-      const newDirection = Math.random();
 
-      if (lastDirection && sameDirection < 0.75) {
-        return lastDirection;
+      if (!directionWasCollision && sameDirection < 0.75) {
+        return currentDirection;
       }
+
+      const newDirection = Math.random();
 
       if (newDirection < 0.25) {
         return 'n';
@@ -116,17 +123,11 @@ export default (options) => {
         y: toY,
       };
     },
-    undoMove() {
-      toX = x;
-      toY = y;
-    },
     frame: () => {
-      if (!directionToMetadata[lastDirection]) {
-        return startFrame + frameAlternate;
-      }
-
-      return startFrame + directionToMetadata[lastDirection].frameOffset + frameAlternate;
+      return startFrame + directionToMetadata[currentDirection].frameOffset + frameAlternate;
     },
+    x,
+    y,
     isPlayer,
     isImmobile,
     width,
