@@ -3,9 +3,10 @@ import Data from './port/data';
 import Assets from './assets';
 
 const nameToKey = input => input[0].toLowerCase() + input.slice(1).replace(/\s/g, '');
+const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const state = observable({
-  date: '1522-05-17T08:00:00+00:00',
+  date: new Date(1522, 4, 17, 8),
   gold: 49273,
   portId: 1,
   building: 0,
@@ -13,7 +14,7 @@ const state = observable({
   buildingMenuSelected: 0,
 
   timeOfDay: () => {
-    const hour = new Date(state.date).getUTCHours();
+    const hour = state.date.getHours();
 
     if (hour >= 4 && hour < 8) {
       return 'dawn';
@@ -41,6 +42,9 @@ const state = observable({
   }),
 
   exitBuilding: action(() => {
+    const minutesPassed = sample([40, 60, 80]) * 60000;
+    state.date = new Date(state.date.getTime() + minutesPassed);
+
     state.building = 0;
   }),
 

@@ -123,7 +123,7 @@ export default (options) => {
         y: toY,
       };
     },
-    frame: () => {
+    frame() {
       return startFrame + directionToMetadata[currentDirection].frameOffset + frameAlternate;
     },
     x,

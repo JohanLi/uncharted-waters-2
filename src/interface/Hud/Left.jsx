@@ -1,22 +1,21 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import state from '../../state';
+import State from '../../state';
 
 import styles from './hud.css';
 
 const Left = observer(() => {
-  if (!state.portId) {
+  if (!State.portId) {
     return null;
   }
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const d = new Date(state.date);
 
   const date = () =>
-    `${months[d.getUTCMonth()]} ${d.getUTCDate()} ${d.getUTCFullYear()}`;
+    `${months[State.date.getMonth()]} ${State.date.getDate()} ${State.date.getFullYear()}`;
 
   const timeOfDay = () => {
-    let hours = d.getUTCHours();
+    let hours = State.date.getHours();
     let period = 'AM';
 
     if (hours >= 12) {
@@ -28,7 +27,7 @@ const Left = observer(() => {
       hours = 12;
     }
 
-    const minutes = d.getUTCMinutes();
+    const minutes = State.date.getMinutes();
 
     if (minutes < 10) {
       return `${hours}:0${minutes} ${period}`;
@@ -37,8 +36,8 @@ const Left = observer(() => {
     return `${hours}:${minutes} ${period}`;
   };
 
-  const ingots = () => Math.floor(state.gold / 10000);
-  const coins = () => state.gold % 10000;
+  const ingots = () => Math.floor(State.gold / 10000);
+  const coins = () => State.gold % 10000;
 
   return (
     <div className={styles.leftHud}>

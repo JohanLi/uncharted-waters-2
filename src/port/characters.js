@@ -4,11 +4,56 @@ import Character from './character';
 import Input from './input';
 import Map from './map';
 
+let characters = [];
+
+const checkSpawn = () => {
+  if (characters.length === 0) {
+    spawnCharacters([playerId()]);
+  }
+
+  if (characters.length === 1 && State.timeOfDay() !== 'night') {
+    spawnCharacters(npcIds());
+  }
+
+  if (characters.length > 1 && State.timeOfDay() === 'night') {
+    removeNpcs();
+  }
+};
+
+const playerId = () => Object.keys(Data.characters).find(id => Data.characters[id].isPlayer);
+const npcIds = () => Object.keys(Data.characters).filter(id => !Data.characters[id].isPlayer);
+
+const spawnCharacters = (ids) => {
+  ids.forEach((npcId) => {
+    const {
+      spawn,
+      startFrame,
+      isPlayer = false,
+      isImmobile = false,
+    } = Data.characters[npcId];
+    const building = Data.ports[State.portId].buildings[spawn.building];
+
+    characters.push(
+      Character({
+        x: building.x + spawn.offset.x,
+        y: building.y + spawn.offset.y,
+        startFrame,
+        isPlayer,
+        isImmobile,
+      }),
+    );
+  });
+};
+
+const removeNpcs = () => {
+  characters = characters.filter(character => character.isPlayer);
+};
+
 const collision = (position, character) => Map.collisionAt(position)
   || Map.outOfBoundsAt(position)
   || collisionWith(position, character);
 
-const collisionWith = (position, self) => characters.characters.some((character) => {
+const collisionWith = (position, self) => characters.some((character) => {
   if (character === self) {
     return false;
   }
@@ -111,44 +156,31 @@ const alternativeDestinations = (direction, position) => {
 };
 
 const enteredBuilding = () => {
-  const id = Map.buildingAt(characters.player().destination());
+  const player = Characters.player();
+  const id = Map.buildingAt(player.destination());
 
   if (id) {
     State.enterBuilding(id);
-    characters.player().update();
-    characters.player().move('s', false);
+    player.update();
+    player.move('s', false);
     return true;
   }
 
   return false;
 };
 
-const characters = {
+const Characters = {
   setup() {
-    characters.characters = Object.keys(Data.characters).map((id) => {
-      const {
-        spawn,
-        startFrame,
-        isPlayer = false,
-        isImmobile = false,
-      } = Data.characters[id];
-      const building = Data.ports[State.portId].buildings[spawn.building];
-
-      return Character({
-        x: building.x + spawn.offset.x,
-        y: building.y + spawn.offset.y,
-        startFrame,
-        isPlayer,
-        isImmobile,
-      });
-    });
+    characters = [];
   },
   update() {
+    checkSpawn();
+
     if (enteredBuilding()) {
       return;
     }
 
-    characters.characters.forEach((character) => {
+    characters.forEach((character) => {
       character.update();
 
       let direction;
@@ -171,9 +203,12 @@ const characters = {
       }
     });
   },
+  characters() {
+    return characters;
+  },
   player() {
-    return characters.characters.find(character => character.isPlayer);
+    return characters.find(character => character.isPlayer);
   },
 };
 
-export default characters;
+export default Characters;

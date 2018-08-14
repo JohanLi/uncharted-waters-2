@@ -50,7 +50,7 @@ const draw = () => {
     camera.canvas.width, camera.canvas.height,
   );
 
-  Characters.characters.forEach((character) => {
+  Characters.characters().forEach((character) => {
     const { x, y } = character.position(PercentNextMove.percentNextMove);
 
     camera.context.drawImage(
