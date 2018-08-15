@@ -3,23 +3,19 @@ import ReactDOM from 'react-dom';
 import { observer } from 'mobx-react';
 
 import Building from './Building/Building';
-import Left from './Hud/Left';
-import Right from './Hud/Right';
+import Port from './Hud/Port';
+import WorldMap from './Hud/WorldMap';
 
 import State from '../state';
 
 const Interface = observer(() => {
-  let building;
-
-  if (State.building) {
-    building = <Building />;
-  }
+  const building = State.building ? <Building /> : null;
+  const hud = State.portId ? <Port /> : <WorldMap />;
 
   return (
     <div id="center">
       <main id="app">
-        <Left />
-        <Right />
+        {hud}
         {building}
         <canvas id="camera" width="1280" height="800" />
       </main>

@@ -13,6 +13,24 @@ const state = observable({
   buildingMenuOptions: [],
   buildingMenuSelected: 0,
 
+  dayAtSea: 0,
+  wind: {
+    direction: 0,
+    speed: 4,
+  },
+  current: {
+    direction: 3,
+    speed: 1,
+  },
+  fleet: {
+    direction: 1,
+    speed: 14,
+  },
+  water: 40,
+  food: 40,
+  lumber: 0,
+  shot: 0,
+
   timeOfDay: () => {
     const hour = state.date.getHours();
 

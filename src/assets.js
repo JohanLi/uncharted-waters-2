@@ -5,6 +5,12 @@ import portCharacters from './assets/img/characters.png';
 import worldMapTileset from './world-map/assets/world-map-tileset.png';
 import tilesetShips from './world-map/assets/world-map-tileset-ships.png';
 import tiles from './world-map/assets/world-map.bin';
+import headingIndicators from './world-map/assets/heading-indicators.png';
+import water from './world-map/assets/water.png';
+import food from './world-map/assets/food.png';
+import lumber from './world-map/assets/lumber.png';
+import shot from './world-map/assets/shot.png';
+
 import cursors from './world-map/assets/cursors.png';
 
 import market from './assets/img/buildings/market.png';
@@ -58,6 +64,11 @@ const assets = {
     tileset: worldMapTileset,
     tilesetShips,
     tiles,
+    headingIndicators,
+    water,
+    food,
+    lumber,
+    shot,
   },
   cursors,
 };
