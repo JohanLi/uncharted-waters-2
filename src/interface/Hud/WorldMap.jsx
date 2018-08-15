@@ -8,10 +8,6 @@ import Assets from '../../assets';
 const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 const WorldMap = observer(() => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  const date = () => `${months[State.date.getMonth()]} ${State.date.getDate()} ${State.date.getFullYear()}`;
-
   const indicators = ['wind', 'current', 'fleet'].map((key) => {
     const indicator = State[key];
 
@@ -35,10 +31,10 @@ const WorldMap = observer(() => {
       <div className={styles.leftHud}>
         <div className={styles.dateAndDay}>
           <div className={styles.date}>
-            {date()}
+            {State.formattedDate()}
           </div>
           <div>
-            Day {State.dayAtSea}
+            {`Day ${State.dayAtSea}`}
           </div>
         </div>
         <div className={styles.indicators}>

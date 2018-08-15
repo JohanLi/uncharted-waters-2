@@ -1,9 +1,10 @@
 import { observable, action } from 'mobx';
 import Data from './port/data';
 import Assets from './assets';
+import { sample } from './helpers';
 
 const nameToKey = input => input[0].toLowerCase() + input.slice(1).replace(/\s/g, '');
-const sample = array => array[Math.floor(Math.random() * array.length)];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const state = observable({
   date: new Date(1522, 4, 17, 8),
@@ -30,6 +31,33 @@ const state = observable({
   food: 40,
   lumber: 0,
   shot: 0,
+
+  formattedDate() {
+    return `${months[state.date.getMonth()]} ${state.date.getDate()} ${state.date.getFullYear()}`;
+  },
+
+  time: () => {
+    let hours = state.date.getHours();
+    let period = 'AM';
+
+    if (hours >= 12) {
+      period = 'PM';
+    }
+
+    hours %= 12;
+
+    if (hours === 0) {
+      hours = 12;
+    }
+
+    const minutes = state.date.getMinutes();
+
+    if (minutes < 10) {
+      return `${hours}:0${minutes} ${period}`;
+    }
+
+    return `${hours}:${minutes} ${period}`;
+  },
 
   timeOfDay: () => {
     const hour = state.date.getHours();

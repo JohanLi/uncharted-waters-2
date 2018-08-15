@@ -6,33 +6,6 @@ import styles from './port.css';
 import Data from '../../port/data';
 
 const Port = observer(() => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  const date = () => `${months[State.date.getMonth()]} ${State.date.getDate()} ${State.date.getFullYear()}`;
-
-  const timeOfDay = () => {
-    let hours = State.date.getHours();
-    let period = 'AM';
-
-    if (hours >= 12) {
-      period = 'PM';
-    }
-
-    hours %= 12;
-
-    if (hours === 0) {
-      hours = 12;
-    }
-
-    const minutes = State.date.getMinutes();
-
-    if (minutes < 10) {
-      return `${hours}:0${minutes} ${period}`;
-    }
-
-    return `${hours}:${minutes} ${period}`;
-  };
-
   const ingots = () => Math.floor(State.gold / 10000);
   const coins = () => State.gold % 10000;
 
@@ -48,10 +21,10 @@ const Port = observer(() => {
     <>
       <div className={styles.leftHud}>
         <div className={styles.date}>
-          {date()}
+          {State.formattedDate()}
         </div>
         <div className={styles.timeOfDay}>
-          {timeOfDay()}
+          {State.time()}
         </div>
         <div>
           Ingots

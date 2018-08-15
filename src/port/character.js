@@ -1,3 +1,5 @@
+import { sample } from '../helpers';
+
 const directionToMetadata = {
   n: {
     deltaX: 0,
@@ -95,21 +97,7 @@ export default (options) => {
         return currentDirection;
       }
 
-      const newDirection = Math.random();
-
-      if (newDirection < 0.25) {
-        return 'n';
-      }
-
-      if (newDirection < 0.5) {
-        return 'e';
-      }
-
-      if (newDirection < 0.75) {
-        return 's';
-      }
-
-      return 'w';
+      return sample(Object.keys(directionToMetadata));
     },
     position(percentNextMove = 0) {
       return {
