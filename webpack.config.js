@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
     output: {
       path: `${__dirname}/dist/`,
       filename: '[name]-[hash].bundle.js',
+      publicPath: '/uncharted-waters-2/',
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -88,10 +89,12 @@ module.exports = (env, argv) => {
       new CompressionPlugin({
         test: /\.bin/,
       }),
+      // /uncharted-waters-2/index.html from the manifest needs to be changed to /uncharted-waters-2
       new WorkboxPlugin.GenerateSW({
         swDest: 'service-worker.js',
         clientsClaim: true,
         skipWaiting: true,
+        exclude: [/\.gz$/],
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),

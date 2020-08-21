@@ -10,19 +10,9 @@ project.
 
 ## Current Features
 
-The current state of this remake can be played at [unchartedwaters2.com](https://unchartedwaters2.com).
+The current state of this remake can be played at [https://johan.li/uncharted-waters-2](https://johan.li/uncharted-waters-2).
 
 The following features are implemented:
 
 * Walking around in any port and entering buildings
 * Sailing around the world map, going ashore and setting sail
-
-## Features Being Worked On
-
-[Visit my blog](https://johanli.com/blog) for occasional development
-updates.
-
-* World map winds, current and supplies
-* AI fleets
-* Shipyard
-* Code and performance polish
