@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 document.getElementById = (tagName) => {
   if (tagName === 'camera') {
     return document.createElement('canvas');

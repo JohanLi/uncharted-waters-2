@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin")
+const CompressionPlugin = require('compression-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -13,9 +13,8 @@ module.exports = (env, argv) => {
       ],
     },
     output: {
-      path: `${__dirname}/dist/`,
+      path: `${__dirname}/build/`,
       filename: '[name]-[hash].bundle.js',
-      publicPath: '/uncharted-waters-2/',
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -41,8 +40,12 @@ module.exports = (env, argv) => {
             {
               resourceQuery: /inline/,
               use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                },
+                {
+                  loader: 'css-loader',
+                },
               ],
             },
             {
@@ -51,8 +54,9 @@ module.exports = (env, argv) => {
                 {
                   loader: 'css-loader',
                   options: {
-                    modules: true,
-                    localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                    modules: {
+                      localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                    },
                   },
                 },
               ],
@@ -68,7 +72,6 @@ module.exports = (env, argv) => {
     },
     devServer: {
       compress: true,
-      port: 8081,
     },
     performance: {
       hints: false,
@@ -89,7 +92,6 @@ module.exports = (env, argv) => {
       new CompressionPlugin({
         test: /\.bin/,
       }),
-      // /uncharted-waters-2/index.html from the manifest needs to be changed to /uncharted-waters-2
       new WorkboxPlugin.GenerateSW({
         swDest: 'service-worker.js',
         clientsClaim: true,
@@ -98,7 +100,7 @@ module.exports = (env, argv) => {
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
-            handler: 'cacheFirst',
+            handler: 'CacheFirst',
             options: {
               cacheName: 'google-fonts',
               cacheableResponse: {

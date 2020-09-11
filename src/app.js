@@ -8,13 +8,12 @@ import Port from './port';
 import WorldMap from './world-map';
 import Sound from './sound';
 
+// eslint-disable-next-line import/no-unresolved
 import './app.css?inline';
 
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
-    await navigator.serviceWorker.register('/uncharted-waters-2/service-worker.js', {
-      scope: '/uncharted-waters-2',
-    });
+    await navigator.serviceWorker.register('service-worker.js');
   });
 }
 
