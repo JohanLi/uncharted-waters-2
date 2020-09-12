@@ -10,7 +10,7 @@ project.
 
 ## Current Features
 
-The current state of this remake can be played at [https://johan.li/uncharted-waters-2](https://johan.li/uncharted-waters-2).
+The current state of this remake can be played at [https://johan.li/uncharted-waters-2/](https://johan.li/uncharted-waters-2/).
 
 The following features are implemented:
 
