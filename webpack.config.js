@@ -1,6 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -89,14 +88,10 @@ module.exports = (env, argv) => {
 
   if (argv.mode === 'production') {
     config.plugins.push(
-      new CompressionPlugin({
-        test: /\.bin/,
-      }),
       new WorkboxPlugin.GenerateSW({
         swDest: 'service-worker.js',
         clientsClaim: true,
         skipWaiting: true,
-        exclude: [/\.gz$/],
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
