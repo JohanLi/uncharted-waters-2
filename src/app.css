@@ -39,12 +39,6 @@ body {
   justify-content: center;
   height: calc(100vh - 50px);
   min-height: 920px;
-}
-
-#app {
-  font-size: 18px;
-  line-height: 1.5;
-  color: #aaa;
   position: relative;
 }
 
@@ -67,7 +61,7 @@ body {
 footer {
   color: #666;
   min-height: 300px;
-  background: #000 url('./assets/img/artwork/side-characters.png') bottom right no-repeat;
+  background: #000 url('./interface/artwork/side-characters.png') bottom right no-repeat;
 }
 
 footer > div {
@@ -102,6 +96,13 @@ a:hover {
   border-bottom: 1px solid #41b7d8;
 }
 
+#interface {
+  position: absolute;
+  width: 1280px;
+  height: 800px;
+}
+
 #camera {
+  position: absolute;
   cursor: none;
 }

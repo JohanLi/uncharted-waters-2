@@ -1,37 +1,30 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
   const config = {
     entry: {
       app: [
-        'babel-polyfill',
-        'whatwg-fetch',
+        '@babel/polyfill',
         './src/app',
       ],
     },
     output: {
-      path: `${__dirname}/build/`,
-      filename: '[name]-[hash].bundle.js',
+      path: `${__dirname}/dist/`,
+      filename: '[name]-[contenthash].bundle.js',
+      publicPath: '/',
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.tsx', '.ts', '.js'],
     },
     module: {
       rules: [
         {
-          test: /\.(json|mp3|png|bin)$/,
-          type: 'javascript/auto', // https://github.com/webpack/webpack/issues/6586
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name]-[hash].[ext]',
-                useRelativePath: true,
-              },
-            },
-          ],
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
         },
         {
           test: /\.css$/,
@@ -39,12 +32,8 @@ module.exports = (env, argv) => {
             {
               resourceQuery: /inline/,
               use: [
-                {
-                  loader: MiniCssExtractPlugin.loader,
-                },
-                {
-                  loader: 'css-loader',
-                },
+                MiniCssExtractPlugin.loader,
+                'css-loader',
               ],
             },
             {
@@ -54,7 +43,7 @@ module.exports = (env, argv) => {
                   loader: 'css-loader',
                   options: {
                     modules: {
-                      localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                      localIdentName: '[path][name]__[local]--[contenthash:base64:5]',
                     },
                   },
                 },
@@ -63,31 +52,45 @@ module.exports = (env, argv) => {
           ],
         },
         {
-          test: /\.jsx$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
+          test: /\.(json|mp3|png|bin)$/,
+          type: 'javascript/auto', // https://github.com/webpack/webpack/issues/6586
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[name]-[contenthash].[ext]',
+                useRelativePath: true,
+              },
+            },
+          ],
         },
       ],
     },
+    devtool: 'source-map',
     devServer: {
       compress: true,
+      port: 8080,
+      publicPath: '/',
     },
     performance: {
       hints: false,
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: 'styles-[hash].css',
+        filename: 'styles-[contenthash].css',
       }),
       new HtmlWebpackPlugin({
-        template: './src/assets/index.html',
-        favicon: './src/assets/favicon.ico',
+        template: './src/index.html',
+        favicon: './src/favicon.ico',
       }),
     ],
   };
 
   if (argv.mode === 'production') {
     config.plugins.push(
+      new CompressionPlugin({
+        test: /\.bin/,
+      }),
       new WorkboxPlugin.GenerateSW({
         swDest: 'service-worker.js',
         clientsClaim: true,
@@ -95,7 +98,7 @@ module.exports = (env, argv) => {
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
-            handler: 'CacheFirst',
+            handler: 'cacheFirst',
             options: {
               cacheName: 'google-fonts',
               cacheableResponse: {
