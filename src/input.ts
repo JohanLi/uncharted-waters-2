@@ -1,70 +1,70 @@
-import { direction } from './types';
+import { Direction } from './types';
 
-type wasd = 'w' | 'a' | 's' | 'd';
+type Wasd = 'w' | 'a' | 's' | 'd';
 
-interface Input {
-  direction: direction | '';
-  pressedKeys: {
-    [key in wasd]: boolean;
-  };
-  keyMap: {
-    [key in wasd]: direction;
-  };
-  setup: () => void;
-}
+type PressedKeys = {
+  [key in Wasd]: boolean;
+};
 
-const input = <Input>{
-  direction: '',
-  pressedKeys: {
+type KeyMap = {
+  [key in Wasd]: Direction;
+};
+
+class Input {
+  public direction: Direction | '' = '';
+  private pressedKeys: PressedKeys = {
     w: false,
     d: false,
     s: false,
     a: false,
-  },
-  keyMap: {
+  };
+  private keyMap: KeyMap = {
     w: 'n',
     d: 'e',
     s: 's',
     a: 'w',
-  },
-  setup: () => {
-    document.addEventListener('keydown', keyboard);
-    document.addEventListener('keyup', keyboard);
-  },
-};
+  };
 
-const isWasd = (key: string): key is wasd => key in input.keyMap;
-
-const keyboard = (e: KeyboardEvent) => {
-  const pressedKey = e.key;
-
-  if(!isWasd(pressedKey)) {
-    return;
+  constructor() {
+    document.addEventListener('keydown', this.keyboard.bind(this));
+    document.addEventListener('keyup', this.keyboard.bind(this));
   }
 
-  e.preventDefault();
-
-  if (e.type === 'keydown') {
-    input.pressedKeys[pressedKey] = true;
+  private isWasd(key: string): key is Wasd {
+    return key in this.keyMap;
   }
 
-  if (e.type === 'keyup') {
-    input.pressedKeys[pressedKey] = false;
-  }
+  private keyboard(e: KeyboardEvent) {
+    const pressedKey = e.key;
 
-  if (input.pressedKeys[pressedKey]) {
-    input.direction = input.keyMap[pressedKey];
-  } else if (input.pressedKeys.w) {
-    input.direction = 'n';
-  } else if (input.pressedKeys.d) {
-    input.direction = 'e';
-  } else if (input.pressedKeys.s) {
-    input.direction = 's';
-  } else if (input.pressedKeys.a) {
-    input.direction = 'w';
-  } else {
-    input.direction = '';
-  }
-};
+    if(!this.isWasd(pressedKey)) {
+      return;
+    }
 
-export default input;
+    e.preventDefault();
+
+    if (e.type === 'keydown') {
+      this.pressedKeys[pressedKey] = true;
+    }
+
+    if (e.type === 'keyup') {
+      this.pressedKeys[pressedKey] = false;
+    }
+
+    if (this.pressedKeys[pressedKey]) {
+      this.direction = this.keyMap[pressedKey];
+    } else if (this.pressedKeys.w) {
+      this.direction = 'n';
+    } else if (this.pressedKeys.d) {
+      this.direction = 'e';
+    } else if (this.pressedKeys.s) {
+      this.direction = 's';
+    } else if (this.pressedKeys.a) {
+      this.direction = 'w';
+    } else {
+      this.direction = '';
+    }
+  }
+}
+
+export default new Input();

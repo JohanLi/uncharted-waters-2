@@ -84,7 +84,7 @@ export default class Characters {
 
   constructor(map: any) {
     this.map = map;
-    Input.setup();
+
 
     for (let i = 1; i < 9; i += 1) {
       const { spawn, startFrame, isImmobile } = characterMeta[i];
