@@ -14,7 +14,6 @@ module.exports = (env, argv) => {
     output: {
       path: `${__dirname}/dist/`,
       filename: '[name]-[contenthash].bundle.js',
-      publicPath: '/',
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
@@ -53,16 +52,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(json|mp3|png|bin)$/,
-          type: 'javascript/auto', // https://github.com/webpack/webpack/issues/6586
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name]-[contenthash].[ext]',
-                useRelativePath: true,
-              },
-            },
-          ],
+          type: 'asset/resource',
         },
       ],
     },
@@ -70,7 +60,6 @@ module.exports = (env, argv) => {
     devServer: {
       compress: true,
       port: 8080,
-      publicPath: '/',
     },
     performance: {
       hints: false,
