@@ -1,9 +1,12 @@
 import Assets from './assets';
-import Map from './map';
+import createMap from './map';
+import Building from './building';
 import PercentNextMove from './percentNextMove';
-import Characters from './characters';
+import createCharacters from './characters';
 
 const TILE_SIZE = 32;
+
+const PORT_ID = 1; // TODO move to Redux
 
 const world = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -12,9 +15,10 @@ const world = () => {
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = Map({ type: 'port', visibleArea: [Math.ceil(width + 1), Math.ceil(height + 1)], portId: 1 });
+  const map = createMap({ type: 'port', visibleArea: [Math.ceil(width + 1), Math.ceil(height + 1)], portId: PORT_ID });
+  const building = Building(PORT_ID);
 
-  const characters = new Characters(map);
+  const characters = createCharacters(map, building);
 
   return {
     update: () => {
@@ -22,10 +26,10 @@ const world = () => {
       characters.update();
     },
     draw: (time: number) => {
-      let { player, npcs } = characters;
-      let { x: characterX, y: characterY } = player.position(PercentNextMove.get());
-      let cameraCenterX = characterX + (player.width / 2);
-      let cameraCenterY = characterY + (player.height / 2);
+      const { player, npcs } = characters;
+      const { x: characterX, y: characterY } = player.position(PercentNextMove.get());
+      const cameraCenterX = characterX + (player.width / 2);
+      const cameraCenterY = characterY + (player.height / 2);
 
       let cameraX = Math.max(cameraCenterX - width / 2, 0);
       let cameraY = Math.max(cameraCenterY - height / 2, 0);

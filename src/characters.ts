@@ -1,12 +1,14 @@
-import Input from './input'
-import Npc from './npc';
+import getInput from './input'
 import { characters as characterMeta } from './port/metadata'
 
 import { Position, Direction } from './types';
 import PercentNextMove from './percentNextMove';
 import { store } from './interface/store';
 import { enter } from './interface/building/buildingSlice';
-import Player from './player';
+import { Map } from './map';
+import { Building } from './building';
+import createPlayer, { Player } from './player';
+import createNpc, { Npc } from './npc';
 
 interface AlternativeDestination {
   direction: Direction,
@@ -76,92 +78,31 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
   return () => [];
 };
 
-export default class Characters {
-  private map: any;
+const createCharacters = (map: Map, building: Building) => {
+  let { spawn, startFrame, isImmobile } = characterMeta[1];
+  let { x, y } = building.get(spawn.building);
 
-  public player!: Player;
-  public npcs: Npc[] = [];
+  const player = createPlayer(
+    x + spawn.offset.x,
+    y + spawn.offset.y,
+    startFrame,
+  );
 
-  constructor(map: any) {
-    this.map = map;
+  const npcs: Npc[] = [];
 
+  for (let i = 2; i < 9; i += 1) {
+    ({ spawn, startFrame, isImmobile } = characterMeta[i]);
+    ({ x, y } = building.get(spawn.building));
 
-    for (let i = 1; i < 9; i += 1) {
-      const { spawn, startFrame, isImmobile } = characterMeta[i];
-      const { x, y } = map.building(spawn.building);
-
-      if (i === 1) {
-        this.player = new Player(
-          x + spawn.offset.x,
-          y + spawn.offset.y,
-          startFrame,
-        );
-      } else {
-        this.npcs.push(new Npc(
-          x + spawn.offset.x,
-          y + spawn.offset.y,
-          startFrame,
-          isImmobile,
-        ));
-      }
-    }
+    npcs.push(createNpc(
+      x + spawn.offset.x,
+      y + spawn.offset.y,
+      startFrame,
+      isImmobile,
+    ));
   }
 
-  update() {
-    if (PercentNextMove.get() !== 0) {
-      return;
-    }
-
-    this.player.update();
-
-    const { direction } = Input;
-
-    if (direction) {
-      this.player.move(direction);
-
-      if (this.collision(this.player)) {
-        this.player.undoMove();
-
-        const newDirection = this.alternativeDirection(
-          direction,
-          this.player,
-        );
-
-        if (newDirection) {
-          this.player.move(newDirection, false);
-        }
-      }
-
-      const building = this.map.buildingAt(this.player.destination());
-
-      if (building) {
-        this.player.update();
-        this.player.move('s');
-        store.dispatch(enter(building));
-      }
-    }
-
-    this.npcs.forEach((npc) => {
-      npc.update();
-
-      if (!npc.shouldMove()) {
-        return;
-      }
-
-      if (npc.isImmobile) {
-        npc.animate();
-        return;
-      }
-
-      npc.move();
-
-      if (this.collision(npc)) {
-        npc.undoMove();
-      }
-    });
-  }
-
-  private alternativeDirection(direction: Direction, player: Player): Direction | '' {
+  const alternativeDirection = (direction: Direction, player: Player): Direction | '' => {
     let firstDirectionPossible = true;
     let secondDirectionPossible = true;
 
@@ -169,17 +110,17 @@ export default class Characters {
       const destinations = alternativeDestinations(direction, player.position())(i);
 
       if (firstDirectionPossible) {
-        if (this.collision(player, destinations[0].step1)) {
+        if (collision(player, destinations[0].step1)) {
           firstDirectionPossible = false;
-        } else if (!this.collision(player, destinations[0].step2)) {
+        } else if (!collision(player, destinations[0].step2)) {
           return destinations[0].direction;
         }
       }
 
       if (secondDirectionPossible) {
-        if (this.collision(player, destinations[1].step1)) {
+        if (collision(player, destinations[1].step1)) {
           secondDirectionPossible = false;
-        } else if (!this.collision(player, destinations[1].step2)) {
+        } else if (!collision(player, destinations[1].step2)) {
           return destinations[1].direction;
         }
       }
@@ -189,12 +130,11 @@ export default class Characters {
   }
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  private collision(character: Player | Npc, destination?: Position) {
-    return this.map.collisionAt(destination || character.destination()) || this.collisionOthers(character, destination);
-  }
+  const collision = (character: Player | Npc, destination?: Position) =>
+    map.collisionAt(destination || character.destination()) || collisionOthers(character, destination);
 
-  private collisionOthers(self: Player | Npc, destination?: Position) {
-    return [this.player, ...this.npcs].some((character) => {
+  const collisionOthers = (self: Player | Npc, destination?: Position) =>
+    [player, ...npcs].some((character) => {
       if (character === self) {
         return false;
       }
@@ -207,5 +147,60 @@ export default class Characters {
 
       return distanceX < 2 && distanceY < 2;
     });
+
+  return {
+    update: () => {
+      if (PercentNextMove.get() !== 0) {
+        return;
+      }
+
+      player.update();
+
+      const direction = getInput();
+
+      if (direction) {
+        player.move(direction);
+
+        if (collision(player)) {
+          player.undoMove();
+
+          const newDirection = alternativeDirection(
+            direction,
+            player,
+          );
+
+          if (newDirection) {
+            player.move(newDirection, false);
+          }
+        }
+
+        const buildingId = building.at(player.destination());
+
+        if (buildingId) {
+          player.update();
+          player.move('s');
+          store.dispatch(enter(buildingId));
+        }
+      }
+
+      npcs.forEach((npc) => {
+        npc.update();
+
+        if (!npc.shouldMove()) {
+          return;
+        }
+
+        npc.move();
+
+        // TODO collision check not needed for immobile npcs
+        if (collision(npc)) {
+          npc.undoMove();
+        }
+      });
+    },
+    player,
+    npcs,
   }
 }
+
+export default createCharacters;

@@ -31,7 +31,7 @@ type MapOptions = {
   visibleArea: [number, number];
 };
 
-const map = (options: MapOptions) => {
+const createMap = (options: MapOptions) => {
   const tileSize = 32;
   const { visibleArea } = options;
   const cache = <Cache>{};
@@ -290,26 +290,9 @@ const map = (options: MapOptions) => {
         return tile >= collisionIndices.right && tile < collisionIndices.left;
       });
     },
-    building: (id: number): { x: number; y: number; } => {
-      // only for ports
-      // @ts-ignore
-      const port = ports[options.portId];
-      return port.buildings[id];
-    },
-    buildingAt: (position: { x: number; y: number; }): number => {
-      // only for ports
-      // @ts-ignore
-      const port = ports[options.portId];
-
-      return Number(Object.keys(port.buildings).find((id) => {
-        const { x, y } = port.buildings[Number(id)];
-
-        if (position.x === x && position.y === y) {
-          return id;
-        }
-      }));
-    },
   };
 }
 
-export default map;
+export type Map = ReturnType<typeof createMap>;
+
+export default createMap;

@@ -1,106 +1,88 @@
 import { Direction, directionToChanges } from './types';
 import { sample, directions } from './utils';
 
-export default class Npc {
-  private x: number;
-  private y: number;
-  private xTo: number;
-  private yTo: number;
+const createNpc = (x: number, y: number, startFrame: number, isImmobile: boolean) => {
+  let xTo = x;
+  let yTo = y;
 
-  private startFrame: number;
-  private frameOffset = 0;
-  private frameAlternate = 0;
+  let frameOffset = 0;
+  let frameAlternate = 0;
 
-  public width = 2;
-  public height = 2;
-
-  public isImmobile: boolean;
-
-  private movesToSkip = Npc.movesToSkip();
-  private movesSkipped = 0;
-
-  private currentDirection: Direction = 's';
-  private directionWasCollision = false;
-
-  constructor(x: number, y: number, startFrame: number, isImmobile: boolean) {
-    this.x = x;
-    this.y = y
-    this.xTo = x;
-    this.yTo = y;
-    this.startFrame = startFrame;
-    this.isImmobile = isImmobile;
-  }
-
-  static movesToSkip() {
+  const getMovesToSkip = () => {
     return Math.floor(Math.random() * (6 - 2)) + 2;
   }
 
-  shouldMove() {
-    if (this.movesSkipped === this.movesToSkip) {
-      this.movesToSkip = Npc.movesToSkip();
-      this.movesSkipped = 0;
-      return true;
-    }
+  let movesToSkip = getMovesToSkip();
+  let movesSkipped = 0;
 
-    this.movesSkipped += 1;
-    return false;
-  }
-
-  move() {
-    const direction = this.randomDirection();
-
-    const { xDelta, yDelta, frameOffset } = directionToChanges[direction];
-    this.frameOffset = frameOffset;
-    this.xTo = this.x + xDelta;
-    this.yTo = this.y + yDelta;
-
-    this.currentDirection = direction;
-    this.directionWasCollision = false;
-
-    this.animate();
-  }
-
-  private randomDirection() {
+  let currentDirection: Direction = 's';
+  let directionWasCollision = false;
+  
+  const randomDirection = () => {
     const sameDirection = Math.random();
 
-    if (!this.directionWasCollision && sameDirection < 0.75) {
-      return this.currentDirection;
+    if (!directionWasCollision && sameDirection < 0.75) {
+      return currentDirection;
     }
 
     return sample(directions);
   }
 
-  undoMove() {
-    this.xTo = this.x;
-    this.yTo = this.y;
-
-    this.directionWasCollision = true;
+  const animate = () => {
+    frameAlternate = frameAlternate === 0 ? 1 : 0;
   }
 
-  update() {
-    this.x = this.xTo;
-    this.y = this.yTo;
-  }
+  return {
+    shouldMove: () => {
+      if (movesSkipped === movesToSkip) {
+        movesToSkip = getMovesToSkip();
+        movesSkipped = 0;
+        return true;
+      }
 
-  position(percentNextMove = 0) {
-    return {
-      x: this.x + ((this.xTo - this.x) * percentNextMove),
-      y: this.y + ((this.yTo - this.y) * percentNextMove),
-    };
-  }
+      movesSkipped += 1;
+      return false;
+    },
+    move: () => {
+      if (!isImmobile) {
+        const direction = randomDirection();
 
-  destination() {
-    return {
-      x: this.xTo,
-      y: this.yTo,
-    };
-  }
+        const { xDelta, yDelta, frameOffset: newFrameOffset } = directionToChanges[direction];
+        frameOffset = newFrameOffset;
+        xTo = x + xDelta;
+        yTo = y + yDelta;
 
-  frame() {
-    return this.startFrame + this.frameOffset + this.frameAlternate;
-  }
+        currentDirection = direction;
+        directionWasCollision = false;
+      }
 
-  animate() {
-    this.frameAlternate = this.frameAlternate === 0 ? 1 : 0;
+      animate();
+    },
+    undoMove: () => {
+      xTo = x;
+      yTo = y;
+
+      directionWasCollision = true;
+    },
+    update: () => {
+      x = xTo;
+      y = yTo;
+    },
+    position: (percentNextMove = 0) => ({
+      x: x + ((xTo - x) * percentNextMove),
+      y: y + ((yTo - y) * percentNextMove),
+    }),
+    destination: () => ({
+      x: xTo,
+      y: yTo,
+    }),
+    frame: () => startFrame + frameOffset + frameAlternate,
+    width: 2,
+    height: 2,
+    isImmobile,
   }
 }
+
+export type Npc = ReturnType<typeof createNpc>;
+
+export default createNpc;

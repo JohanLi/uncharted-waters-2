@@ -10,61 +10,61 @@ type KeyMap = {
   [key in Wasd]: Direction;
 };
 
-class Input {
-  public direction: Direction | '' = '';
-  private pressedKeys: PressedKeys = {
-    w: false,
-    d: false,
-    s: false,
-    a: false,
-  };
-  private keyMap: KeyMap = {
-    w: 'n',
-    d: 'e',
-    s: 's',
-    a: 'w',
-  };
+let direction: Direction | '' = '';
 
-  constructor() {
-    document.addEventListener('keydown', this.keyboard.bind(this));
-    document.addEventListener('keyup', this.keyboard.bind(this));
+const pressedKeys: PressedKeys = {
+  w: false,
+  d: false,
+  s: false,
+  a: false,
+};
+
+const keyMap: KeyMap = {
+  w: 'n',
+  d: 'e',
+  s: 's',
+  a: 'w',
+};
+
+const isWasd = (key: string): key is Wasd => {
+  return key in keyMap;
+}
+
+const keyboard = (e: KeyboardEvent) => {
+  const pressedKey = e.key;
+
+  if(!isWasd(pressedKey)) {
+    return;
   }
 
-  private isWasd(key: string): key is Wasd {
-    return key in this.keyMap;
+  e.preventDefault();
+
+  if (e.type === 'keydown') {
+    pressedKeys[pressedKey] = true;
   }
 
-  private keyboard(e: KeyboardEvent) {
-    const pressedKey = e.key;
+  if (e.type === 'keyup') {
+    pressedKeys[pressedKey] = false;
+  }
 
-    if(!this.isWasd(pressedKey)) {
-      return;
-    }
-
-    e.preventDefault();
-
-    if (e.type === 'keydown') {
-      this.pressedKeys[pressedKey] = true;
-    }
-
-    if (e.type === 'keyup') {
-      this.pressedKeys[pressedKey] = false;
-    }
-
-    if (this.pressedKeys[pressedKey]) {
-      this.direction = this.keyMap[pressedKey];
-    } else if (this.pressedKeys.w) {
-      this.direction = 'n';
-    } else if (this.pressedKeys.d) {
-      this.direction = 'e';
-    } else if (this.pressedKeys.s) {
-      this.direction = 's';
-    } else if (this.pressedKeys.a) {
-      this.direction = 'w';
-    } else {
-      this.direction = '';
-    }
+  if (pressedKeys[pressedKey]) {
+    direction = keyMap[pressedKey];
+  } else if (pressedKeys.w) {
+    direction = 'n';
+  } else if (pressedKeys.d) {
+    direction = 'e';
+  } else if (pressedKeys.s) {
+    direction = 's';
+  } else if (pressedKeys.a) {
+    direction = 'w';
+  } else {
+    direction = '';
   }
 }
 
-export default new Input();
+document.addEventListener('keydown', keyboard);
+document.addEventListener('keyup', keyboard);
+
+const getInput = () => direction;
+
+export default getInput;

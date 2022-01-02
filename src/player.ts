@@ -1,66 +1,51 @@
 import { Direction, directionToChanges } from './types';
 
-export default class Player {
-  private x: number;
-  private y: number;
-  private xTo: number;
-  private yTo: number;
+const createPlayer = (x: number, y: number, startFrame: number) => {
+  let xTo = x;
+  let yTo = y;
 
-  private startFrame: number;
-  private frameOffset = 0;
-  private frameAlternate = 0;
+  let frameOffset = 0;
+  let frameAlternate = 0;
 
-  public width = 2;
-  public height = 2;
-
-  constructor(x: number, y: number, startFrame: number) {
-    this.x = x;
-    this.y = y
-    this.xTo = x;
-    this.yTo = y;
-    this.startFrame = startFrame;
+  const animate = () => {
+    frameAlternate = frameAlternate === 0 ? 1 : 0;
   }
+  
+  return {
+    move: (direction: Direction, shouldAnimate = true) => {
+      const { xDelta, yDelta, frameOffset: newFrameOffset } = directionToChanges[direction];
+      frameOffset = newFrameOffset;
+      xTo = x + xDelta;
+      yTo = y + yDelta;
 
-  move(direction: Direction, shouldAnimate = true) {
-    const { xDelta, yDelta, frameOffset } = directionToChanges[direction];
-    this.frameOffset = frameOffset;
-    this.xTo = this.x + xDelta;
-    this.yTo = this.y + yDelta;
-
-    if (shouldAnimate) {
-      this.animate();
-    }
-  }
-
-  undoMove() {
-    this.xTo = this.x;
-    this.yTo = this.y;
-  }
-
-  update() {
-    this.x = this.xTo;
-    this.y = this.yTo;
-  }
-
-  position(percentNextMove = 0) {
-    return {
-      x: this.x + ((this.xTo - this.x) * percentNextMove),
-      y: this.y + ((this.yTo - this.y) * percentNextMove),
-    };
-  }
-
-  destination() {
-    return {
-      x: this.xTo,
-      y: this.yTo,
-    };
-  }
-
-  frame() {
-    return this.startFrame + this.frameOffset + this.frameAlternate;
-  }
-
-  private animate() {
-    this.frameAlternate = this.frameAlternate === 0 ? 1 : 0;
-  }
+      if (shouldAnimate) {
+        animate();
+      }
+    },
+    undoMove: () => {
+      xTo = x;
+      yTo = y;
+    },
+    update: () => {
+      x = xTo;
+      y = yTo;
+    },
+    position: (percentNextMove = 0) => {
+      return {
+        x: x + ((xTo - x) * percentNextMove),
+        y: y + ((yTo - y) * percentNextMove),
+      };
+    },
+    destination: () => ({
+      x: xTo,
+      y: yTo,
+    }),
+    frame: () => startFrame + frameOffset + frameAlternate,
+    width: 2,
+    height: 2,
+  };
 }
+
+export type Player = ReturnType<typeof createPlayer>;
+
+export default createPlayer;
