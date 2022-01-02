@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
-import { exit, } from './buildingSlice';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { exit } from './buildingSlice';
 import Assets from '../../assets';
 import { buildings } from '../../port/metadata';
 
 import styles from './building.css';
 
-interface Props {
-  buildingId: number;
-};
-
-export const Building = (props: Props) => {
-  const { buildingId } = props;
-  const dispatch = useDispatch();
+export const Building = () => {
+  const id = useAppSelector((state) => state.building.id);
+  const dispatch = useAppDispatch();
 
   const keydownHandler = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -30,7 +26,7 @@ export const Building = (props: Props) => {
   }, []);
 
   // Item Shop > ItemShop
-  const name = buildings[buildingId].name.replace(' ', '');
+  const name = buildings[id].name.replace(' ', '');
 
   return (
     <div className={styles.hud} style={{ background: `url('${Assets.buildingBackground.toDataURL()}')` }}>

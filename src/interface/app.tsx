@@ -1,23 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider, useSelector} from 'react-redux';
+import { Provider } from 'react-redux';
 
 import { store } from './store';
+import { useAppSelector } from './hooks';
 import { Building } from './building/Building';
-import { selectBuilding } from './building/buildingSlice';
 
 const Interface = () => {
-  const buildingId = useSelector(selectBuilding);
+  const buildingId = useAppSelector((state) => state.building.id);
 
-  if (!buildingId) {
-    return null;
+  if (buildingId) {
+    return <Building />;
   }
 
-  return (
-    <div>
-      <Building buildingId={buildingId} />
-    </div>
-  );
+  return null;
 };
 
 const renderInterface = () => {

@@ -20,7 +20,7 @@ load()
     const loop = () => {
       const state = store.getState();
 
-      if (!state.building.buildingId) {
+      if (!state.building.id) {
         world.update();
         world.draw(state.building.time);
       }
