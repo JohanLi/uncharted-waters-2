@@ -59,7 +59,7 @@ interface Character {
 
 // Port | SupplyPort
 
-export const ports: { [key: number]: Port } = {
+export const ports: { [key: string]: Port } = {
   1: {
     name: 'Lisbon',
     x: 840,

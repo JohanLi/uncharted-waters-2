@@ -1,4 +1,6 @@
 import { Direction, directionToChanges } from './types';
+import { store } from './interface/store';
+import { dock } from './interface/gameSlice';
 
 const createPlayer = (x: number, y: number, startFrame: number) => {
   let xTo = x;
@@ -10,6 +12,13 @@ const createPlayer = (x: number, y: number, startFrame: number) => {
   const animate = () => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
   }
+
+  // TODO needs refactoring. Listener should also be removed when on land
+  document.addEventListener('keyup', (e: KeyboardEvent) => {
+    if (e.key === 'e') {
+      store.dispatch(dock({ x, y }));
+    }
+  });
   
   return {
     move: (direction: Direction, shouldAnimate = true) => {

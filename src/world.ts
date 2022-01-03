@@ -3,22 +3,33 @@ import createMap from './map';
 import Building from './building';
 import PercentNextMove from './percentNextMove';
 import createCharacters from './characters';
+import { RootState } from './interface/store';
 
 const TILE_SIZE = 32;
 
-const PORT_ID = 1; // TODO move to Redux
+type Options = {
+  type: 'port';
+  portId: number;
+  state: RootState;
+} | {
+  type: 'sea';
+  portId: number;
+  state: RootState;
+};
 
-const world = () => {
+const createWorld = (options: Options) => {
+  const { type, portId, state } = options;
+
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
   const context = canvas.getContext('2d', { alpha: false })!;
 
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap({ type: 'port', visibleArea: [Math.ceil(width + 1), Math.ceil(height + 1)], portId: PORT_ID });
-  const building = Building(PORT_ID);
+  const map = createMap({ type, visibleArea: [Math.ceil(width + 1), Math.ceil(height + 1)], portId });
+  const building = type === 'port' ? Building(portId) : undefined;
 
-  const characters = createCharacters(map, building);
+  const characters = createCharacters({ type, map, building, state });
 
   return {
     update: () => {
@@ -54,7 +65,7 @@ const world = () => {
       );
 
       context.drawImage(
-        Assets.portCharacters,
+        portId ? Assets.portCharacters : Assets.seaShips,
         player.frame() * player.width * TILE_SIZE,
         0,
         player.width * TILE_SIZE,
@@ -82,4 +93,6 @@ const world = () => {
   };
 }
 
-export default world;
+export type World = ReturnType<typeof createWorld>;
+
+export default createWorld;

@@ -3,7 +3,11 @@ export interface Position {
   y: number;
 }
 
-export type Direction = 'n' | 'e' | 's' | 'w';
+export type Direction = CardinalDirection | OrdinalDirection;
+
+export type CardinalDirection = 'n' | 'e' | 's' | 'w';
+
+export type OrdinalDirection = 'ne' | 'se' | 'sw'  | 'nw';
 
 type DirectionToChanges = {
   [key in Direction]: {
@@ -24,6 +28,7 @@ export const directionToChanges: DirectionToChanges = {
     yDelta: 0,
     frameOffset: -2,
   },
+
   s: {
     xDelta: 0,
     yDelta: 1,
@@ -32,6 +37,26 @@ export const directionToChanges: DirectionToChanges = {
   w: {
     xDelta: -1,
     yDelta: 0,
+    frameOffset: 2,
+  },
+  ne: {
+    xDelta: 1,
+    yDelta: -1,
+    frameOffset: -2,
+  },
+  se: {
+    xDelta: 1,
+    yDelta: 1,
+    frameOffset: -2,
+  },
+  sw: {
+    xDelta: -1,
+    yDelta: 1,
+    frameOffset: 2,
+  },
+  nw: {
+    xDelta: -1,
+    yDelta: -1,
     frameOffset: 2,
   },
 };

@@ -33,7 +33,7 @@ type MapOptions = {
 
 const createMap = (options: MapOptions) => {
   const tileSize = 32;
-  const { visibleArea } = options;
+  const { type, visibleArea } = options;
   const cache = <Cache>{};
 
   let tilemap: Uint8Array;
@@ -43,7 +43,7 @@ const createMap = (options: MapOptions) => {
   let getTilesetOffset: (time: number) => number;
   let collisionIndices: CollisionIndices;
 
-  if (options.type === 'port') {
+  if (type === 'port') {
     const { portId } = options;
     const port = ports[portId];
 
@@ -71,7 +71,7 @@ const createMap = (options: MapOptions) => {
 
       return timeOffset + port.tileset * 4;
     };
-  } else if (options.type === 'sea') {
+  } else if (type === 'sea') {
     tilemapColumns = 2160;
     tilemapRows = 1080;
     tilemap = Assets.seaTilemap;
@@ -276,19 +276,35 @@ const createMap = (options: MapOptions) => {
         { x: 1, y: 1 },
       ];
 
-      return offsetsToCheck.some(({ x, y }, i) => {
-        const tile = tiles(position.x + x, position.y + y);
+      if (type === 'port') {
+        return offsetsToCheck.some(({ x, y }, i) => {
+          const tile = tiles(position.x + x, position.y + y);
 
-        if (tile >= collisionIndices.either) {
-          return true;
-        }
+          if (tile >= collisionIndices.either) {
+            return true;
+          }
 
-        if (i === 0) {
-          return tile >= collisionIndices.left;
-        }
+          if (i === 0) {
+            return tile >= collisionIndices.left;
+          }
 
-        return tile >= collisionIndices.right && tile < collisionIndices.left;
-      });
+          return tile >= collisionIndices.right && tile < collisionIndices.left;
+        });
+      }
+
+      if (type === 'sea') {
+        offsetsToCheck.push(
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+        );
+
+        return offsetsToCheck.some(({ x, y }) => {
+          const tile = tiles(position.x + x, position.y + y);
+          return tile >= 50;
+        });
+      }
+
+      return false;
     },
   };
 }

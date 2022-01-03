@@ -3,7 +3,7 @@ import { characters as characterMeta } from './port/metadata'
 
 import { Position, Direction } from './types';
 import PercentNextMove from './percentNextMove';
-import { store } from './interface/store';
+import { RootState, store } from './interface/store';
 import { enterBuilding } from './interface/portSlice';
 import { Map } from './map';
 import { Building } from './building';
@@ -78,9 +78,22 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
   return () => [];
 };
 
-const createCharacters = (map: Map, building: Building) => {
+type Options = {
+  type: 'port';
+  map: Map;
+  building: Building;
+  state: RootState;
+} | {
+  type: 'sea';
+  map: Map;
+  state: RootState;
+};
+
+const createCharacters = (options: Options) => {
+  const { type, map, building, state } = options;
+
   let { spawn, startFrame, isImmobile } = characterMeta[1];
-  let { x, y } = building.get(spawn.building);
+  let { x, y } = type === 'port' ? building.get(spawn.building) : state.game.seaPosition;
 
   const player = createPlayer(
     x + spawn.offset.x,
@@ -90,16 +103,18 @@ const createCharacters = (map: Map, building: Building) => {
 
   const npcs: Npc[] = [];
 
-  for (let i = 2; i < 9; i += 1) {
-    ({ spawn, startFrame, isImmobile } = characterMeta[i]);
-    ({ x, y } = building.get(spawn.building));
+  if (type === 'port') {
+    for (let i = 2; i < 9; i += 1) {
+      ({ spawn, startFrame, isImmobile } = characterMeta[i]);
+      ({ x, y } = building.get(spawn.building));
 
-    npcs.push(createNpc(
-      x + spawn.offset.x,
-      y + spawn.offset.y,
-      startFrame,
-      isImmobile,
-    ));
+      npcs.push(createNpc(
+        x + spawn.offset.x,
+        y + spawn.offset.y,
+        startFrame,
+        isImmobile,
+      ));
+    }
   }
 
   const alternativeDirection = (direction: Direction, player: Player): Direction | '' => {
@@ -156,7 +171,7 @@ const createCharacters = (map: Map, building: Building) => {
 
       player.update();
 
-      const direction = getInput();
+      const direction = getInput({ includeOrdinal: type === 'sea' });
 
       if (direction) {
         player.move(direction);
@@ -164,22 +179,26 @@ const createCharacters = (map: Map, building: Building) => {
         if (collision(player)) {
           player.undoMove();
 
-          const newDirection = alternativeDirection(
-            direction,
-            player,
-          );
+          if (type === 'port') {
+            const newDirection = alternativeDirection(
+              direction,
+              player,
+            );
 
-          if (newDirection) {
-            player.move(newDirection, false);
+            if (newDirection) {
+              player.move(newDirection, false);
+            }
           }
         }
 
-        const buildingId = building.at(player.destination());
+        if (type === 'port') {
+          const buildingId = building.at(player.destination());
 
-        if (buildingId) {
-          player.update();
-          player.move('s');
-          store.dispatch(enterBuilding(buildingId));
+          if (buildingId) {
+            player.update();
+            player.move('s');
+            store.dispatch(enterBuilding(buildingId));
+          }
         }
       }
 
