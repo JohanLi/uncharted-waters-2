@@ -4,7 +4,7 @@ import { characters as characterMeta } from './port/metadata'
 import { Position, Direction } from './types';
 import PercentNextMove from './percentNextMove';
 import { store } from './interface/store';
-import { enter } from './interface/building/buildingSlice';
+import { enterBuilding } from './interface/portSlice';
 import { Map } from './map';
 import { Building } from './building';
 import createPlayer, { Player } from './player';
@@ -179,7 +179,7 @@ const createCharacters = (map: Map, building: Building) => {
         if (buildingId) {
           player.update();
           player.move('s');
-          store.dispatch(enter(buildingId));
+          store.dispatch(enterBuilding(buildingId));
         }
       }
 

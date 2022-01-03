@@ -20,9 +20,9 @@ load()
     const loop = () => {
       const state = store.getState();
 
-      if (!state.building.id) {
+      if (!state.port.buildingId) {
         world.update();
-        world.draw(state.building.time);
+        world.draw(state.game.time);
       }
 
       requestAnimationFrame(loop);

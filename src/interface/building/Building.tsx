@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { exit } from './buildingSlice';
+import { exitBuilding, getBuildingId } from '../portSlice';
 import Assets from '../../assets';
 import { buildings } from '../../port/metadata';
 
 import styles from './building.css';
 
 export const Building = () => {
-  const id = useAppSelector((state) => state.building.id);
+  const id = useAppSelector(getBuildingId);
   const dispatch = useAppDispatch();
 
   const keydownHandler = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-      dispatch(exit());
+      dispatch(exitBuilding());
     }
   };
 

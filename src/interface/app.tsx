@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { useAppSelector } from './hooks';
 import { Building } from './building/Building';
+import { getBuildingId } from './portSlice';
 
 const Interface = () => {
-  const buildingId = useAppSelector((state) => state.building.id);
+  const buildingId = useAppSelector(getBuildingId);
 
   if (buildingId) {
     return <Building />;
