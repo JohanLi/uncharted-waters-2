@@ -7,6 +7,11 @@ import { RootState } from './store';
 
 const START_DATE = new Date(1522, 4, 17);
 
+interface Velocity {
+  direction: number;
+  speed: number;
+}
+
 interface State {
   portId: number;
   timePassed: number;
@@ -15,17 +20,10 @@ interface State {
     y: number;
   };
   gold: number;
-  wind: {
-    direction: number,
-    speed: number,
-  },
-  current: {
-    direction: number,
-    speed: number,
-  },
-  fleet: {
-    direction: number,
-    speed: number,
+  indicators: {
+    wind: Velocity,
+    current: Velocity,
+    fleet: Velocity,
   },
   water: number,
   food: number,
@@ -41,17 +39,19 @@ const initialState: State = {
     y: 358,
   },
   gold: 49273,
-  wind: {
-    direction: 0,
-    speed: 4,
-  },
-  current: {
-    direction: 3,
-    speed: 1,
-  },
-  fleet: {
-    direction: 1,
-    speed: 14,
+  indicators: {
+    wind: {
+      direction: 0,
+      speed: 4,
+    },
+    current: {
+      direction: 3,
+      speed: 1,
+    },
+    fleet: {
+      direction: 1,
+      speed: 14,
+    },
   },
   water: 40,
   food: 40,

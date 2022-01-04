@@ -25,23 +25,23 @@ export const Sea = () => {
     };
   }, []);
 
-  const indicators = ['wind', 'current', 'fleet'].map((key) => {
-    const indicator = game[key];
+  const indicators: JSX.Element[] = [];
 
-    return (
+  for (const [key, value] of Object.entries(game.indicators)) {
+    indicators.push(
       <div className={styles.indicator} key={key}>
         <div className={styles.key}>
           {capitalizeFirstLetter(key)}
         </div>
         <div className={styles.iconValue}>
-          <div className={styles.icon} style={{ backgroundPositionX: indicator.direction * -80 }} />
+          <div className={styles.icon} style={{ backgroundPositionX: value.direction * -80 }}/>
           <div className={styles.value}>
-            {indicator.speed}
+            {value.speed}
           </div>
         </div>
       </div>
     );
-  });
+  }
 
   return (
     <>
