@@ -74,7 +74,13 @@ export const Building = () => {
       <div
         key={option + activeOption}
         className={optionClass}
-        onClick={() => setActiveOption(i)}
+        onClick={() => {
+          setActiveOption(i);
+
+          if (menu[i] === 'Sail') {
+            dispatch(setSail());
+          }
+        }}
       >
         {option}
       </div>
