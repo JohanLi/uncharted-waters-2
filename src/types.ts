@@ -28,7 +28,6 @@ export const directionToChanges: DirectionToChanges = {
     yDelta: 0,
     frameOffset: -2,
   },
-
   s: {
     xDelta: 0,
     yDelta: 1,

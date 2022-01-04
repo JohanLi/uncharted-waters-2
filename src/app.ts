@@ -5,7 +5,7 @@ import renderInterface from './interface/app';
 import { store } from './interface/store';
 
 import './app.css?inline';
-import { tick } from './interface/gameSlice';
+import { getTimeOfDay, tick } from './interface/gameSlice';
 
 load()
   .then(() => {
@@ -36,7 +36,7 @@ load()
 
       if (!paused) {
         world.update();
-        world.draw(state.game.time);
+        world.draw(getTimeOfDay(state));
 
         if (!portId) {
           store.dispatch(tick());

@@ -1,0 +1,74 @@
+.hud {
+  position: absolute;
+  background: #070707;
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #aaa;
+}
+
+.leftHud {
+  composes: hud;
+  top: 0;
+  left: -180px;
+  width: 180px;
+}
+
+.rightHud {
+  composes: hud;
+  left: auto;
+  right: -180px;
+  width: 180px;
+}
+
+.value {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.value:last-child {
+  margin-bottom: 0;
+}
+
+.timeOfDay {
+  margin-bottom: 80px;
+}
+
+.date,
+.port {
+  font-size: 24px;
+}
+
+.provisions {
+  background: #f3e3d3;
+}
+
+.heading {
+  background: #6c2100;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 0;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  padding: 0 20px 10px 20px;
+}
+
+.center:first-of-type {
+  padding-top: 10px;
+}
+
+.center div {
+  flex: 1;
+  text-align: right;
+  color: #000;
+  font-size: 24px;
+}
+
+.center img {
+  width: 32px;
+  height: 64px;
+}

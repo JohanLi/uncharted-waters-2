@@ -19,6 +19,11 @@ import buildingFortuneTeller from './interface/building/assets/fortune-teller.pn
 import seaTilemap from './sea/tilemap.bin';
 import seaTileset from './sea/tileset.png';
 import seaShips from './sea/ships.png';
+import seaHeadingIndicators from './interface/sea/assets/heading-indicators.png';
+import seaWater from './interface/sea/assets/water.png';
+import seaFood from './interface/sea/assets/food.png';
+import seaLumber from './interface/sea/assets/lumber.png';
+import seaShot from './interface/sea/assets/shot.png';
 
 export interface Assets {
   [key: string]: any;
@@ -47,6 +52,11 @@ const assets = {
   seaTileset,
   seaTilemap,
   seaShips,
+  seaHeadingIndicators,
+  seaWater,
+  seaFood,
+  seaLumber,
+  seaShot,
 };
 
 const isImage = (url: string) => url.endsWith('.png');

@@ -6,15 +6,22 @@ import { store } from './store';
 import { useAppSelector } from './hooks';
 import { Building } from './building/Building';
 import { getBuildingId } from './portSlice';
+import { Port } from './building/Port';
+import { Sea } from './building/Sea';
 
 const Interface = () => {
   const buildingId = useAppSelector(getBuildingId);
+  const portId = useAppSelector((state) => state.game.portId);
+
+  if (!portId) {
+    return <Sea />;
+  }
 
   if (buildingId) {
     return <Building />;
   }
 
-  return null;
+  return <Port />;
 };
 
 const renderInterface = () => {

@@ -45,6 +45,7 @@ export interface CollisionIndices {
 
 interface Building {
   name: string;
+  greeting?: string; // TODO a dialog system will be developed
   menu: string[];
 }
 
@@ -6307,6 +6308,7 @@ export const buildings: { [key: number]: Building } = {
   },
   4: {
     name: 'Harbor',
+    greeting: 'Ahoy there, matey, will ye be shoving off?',
     menu: [
       'Sail',
       'Supply',
@@ -6465,3 +6467,30 @@ export const characters: { [key: number]: Character } = {
     isImmobile: true,
   },
 };
+
+export const regions = [
+  'Europe',
+  'New World',
+  'West Africa',
+  'East Africa',
+  'Middle East',
+  'India',
+  'Southeast Asia',
+  'Far East',
+];
+
+export const markets = [
+  'Iberia',
+  'Northern Europe',
+  'The Mediterranean',
+  'North Africa',
+  'Ottoman Empire',
+  'West Africa',
+  'Central America',
+  'South America',
+  'East Africa',
+  'Middle East',
+  'India',
+  'Southeast Asia',
+  'Far East',
+];

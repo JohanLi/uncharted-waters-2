@@ -96,8 +96,8 @@ const createCharacters = (options: Options) => {
   let { x, y } = type === 'port' ? building.get(spawn.building) : state.game.seaPosition;
 
   const player = createPlayer(
-    x + spawn.offset.x,
-    y + spawn.offset.y,
+    type === 'port' ? x + spawn.offset.x : x,
+    type === 'port' ? y + spawn.offset.y : y,
     startFrame,
   );
 

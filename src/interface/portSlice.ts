@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { RootState } from './store';
+import { setSail } from './gameSlice';
 
 interface State {
   buildingId: number;
@@ -19,6 +21,11 @@ export const portSlice = createSlice({
     exitBuilding: (state) => {
       state.buildingId = 0;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(setSail, (state) => {
+      state.buildingId = 0;
+    });
   },
 });
 

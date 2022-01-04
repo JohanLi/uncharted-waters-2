@@ -37,8 +37,6 @@ const keyboard = (e: KeyboardEvent) => {
     return;
   }
 
-  e.preventDefault();
-
   if (e.type === 'keydown') {
     if (!pressedKeys.includes(pressedKey)) {
       pressedKeys.unshift(pressedKey);

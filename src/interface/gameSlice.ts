@@ -3,23 +3,60 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { exitBuilding } from './portSlice';
 import { sample } from '../utils';
 import { portAdjacentAt } from './utils';
+import { RootState } from './store';
+
+const START_DATE = new Date(1522, 4, 17);
 
 interface State {
   portId: number;
-  time: number;
+  timePassed: number;
   seaPosition: {
     x: number;
     y: number;
   };
+  gold: number;
+  wind: {
+    direction: number,
+    speed: number,
+  },
+  current: {
+    direction: number,
+    speed: number,
+  },
+  fleet: {
+    direction: number,
+    speed: number,
+  },
+  water: number,
+  food: number,
+  lumber: number,
+  shot: number,
 }
 
 const initialState: State = {
-  portId: 0,
-  time: 480,
+  portId: 1,
+  timePassed: 480,
   seaPosition: {
     x: 838,
-    y: 357,
+    y: 358,
   },
+  gold: 49273,
+  wind: {
+    direction: 0,
+    speed: 4,
+  },
+  current: {
+    direction: 3,
+    speed: 1,
+  },
+  fleet: {
+    direction: 1,
+    speed: 14,
+  },
+  water: 40,
+  food: 40,
+  lumber: 0,
+  shot: 0,
 };
 
 export const gameSlice = createSlice({
@@ -30,30 +67,70 @@ export const gameSlice = createSlice({
       // TODO should be able to check for an available adjacent tile. This way, sea position does not need to be preset
       state.portId = 0;
     },
-    dock: (state, action: PayloadAction<{ x: number; y: number }>) => {
-      // TODO relies on Player to pass in position. Look into always storing the position in Redux
-      const portId = portAdjacentAt(action.payload);
+    dock: (state) => {
+      if (state.portId) {
+        return;
+      }
 
-      if (portId) {
+      const portId = portAdjacentAt(state.seaPosition);
+
+      if (portId) { // TODO prompt a message otherwise
         state.portId = Number(portId);
-        state.seaPosition = action.payload;
       }
     },
     tick: (state) => {
-      state.time += 4;
+      state.timePassed += 4;
+    },
+    updatePosition: (state, action: PayloadAction<{ x: number; y: number }>) => {
+      // TODO rough solution for now. More state needs to move into Redux.
+      if (state.portId) {
+        return;
+      }
 
-      state.time = state.time % 1440;
+      state.seaPosition = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(exitBuilding, (state) => {
-      state.time += sample([40, 60, 80]);
-
-      state.time = state.time % 1440;
+      state.timePassed += sample([40, 60, 80]);
     });
   },
 });
 
-export const { setSail, dock, tick } = gameSlice.actions;
+export const { setSail, dock, tick, updatePosition } = gameSlice.actions;
+
+export const getFormattedDate = (state: RootState) => {
+  const date = new Date(START_DATE);
+  date.setMinutes(date.getMinutes() + state.game.timePassed);
+
+  return `${date.toLocaleString('en-us', { month: 'short' })} ${date.getDate()} ${date.getFullYear()}`;
+}
+
+export const getTime = (state: RootState) => {
+  let hours = Math.floor((state.game.timePassed % 1440) / 60);
+  let period = 'AM';
+
+  if (hours >= 12) {
+    period = 'PM';
+  }
+
+  hours %= 12;
+
+  if (hours === 0) {
+    hours = 12;
+  }
+
+  const minutes = state.game.timePassed % 60;
+
+  if (minutes < 10) {
+    return `${hours}:0${minutes} ${period}`;
+  }
+
+  return `${hours}:${minutes} ${period}`;
+};
+
+export const getTimeOfDay = (state: RootState) => {
+  return state.game.timePassed % 1440;
+};
 
 export default gameSlice.reducer;
