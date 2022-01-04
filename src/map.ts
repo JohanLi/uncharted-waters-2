@@ -1,6 +1,7 @@
 import Assets from './assets';
 import { ports, tilesets, CollisionIndices } from './port/metadata';
 import { Position } from './types';
+import { MemoryState } from './memoryState';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas
@@ -22,18 +23,10 @@ interface Options {
   tilesetOffset: number;
 }
 
-type MapOptions = {
-  type: 'port';
-  visibleArea: [number, number];
-  portId: number;
-} | {
-  type: 'sea';
-  visibleArea: [number, number];
-};
+const createMap = (state: MemoryState, visibleArea: [number, number]) => {
+  const { stage, portId } = state;
 
-const createMap = (options: MapOptions) => {
   const tileSize = 32;
-  const { type, visibleArea } = options;
   const cache = <Cache>{};
 
   let tilemap: Uint8Array;
@@ -43,8 +36,7 @@ const createMap = (options: MapOptions) => {
   let getTilesetOffset: (time: number) => number;
   let collisionIndices: CollisionIndices;
 
-  if (type === 'port') {
-    const { portId } = options;
+  if (stage === 'port') {
     const port = ports[portId];
 
     tilemapColumns = 96;
@@ -71,7 +63,7 @@ const createMap = (options: MapOptions) => {
 
       return timeOffset + port.tileset * 4;
     };
-  } else if (type === 'sea') {
+  } else {
     tilemapColumns = 2160;
     tilemapRows = 1080;
     tilemap = Assets.seaTilemap;
@@ -108,8 +100,6 @@ const createMap = (options: MapOptions) => {
 
       return Math.floor(timeOffset);
     };
-  } else {
-    throw 'Map type not found!';
   }
 
   const tiles = (x: number, y: number): number => tilemap[y * tilemapColumns + x] || 0;
@@ -143,11 +133,11 @@ const createMap = (options: MapOptions) => {
   return {
     draw: (x: number, y: number, time: number): HTMLCanvasElement => {
       if (x < 0 || y < 0) {
-        throw 'Out of bounds!';
+        throw Error('Out of bounds');
       }
 
       // if (x > tilemapColumns - visibleArea[0] || y > tilemapRows - visibleArea[1]) {
-      //   throw 'Out of bounds!';
+      //   throw Error('Out of bounds');
       // }
 
       const tilesetOffset = getTilesetOffset(time);
@@ -276,7 +266,7 @@ const createMap = (options: MapOptions) => {
         { x: 1, y: 1 },
       ];
 
-      if (type === 'port') {
+      if (stage === 'port') {
         return offsetsToCheck.some(({ x, y }, i) => {
           const tile = tiles(position.x + x, position.y + y);
 
@@ -290,9 +280,7 @@ const createMap = (options: MapOptions) => {
 
           return tile >= collisionIndices.right && tile < collisionIndices.left;
         });
-      }
-
-      if (type === 'sea') {
+      } else {
         offsetsToCheck.push(
           { x: 0, y: 0 },
           { x: 1, y: 0 },
@@ -303,8 +291,6 @@ const createMap = (options: MapOptions) => {
           return tile >= 50;
         });
       }
-
-      return false;
     },
   };
 }

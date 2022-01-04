@@ -1,14 +1,15 @@
-import getInput from './input'
-import { characters as characterMeta } from './port/metadata'
+import getInput from './input';
 
 import { Position, Direction } from './types';
 import PercentNextMove from './percentNextMove';
-import { RootState, store } from './interface/store';
 import { enterBuilding } from './interface/portSlice';
 import { Map } from './map';
-import { Building } from './building';
+import createBuilding, { Building } from './building';
 import createPlayer, { Player } from './player';
 import createNpc, { Npc } from './npc';
+import { MemoryState, seaTimeTick } from './memoryState';
+import { store } from './interface/store';
+import { portCharacterMetadata } from './interface/utils';
 
 interface AlternativeDestination {
   direction: Direction,
@@ -78,44 +79,47 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
   return () => [];
 };
 
-type Options = {
-  type: 'port';
-  map: Map;
-  building: Building;
-  state: RootState;
-} | {
-  type: 'sea';
-  map: Map;
-  state: RootState;
-};
+const createCharacters = (state: MemoryState, map: Map) => {
+  const { stage, portId } = state;
+  const { game: { portCharactersData, seaCharactersData } } = store.getState();
 
-const createCharacters = (options: Options) => {
-  const { type, map, building, state } = options;
-
-  let { spawn, startFrame, isImmobile } = characterMeta[1];
-  let { x, y } = type === 'port' ? building.get(spawn.building) : state.game.seaPosition;
-
-  const player = createPlayer(
-    type === 'port' ? x + spawn.offset.x : x,
-    type === 'port' ? y + spawn.offset.y : y,
-    startFrame,
-  );
-
+  let player: Player;
   const npcs: Npc[] = [];
 
-  if (type === 'port') {
-    for (let i = 2; i < 9; i += 1) {
-      ({ spawn, startFrame, isImmobile } = characterMeta[i]);
-      ({ x, y } = building.get(spawn.building));
+  let building: Building;
+
+  if (stage === 'port') {
+    const playerData = portCharactersData[0];
+
+    player = createPlayer(
+      playerData.x,
+      playerData.y,
+      portCharacterMetadata[playerData.i].startFrame,
+    );
+
+    for (let i = 1; i < portCharactersData.length; i += 1) {
+      const npcData = portCharactersData[i];
+      const { startFrame, isImmobile } = portCharacterMetadata[npcData.i];
 
       npcs.push(createNpc(
-        x + spawn.offset.x,
-        y + spawn.offset.y,
+        npcData.x,
+        npcData.y,
         startFrame,
         isImmobile,
       ));
     }
+
+    building = createBuilding(portId);
+  } else {
+    player = createPlayer(
+      seaCharactersData[0].x,
+      seaCharactersData[0].y,
+      4,
+    );
   }
+
+  state.player = player;
+  state.npcs = npcs;
 
   const alternativeDirection = (direction: Direction, player: Player): Direction | '' => {
     let firstDirectionPossible = true;
@@ -169,9 +173,12 @@ const createCharacters = (options: Options) => {
         return;
       }
 
+      // TODO reconsider placement
+      seaTimeTick();
+
       player.update();
 
-      const direction = getInput({ includeOrdinal: type === 'sea' });
+      const direction = getInput({ includeOrdinal: stage === 'sea' });
 
       if (direction) {
         player.move(direction);
@@ -179,7 +186,7 @@ const createCharacters = (options: Options) => {
         if (collision(player)) {
           player.undoMove();
 
-          if (type === 'port') {
+          if (stage === 'port') {
             const newDirection = alternativeDirection(
               direction,
               player,
@@ -191,7 +198,7 @@ const createCharacters = (options: Options) => {
           }
         }
 
-        if (type === 'port') {
+        if (stage === 'port') {
           const buildingId = building.at(player.destination());
 
           if (buildingId) {

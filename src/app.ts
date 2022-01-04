@@ -2,10 +2,9 @@ import { load } from './assets';
 import createWorld, { World } from './world';
 import renderInterface from './interface/app';
 
-import { store } from './interface/store';
-
 import './app.css?inline';
-import { getTimeOfDay, tick } from './interface/gameSlice';
+
+import { Stage } from './memoryState';
 
 load()
   .then(() => {
@@ -14,33 +13,25 @@ load()
       <div id="interface"></div>
     `;
 
-    renderInterface();
+    const state = renderInterface();
 
-    let lastState: number;
+    if (!state) {
+      return;
+    }
+
+    let lastStage: Stage;
     let world: World;
 
     const loop = () => {
-      const state = store.getState();
-      const portId = state.game.portId;
-      const paused = state.port.buildingId;
+      if (lastStage !== state.stage) {
+        lastStage = state.stage;
 
-      if (lastState !== portId) {
-        lastState = portId;
-
-        world = createWorld({
-          type: portId ? 'port' : 'sea',
-          portId,
-          state,
-        });
+        world = createWorld(state);
       }
 
-      if (!paused) {
+      if (!state.paused) {
         world.update();
-        world.draw(getTimeOfDay(state));
-
-        if (!portId) {
-          store.dispatch(tick());
-        }
+        world.draw();
       }
 
       requestAnimationFrame(loop);

@@ -1,42 +1,27 @@
 import Assets from './assets';
 import createMap from './map';
-import Building from './building';
 import PercentNextMove from './percentNextMove';
 import createCharacters from './characters';
-import { RootState } from './interface/store';
+import { getTimeOfDay, MemoryState } from './memoryState';
 
 const TILE_SIZE = 32;
 
-type Options = {
-  type: 'port';
-  portId: number;
-  state: RootState;
-} | {
-  type: 'sea';
-  portId: number;
-  state: RootState;
-};
-
-const createWorld = (options: Options) => {
-  const { type, portId, state } = options;
-
+const createWorld = (state: MemoryState) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
   const context = canvas.getContext('2d', { alpha: false })!;
 
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap({ type, visibleArea: [Math.ceil(width + 1), Math.ceil(height + 1)], portId });
-  const building = type === 'port' ? Building(portId) : undefined;
-
-  const characters = createCharacters({ type, map, building, state });
+  const map = createMap(state, [Math.ceil(width + 1), Math.ceil(height + 1)]);
+  const characters = createCharacters(state, map);
 
   return {
     update: () => {
       PercentNextMove.update();
       characters.update();
     },
-    draw: (time: number) => {
+    draw: () => {
       const { player, npcs } = characters;
       const { x: characterX, y: characterY } = player.position(PercentNextMove.get());
       const cameraCenterX = characterX + (player.width / 2);
@@ -52,7 +37,7 @@ const createWorld = (options: Options) => {
         map.draw(
           Math.floor(cameraX),
           Math.floor(cameraY),
-          time,
+          getTimeOfDay(),
         ),
         Math.floor((cameraX % 1) * TILE_SIZE),
         Math.floor((cameraY % 1) * TILE_SIZE),
@@ -65,7 +50,7 @@ const createWorld = (options: Options) => {
       );
 
       context.drawImage(
-        portId ? Assets.portCharacters : Assets.seaShips,
+        state.stage === 'port' ? Assets.portCharacters : Assets.seaShips,
         player.frame() * player.width * TILE_SIZE,
         0,
         player.width * TILE_SIZE,

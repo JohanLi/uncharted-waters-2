@@ -1,5 +1,3 @@
-import { Position } from '../types';
-
 interface Port {
   name: string;
   x: number;
@@ -47,15 +45,6 @@ interface Building {
   name: string;
   greeting?: string; // TODO a dialog system will be developed
   menu: string[];
-}
-
-interface Character {
-  startFrame: number;
-  spawn: {
-    building: number;
-    offset: Position;
-  };
-  isImmobile: boolean;
 }
 
 // Port | SupplyPort
@@ -6374,97 +6363,6 @@ export const buildings: { [key: number]: Building } = {
       'Love',
       'Mates',
     ],
-  },
-};
-
-export const characters: { [key: number]: Character } = {
-  1: {
-    startFrame: 4,
-    spawn: {
-      building: 4,
-      offset: {
-        x: 0,
-        y: 1,
-      },
-    },
-    isImmobile: false,
-  },
-  2: {
-    startFrame: 12,
-    spawn: {
-      building: 1,
-      offset: {
-        x: -2,
-        y: 1,
-      },
-    },
-    isImmobile: false,
-  },
-  3: {
-    startFrame: 12,
-    spawn: {
-      building: 3,
-      offset: {
-        x: 0,
-        y: 0,
-      },
-    },
-    isImmobile: false,
-  },
-  4: {
-    startFrame: 20,
-    spawn: {
-      building: 2,
-      offset: {
-        x: -2,
-        y: 1,
-      },
-    },
-    isImmobile: false,
-  },
-  5: {
-    startFrame: 20,
-    spawn: {
-      building: 5,
-      offset: {
-        x: -2,
-        y: 1,
-      },
-    },
-    isImmobile: false,
-  },
-  6: {
-    startFrame: 24,
-    spawn: {
-      building: 1,
-      offset: {
-        x: 2,
-        y: 1,
-      },
-    },
-    isImmobile: true,
-  },
-  7: {
-    startFrame: 26,
-    spawn: {
-      building: 5,
-      offset: {
-        x: 2,
-        y: 1,
-      },
-    },
-    isImmobile: true,
-  },
-  8: {
-    startFrame: 28,
-    spawn: {
-      building: 2,
-      offset: {
-        x: 2,
-        y: 1,
-      },
-    },
-    isImmobile: true,
   },
 };
 

@@ -1,6 +1,4 @@
 import { Direction, directionToChanges } from './types';
-import { store } from './interface/store';
-import { updatePosition } from './interface/gameSlice';
 
 const createPlayer = (x: number, y: number, startFrame: number) => {
   let xTo = x;
@@ -31,15 +29,11 @@ const createPlayer = (x: number, y: number, startFrame: number) => {
     update: () => {
       x = xTo;
       y = yTo;
-
-      store.dispatch(updatePosition({ x, y }));
     },
-    position: (percentNextMove = 0) => {
-      return {
-        x: x + ((xTo - x) * percentNextMove),
-        y: y + ((yTo - y) * percentNextMove),
-      };
-    },
+    position: (percentNextMove = 0) => ({
+      x: x + ((xTo - x) * percentNextMove),
+      y: y + ((yTo - y) * percentNextMove),
+    }),
     destination: () => ({
       x: xTo,
       y: yTo,
