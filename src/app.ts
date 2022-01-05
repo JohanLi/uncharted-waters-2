@@ -1,6 +1,7 @@
 import { load } from './assets';
 import createWorld, { World } from './world';
 import renderInterface from './interface/interface';
+import createSound from './sound';
 
 import './app.css?inline';
 
@@ -14,6 +15,7 @@ load()
     `;
 
     renderInterface();
+    const sound = createSound();
 
     let lastStage: Stage;
     let world: World;
@@ -25,6 +27,7 @@ load()
         if (lastStage !== stage) {
           lastStage = stage;
           world = createWorld();
+          sound.play();
         }
 
         world.update();

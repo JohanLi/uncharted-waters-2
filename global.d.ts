@@ -7,3 +7,4 @@ declare module '*.css' {
 
 declare module '*.png';
 declare module '*.bin';
+declare module '*.mp3';
