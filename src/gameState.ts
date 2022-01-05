@@ -2,7 +2,7 @@ import { PortCharacters } from './port/portCharacters';
 import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
 import { START_PORT_ID, START_POSITION_X, START_POSITION_Y, START_TIME_PASSED } from './constants';
-import { nextDayAtSea, update } from './interface/interfaceSlice';
+import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
 
@@ -88,7 +88,7 @@ export const dock = (e: KeyboardEvent) => {
     return;
   }
 
-  const { x, y } = gameState.seaCharacters.getPlayer().position()
+  const { x, y } = gameState.seaCharacters.getPlayer().position();
 
   const portId = portAdjacentAt(x, y);
 
@@ -101,6 +101,7 @@ export const dock = (e: KeyboardEvent) => {
   gameState.stage = 'port';
   gameState.portId = portId;
 
+  store.dispatch(dockAction());
   dispatchUpdate();
 
   document.removeEventListener('keyup', dock);

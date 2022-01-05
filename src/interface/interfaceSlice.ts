@@ -69,6 +69,9 @@ export const interfaceSlice = createSlice({
       state.timePassed = timePassed;
       state.dayAtSea += 1;
     },
+    dockAction: (state) => {
+      state.dayAtSea = 0;
+    },
   },
 });
 
@@ -105,6 +108,6 @@ export const getHoursMinutes = (state: RootState) => {
 export const getIngots = (state: RootState) => Math.floor(state.interface.gold / 10000);
 export const getCoins = (state: RootState) => state.interface.gold % 10000;
 
-export const { update, nextDayAtSea } = interfaceSlice.actions;
+export const { update, nextDayAtSea, dockAction } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
