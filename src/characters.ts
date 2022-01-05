@@ -7,9 +7,10 @@ import { Map } from './map';
 import createBuilding, { Building } from './building';
 import createPlayer, { Player } from './player';
 import createNpc, { Npc } from './npc';
-import { MemoryState, seaTimeTick } from './memoryState';
+import memoryState, { MemoryState } from './memoryState';
 import { store } from './interface/store';
 import { portCharacterMetadata } from './interface/utils';
+import { nextDay } from './interface/gameSlice';
 
 interface AlternativeDestination {
   direction: Direction,
@@ -174,7 +175,13 @@ const createCharacters = (state: MemoryState, map: Map) => {
       }
 
       // TODO reconsider placement
-      seaTimeTick();
+      if (memoryState.stage === 'sea') {
+        memoryState.timePassed += 20;
+
+        if (memoryState.timePassed % 1440 === 0) {
+          store.dispatch(nextDay());
+        }
+      }
 
       player.update();
 

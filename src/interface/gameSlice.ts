@@ -7,6 +7,7 @@ import { RootState } from './store';
 import memoryState from '../memoryState';
 
 const START_DATE = new Date(1522, 4, 17);
+const START_TIME_PASSED = 480; // 8 AM
 const START_PORT_ID = 1;
 
 interface Velocity {
@@ -17,6 +18,7 @@ interface Velocity {
 interface State {
   portId: number;
   timePassed: number;
+  dayAtSea: number;
   gold: number;
   indicators: {
     wind: Velocity;
@@ -33,7 +35,8 @@ interface State {
 
 const initialState: State = {
   portId: START_PORT_ID,
-  timePassed: 480,
+  timePassed: START_TIME_PASSED,
+  dayAtSea: 0,
   gold: 49273,
   indicators: {
     wind: {
@@ -96,25 +99,34 @@ export const gameSlice = createSlice({
       memoryState.portId = portId;
 
       // TODO round time up to :00, :20, :40
+      state.timePassed = memoryState.timePassed;
+      state.dayAtSea = 0;
+    },
+    nextDay: (state) => {
+      state.timePassed = memoryState.timePassed;
+      state.dayAtSea += 1;
+
+      // TODO remove food and water
     },
   },
   extraReducers: (builder) => {
     builder.addCase(exitBuilding, (state) => {
-      state.timePassed += sample([40, 60, 80]);
+      memoryState.timePassed += sample([40, 60, 80]);
+      state.timePassed = memoryState.timePassed;
     });
   },
 });
 
-export const { setSail, dock } = gameSlice.actions;
+export const { setSail, dock, nextDay } = gameSlice.actions;
 
-export const getFormattedDate = (state: RootState) => {
+export const getDate = (state: RootState) => {
   const date = new Date(START_DATE);
   date.setMinutes(date.getMinutes() + state.game.timePassed);
 
   return `${date.toLocaleString('en-us', { month: 'short' })} ${date.getDate()} ${date.getFullYear()}`;
 }
 
-export const getTime = (state: RootState) => {
+export const getHoursMinutes = (state: RootState) => {
   let hours = Math.floor((state.game.timePassed % 1440) / 60);
   let period = 'AM';
 

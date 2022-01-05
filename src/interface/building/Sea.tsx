@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import styles from './world-map.css';
 import Assets from '../../assets';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { dock, getFormattedDate } from '../gameSlice';
+import { dock, getDate } from '../gameSlice';
 
 const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -48,10 +48,10 @@ export const Sea = () => {
       <div className={styles.leftHud}>
         <div className={styles.dateAndDay}>
           <div className={styles.date}>
-            {useAppSelector(getFormattedDate)}
+            {useAppSelector(getDate)}
           </div>
           <div>
-            Day 0
+            Day {game.dayAtSea}
           </div>
         </div>
         <div className={styles.indicators}>

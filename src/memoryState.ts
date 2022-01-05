@@ -14,12 +14,4 @@ export interface MemoryState {
 
 export const memoryState = {} as MemoryState;
 
-export const getTimeOfDay = () => memoryState.timePassed % 1440;
-
-export const seaTimeTick = () => {
-  if (memoryState.stage === 'sea') {
-    memoryState.timePassed += 20;
-  }
-}
-
 export default memoryState;

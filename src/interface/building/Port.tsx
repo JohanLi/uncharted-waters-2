@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './port.css';
 import { useAppSelector } from '../hooks';
 import { markets, ports } from '../../port/metadata';
-import { getFormattedDate, getTime } from '../gameSlice';
+import { getDate, getHoursMinutes } from '../gameSlice';
 
 export const Port = () => {
   const { portId, gold } = useAppSelector((state) => state.game);
@@ -23,10 +23,10 @@ export const Port = () => {
     <>
       <div className={styles.leftHud}>
         <div className={styles.date}>
-          {useAppSelector(getFormattedDate)}
+          {useAppSelector(getDate)}
         </div>
         <div className={styles.timeOfDay}>
-          {useAppSelector(getTime)}
+          {useAppSelector(getHoursMinutes)}
         </div>
         <div>
           Ingots

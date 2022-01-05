@@ -2,7 +2,7 @@ import Assets from './assets';
 import createMap from './map';
 import PercentNextMove from './percentNextMove';
 import createCharacters from './characters';
-import { getTimeOfDay, MemoryState } from './memoryState';
+import memoryState, { MemoryState } from './memoryState';
 
 const TILE_SIZE = 32;
 
@@ -33,11 +33,13 @@ const createWorld = (state: MemoryState) => {
       cameraX = Math.min(cameraX, map.tilemapColumns - width);
       cameraY = Math.min(cameraY, map.tilemapRows - height);
 
+      const timeOfDay = memoryState.timePassed % 1440;
+
       context.drawImage(
         map.draw(
           Math.floor(cameraX),
           Math.floor(cameraY),
-          getTimeOfDay(),
+          timeOfDay,
         ),
         Math.floor((cameraX % 1) * TILE_SIZE),
         Math.floor((cameraY % 1) * TILE_SIZE),
