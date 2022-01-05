@@ -3,13 +3,10 @@ import React from 'react';
 import styles from './port.css';
 import { useAppSelector } from '../hooks';
 import { markets, ports } from '../../port/metadata';
-import { getDate, getHoursMinutes } from '../gameSlice';
+import { getCoins, getDate, getHoursMinutes, getIngots } from '../interfaceSlice';
 
 export const Port = () => {
-  const { portId, gold } = useAppSelector((state) => state.game);
-
-  const ingots = () => Math.floor(gold / 10000);
-  const coins = () => gold % 10000;
+  const { portId } = useAppSelector((state) => state.interface);
 
   const {
     name,
@@ -32,13 +29,13 @@ export const Port = () => {
           Ingots
         </div>
         <div className={styles.value}>
-          {ingots()}
+          {useAppSelector(getIngots)}
         </div>
         <div>
           Coins
         </div>
         <div className={styles.value}>
-          {coins()}
+          {useAppSelector(getCoins)}
         </div>
       </div>
       <div className={styles.rightHud}>

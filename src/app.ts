@@ -1,10 +1,10 @@
 import { load } from './assets';
 import createWorld, { World } from './world';
-import renderInterface from './interface/app';
+import renderInterface from './interface/interface';
 
 import './app.css?inline';
 
-import { Stage } from './memoryState';
+import { gameState, Stage } from './gameState';
 
 load()
   .then(() => {
@@ -13,23 +13,20 @@ load()
       <div id="interface"></div>
     `;
 
-    const state = renderInterface();
-
-    if (!state) {
-      return;
-    }
+    renderInterface();
 
     let lastStage: Stage;
     let world: World;
 
     const loop = () => {
-      if (lastStage !== state.stage) {
-        lastStage = state.stage;
+      const { stage } = gameState;
 
-        world = createWorld(state);
-      }
+      if (stage !== 'building') {
+        if (lastStage !== stage) {
+          lastStage = stage;
+          world = createWorld();
+        }
 
-      if (!state.paused) {
         world.update();
         world.draw();
       }

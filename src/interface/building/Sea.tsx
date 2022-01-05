@@ -1,33 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import styles from './world-map.css';
 import Assets from '../../assets';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { dock, getDate } from '../gameSlice';
+import { useAppSelector } from '../hooks';
+import { getDate } from '../interfaceSlice';
 
 const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const Sea = () => {
-  const game = useAppSelector((state) => state.game);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const keyup = (e: KeyboardEvent) => {
-      if (e.key === 'e') {
-        dispatch(dock());
-      }
-    };
-
-    document.addEventListener('keyup', keyup);
-
-    return () => {
-      document.removeEventListener('keyup', keyup);
-    };
-  }, []);
+  const state = useAppSelector((state) => state.interface);
 
   const indicators: JSX.Element[] = [];
 
-  for (const [key, value] of Object.entries(game.indicators)) {
+  for (const [key, value] of Object.entries(state.indicators)) {
     indicators.push(
       <div className={styles.indicator} key={key}>
         <div className={styles.key}>
@@ -51,7 +36,7 @@ export const Sea = () => {
             {useAppSelector(getDate)}
           </div>
           <div>
-            Day {game.dayAtSea}
+            Day {state.dayAtSea}
           </div>
         </div>
         <div className={styles.indicators}>
@@ -65,25 +50,25 @@ export const Sea = () => {
           </div>
           <div className={styles.center}>
             <div>
-              {game.water}
+              {state.water}
             </div>
             <img src={Assets.seaWater.toDataURL()} alt="Water" />
           </div>
           <div className={styles.center}>
             <div>
-              {game.food}
+              {state.food}
             </div>
             <img src={Assets.seaFood.toDataURL()} alt="food" />
           </div>
           <div className={styles.center}>
             <div>
-              {game.lumber}
+              {state.lumber}
             </div>
             <img src={Assets.seaLumber.toDataURL()} alt="Lumber" />
           </div>
           <div className={styles.center}>
             <div>
-              {game.shot}
+              {state.shot}
             </div>
             <img src={Assets.seaShot.toDataURL()} alt="Shot" />
           </div>

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { exitBuilding, getBuildingId } from '../portSlice';
+import { useAppSelector } from '../hooks';
 import Assets from '../../assets';
 import { buildings } from '../../port/metadata';
-
-import styles from './building.css';
 import { Dialog } from './Dialog';
 import classNames from 'classnames';
-import { setSail } from '../gameSlice';
+import { exitBuilding, setSail } from '../../gameState';
+
+import styles from './building.css';
 
 export const Building = () => {
-  const id = useAppSelector(getBuildingId);
-  const dispatch = useAppDispatch();
+  const id = useAppSelector((state) => state.interface.buildingId);
 
   const { menu } = buildings[id];
 
@@ -43,12 +41,12 @@ export const Building = () => {
 
     const keyupHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        dispatch(exitBuilding());
+        exitBuilding();
       }
 
       if (e.key === 'Enter') {
         if (menu[activeOption] === 'Sail') {
-          dispatch(setSail());
+          setSail();
         }
       }
     };
@@ -78,7 +76,7 @@ export const Building = () => {
           setActiveOption(i);
 
           if (menu[i] === 'Sail') {
-            dispatch(setSail());
+            setSail();
           }
         }}
       >

@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import gameReducer from './gameSlice';
-import portReducer from './portSlice';
+import interfaceReducer from './interfaceSlice';
 
 export const store = configureStore({
   reducer: {
-    game: gameReducer,
-    port: portReducer,
+    interface: interfaceReducer,
   },
 });
 

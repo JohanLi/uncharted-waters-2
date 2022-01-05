@@ -1,29 +1,57 @@
 import Assets from './assets';
 import createMap from './map';
 import PercentNextMove from './percentNextMove';
-import createCharacters from './characters';
-import memoryState, { MemoryState } from './memoryState';
+import gameState, { getTimeOfDay, seaTimeTick } from './gameState';
+import createBuilding from './building';
+import createPortCharacters from './port/portCharacters';
+import createSeaCharacters from './sea/seaCharacters';
 
 const TILE_SIZE = 32;
 
-const createWorld = (state: MemoryState) => {
+const createWorld = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
   const context = canvas.getContext('2d', { alpha: false })!;
 
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap(state, [Math.ceil(width + 1), Math.ceil(height + 1)]);
-  const characters = createCharacters(state, map);
+  const map = createMap(gameState, [Math.ceil(width + 1), Math.ceil(height + 1)]);
+
+  const { stage, portId } = gameState;
+
+  let characterAsset: CanvasImageSource;
+
+  if (stage === 'port') {
+    const building = createBuilding(portId);
+    gameState.portCharacters = createPortCharacters(map, building);
+
+    characterAsset = Assets.portCharacters;
+  } else {
+    gameState.seaCharacters = createSeaCharacters(map);
+
+    characterAsset = Assets.seaShips;
+  }
 
   return {
     update: () => {
       PercentNextMove.update();
-      characters.update();
+
+      if (PercentNextMove.get() !== 0) {
+        return;
+      }
+
+      if (stage === 'port') {
+        gameState.portCharacters.update();
+      } else {
+        gameState.seaCharacters.update();
+
+        seaTimeTick();
+      }
     },
     draw: () => {
-      const { player, npcs } = characters;
+      const player = stage === 'port' ? gameState.portCharacters.getPlayer() : gameState.seaCharacters.getPlayer();
       const { x: characterX, y: characterY } = player.position(PercentNextMove.get());
+
       const cameraCenterX = characterX + (player.width / 2);
       const cameraCenterY = characterY + (player.height / 2);
 
@@ -33,13 +61,11 @@ const createWorld = (state: MemoryState) => {
       cameraX = Math.min(cameraX, map.tilemapColumns - width);
       cameraY = Math.min(cameraY, map.tilemapRows - height);
 
-      const timeOfDay = memoryState.timePassed % 1440;
-
       context.drawImage(
         map.draw(
           Math.floor(cameraX),
           Math.floor(cameraY),
-          timeOfDay,
+          getTimeOfDay(),
         ),
         Math.floor((cameraX % 1) * TILE_SIZE),
         Math.floor((cameraY % 1) * TILE_SIZE),
@@ -52,7 +78,7 @@ const createWorld = (state: MemoryState) => {
       );
 
       context.drawImage(
-        state.stage === 'port' ? Assets.portCharacters : Assets.seaShips,
+        characterAsset,
         player.frame() * player.width * TILE_SIZE,
         0,
         player.width * TILE_SIZE,
@@ -63,9 +89,11 @@ const createWorld = (state: MemoryState) => {
         player.height * TILE_SIZE,
       );
 
+      const npcs = stage === 'port' ? gameState.portCharacters.getNpcs() : gameState.seaCharacters.getNpcs();
+
       npcs.forEach((npc) => {
         context.drawImage(
-          Assets.portCharacters,
+          characterAsset,
           npc.frame() * npc.width * TILE_SIZE,
           0,
           npc.width * TILE_SIZE,

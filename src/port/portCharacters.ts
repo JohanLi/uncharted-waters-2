@@ -1,16 +1,11 @@
-import getInput from './input';
+import getInput from '../input';
 
-import { Position, Direction } from './types';
-import PercentNextMove from './percentNextMove';
-import { enterBuilding } from './interface/portSlice';
-import { Map } from './map';
-import createBuilding, { Building } from './building';
-import createPlayer, { Player } from './player';
-import createNpc, { Npc } from './npc';
-import memoryState, { MemoryState } from './memoryState';
-import { store } from './interface/store';
-import { portCharacterMetadata } from './interface/utils';
-import { nextDay } from './interface/gameSlice';
+import { Position, Direction } from '../types';
+import { Map } from '../map';
+import { Building } from '../building';
+import createPlayer, { Player } from '../player';
+import createNpc, { Npc } from '../npc';
+import { enterBuilding, getIsNight } from '../gameState';
 
 interface AlternativeDestination {
   direction: Direction,
@@ -80,47 +75,44 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
   return () => [];
 };
 
-const createCharacters = (state: MemoryState, map: Map) => {
-  const { stage, portId } = state;
-  const { game: { portCharactersData, seaCharactersData } } = store.getState();
+const createPortCharacters = (map: Map, building: Building) => {
+  const { startFrame, spawn } = portCharacterMetadata[0];
+  const { x, y } = building.get(spawn.building);
 
-  let player: Player;
+  const player = createPlayer(
+    x + spawn.offset.x,
+    y + spawn.offset.y,
+    startFrame,
+  );
+
   const npcs: Npc[] = [];
 
-  let building: Building;
+  const daySpawnNightDespawnNpcs = () => {
+    const isNight = getIsNight();
 
-  if (stage === 'port') {
-    const playerData = portCharactersData[0];
+    if (npcs.length === 0 && !isNight) {
+      // TODO add special case where additional NPCs should spawn to blockade the port
+      for (let i = 1; i < 8; i += 1) {
+        const { startFrame, spawn, isImmobile } = portCharacterMetadata[i];
+        const { x, y } = building.get(spawn.building);
 
-    player = createPlayer(
-      playerData.x,
-      playerData.y,
-      portCharacterMetadata[playerData.i].startFrame,
-    );
-
-    for (let i = 1; i < portCharactersData.length; i += 1) {
-      const npcData = portCharactersData[i];
-      const { startFrame, isImmobile } = portCharacterMetadata[npcData.i];
-
-      npcs.push(createNpc(
-        npcData.x,
-        npcData.y,
-        startFrame,
-        isImmobile,
-      ));
+        npcs.push(createNpc(
+          x + spawn.offset.x,
+          y + spawn.offset.y,
+          startFrame,
+          isImmobile,
+        ));
+      }
     }
 
-    building = createBuilding(portId);
-  } else {
-    player = createPlayer(
-      seaCharactersData[0].x,
-      seaCharactersData[0].y,
-      4,
-    );
+    if (npcs.length > 0 && isNight) {
+      while (npcs.length) {
+        npcs.pop();
+      }
+    }
   }
 
-  state.player = player;
-  state.npcs = npcs;
+  daySpawnNightDespawnNpcs();
 
   const alternativeDirection = (direction: Direction, player: Player): Direction | '' => {
     let firstDirectionPossible = true;
@@ -170,22 +162,9 @@ const createCharacters = (state: MemoryState, map: Map) => {
 
   return {
     update: () => {
-      if (PercentNextMove.get() !== 0) {
-        return;
-      }
-
-      // TODO reconsider placement
-      if (memoryState.stage === 'sea') {
-        memoryState.timePassed += 20;
-
-        if (memoryState.timePassed % 1440 === 0) {
-          store.dispatch(nextDay());
-        }
-      }
-
       player.update();
 
-      const direction = getInput({ includeOrdinal: stage === 'sea' });
+      const direction = getInput({ includeOrdinal: false });
 
       if (direction) {
         player.move(direction);
@@ -193,26 +172,22 @@ const createCharacters = (state: MemoryState, map: Map) => {
         if (collision(player)) {
           player.undoMove();
 
-          if (stage === 'port') {
-            const newDirection = alternativeDirection(
-              direction,
-              player,
-            );
+          const newDirection = alternativeDirection(
+            direction,
+            player,
+          );
 
-            if (newDirection) {
-              player.move(newDirection, false);
-            }
+          if (newDirection) {
+            player.move(newDirection, false);
           }
         }
 
-        if (stage === 'port') {
-          const buildingId = building.at(player.destination());
+        const buildingId = building.at(player.destination());
 
-          if (buildingId) {
-            player.update();
-            player.move('s');
-            store.dispatch(enterBuilding(buildingId));
-          }
+        if (buildingId) {
+          player.update();
+          player.move('s'); // TODO perform this on exit instead
+          enterBuilding(buildingId);
         }
       }
 
@@ -231,9 +206,112 @@ const createCharacters = (state: MemoryState, map: Map) => {
         }
       });
     },
-    player,
-    npcs,
-  }
+    daySpawnNightDespawnNpcs,
+    getPlayer: () => player,
+    getNpcs: () => npcs,
+  };
 }
 
-export default createCharacters;
+interface PortCharacterMetadata {
+  startFrame: number;
+  spawn: {
+    building: number;
+    offset: Position;
+  };
+  isImmobile: boolean;
+}
+
+export const portCharacterMetadata: PortCharacterMetadata[] = [
+  {
+    startFrame: 4,
+    spawn: {
+      building: 4,
+      offset: {
+        x: 0,
+        y: 1,
+      },
+    },
+    isImmobile: false,
+  },
+  {
+    startFrame: 12,
+    spawn: {
+      building: 1,
+      offset: {
+        x: -2,
+        y: 1,
+      },
+    },
+    isImmobile: false,
+  },
+  {
+    startFrame: 12,
+    spawn: {
+      building: 3,
+      offset: {
+        x: 0,
+        y: 0,
+      },
+    },
+    isImmobile: false,
+  },
+  {
+    startFrame: 20,
+    spawn: {
+      building: 2,
+      offset: {
+        x: -2,
+        y: 1,
+      },
+    },
+    isImmobile: false,
+  },
+  {
+    startFrame: 20,
+    spawn: {
+      building: 5,
+      offset: {
+        x: -2,
+        y: 1,
+      },
+    },
+    isImmobile: false,
+  },
+  {
+    startFrame: 24,
+    spawn: {
+      building: 1,
+      offset: {
+        x: 2,
+        y: 1,
+      },
+    },
+    isImmobile: true,
+  },
+  {
+    startFrame: 26,
+    spawn: {
+      building: 5,
+      offset: {
+        x: 2,
+        y: 1,
+      },
+    },
+    isImmobile: true,
+  },
+  {
+    startFrame: 28,
+    spawn: {
+      building: 2,
+      offset: {
+        x: 2,
+        y: 1,
+      },
+    },
+    isImmobile: true,
+  },
+];
+
+export type PortCharacters = ReturnType<typeof createPortCharacters>;
+
+export default createPortCharacters;
