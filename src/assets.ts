@@ -1,75 +1,56 @@
-import portTilesets from './port/tilesets.png';
-import portTilemaps from './port/tilemaps.bin';
-import portCharacters from './port/portCharacters.png';
+/*
+ TODO
+  consider moving assets used exclusively by the interface out of here, and use image-rendering: pixelated
+  We should still ensure those assets are loaded before the game starts, though.
+ */
 
-import buildingBackground from './interface/building/assets/background.png';
-import buildingMarket from './interface/building/assets/market.png';
-import buildingPub from './interface/building/assets/pub.png';
-import buildingShipyard from './interface/building/assets/shipyard.png';
-import buildingHarbor from './interface/building/assets/harbor.png';
-import buildingLodge from './interface/building/assets/lodge.png';
-import buildingPalace from './interface/building/assets/palace.png';
-import buildingGuild from './interface/building/assets/guild.png';
-import buildingMisc from './interface/building/assets/misc.png';
-import buildingBank from './interface/building/assets/bank.png';
-import buildingItemShop from './interface/building/assets/item-shop.png';
-import buildingChurch from './interface/building/assets/church.png';
-import buildingFortuneTeller from './interface/building/assets/fortune-teller.png';
-
-import seaTilemap from './sea/tilemap.bin';
-import seaTileset from './sea/tileset.png';
-import seaCharacters from './sea/seaCharacters.png';
-import seaHeadingIndicators from './interface/sea/assets/heading-indicators.png';
-import seaWater from './interface/sea/assets/water.png';
-import seaFood from './interface/sea/assets/food.png';
-import seaLumber from './interface/sea/assets/lumber.png';
-import seaShot from './interface/sea/assets/shot.png';
-
-export interface Assets {
-  [key: string]: any;
+const images = {
+  portTilesets: import('./port/tilesets.png'),
+  portCharacters: import('./port/portCharacters.png'),
+  buildingBackground: import('./interface/building/assets/background.png'),
+  buildingMarket: import('./interface/building/assets/market.png'),
+  buildingPub: import('./interface/building/assets/pub.png'),
+  buildingShipyard: import('./interface/building/assets/shipyard.png'),
+  buildingHarbor: import('./interface/building/assets/harbor.png'),
+  buildingLodge: import('./interface/building/assets/lodge.png'),
+  buildingPalace: import('./interface/building/assets/palace.png'),
+  buildingGuild: import('./interface/building/assets/guild.png'),
+  buildingMisc: import('./interface/building/assets/misc.png'),
+  buildingBank: import('./interface/building/assets/bank.png'),
+  buildingItemShop: import('./interface/building/assets/item-shop.png'),
+  buildingChurch: import('./interface/building/assets/church.png'),
+  buildingFortuneTeller: import('./interface/building/assets/fortune-teller.png'),
+  seaTileset: import('./sea/tileset.png'),
+  seaCharacters: import('./sea/seaCharacters.png'),
+  seaHeadingIndicators: import('./interface/sea/assets/heading-indicators.png'),
+  seaWater: import('./interface/sea/assets/water.png'),
+  seaFood: import('./interface/sea/assets/food.png'),
+  seaLumber: import('./interface/sea/assets/lumber.png'),
+  seaShot: import('./interface/sea/assets/shot.png'),
 }
 
-const SCALE = 2;
-
-// if initialized with the interface, autocomplete will not be possible
-const assets = {
-  portTilesets,
-  portTilemaps,
-  portCharacters,
-  buildingBackground,
-  buildingMarket,
-  buildingPub,
-  buildingShipyard,
-  buildingHarbor,
-  buildingLodge,
-  buildingPalace,
-  buildingGuild,
-  buildingMisc,
-  buildingBank,
-  buildingItemShop,
-  buildingChurch,
-  buildingFortuneTeller,
-  seaTileset,
-  seaTilemap,
-  seaCharacters,
-  seaHeadingIndicators,
-  seaWater,
-  seaFood,
-  seaLumber,
-  seaShot,
+const tilemaps = {
+  port: import('./port/tilemaps.bin'),
+  sea: import('./sea/tilemap.bin'),
 };
 
-const isImage = (url: string) => url.endsWith('.png');
-const isBinary = (url: string) => url.endsWith('.bin');
+export type ImageKeys = keyof typeof images;
+type TilemapKeys = keyof typeof tilemaps;
 
-const loadImage = (url: string, scale = SCALE) => new Promise<HTMLCanvasElement>((resolve) => {
+export const Images = {} as { [key in ImageKeys]: HTMLCanvasElement };
+
+export const Tilemaps = {} as { [key in TilemapKeys]: Uint8Array };
+
+const ASSETS_SCALE = 2;
+
+const loadImage = (url: string) => new Promise<HTMLCanvasElement>((resolve) => {
   const img = new Image();
   img.src = url;
 
   img.onload = () => {
     const canvas = document.createElement('canvas');
-    canvas.width = img.width * scale;
-    canvas.height = img.height * scale;
+    canvas.width = img.width * ASSETS_SCALE;
+    canvas.height = img.height * ASSETS_SCALE;
 
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
@@ -79,28 +60,23 @@ const loadImage = (url: string, scale = SCALE) => new Promise<HTMLCanvasElement>
   };
 });
 
-const loadBinary = (url: string) => fetch(url)
-  .then(response => response.arrayBuffer())
-  .then(response => new Uint8Array(response));
+const loadBinary = async (url: string) => {
+  const response = await fetch(url);
+  return new Uint8Array(await response.arrayBuffer());
+}
 
-// the goal is to only have to call load() one time
-const load = async (a: Assets = assets) => {
-  const promises: Promise<HTMLCanvasElement | Uint8Array>[] = [];
+export const load = async () => {
+  let imageKeys: ImageKeys;
 
-  Object.keys(a).forEach((key) => {
-    if (isImage(a[key])) {
-      promises.push(loadImage(a[key]));
-    } else if (isBinary(a[key])) {
-      promises.push(loadBinary(a[key]));
-    }
-  });
+  for (imageKeys in images) {
+    const url = (await images[imageKeys]).default;
+    Images[imageKeys] = await loadImage(url);
+  }
 
-  const resolvedPromises = await Promise.all(promises);
+  let dataKeys: TilemapKeys;
 
-  Object.keys(a).forEach((key) => {
-    a[key] = resolvedPromises.shift()!;
-  });
+  for (dataKeys in tilemaps) {
+    const url = (await tilemaps[dataKeys]).default;
+    Tilemaps[dataKeys] = await loadBinary(url);
+  }
 };
-
-export default assets;
-export { load };

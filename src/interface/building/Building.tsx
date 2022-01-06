@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useAppSelector } from '../hooks';
-import Assets from '../../assets';
+import { ImageKeys, Images } from '../../assets';
 import { buildings } from '../../port/metadata';
 import { Dialog } from './Dialog';
 import classNames from 'classnames';
@@ -86,12 +86,12 @@ export const Building = () => {
   });
 
   // Item Shop > ItemShop
-  const name = buildings[id].name.replace(' ', '');
+  const imageKey = `building${buildings[id].name.replace(' ', '')}` as ImageKeys;
 
   return (
-    <div className={styles.hud} style={{ background: `url('${Assets.buildingBackground.toDataURL()}')` }}>
+    <div className={styles.hud} style={{ background: `url('${Images.buildingBackground.toDataURL()}')` }}>
       <div className={styles.building}>
-        <img src={Assets[`building${name}`].toDataURL()} />
+        <img src={Images[imageKey].toDataURL()} />
       </div>
       <Dialog position="building">
         {buildings[id].greeting || 'This feature is not implemented yet. Press ESC to exit this building.'}

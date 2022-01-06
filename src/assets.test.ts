@@ -1,25 +1,25 @@
-import { load } from './assets';
+import { load, Images, Tilemaps } from './assets';
 
-describe('assets', () => {
-  test('load image', async () => {
-    Object.defineProperty(global.Image.prototype, 'src', {
-      set() {
-        setTimeout(() => this.onload());
-      },
-    });
-
-    const assets = { a: 'image.png' } as any;
-    await load(assets);
-    expect(assets.a instanceof HTMLImageElement).toEqual(true);
+test('loading assets', async () => {
+  Object.defineProperty(global.Image.prototype, 'src', {
+    set() {
+      setTimeout(() => this.onload());
+    },
   });
 
-  test('load tilemap', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
-      arrayBuffer: () => Promise.resolve([41]),
-    });
-
-    const assets = { a: 'tilemap.bin' } as any;
-    await load(assets);
-    expect(assets.a[0]).toEqual(41);
+  global.HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue({
+    drawImage: () => undefined,
+    imageSmoothingEnabled: true,
   });
+
+  const tilemap = [1, 1, 1, 1];
+
+  global.fetch = jest.fn().mockResolvedValue({
+    arrayBuffer: () => Promise.resolve(tilemap),
+  });
+
+  await load();
+
+  expect(Images.portTilesets instanceof HTMLCanvasElement).toEqual(true);
+  expect(Tilemaps.port).toEqual(new Uint8Array(tilemap));
 });

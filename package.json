@@ -48,7 +48,8 @@
     "preset": "ts-jest",
     "moduleNameMapper": {
       "\\.(png|bin)$": "identity-obj-proxy"
-    }
+    },
+    "testEnvironment": "jsdom"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",

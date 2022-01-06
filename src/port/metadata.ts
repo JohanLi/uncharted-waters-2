@@ -6263,7 +6263,7 @@ export const tilesets: Tilesets = {
   },
 };
 
-export const buildings: { [key: number]: Building } = {
+export const buildings: { [key: string]: Building } = {
   1: {
     name: 'Market',
     menu: [

@@ -1,4 +1,4 @@
-import Assets from './assets';
+import { Images } from './assets';
 import createMap from './map';
 import PercentNextMove from './percentNextMove';
 import gameState, { getTimeOfDay, seaTimeTick } from './gameState';
@@ -25,11 +25,11 @@ const createWorld = () => {
     const building = createBuilding(portId);
     gameState.portCharacters = createPortCharacters(map, building);
 
-    characterAsset = Assets.portCharacters;
+    characterAsset = Images.portCharacters;
   } else {
     gameState.seaCharacters = createSeaCharacters(map);
 
-    characterAsset = Assets.seaCharacters;
+    characterAsset = Images.seaCharacters;
   }
 
   return {
