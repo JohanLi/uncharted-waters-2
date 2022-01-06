@@ -1,10 +1,11 @@
 import { PortCharacters } from './port/portCharacters';
 import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
-import { START_PORT_ID, START_POSITION_X, START_POSITION_Y, START_TIME_PASSED } from './constants';
+import { START_PORT_ID, START_TIME_PASSED } from './constants';
 import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
+import { fleets, Fleet } from './sea/fleets';
 
 export type Stage = 'port' | 'building' | 'sea';
 
@@ -15,10 +16,7 @@ export interface GameState {
   portCharacters: PortCharacters;
   seaCharacters: SeaCharacters;
   timePassed: number;
-  seaPlayerPosition: {
-    x: number;
-    y: number;
-  };
+  fleets: Fleet[];
 }
 
 export const gameState = {
@@ -26,10 +24,7 @@ export const gameState = {
   portId: START_PORT_ID,
   buildingId: 0,
   timePassed: START_TIME_PASSED,
-  seaPlayerPosition: {
-    x: START_POSITION_X,
-    y: START_POSITION_Y,
-  },
+  fleets,
 } as GameState;
 
 export const getTimeOfDay = () => gameState.timePassed % 1440;
@@ -96,8 +91,11 @@ export const dock = (e: KeyboardEvent) => {
     return; // TODO show message
   }
 
-  gameState.seaPlayerPosition.x = x;
-  gameState.seaPlayerPosition.y = y;
+  // TODO NPC fleet positions need to be saved as well
+  const playerFleet = gameState.fleets[0];
+  playerFleet.position.x = x;
+  playerFleet.position.y = y;
+
   gameState.stage = 'port';
   gameState.portId = portId;
 

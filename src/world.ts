@@ -29,7 +29,7 @@ const createWorld = () => {
   } else {
     gameState.seaCharacters = createSeaCharacters(map);
 
-    characterAsset = Assets.seaShips;
+    characterAsset = Assets.seaCharacters;
   }
 
   return {
@@ -77,18 +77,6 @@ const createWorld = () => {
         height * TILE_SIZE,
       );
 
-      context.drawImage(
-        characterAsset,
-        player.frame() * player.width * TILE_SIZE,
-        0,
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
-        (characterX - cameraX) * TILE_SIZE,
-        (characterY - cameraY) * TILE_SIZE,
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
-      );
-
       const npcs = stage === 'port' ? gameState.portCharacters.getNpcs() : gameState.seaCharacters.getNpcs();
 
       npcs.forEach((npc) => {
@@ -104,6 +92,19 @@ const createWorld = () => {
           npc.height * TILE_SIZE,
         );
       });
+
+      // player is drawn last because characters can stack at sea
+      context.drawImage(
+        characterAsset,
+        player.frame() * player.width * TILE_SIZE,
+        0,
+        player.width * TILE_SIZE,
+        player.height * TILE_SIZE,
+        (characterX - cameraX) * TILE_SIZE,
+        (characterY - cameraY) * TILE_SIZE,
+        player.width * TILE_SIZE,
+        player.height * TILE_SIZE,
+      );
     },
   };
 }

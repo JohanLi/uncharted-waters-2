@@ -1,10 +1,10 @@
-import { Direction, directionToChanges } from './types';
+import { CardinalDirection, Direction, directionToChanges } from './types';
 
-const createPlayer = (x: number, y: number, startFrame: number) => {
+const createPlayer = (x: number, y: number, startFrame: number, startDirection: CardinalDirection) => {
   let xTo = x;
   let yTo = y;
 
-  let frameOffset = 0;
+  let frameOffset = directionToChanges[startDirection].frameOffset;
   let frameAlternate = 0;
 
   const animate = () => {

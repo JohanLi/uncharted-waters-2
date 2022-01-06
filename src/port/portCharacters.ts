@@ -76,13 +76,14 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
 };
 
 const createPortCharacters = (map: Map, building: Building) => {
-  const { startFrame, spawn } = portCharacterMetadata[0];
+  const { id, spawn } = portCharactersMetadata[0];
   const { x, y } = building.get(spawn.building);
 
   const player = createPlayer(
     x + spawn.offset.x,
     y + spawn.offset.y,
-    startFrame,
+    getStartFrame(id),
+    's',
   );
 
   const npcs: Npc[] = [];
@@ -93,14 +94,15 @@ const createPortCharacters = (map: Map, building: Building) => {
     if (npcs.length === 0 && !isNight) {
       // TODO add special case where additional NPCs should spawn to blockade the port
       for (let i = 1; i < 8; i += 1) {
-        const { startFrame, spawn, isImmobile } = portCharacterMetadata[i];
+        const { id, spawn, isStationary = false } = portCharactersMetadata[i];
         const { x, y } = building.get(spawn.building);
 
         npcs.push(createNpc(
           x + spawn.offset.x,
           y + spawn.offset.y,
-          startFrame,
-          isImmobile,
+          getStartFrame(id),
+          's',
+          isStationary,
         ));
       }
     }
@@ -212,18 +214,18 @@ const createPortCharacters = (map: Map, building: Building) => {
   };
 }
 
-interface PortCharacterMetadata {
-  startFrame: number;
+export interface PortCharacterMetadata {
+  id: number;
   spawn: {
     building: number;
     offset: Position;
   };
-  isImmobile: boolean;
+  isStationary?: boolean;
 }
 
-export const portCharacterMetadata: PortCharacterMetadata[] = [
+export const portCharactersMetadata: PortCharacterMetadata[] = [
   {
-    startFrame: 4,
+    id: 1,
     spawn: {
       building: 4,
       offset: {
@@ -231,10 +233,9 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: false,
   },
   {
-    startFrame: 12,
+    id: 2,
     spawn: {
       building: 1,
       offset: {
@@ -242,10 +243,9 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: false,
   },
   {
-    startFrame: 12,
+    id: 2,
     spawn: {
       building: 3,
       offset: {
@@ -253,10 +253,9 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 0,
       },
     },
-    isImmobile: false,
   },
   {
-    startFrame: 20,
+    id: 3,
     spawn: {
       building: 2,
       offset: {
@@ -264,10 +263,9 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: false,
   },
   {
-    startFrame: 20,
+    id: 3,
     spawn: {
       building: 5,
       offset: {
@@ -275,10 +273,9 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: false,
   },
   {
-    startFrame: 24,
+    id: 4,
     spawn: {
       building: 1,
       offset: {
@@ -286,10 +283,10 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: true,
+    isStationary: true,
   },
   {
-    startFrame: 26,
+    id: 5,
     spawn: {
       building: 5,
       offset: {
@@ -297,10 +294,10 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: true,
+    isStationary: true,
   },
   {
-    startFrame: 28,
+    id: 6,
     spawn: {
       building: 2,
       offset: {
@@ -308,9 +305,21 @@ export const portCharacterMetadata: PortCharacterMetadata[] = [
         y: 1,
       },
     },
-    isImmobile: true,
+    isStationary: true,
   },
 ];
+
+const FRAMES_PER_CHARACTER = 8;
+const FRAMES_PER_STATIONARY_CHARACTER = 2;
+const STATIONARY_FROM_ID = 4;
+
+export const getStartFrame = (id: number) => {
+  if (id <= STATIONARY_FROM_ID) {
+    return (id - 1) * FRAMES_PER_CHARACTER;
+  }
+
+  return (STATIONARY_FROM_ID - 1) * FRAMES_PER_CHARACTER + (id - STATIONARY_FROM_ID) * FRAMES_PER_STATIONARY_CHARACTER;
+}
 
 export type PortCharacters = ReturnType<typeof createPortCharacters>;
 

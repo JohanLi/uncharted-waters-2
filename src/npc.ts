@@ -1,11 +1,11 @@
-import { Direction, directionToChanges } from './types';
+import { CardinalDirection, Direction, directionToChanges } from './types';
 import { sample, directions } from './utils';
 
-const createNpc = (x: number, y: number, startFrame: number, isImmobile: boolean) => {
+const createNpc = (x: number, y: number, startFrame: number, startDirection: CardinalDirection, isStationary: boolean) => {
   let xTo = x;
   let yTo = y;
 
-  let frameOffset = 0;
+  let frameOffset = isStationary ? 0 : directionToChanges[startDirection].frameOffset;
   let frameAlternate = 0;
 
   const getMovesToSkip = () => {
@@ -44,7 +44,7 @@ const createNpc = (x: number, y: number, startFrame: number, isImmobile: boolean
       return false;
     },
     move: () => {
-      if (!isImmobile) {
+      if (!isStationary) {
         const direction = randomDirection();
 
         const { xDelta, yDelta, frameOffset: newFrameOffset } = directionToChanges[direction];
@@ -79,7 +79,7 @@ const createNpc = (x: number, y: number, startFrame: number, isImmobile: boolean
     frame: () => startFrame + frameOffset + frameAlternate,
     width: 2,
     height: 2,
-    isImmobile,
+    isStationary,
   }
 }
 

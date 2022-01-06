@@ -1,6 +1,6 @@
 import portTilesets from './port/tilesets.png';
 import portTilemaps from './port/tilemaps.bin';
-import portCharacters from './port/characters.png';
+import portCharacters from './port/portCharacters.png';
 
 import buildingBackground from './interface/building/assets/background.png';
 import buildingMarket from './interface/building/assets/market.png';
@@ -18,7 +18,7 @@ import buildingFortuneTeller from './interface/building/assets/fortune-teller.pn
 
 import seaTilemap from './sea/tilemap.bin';
 import seaTileset from './sea/tileset.png';
-import seaShips from './sea/ships.png';
+import seaCharacters from './sea/seaCharacters.png';
 import seaHeadingIndicators from './interface/sea/assets/heading-indicators.png';
 import seaWater from './interface/sea/assets/water.png';
 import seaFood from './interface/sea/assets/food.png';
@@ -51,7 +51,7 @@ const assets = {
   buildingFortuneTeller,
   seaTileset,
   seaTilemap,
-  seaShips,
+  seaCharacters,
   seaHeadingIndicators,
   seaWater,
   seaFood,

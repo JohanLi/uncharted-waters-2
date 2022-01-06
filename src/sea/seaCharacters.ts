@@ -2,36 +2,36 @@ import getInput from '../input';
 import { Position } from '../types';
 import { Map } from '../map';
 import createPlayer, { Player } from '../player';
-import { Npc } from '../npc';
+import createNpc, { Npc } from '../npc';
 import gameState from '../gameState';
+import { Ship, shipMetadata } from './fleets';
 
 const createSeaCharacters = (map: Map) => {
+  const playerFleetPosition = gameState.fleets[0].position;
+
   const player = createPlayer(
-    gameState.seaPlayerPosition.x,
-    gameState.seaPlayerPosition.y,
-    4,
+    playerFleetPosition.x,
+    playerFleetPosition.y,
+    getStartFrame(gameState.fleets[0].ships[0], true),
+    'n',
   );
 
   const npcs: Npc[] = [];
 
+  gameState.fleets.slice(1).forEach((npcFleet) => {
+    const { position, ships } = npcFleet;
+
+    npcs.push(createNpc(
+      position.x,
+      position.y,
+      getStartFrame(ships[0]),
+      'n',
+      true,
+    ));
+  });
+
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: Player | Npc, destination?: Position) =>
-    map.collisionAt(destination || character.destination()) || collisionOthers(character, destination);
-
-  const collisionOthers = (self: Player | Npc, destination?: Position) =>
-    [player, ...npcs].some((character) => {
-      if (character === self) {
-        return false;
-      }
-
-      const { x, y } = destination || self.destination();
-      const { x: xOther, y: yOther } = character.destination();
-
-      const distanceX = Math.abs(x - xOther);
-      const distanceY = Math.abs(y - yOther);
-
-      return distanceX < 2 && distanceY < 2;
-    });
+  const collision = (character: Player | Npc, destination?: Position) => map.collisionAt(destination || character.destination());
 
   return {
     update: () => {
@@ -65,6 +65,15 @@ const createSeaCharacters = (map: Map) => {
     getPlayer: () => player,
     getNpcs: () => npcs,
   };
+}
+
+const FRAMES_PER_SHIP = 8;
+const SHIP_VARIANTS = 2;
+
+export const getStartFrame = (flagship: Ship, isPlayer = false) => {
+  const startFrame = shipMetadata[flagship.id].hasOars ? 0 : FRAMES_PER_SHIP;
+
+  return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
 }
 
 export type SeaCharacters = ReturnType<typeof createSeaCharacters>;
