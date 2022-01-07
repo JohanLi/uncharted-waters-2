@@ -1,5 +1,5 @@
 import { CardinalDirection, Direction, directionToChanges } from './types';
-import { sample, directions } from './utils';
+import { sample, directions, random } from './utils';
 
 const createNpc = (x: number, y: number, startFrame: number, startDirection: CardinalDirection, isStationary: boolean) => {
   let xTo = x;
@@ -8,9 +8,7 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
   let frameOffset = isStationary ? 0 : directionToChanges[startDirection].frameOffset;
   let frameAlternate = 0;
 
-  const getMovesToSkip = () => {
-    return Math.floor(Math.random() * (6 - 2)) + 2;
-  }
+  const getMovesToSkip = () => random(2, 6);
 
   let movesToSkip = getMovesToSkip();
   let movesSkipped = 0;

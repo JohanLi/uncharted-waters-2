@@ -25,7 +25,7 @@ The scripts available to run, which all produce files in a newly created
 * ports/extract_metadata.py
 * ships/extract_metadata.py
 
-Python 3.6.5 was used.
+Python 3.8.12 was used.
 
 ### Example Output
 

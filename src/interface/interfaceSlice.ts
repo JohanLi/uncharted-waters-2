@@ -30,19 +30,19 @@ const initialState: State = {
   portId: START_PORT_ID,
   buildingId: 0,
   timePassed: START_TIME_PASSED,
-  gold: 49273,
+  gold: 2000,
   dayAtSea: 0,
   indicators: {
     wind: {
       direction: 0,
-      speed: 4,
+      speed: 0,
     },
     current: {
-      direction: 3,
-      speed: 1,
+      direction: 0,
+      speed: 0,
     },
     direction: {
-      direction: 1,
+      direction: 0,
       speed: 14,
     },
   },
@@ -62,6 +62,12 @@ export const interfaceSlice = createSlice({
       state.portId = portId;
       state.buildingId = buildingId;
       state.timePassed = timePassed;
+    },
+    updateSeaIndicators: (state, action: PayloadAction<Pick<GameState, 'wind' | 'current'>>) => {
+      const { wind, current } = action.payload;
+
+      state.indicators.wind = wind;
+      state.indicators.current = current;
     },
     nextDayAtSea: (state, action: PayloadAction<Pick<GameState, 'timePassed'>>) => {
       const { timePassed } = action.payload;
@@ -108,6 +114,6 @@ export const getHoursMinutes = (state: RootState) => {
 export const getIngots = (state: RootState) => Math.floor(state.interface.gold / 10000);
 export const getCoins = (state: RootState) => state.interface.gold % 10000;
 
-export const { update, nextDayAtSea, dockAction } = interfaceSlice.actions;
+export const { update, updateSeaIndicators, nextDayAtSea, dockAction } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

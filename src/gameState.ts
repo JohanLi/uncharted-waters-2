@@ -2,10 +2,11 @@ import { PortCharacters } from './port/portCharacters';
 import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
 import { START_PORT_ID, START_TIME_PASSED } from './constants';
-import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
+import { dockAction, nextDayAtSea, update, updateSeaIndicators } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleet } from './sea/fleets';
+import { getRandomWindCurrentVelocities, getSeaArea } from './sea/utils';
 
 export type Stage = 'port' | 'building' | 'sea';
 
@@ -17,6 +18,15 @@ export interface GameState {
   seaCharacters: SeaCharacters;
   timePassed: number;
   fleets: Fleet[];
+  seaArea: number | undefined;
+  wind: {
+    direction: number;
+    speed: number;
+  },
+  current: {
+    direction: number;
+    speed: number;
+  },
 }
 
 export const gameState = {
@@ -34,6 +44,8 @@ export const getIsNight = () => {
 
   return timeOfDay >= 1200 || timeOfDay < 240;
 }
+
+export const shouldCheckSeaArea = () => gameState.timePassed % 240 === 0;
 
 export const enterBuilding = (buildingId: number) => {
   gameState.stage = 'building';
@@ -55,6 +67,18 @@ export const exitBuilding = () => {
 
 export const seaTimeTick = () => {
   gameState.timePassed += 20;
+
+  /*
+   TODO
+    WindCurrent is not immediately set after setting sail. Checking for updates should not be based on total time,
+    but when you last set sail.
+   */
+  if (shouldCheckSeaArea()) {
+    const seaArea = getSeaArea(gameState.seaCharacters.getPlayer().position());
+    const windCurrent = getRandomWindCurrentVelocities(seaArea, gameState.timePassed);
+
+    store.dispatch(updateSeaIndicators(windCurrent));
+  }
 
   if (getTimeOfDay() === 0) {
     store.dispatch(nextDayAtSea({ timePassed: gameState.timePassed }));

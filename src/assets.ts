@@ -29,17 +29,18 @@ const images = {
   seaShot: import('./interface/sea/assets/shot.png'),
 }
 
-const tilemaps = {
-  port: import('./port/tilemaps.bin'),
-  sea: import('./sea/tilemap.bin'),
+const data = {
+  portTilemaps: import('./port/tilemaps.bin'),
+  seaTilemap: import('./sea/tilemap.bin'),
+  windsCurrent: import('./sea/windsCurrent.bin'),
 };
 
 export type ImageKeys = keyof typeof images;
-type TilemapKeys = keyof typeof tilemaps;
+type DataKeys = keyof typeof data;
 
 export const Images = {} as { [key in ImageKeys]: HTMLCanvasElement };
 
-export const Tilemaps = {} as { [key in TilemapKeys]: Uint8Array };
+export const Data = {} as { [key in DataKeys]: Uint8Array };
 
 const ASSETS_SCALE = 2;
 
@@ -73,10 +74,10 @@ export const load = async () => {
     Images[imageKeys] = await loadImage(url);
   }
 
-  let dataKeys: TilemapKeys;
+  let dataKeys: DataKeys;
 
-  for (dataKeys in tilemaps) {
-    const url = (await tilemaps[dataKeys]).default;
-    Tilemaps[dataKeys] = await loadBinary(url);
+  for (dataKeys in data) {
+    const url = (await data[dataKeys]).default;
+    Data[dataKeys] = await loadBinary(url);
   }
 };
