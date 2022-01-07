@@ -6,7 +6,7 @@ import { dockAction, nextDayAtSea, update, updateSeaIndicators } from './interfa
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleet } from './sea/fleets';
-import { getWind, getSeaArea, getCurrent } from './sea/utils';
+import { getWind, getSeaArea, getCurrent } from './sea/seaUtils';
 
 export type Stage = 'port' | 'building' | 'sea';
 
