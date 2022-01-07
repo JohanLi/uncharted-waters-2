@@ -1,6 +1,5 @@
 import { Data } from '../assets';
 import { random } from '../utils';
-import { START_DATE } from '../constants';
 
 export const getSeaArea = (position: { x: number, y: number }) => {
   const areaColumn = Math.floor(position.x / 72);
@@ -9,14 +8,10 @@ export const getSeaArea = (position: { x: number, y: number }) => {
   return areaColumn + areaRow * 30;
 }
 
-export const getWind = (seaArea: number, timePassed: number) => {
-  const isSummer = getIsSummer(START_DATE, timePassed);
-
-  return {
-    direction: randomDirection(Data.windsCurrent[isSummer ? seaArea : seaArea + 900]),
-    speed: Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350] + random(0, 1),
-  };
-}
+export const getWind = (seaArea: number, isSummer: boolean) => ({
+  direction: randomDirection(Data.windsCurrent[isSummer ? seaArea : seaArea + 900]),
+  speed: Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350] + random(0, 1),
+});
 
 export const getIsSummer = (startDate: Date, timePassed: number) => {
   const date = new Date(startDate);

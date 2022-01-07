@@ -1,12 +1,12 @@
 import { PortCharacters } from './port/portCharacters';
 import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
-import { START_PORT_ID, START_TIME_PASSED } from './constants';
+import { START_DATE, START_PORT_ID, START_TIME_PASSED } from './constants';
 import { dockAction, nextDayAtSea, update, updateSeaIndicators } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleet } from './sea/fleets';
-import { getWind, getSeaArea, getCurrent } from './sea/seaUtils';
+import { getWind, getSeaArea, getCurrent, getIsSummer } from './sea/seaUtils';
 
 export type Stage = 'port' | 'building' | 'sea';
 
@@ -74,7 +74,8 @@ export const seaTimeTick = () => {
    */
   if (shouldCheckSeaArea()) {
     const seaArea = getSeaArea(gameState.seaCharacters.getPlayer().position());
-    const wind = getWind(seaArea, gameState.timePassed);
+
+    const wind = getWind(seaArea, getIsSummer(START_DATE, gameState.timePassed));
     const current = getCurrent(seaArea);
 
     store.dispatch(updateSeaIndicators({ wind, current }));
