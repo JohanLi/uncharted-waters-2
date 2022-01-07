@@ -22,7 +22,7 @@ const images = {
   buildingFortuneTeller: import('./interface/building/assets/fortune-teller.png'),
   seaTileset: import('./sea/tileset.png'),
   seaCharacters: import('./sea/seaCharacters.png'),
-  seaHeadingIndicators: import('./interface/sea/assets/heading-indicators.png'),
+  seaIndicators: import('./interface/sea/assets/indicators.png'),
   seaWater: import('./interface/sea/assets/water.png'),
   seaFood: import('./interface/sea/assets/food.png'),
   seaLumber: import('./interface/sea/assets/lumber.png'),

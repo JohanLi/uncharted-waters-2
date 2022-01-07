@@ -12,16 +12,19 @@ export const Sea = () => {
 
   const indicators: JSX.Element[] = [];
 
-  for (const [key, value] of Object.entries(state.indicators)) {
+  // TODO needs cleanup
+  for (const [key, { speed, direction }] of Object.entries(state.indicators)) {
+    const positionX = speed ? direction * -80 : 8 * -80;
+
     indicators.push(
       <div className={styles.indicator} key={key}>
         <div className={styles.key}>
           {capitalizeFirstLetter(key)}
         </div>
         <div className={styles.iconValue}>
-          <div className={styles.icon} style={{ backgroundPositionX: value.direction * -80 }}/>
+          <div className={styles.icon} style={{ backgroundPositionX: positionX }}/>
           <div className={styles.value}>
-            {value.speed}
+            {speed}
           </div>
         </div>
       </div>

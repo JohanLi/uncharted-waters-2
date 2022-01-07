@@ -12,37 +12,46 @@ import { Data } from '../assets';
 import { START_DATE } from '../constants';
 import { random } from '../utils';
 
+export const getIsSummer = (timePassed: number) => {
+  const date = new Date(START_DATE);
+  date.setMinutes(date.getMinutes() + timePassed);
+  const currentMonth = date.getMonth();
+
+  return currentMonth >= 3 && currentMonth < 9;
+}
+
 export const getSeaArea = (position: { x: number, y: number }) => {
   const areaColumn = Math.floor(position.x / 72);
   const areaRow = Math.floor(position.y / 72);
 
-  return 1 + areaColumn + areaRow * 30;
+  return areaColumn + areaRow * 30;
 }
 
+// guesswork through observing the game. The original direction seems to rarely change between updates
 const randomDirection = (direction: number) => {
-  const newDirection = direction + random(-1, 1);
+  const roll = random(1, 100);
 
-  if (newDirection === -1) {
-    return 7;
+  if (roll <= 80) {
+    return direction;
   }
 
-  return newDirection;
+  if (roll <= 90) {
+    return direction === 7 ? 0 : direction + 1;
+  }
+
+  return direction === 0 ? 7 : direction - 1;
 };
 
-export const getRandomWindCurrentVelocities = (seaArea: number, timePassed: number) => {
-  const date = new Date(START_DATE);
-  date.setMinutes(date.getMinutes() + timePassed);
-  const currentMonth = date.getMonth()
-  const isSummer = currentMonth >= 3 && currentMonth < 9;
+export const getWind = (seaArea: number, timePassed: number) => {
+  const isSummer = getIsSummer(timePassed);
 
   return {
-    wind: {
-      direction: randomDirection(Data.windsCurrent[isSummer ? seaArea : seaArea + 900]),
-      speed: Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350] + Math.round(Math.random()),
-    },
-    current: {
-      direction: randomDirection(Data.windsCurrent[seaArea + 1800]),
-      speed: Data.windsCurrent[seaArea + 2250] + Math.round(Math.random()),
-    },
+    direction: randomDirection(Data.windsCurrent[isSummer ? seaArea : seaArea + 900]),
+    speed: Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350] + random(0, 1),
   };
 }
+
+export const getCurrent = (seaArea: number) => ({
+  direction: Data.windsCurrent[seaArea + 1800],
+  speed: Data.windsCurrent[seaArea + 2250],
+});

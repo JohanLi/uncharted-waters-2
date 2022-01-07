@@ -6,7 +6,7 @@ import { dockAction, nextDayAtSea, update, updateSeaIndicators } from './interfa
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleet } from './sea/fleets';
-import { getRandomWindCurrentVelocities, getSeaArea } from './sea/utils';
+import { getWind, getSeaArea, getCurrent } from './sea/utils';
 
 export type Stage = 'port' | 'building' | 'sea';
 
@@ -70,14 +70,14 @@ export const seaTimeTick = () => {
 
   /*
    TODO
-    WindCurrent is not immediately set after setting sail. Checking for updates should not be based on total time,
-    but when you last set sail.
+    WindCurrent is not immediately set after setting sail
    */
   if (shouldCheckSeaArea()) {
     const seaArea = getSeaArea(gameState.seaCharacters.getPlayer().position());
-    const windCurrent = getRandomWindCurrentVelocities(seaArea, gameState.timePassed);
+    const wind = getWind(seaArea, gameState.timePassed);
+    const current = getCurrent(seaArea);
 
-    store.dispatch(updateSeaIndicators(windCurrent));
+    store.dispatch(updateSeaIndicators({ wind, current }));
   }
 
   if (getTimeOfDay() === 0) {
