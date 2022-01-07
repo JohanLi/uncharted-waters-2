@@ -8,10 +8,15 @@ export const getSeaArea = (position: { x: number, y: number }) => {
   return areaColumn + areaRow * 30;
 }
 
-export const getWind = (seaArea: number, isSummer: boolean) => ({
-  direction: randomDirection(Data.windsCurrent[isSummer ? seaArea : seaArea + 900]),
-  speed: Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350] + random(0, 1),
-});
+export const getWind = (seaArea: number, isSummer: boolean) => {
+  const baseDirection = Data.windsCurrent[isSummer ? seaArea : seaArea + 900];
+  const baseSpeed = Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350];
+
+  return {
+    direction: randomDirection(baseDirection),
+    speed: baseSpeed === 7 ? baseSpeed : baseSpeed + random(0, 1),
+  };
+};
 
 export const getIsSummer = (startDate: Date, timePassed: number) => {
   const date = new Date(startDate);

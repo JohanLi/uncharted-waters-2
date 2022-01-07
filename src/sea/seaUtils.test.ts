@@ -49,7 +49,7 @@ jest.mock('../assets', () => ({
       0: 0,
       450: 1,
       900: 7,
-      1350: 3,
+      1350: 7,
       2249: 4,
       2699: 6,
     },
@@ -61,10 +61,10 @@ describe('getWind', () => {
     mocked(random).mockReturnValue(0);
 
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
-    expect(getWind(0, false)).toEqual({ direction: 7, speed: 3 });
+    expect(getWind(0, false)).toEqual({ direction: 7, speed: 7 });
   });
 
-  test('speed has a 0.5 chance to be 1 higher', () => {
+  test('base speed has a 0.5 chance to be incremented by 1', () => {
     mocked(random).mockReturnValue(0);
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
 
@@ -72,7 +72,12 @@ describe('getWind', () => {
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 2 });
   });
 
-  test('direction can alternate between 3, with middle having a 0.8 chance', () => {
+  test('wind speed is capped at 7', () => {
+    mocked(random).mockReturnValue(1);
+    expect(getWind(0, false)).toEqual({ direction: 7, speed: 7 });
+  });
+
+  test('direction can alternate between 3, with the middle direction having a 0.8 chance', () => {
     mocked(random)
       .mockReturnValueOnce(80)
       .mockReturnValueOnce(0);
@@ -95,7 +100,7 @@ describe('getWind', () => {
       .mockReturnValueOnce(90)
       .mockReturnValueOnce(0);
 
-    expect(getWind(0, false)).toEqual({ direction: 0, speed: 3 });
+    expect(getWind(0, false)).toEqual({ direction: 0, speed: 7 });
   });
 });
 
