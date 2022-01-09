@@ -1,4 +1,8 @@
-export const shipWindFactorMap: { [key: string]: [number, number, number, number, number] } = {
+interface ShipWindFactorMap {
+  [key: string]: [number, number, number, number, number];
+}
+
+export const shipWindFactorMap: ShipWindFactorMap = {
   1: [10, 10, 8, 6, 4],
   2: [8, 9, 9, 7, 6],
   3: [10, 10, 10, 8, 6],

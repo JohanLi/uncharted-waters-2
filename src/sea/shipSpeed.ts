@@ -1,16 +1,7 @@
 import { Ship } from './fleets';
 import { shipMetadata, shipWindFactorMap } from './shipMetadata';
 import { Velocity } from '../gameState';
-
-export const getDirectionDelta = (d1: number, d2: number) => {
-  const delta = Math.abs(d1 - d2);
-
-  if (delta > 4) {
-    return 8 - delta;
-  }
-
-  return delta;
-}
+import { getHeadingWindDelta } from './seaUtils';
 
 const hasOars = (ship: Ship) => ship.id >= 19;
 
@@ -25,7 +16,7 @@ const hasOars = (ship: Ship) => ship.id >= 19;
  */
 export const getShipSpeed = (ship: Ship, captain: { navLvl: number; seamanship: number }, heading: number, wind: Velocity) => {
   const { power, tacking, sailType, minimumCrew, capacity } = shipMetadata[ship.id];
-  const directionDelta = getDirectionDelta(heading, wind.direction);
+  const directionDelta = getHeadingWindDelta(heading, wind.direction);
   const shipWindFactor = shipWindFactorMap[sailType][directionDelta];
 
   // TODO if wind speed = 0 as a mechanic is introduced, ships with oars should count as having 2 wind speed
