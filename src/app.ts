@@ -1,4 +1,5 @@
-import { load } from './assets';
+import Assets from './assets';
+import Input from './input';
 import createWorld, { World } from './world';
 import renderInterface from './interface/interface';
 import createSound from './sound';
@@ -7,35 +8,39 @@ import './app.css?inline';
 
 import { gameState, Stage } from './gameState';
 
-load()
-  .then(() => {
-    document.getElementById('center')!.innerHTML = `
-      <canvas id="camera" width="1280" height="800"></canvas>
-      <div id="interface"></div>
-    `;
+const start = async () => {
+  await Assets.load();
+  Input.setup();
 
-    renderInterface();
-    const sound = createSound();
+  document.getElementById('center')!.innerHTML = `
+    <canvas id="camera" width="1280" height="800"></canvas>
+    <div id="interface"></div>
+  `;
 
-    let lastStage: Stage;
-    let world: World;
+  renderInterface();
+  const sound = createSound();
 
-    const loop = () => {
-      const { stage } = gameState;
+  let lastStage: Stage;
+  let world: World;
 
-      if (stage !== 'building') {
-        if (lastStage !== stage) {
-          lastStage = stage;
-          world = createWorld();
-          sound.play();
-        }
+  const loop = () => {
+    const { stage } = gameState;
 
-        world.update();
-        world.draw();
+    if (stage !== 'building') {
+      if (lastStage !== stage) {
+        lastStage = stage;
+        world = createWorld();
+        sound.play();
       }
 
-      requestAnimationFrame(loop);
-    };
+      world.update();
+      world.draw();
+    }
 
     requestAnimationFrame(loop);
-  });
+  };
+
+  requestAnimationFrame(loop);
+}
+
+start();

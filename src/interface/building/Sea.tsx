@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './world-map.css';
-import { Images } from '../../assets';
+import Assets from '../../assets';
 import { useAppSelector } from '../hooks';
 import { getDate } from '../interfaceSlice';
 
@@ -55,25 +55,25 @@ export const Sea = () => {
             <div>
               {state.water}
             </div>
-            <img src={Images.seaWater.toDataURL()} alt="Water" />
+            <img src={Assets.images.seaWater.toDataURL()} alt="Water" />
           </div>
           <div className={styles.center}>
             <div>
               {state.food}
             </div>
-            <img src={Images.seaFood.toDataURL()} alt="food" />
+            <img src={Assets.images.seaFood.toDataURL()} alt="food" />
           </div>
           <div className={styles.center}>
             <div>
               {state.lumber}
             </div>
-            <img src={Images.seaLumber.toDataURL()} alt="Lumber" />
+            <img src={Assets.images.seaLumber.toDataURL()} alt="Lumber" />
           </div>
           <div className={styles.center}>
             <div>
               {state.shot}
             </div>
-            <img src={Images.seaShot.toDataURL()} alt="Shot" />
+            <img src={Assets.images.seaShot.toDataURL()} alt="Shot" />
           </div>
         </div>
       </div>

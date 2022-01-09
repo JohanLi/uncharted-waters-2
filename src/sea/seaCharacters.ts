@@ -1,4 +1,4 @@
-import getInput from '../input';
+import Input from '../input';
 import { Position } from '../types';
 import { Map } from '../map';
 import createPlayer, { Player } from '../player';
@@ -38,7 +38,7 @@ const createSeaCharacters = (map: Map) => {
     update: () => {
       player.update();
 
-      const direction = getInput({ includeOrdinal: true });
+      const direction = Input.get({ includeOrdinal: true });
 
       if (direction) {
         player.move(direction);

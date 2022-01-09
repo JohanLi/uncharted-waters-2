@@ -1,4 +1,4 @@
-import { Images, Data } from './assets';
+import Assets from './assets';
 import { ports, tilesets, CollisionIndices } from './port/metadata';
 import { Position } from './types';
 import { GameState } from './gameState';
@@ -42,11 +42,11 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
 
     tilemapColumns = 96;
     tilemapRows = 96;
-    tilemap = Data.portTilemaps.slice(
+    tilemap = Assets.data.portTilemaps.slice(
       (portId - 1) * tilemapColumns * tilemapRows,
       portId * tilemapColumns * tilemapRows,
     );
-    tileset = Images.portTilesets;
+    tileset = Assets.images.portTilesets;
     collisionIndices = tilesets[port.tileset].collisionIndices;
 
     getTilesetOffset = (time: number) => {
@@ -67,8 +67,8 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
   } else {
     tilemapColumns = 2160;
     tilemapRows = 1080;
-    tilemap = Data.seaTilemap;
-    tileset = Images.seaTileset;
+    tilemap = Assets.data.seaTilemap;
+    tileset = Assets.images.seaTileset;
 
     getTilesetOffset = (time: number) => {
       let timeOffset: number;

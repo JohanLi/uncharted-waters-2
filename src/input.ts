@@ -26,45 +26,50 @@ const ordinalKeyMap: {
 
 let pressedKeys: Wasd[] = [];
 
-const isWasd = (key: string): key is Wasd => {
-  return key in cardinalKeyMap;
-}
+const isWasd = (key: string): key is Wasd => key in cardinalKeyMap;
 
-const keyboard = (e: KeyboardEvent) => {
+const onKeydown = (e: KeyboardEvent) => {
   const pressedKey = e.key;
 
   if(!isWasd(pressedKey)) {
     return;
   }
 
-  if (e.type === 'keydown') {
-    if (!pressedKeys.includes(pressedKey)) {
-      pressedKeys.unshift(pressedKey);
-    }
-  }
-
-  if (e.type === 'keyup') {
-    pressedKeys = pressedKeys.filter((key) => key !== pressedKey);
+  if (!pressedKeys.includes(pressedKey)) {
+    pressedKeys.unshift(pressedKey);
   }
 }
 
-document.addEventListener('keydown', keyboard);
-document.addEventListener('keyup', keyboard);
+const onKeyup = (e: KeyboardEvent) => {
+  const pressedKey = e.key;
 
-const getInput = (options: { includeOrdinal: boolean }): Direction | '' => {
-  if (!pressedKeys.length) {
-    return '';
+  if(!isWasd(pressedKey)) {
+    return;
   }
 
-  if (options.includeOrdinal && pressedKeys.length > 1) {
-    const direction = ordinalKeyMap[pressedKeys[0]]?.[pressedKeys[1]] || ordinalKeyMap[pressedKeys[1]]?.[pressedKeys[0]];
+  pressedKeys = pressedKeys.filter((key) => key !== pressedKey);
+}
 
-    if (direction) {
-      return direction;
+const Input = {
+  setup: () => {
+    document.addEventListener('keydown', onKeydown);
+    document.addEventListener('keyup', onKeyup);
+  },
+  get: (options: { includeOrdinal: boolean }): Direction | '' => {
+    if (!pressedKeys.length) {
+      return '';
     }
+
+    if (options.includeOrdinal && pressedKeys.length > 1) {
+      const direction = ordinalKeyMap[pressedKeys[0]]?.[pressedKeys[1]] || ordinalKeyMap[pressedKeys[1]]?.[pressedKeys[0]];
+
+      if (direction) {
+        return direction;
+      }
+    }
+
+    return cardinalKeyMap[pressedKeys[0]];
   }
+}
 
-  return cardinalKeyMap[pressedKeys[0]];
-};
-
-export default getInput;
+export default Input;

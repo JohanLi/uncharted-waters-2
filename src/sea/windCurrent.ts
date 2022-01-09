@@ -1,4 +1,4 @@
-import { Data } from '../assets';
+import Assets from '../assets';
 import { random } from '../utils';
 
 export const getSeaArea = (position: { x: number, y: number }) => {
@@ -9,8 +9,8 @@ export const getSeaArea = (position: { x: number, y: number }) => {
 }
 
 export const getWind = (seaArea: number, isSummer: boolean) => {
-  const baseDirection = Data.windsCurrent[isSummer ? seaArea : seaArea + 900];
-  const baseSpeed = Data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350];
+  const baseDirection = Assets.data.windsCurrent[isSummer ? seaArea : seaArea + 900];
+  const baseSpeed = Assets.data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350];
 
   return {
     direction: randomDirection(baseDirection),
@@ -42,6 +42,6 @@ const randomDirection = (direction: number) => {
 };
 
 export const getCurrent = (seaArea: number) => ({
-  direction: Data.windsCurrent[seaArea + 1800],
-  speed: Data.windsCurrent[seaArea + 2250],
+  direction: Assets.data.windsCurrent[seaArea + 1800],
+  speed: Assets.data.windsCurrent[seaArea + 2250],
 });

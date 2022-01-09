@@ -4,7 +4,7 @@
   We should still ensure those assets are loaded before the game starts, though.
  */
 
-const images = {
+const unloadedImages = {
   portTilesets: import('./port/tilesets.png'),
   portCharacters: import('./port/portCharacters.png'),
   buildingBackground: import('./interface/building/assets/background.png'),
@@ -29,18 +29,11 @@ const images = {
   seaShot: import('./interface/sea/assets/shot.png'),
 }
 
-const data = {
+const unloadedData = {
   portTilemaps: import('./port/tilemaps.bin'),
   seaTilemap: import('./sea/tilemap.bin'),
   windsCurrent: import('./sea/windsCurrent.bin'),
 };
-
-export type ImageKeys = keyof typeof images;
-type DataKeys = keyof typeof data;
-
-export const Images = {} as { [key in ImageKeys]: HTMLCanvasElement };
-
-export const Data = {} as { [key in DataKeys]: Uint8Array };
 
 const ASSETS_SCALE = 2;
 
@@ -66,18 +59,27 @@ const loadBinary = async (url: string) => {
   return new Uint8Array(await response.arrayBuffer());
 }
 
-export const load = async () => {
-  let imageKeys: ImageKeys;
+export type ImageKeys = keyof typeof unloadedImages;
+type DataKeys = keyof typeof unloadedData;
 
-  for (imageKeys in images) {
-    const url = (await images[imageKeys]).default;
-    Images[imageKeys] = await loadImage(url);
-  }
+const Assets = {
+  load: async () => {
+    let imageKeys: ImageKeys;
 
-  let dataKeys: DataKeys;
+    for (imageKeys in unloadedImages) {
+      const url = (await unloadedImages[imageKeys]).default;
+      Assets.images[imageKeys] = await loadImage(url);
+    }
 
-  for (dataKeys in data) {
-    const url = (await data[dataKeys]).default;
-    Data[dataKeys] = await loadBinary(url);
-  }
+    let dataKeys: DataKeys;
+
+    for (dataKeys in unloadedData) {
+      const url = (await unloadedData[dataKeys]).default;
+      Assets.data[dataKeys] = await loadBinary(url);
+    }
+  },
+  images: {} as { [key in ImageKeys]: HTMLCanvasElement },
+  data: {} as { [key in DataKeys]: Uint8Array },
 };
+
+export default Assets;

@@ -1,4 +1,4 @@
-import getInput from '../input';
+import Input from '../input';
 
 import { Position, Direction } from '../types';
 import { Map } from '../map';
@@ -166,7 +166,7 @@ const createPortCharacters = (map: Map, building: Building) => {
     update: () => {
       player.update();
 
-      const direction = getInput({ includeOrdinal: false });
+      const direction = Input.get({ includeOrdinal: false });
 
       if (direction) {
         player.move(direction);
