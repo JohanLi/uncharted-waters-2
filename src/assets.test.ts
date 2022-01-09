@@ -1,4 +1,4 @@
-import { load, Images, Data } from './assets';
+import Assets from './assets';
 
 test('loading assets', async () => {
   Object.defineProperty(global.Image.prototype, 'src', {
@@ -18,8 +18,8 @@ test('loading assets', async () => {
     arrayBuffer: () => Promise.resolve(tilemap),
   });
 
-  await load();
+  await Assets.load();
 
-  expect(Images.portTilesets instanceof HTMLCanvasElement).toEqual(true);
-  expect(Data.portTilemaps).toEqual(new Uint8Array(tilemap));
+  expect(Assets.images.portTilesets instanceof HTMLCanvasElement).toEqual(true);
+  expect(Assets.data.portTilemaps).toEqual(new Uint8Array(tilemap));
 });

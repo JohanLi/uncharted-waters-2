@@ -44,7 +44,7 @@ describe('getIsSummer', () => {
 });
 
 jest.mock('../assets', () => ({
-  Data: {
+  data: {
     windsCurrent: {
       0: 0,
       450: 1,
