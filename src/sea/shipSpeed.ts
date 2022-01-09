@@ -1,9 +1,7 @@
 import { Ship } from './fleets';
 import { shipMetadata, shipWindFactorMap } from './shipMetadata';
 import { Velocity } from '../gameState';
-import { getHeadingWindDelta } from './seaUtils';
-
-const hasOars = (ship: Ship) => ship.id >= 19;
+import { getHeadingWindDelta, hasOars } from './seaUtils';
 
 /*
   In contrast to the original game, we do not round down during each step of the calculation.

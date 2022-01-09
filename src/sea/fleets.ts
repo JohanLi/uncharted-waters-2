@@ -71,18 +71,3 @@ export const fleets: Fleet[] = [
     ],
   },
 ];
-
-interface ShipMetadata {
-  [key: string]: {
-    hasOars: boolean;
-  }
-}
-
-export const shipMetadata: ShipMetadata = {
-  1: {
-    hasOars: false,
-  },
-  2: {
-    hasOars: true,
-  },
-};

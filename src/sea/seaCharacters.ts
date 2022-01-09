@@ -4,7 +4,8 @@ import { Map } from '../map';
 import createPlayer, { Player } from '../player';
 import createNpc, { Npc } from '../npc';
 import gameState from '../gameState';
-import { Ship, shipMetadata } from './fleets';
+import { Ship } from './fleets';
+import { hasOars } from './seaUtils';
 
 const createSeaCharacters = (map: Map) => {
   const playerFleetPosition = gameState.fleets[0].position;
@@ -71,7 +72,7 @@ const FRAMES_PER_SHIP = 8;
 const SHIP_VARIANTS = 2;
 
 export const getStartFrame = (flagship: Ship, isPlayer = false) => {
-  const startFrame = shipMetadata[flagship.id].hasOars ? 0 : FRAMES_PER_SHIP;
+  const startFrame = hasOars(flagship) ? 0 : FRAMES_PER_SHIP;
 
   return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
 }
