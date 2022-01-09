@@ -10,6 +10,11 @@ import { getWind, getSeaArea, getCurrent, getIsSummer } from './sea/seaUtils';
 
 export type Stage = 'port' | 'building' | 'sea';
 
+export type Velocity = {
+  direction: number;
+  speed: number;
+}
+
 export interface GameState {
   stage: Stage;
   portId: number;
@@ -19,14 +24,8 @@ export interface GameState {
   timePassed: number;
   fleets: Fleet[];
   seaArea: number | undefined;
-  wind: {
-    direction: number;
-    speed: number;
-  },
-  current: {
-    direction: number;
-    speed: number;
-  },
+  wind: Velocity,
+  current: Velocity,
 }
 
 export const gameState = {
