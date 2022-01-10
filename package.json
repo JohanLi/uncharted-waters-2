@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "lint": "eslint src/ --ext .ts --ext .tsx",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --write src/",
     "test": "jest --verbose",
     "build": "rm -rf dist && webpack --mode production"
   },

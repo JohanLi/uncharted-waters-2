@@ -6,6 +6,7 @@
   position: absolute;
   width: 1280px;
   height: 800px;
+  image-rendering: pixelated;
 }
 
 #camera {

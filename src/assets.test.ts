@@ -21,5 +21,8 @@ test('loading assets', async () => {
   await Assets.load();
 
   expect(Assets.images.portTilesets instanceof HTMLCanvasElement).toEqual(true);
+  expect(Assets.images.dialogCorner instanceof HTMLCanvasElement).toEqual(true);
   expect(Assets.data.portTilemaps).toEqual(new Uint8Array(tilemap));
+  expect(Assets.buildings(12) instanceof HTMLCanvasElement).toEqual(true);
+  expect(Assets.indicators(0) instanceof HTMLCanvasElement).toEqual(true);
 });

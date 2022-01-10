@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useAppSelector } from '../hooks';
-import Assets, { ImageKeys } from '../../assets';
+import Assets from '../../assets';
 import { buildings } from '../../port/metadata';
 import DialogBox from '../DialogBox';
 import { exitBuilding, setSail } from '../../gameState';
@@ -81,22 +81,21 @@ export default function Building() {
     );
   });
 
-  // Item Shop > ItemShop
-  const imageKey = `building${buildings[id].name.replace(
-    ' ',
-    '',
-  )}` as ImageKeys;
-
   return (
     <div
       className="w-full h-full absolute"
       style={{
         background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
         lineHeight: 1.5,
+        backgroundSize: '256px 128px',
       }}
     >
       <div className="absolute top-4 left-4">
-        <img src={Assets.images[imageKey].toDataURL()} alt="" />
+        <img
+          src={Assets.buildings(id).toDataURL()}
+          alt=""
+          className="w-[272px]"
+        />
       </div>
       <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl text-black px-8 py-6">
         {buildings[id].greeting ||

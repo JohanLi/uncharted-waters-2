@@ -35,7 +35,7 @@ export default function DialogBox({ className, children }: Props) {
       {cornerClasses.map((cornerClass) => (
         <img
           className={classNames('w-4 h-4 absolute bg-no-repeat', cornerClass)}
-          src={Assets.images.buildingDialogCorner.toDataURL()}
+          src={Assets.images.dialogCorner.toDataURL()}
           alt=""
           key={cornerClass}
         />

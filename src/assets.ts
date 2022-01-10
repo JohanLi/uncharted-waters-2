@@ -1,27 +1,6 @@
-/*
- TODO
-  Consider moving assets used exclusively by the interface out of here,
-  and use image-rendering: pixelated
-  We should still ensure those assets are loaded before the game starts, though.
- */
-
-const unloadedImages = {
+const imagesToLoad = {
   portTilesets: import('./port/tilesets.png'),
   portCharacters: import('./port/portCharacters.png'),
-  buildingBackground: import('./interface/port/assets/background.png'),
-  buildingMarket: import('./interface/port/assets/market.png'),
-  buildingPub: import('./interface/port/assets/pub.png'),
-  buildingShipyard: import('./interface/port/assets/shipyard.png'),
-  buildingHarbor: import('./interface/port/assets/harbor.png'),
-  buildingLodge: import('./interface/port/assets/lodge.png'),
-  buildingPalace: import('./interface/port/assets/palace.png'),
-  buildingGuild: import('./interface/port/assets/guild.png'),
-  buildingMisc: import('./interface/port/assets/misc.png'),
-  buildingBank: import('./interface/port/assets/bank.png'),
-  buildingItemShop: import('./interface/port/assets/item-shop.png'),
-  buildingChurch: import('./interface/port/assets/church.png'),
-  buildingFortuneTeller: import('./interface/port/assets/fortune-teller.png'),
-  buildingDialogCorner: import('./interface/assets/dialog-corner.png'),
   seaTileset: import('./sea/tileset.png'),
   seaCharacters: import('./sea/seaCharacters.png'),
   seaWater: import('./interface/sea/assets/water.png'),
@@ -30,25 +9,27 @@ const unloadedImages = {
   seaShot: import('./interface/sea/assets/shot.png'),
 };
 
-const unloadedImagesInterface = {
+const interfaceImagesToLoad = {
+  dialogCorner: import('./interface/assets/dialog-corner.png'),
+  buildingBackground: import('./interface/port/assets/background.png'),
+  buildings: import('./interface/port/assets/buildings.png'),
   seaIndicators: import('./interface/sea/assets/indicators.png'),
 };
 
-const unloadedData = {
+const dataToLoad = {
   portTilemaps: import('./port/tilemaps.bin'),
   seaTilemap: import('./sea/tilemap.bin'),
   windsCurrent: import('./sea/windsCurrent.bin'),
 };
 
-const loadImage = (url: string, upscale = true) =>
+const loadImage = (url: string, upscale: boolean) =>
   new Promise<HTMLCanvasElement>((resolve) => {
-    const scale = upscale ? 2 : 1;
-
     const img = new Image();
     img.src = url;
 
     img.onload = () => {
       const canvas = document.createElement('canvas');
+      const scale = upscale ? 2 : 1;
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
 
@@ -65,70 +46,67 @@ const loadBinary = async (url: string) => {
   return new Uint8Array(await response.arrayBuffer());
 };
 
-export type ImageKeys = keyof typeof unloadedImages;
-export type ImageInterfaceKeys = keyof typeof unloadedImagesInterface;
-type DataKeys = keyof typeof unloadedData;
+export type ImageKeys = keyof typeof imagesToLoad;
+export type ImageInterfaceKeys = keyof typeof interfaceImagesToLoad;
+type DataKeys = keyof typeof dataToLoad;
 
-interface Cache {
-  [tilesetOffset: string]: HTMLCanvasElement;
-}
+const slice = (image: HTMLCanvasElement, i: number, widthPerSlice: number) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = widthPerSlice;
+  canvas.height = image.height;
 
-const cache = <Cache>{};
+  const context = canvas.getContext('2d')!;
+
+  context.drawImage(
+    image,
+    (i - 1) * widthPerSlice,
+    0,
+    canvas.width,
+    canvas.height,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  );
+
+  return canvas;
+};
 
 const Assets = {
-  load: async () => {
-    let imageKeys: ImageKeys;
-
-    for (imageKeys in unloadedImages) {
-      const url = (await unloadedImages[imageKeys]).default;
-      Assets.images[imageKeys] = await loadImage(url);
-    }
-
-    let imageInterfaceKeys: ImageInterfaceKeys;
-
-    for (imageInterfaceKeys in unloadedImagesInterface) {
-      const url = (await unloadedImagesInterface[imageInterfaceKeys]).default;
-      Assets.images[imageInterfaceKeys] = await loadImage(url, false);
-    }
-
-    let dataKeys: DataKeys;
-
-    for (dataKeys in unloadedData) {
-      const url = (await unloadedData[dataKeys]).default;
-      Assets.data[dataKeys] = await loadBinary(url);
-    }
-  },
+  load: () =>
+    Promise.all(
+      [
+        Object.entries(imagesToLoad).map(([key, value]) =>
+          value.then((module) =>
+            loadImage(module.default, true).then((canvas) => {
+              // @ts-ignore
+              Assets.images[key] = canvas;
+            }),
+          ),
+        ),
+        Object.entries(interfaceImagesToLoad).map(([key, value]) =>
+          value.then((module) =>
+            loadImage(module.default, false).then((canvas) => {
+              // @ts-ignore
+              Assets.images[key] = canvas;
+            }),
+          ),
+        ),
+        Object.entries(dataToLoad).map(([key, value]) =>
+          value.then((module) =>
+            loadBinary(module.default).then((data) => {
+              // @ts-ignore
+              Assets.data[key] = data;
+            }),
+          ),
+        ),
+      ].flat(),
+    ),
   images: {} as { [key in ImageKeys | ImageInterfaceKeys]: HTMLCanvasElement },
   data: {} as { [key in DataKeys]: Uint8Array },
-  indicator: (direction: number) => {
-    const cached = cache[`indicator${direction}`];
-
-    if (cached) {
-      return cached;
-    }
-
-    const canvas = document.createElement('canvas');
-    canvas.width = 80;
-    canvas.height = 80;
-
-    const context = canvas.getContext('2d')!;
-
-    context.drawImage(
-      Assets.images.seaIndicators,
-      direction * 80,
-      0,
-      canvas.width,
-      canvas.height,
-      0,
-      0,
-      canvas.width,
-      canvas.height,
-    );
-
-    cache[`indicator${direction}`] = canvas;
-
-    return canvas;
-  },
+  buildings: (id: number) => slice(Assets.images.buildings, id, 136),
+  indicators: (direction: number) =>
+    slice(Assets.images.seaIndicators, direction, 80),
 };
 
 export default Assets;
