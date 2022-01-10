@@ -58,28 +58,28 @@ export default function Building() {
     };
   }, [activeOption]);
 
-  const options = menu.map((option, i) => {
-    const optionClass = classNames(
-      'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer',
-      activeOption === i ? 'bg-black text-white' : 'text-black',
-    );
+  const options = menu.map((option, i) => (
+    <button
+      key={option}
+      className={classNames(
+        'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer w-full block',
+        activeOption === i && option === 'Sail' ? 'bg-black text-white' : '',
+        activeOption === i && option !== 'Sail' ? 'bg-black text-gray-400' : '',
+        activeOption !== i && option === 'Sail' ? 'text-black' : '',
+        activeOption !== i && option !== 'Sail' ? 'text-gray-400' : '',
+      )}
+      onClick={() => {
+        setActiveOption(i);
 
-    return (
-      <div
-        key={option + activeOption}
-        className={optionClass}
-        onClick={() => {
-          setActiveOption(i);
-
-          if (menu[i] === 'Sail') {
-            setSail();
-          }
-        }}
-      >
-        {option}
-      </div>
-    );
-  });
+        if (menu[i] === 'Sail') {
+          setSail();
+        }
+      }}
+      type="button"
+    >
+      {option}
+    </button>
+  ));
 
   return (
     <div

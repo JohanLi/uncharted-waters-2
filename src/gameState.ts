@@ -108,16 +108,6 @@ export const seaTimeTick = () => {
   }
 };
 
-export const setSail = () => {
-  gameState.stage = 'sea';
-  gameState.portId = 0;
-  gameState.buildingId = 0;
-
-  dispatchUpdate();
-
-  document.addEventListener('keyup', dock);
-};
-
 const portAdjacentAt = (x: number, y: number) =>
   Number(
     Object.keys(ports).find((portId) => {
@@ -153,6 +143,16 @@ export const dock = (e: KeyboardEvent) => {
   dispatchUpdate();
 
   document.removeEventListener('keyup', dock);
+};
+
+export const setSail = () => {
+  gameState.stage = 'sea';
+  gameState.portId = 0;
+  gameState.buildingId = 0;
+
+  dispatchUpdate();
+
+  document.addEventListener('keyup', dock);
 };
 
 export default gameState;
