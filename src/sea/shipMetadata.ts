@@ -9,7 +9,7 @@ export const shipWindFactorMap: ShipWindFactorMap = {
   4: [9, 10, 10, 9, 7],
   5: [9, 10, 10, 9, 7],
   6: [8, 10, 10, 10, 8],
-}
+};
 
 interface ShipMetadata {
   [key: string]: {
@@ -26,7 +26,7 @@ interface ShipMetadata {
     maximumGuns: number;
     sailType: number;
     basePrice: number;
-  }
+  };
 }
 
 export const shipMetadata: ShipMetadata = {
@@ -405,4 +405,4 @@ export const shipMetadata: ShipMetadata = {
     sailType: 6,
     basePrice: 2000,
   },
-}
+};

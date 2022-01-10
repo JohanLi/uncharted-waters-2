@@ -15,7 +15,10 @@ const createWorld = () => {
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap(gameState, [Math.ceil(width + 1), Math.ceil(height + 1)]);
+  const map = createMap(gameState, [
+    Math.ceil(width + 1),
+    Math.ceil(height + 1),
+  ]);
 
   const { stage, portId } = gameState;
 
@@ -49,11 +52,16 @@ const createWorld = () => {
       }
     },
     draw: () => {
-      const player = stage === 'port' ? gameState.portCharacters.getPlayer() : gameState.seaCharacters.getPlayer();
-      const { x: characterX, y: characterY } = player.position(PercentNextMove.get());
+      const player =
+        stage === 'port'
+          ? gameState.portCharacters.getPlayer()
+          : gameState.seaCharacters.getPlayer();
+      const { x: characterX, y: characterY } = player.position(
+        PercentNextMove.get(),
+      );
 
-      const cameraCenterX = characterX + (player.width / 2);
-      const cameraCenterY = characterY + (player.height / 2);
+      const cameraCenterX = characterX + player.width / 2;
+      const cameraCenterY = characterY + player.height / 2;
 
       let cameraX = Math.max(cameraCenterX - width / 2, 0);
       let cameraY = Math.max(cameraCenterY - height / 2, 0);
@@ -62,11 +70,7 @@ const createWorld = () => {
       cameraY = Math.min(cameraY, map.tilemapRows - height);
 
       context.drawImage(
-        map.draw(
-          Math.floor(cameraX),
-          Math.floor(cameraY),
-          getTimeOfDay(),
-        ),
+        map.draw(Math.floor(cameraX), Math.floor(cameraY), getTimeOfDay()),
         Math.floor((cameraX % 1) * TILE_SIZE),
         Math.floor((cameraY % 1) * TILE_SIZE),
         width * TILE_SIZE,
@@ -77,7 +81,10 @@ const createWorld = () => {
         height * TILE_SIZE,
       );
 
-      const npcs = stage === 'port' ? gameState.portCharacters.getNpcs() : gameState.seaCharacters.getNpcs();
+      const npcs =
+        stage === 'port'
+          ? gameState.portCharacters.getNpcs()
+          : gameState.seaCharacters.getNpcs();
 
       npcs.forEach((npc) => {
         context.drawImage(
@@ -107,7 +114,7 @@ const createWorld = () => {
       );
     },
   };
-}
+};
 
 export type World = ReturnType<typeof createWorld>;
 

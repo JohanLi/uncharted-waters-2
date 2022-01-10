@@ -78,27 +78,19 @@ describe('getWind', () => {
   });
 
   test('direction can alternate between 3, with the middle direction having a 0.8 chance', () => {
-    mocked(random)
-      .mockReturnValueOnce(80)
-      .mockReturnValueOnce(0);
+    mocked(random).mockReturnValueOnce(80).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
 
-    mocked(random)
-      .mockReturnValueOnce(81)
-      .mockReturnValueOnce(0);
+    mocked(random).mockReturnValueOnce(81).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 1, speed: 1 });
 
-    mocked(random)
-      .mockReturnValueOnce(91)
-      .mockReturnValueOnce(0);
+    mocked(random).mockReturnValueOnce(91).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 7, speed: 1 });
 
-    mocked(random)
-      .mockReturnValueOnce(90)
-      .mockReturnValueOnce(0);
+    mocked(random).mockReturnValueOnce(90).mockReturnValueOnce(0);
 
     expect(getWind(0, false)).toEqual({ direction: 0, speed: 7 });
   });

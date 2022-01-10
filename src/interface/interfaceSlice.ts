@@ -56,20 +56,31 @@ export const interfaceSlice = createSlice({
   name: 'interface',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Pick<GameState, 'portId' | 'buildingId' | 'timePassed'>>) => {
+    update: (
+      state,
+      action: PayloadAction<
+        Pick<GameState, 'portId' | 'buildingId' | 'timePassed'>
+      >,
+    ) => {
       const { portId, buildingId, timePassed } = action.payload;
 
       state.portId = portId;
       state.buildingId = buildingId;
       state.timePassed = timePassed;
     },
-    updateSeaIndicators: (state, action: PayloadAction<Pick<GameState, 'wind' | 'current'>>) => {
+    updateSeaIndicators: (
+      state,
+      action: PayloadAction<Pick<GameState, 'wind' | 'current'>>,
+    ) => {
       const { wind, current } = action.payload;
 
       state.indicators.wind = wind;
       state.indicators.current = current;
     },
-    nextDayAtSea: (state, action: PayloadAction<Pick<GameState, 'timePassed'>>) => {
+    nextDayAtSea: (
+      state,
+      action: PayloadAction<Pick<GameState, 'timePassed'>>,
+    ) => {
       const { timePassed } = action.payload;
 
       state.timePassed = timePassed;
@@ -85,8 +96,10 @@ export const getDate = (state: RootState) => {
   const date = new Date(START_DATE);
   date.setMinutes(date.getMinutes() + state.interface.timePassed);
 
-  return `${date.toLocaleString('en-us', { month: 'short' })} ${date.getDate()} ${date.getFullYear()}`;
-}
+  return `${date.toLocaleString('en-us', {
+    month: 'short',
+  })} ${date.getDate()} ${date.getFullYear()}`;
+};
 
 export const getHoursMinutes = (state: RootState) => {
   let hours = Math.floor((state.interface.timePassed % 1440) / 60);
@@ -111,9 +124,12 @@ export const getHoursMinutes = (state: RootState) => {
   return `${hours}:${minutes} ${period}`;
 };
 
-export const getIngots = (state: RootState) => Math.floor(state.interface.gold / 10000);
+export const getIngots = (state: RootState) =>
+  Math.floor(state.interface.gold / 10000);
+
 export const getCoins = (state: RootState) => state.interface.gold % 10000;
 
-export const { update, updateSeaIndicators, nextDayAtSea, dockAction } = interfaceSlice.actions;
+export const { update, updateSeaIndicators, nextDayAtSea, dockAction } =
+  interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

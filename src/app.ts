@@ -1,21 +1,14 @@
 import Assets from './assets';
 import Input from './input';
 import createWorld, { World } from './world';
-import renderInterface from './interface/interface';
+import renderInterface from './interface/Interface';
 import createSound from './sound';
 
-import './app.css?inline';
-
-import { gameState, Stage } from './gameState';
+import gameState, { Stage } from './gameState';
 
 const start = async () => {
   await Assets.load();
   Input.setup();
-
-  document.getElementById('center')!.innerHTML = `
-    <canvas id="camera" width="1280" height="800"></canvas>
-    <div id="interface"></div>
-  `;
 
   renderInterface();
   const sound = createSound();
@@ -41,6 +34,6 @@ const start = async () => {
   };
 
   requestAnimationFrame(loop);
-}
+};
 
 start();

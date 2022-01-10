@@ -1,11 +1,19 @@
 import { CardinalDirection, Direction, directionToChanges } from './types';
 import { sample, directions, random } from './utils';
 
-const createNpc = (x: number, y: number, startFrame: number, startDirection: CardinalDirection, isStationary: boolean) => {
+const createNpc = (
+  x: number,
+  y: number,
+  startFrame: number,
+  startDirection: CardinalDirection,
+  isStationary: boolean,
+) => {
   let xTo = x;
   let yTo = y;
 
-  let frameOffset = isStationary ? 0 : directionToChanges[startDirection].frameOffset;
+  let frameOffset = isStationary
+    ? 0
+    : directionToChanges[startDirection].frameOffset;
   let frameAlternate = 0;
 
   const getMovesToSkip = () => random(2, 6);
@@ -15,7 +23,7 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
 
   let currentDirection: Direction = 's';
   let directionWasCollision = false;
-  
+
   const randomDirection = () => {
     const sameDirection = Math.random();
 
@@ -24,11 +32,11 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
     }
 
     return sample(directions);
-  }
+  };
 
   const animate = () => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
-  }
+  };
 
   return {
     shouldMove: () => {
@@ -45,7 +53,11 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
       if (!isStationary) {
         const direction = randomDirection();
 
-        const { xDelta, yDelta, frameOffset: newFrameOffset } = directionToChanges[direction];
+        const {
+          xDelta,
+          yDelta,
+          frameOffset: newFrameOffset,
+        } = directionToChanges[direction];
         frameOffset = newFrameOffset;
         xTo = x + xDelta;
         yTo = y + yDelta;
@@ -67,8 +79,8 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
       y = yTo;
     },
     position: (percentNextMove = 0) => ({
-      x: x + ((xTo - x) * percentNextMove),
-      y: y + ((yTo - y) * percentNextMove),
+      x: x + (xTo - x) * percentNextMove,
+      y: y + (yTo - y) * percentNextMove,
     }),
     destination: () => ({
       x: xTo,
@@ -78,8 +90,8 @@ const createNpc = (x: number, y: number, startFrame: number, startDirection: Car
     width: 2,
     height: 2,
     isStationary,
-  }
-}
+  };
+};
 
 export type Npc = ReturnType<typeof createNpc>;
 

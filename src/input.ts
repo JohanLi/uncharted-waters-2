@@ -31,24 +31,24 @@ const isWasd = (key: string): key is Wasd => key in cardinalKeyMap;
 const onKeydown = (e: KeyboardEvent) => {
   const pressedKey = e.key;
 
-  if(!isWasd(pressedKey)) {
+  if (!isWasd(pressedKey)) {
     return;
   }
 
   if (!pressedKeys.includes(pressedKey)) {
     pressedKeys.unshift(pressedKey);
   }
-}
+};
 
 const onKeyup = (e: KeyboardEvent) => {
   const pressedKey = e.key;
 
-  if(!isWasd(pressedKey)) {
+  if (!isWasd(pressedKey)) {
     return;
   }
 
   pressedKeys = pressedKeys.filter((key) => key !== pressedKey);
-}
+};
 
 const Input = {
   setup: () => {
@@ -61,7 +61,9 @@ const Input = {
     }
 
     if (options.includeOrdinal && pressedKeys.length > 1) {
-      const direction = ordinalKeyMap[pressedKeys[0]]?.[pressedKeys[1]] || ordinalKeyMap[pressedKeys[1]]?.[pressedKeys[0]];
+      const direction =
+        ordinalKeyMap[pressedKeys[0]]?.[pressedKeys[1]] ||
+        ordinalKeyMap[pressedKeys[1]]?.[pressedKeys[0]];
 
       if (direction) {
         return direction;
@@ -69,7 +71,7 @@ const Input = {
     }
 
     return cardinalKeyMap[pressedKeys[0]];
-  }
-}
+  },
+};
 
 export default Input;

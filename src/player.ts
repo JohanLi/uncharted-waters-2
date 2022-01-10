@@ -1,19 +1,28 @@
 import { CardinalDirection, Direction, directionToChanges } from './types';
 
-const createPlayer = (x: number, y: number, startFrame: number, startDirection: CardinalDirection) => {
+const createPlayer = (
+  x: number,
+  y: number,
+  startFrame: number,
+  startDirection: CardinalDirection,
+) => {
   let xTo = x;
   let yTo = y;
 
-  let frameOffset = directionToChanges[startDirection].frameOffset;
+  let { frameOffset } = directionToChanges[startDirection];
   let frameAlternate = 0;
 
   const animate = () => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
-  }
-  
+  };
+
   return {
     move: (direction: Direction, shouldAnimate = true) => {
-      const { xDelta, yDelta, frameOffset: newFrameOffset } = directionToChanges[direction];
+      const {
+        xDelta,
+        yDelta,
+        frameOffset: newFrameOffset,
+      } = directionToChanges[direction];
       frameOffset = newFrameOffset;
       xTo = x + xDelta;
       yTo = y + yDelta;
@@ -31,8 +40,8 @@ const createPlayer = (x: number, y: number, startFrame: number, startDirection: 
       y = yTo;
     },
     position: (percentNextMove = 0) => ({
-      x: x + ((xTo - x) * percentNextMove),
-      y: y + ((yTo - y) * percentNextMove),
+      x: x + (xTo - x) * percentNextMove,
+      y: y + (yTo - y) * percentNextMove,
     }),
     destination: () => ({
       x: xTo,
@@ -42,7 +51,7 @@ const createPlayer = (x: number, y: number, startFrame: number, startDirection: 
     width: 2,
     height: 2,
   };
-}
+};
 
 export type Player = ReturnType<typeof createPlayer>;
 

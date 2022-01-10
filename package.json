@@ -4,11 +4,10 @@
   "description": "Remaking and reworking Uncharted Waters: New Horizons (大航海時代II) using web technologies",
   "scripts": {
     "start": "webpack serve --mode development",
-    "lint": "eslint src/**/*.{js,jsx}",
-    "test": "jest",
-    "setup": "ansible-playbook -i ansible/hosts ansible/setup.yml",
-    "build": "rm -rf dist && webpack --profile -p --mode production",
-    "deploy": "rsync -a --delete dist/ root@johanli.com:/var/www/unchartedwaters2.com"
+    "lint": "eslint src/ --ext .ts --ext .tsx",
+    "prettier": "prettier --write .",
+    "test": "jest --verbose",
+    "build": "rm -rf dist && webpack --mode production"
   },
   "author": "Johan Li",
   "license": "MIT",
@@ -24,46 +23,19 @@
       ]
     ],
     "plugins": [
-      "@babel/plugin-proposal-class-properties"
-    ],
-    "compact": false
-  },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "react-hooks"
-    ],
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended"
-    ],
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    }
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "moduleNameMapper": {
-      "\\.(png|bin)$": "identity-obj-proxy"
-    },
-    "testEnvironment": "jsdom"
+      "@babel/plugin-transform-runtime"
+    ]
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.7",
     "@reduxjs/toolkit": "^1.7.1",
-    "classnames": "^2.3.1",
-    "mobx": "^6.3.10",
-    "mobx-react": "^7.2.1",
-    "pixi.js": "^6.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
-    "@babel/polyfill": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.16.7",
     "@babel/preset-env": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
@@ -71,27 +43,32 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.21",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
-    "@typescript-eslint/parser": "^5.8.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
-    "compression-webpack-plugin": "^9.2.0",
     "css-loader": "^6.5.1",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.4.5",
+    "jest": "^27.4.7",
     "jest-mock": "^27.4.6",
-    "mini-css-extract-plugin": "^2.4.5",
+    "postcss": "^8.4.5",
+    "postcss-loader": "^6.2.1",
+    "prettier": "2.5.1",
     "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.12",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.2",
-    "workbox-webpack-plugin": "^6.4.2"
+    "webpack-dev-server": "^4.7.2"
   }
 }

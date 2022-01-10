@@ -4,7 +4,7 @@ import { Position } from './types';
 import { GameState } from './gameState';
 
 interface Cache {
-  [tilesetOffset: string]: CachedCanvas
+  [tilesetOffset: string]: CachedCanvas;
 }
 
 interface CachedCanvas {
@@ -23,7 +23,10 @@ interface Options {
   tilesetOffset: number;
 }
 
-const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [number, number]) => {
+const createMap = (
+  state: Pick<GameState, 'stage' | 'portId'>,
+  visibleArea: [number, number],
+) => {
   const { stage } = state;
 
   const tileSize = 32;
@@ -73,25 +76,29 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
     getTilesetOffset = (time: number) => {
       let timeOffset: number;
 
-      if (time >= 480 && time < 960) { // 08 to 16
+      if (time >= 480 && time < 960) {
+        // 08 to 16
         timeOffset = 0;
 
         if (time >= 840) {
           timeOffset += (time - 840) / (120 / 6);
         }
-      } else if (time >= 960 && time < 1200) { // 16 to 20
+      } else if (time >= 960 && time < 1200) {
+        // 16 to 20
         timeOffset = 6;
 
         if (time >= 1080) {
           timeOffset += (time - 1080) / (120 / 10);
         }
-      } else if (time >= 1200 || time < 240) { // 20 to 04
+      } else if (time >= 1200 || time < 240) {
+        // 20 to 04
         timeOffset = 16;
 
         if (time >= 120 && time < 240) {
           timeOffset += (time - 120) / (120 / 6);
         }
-      } else { // 04 to 08
+      } else {
+        // 04 to 08
         timeOffset = 22;
 
         if (time >= 360) {
@@ -103,10 +110,19 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
     };
   }
 
-  const tiles = (x: number, y: number): number => tilemap[y * tilemapColumns + x] || 0;
+  const tiles = (x: number, y: number): number =>
+    tilemap[y * tilemapColumns + x] || 0;
 
   const drawImage = (context: CanvasRenderingContext2D, options: Options) => {
-    const { x, y, xOffsetFrom = 0, xOffsetTo = visibleArea[0], yOffsetFrom = 0, yOffsetTo = visibleArea[1], tilesetOffset } = options;
+    const {
+      x,
+      y,
+      xOffsetFrom = 0,
+      xOffsetTo = visibleArea[0],
+      yOffsetFrom = 0,
+      yOffsetTo = visibleArea[1],
+      tilesetOffset,
+    } = options;
 
     for (let yOffset = yOffsetFrom; yOffset < yOffsetTo; yOffset += 1) {
       for (let xOffset = xOffsetFrom; xOffset < xOffsetTo; xOffset += 1) {
@@ -124,11 +140,11 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
         );
       }
     }
-  }
+  };
 
   const outOfBoundsAt = (position: Position): boolean => {
     const { x, y } = position;
-    return (x < 0 || x + 1 >= tilemapColumns) || (y < 0 || y + 1 >= tilemapRows);
+    return x < 0 || x + 1 >= tilemapColumns || y < 0 || y + 1 >= tilemapRows;
   };
 
   return {
@@ -168,7 +184,10 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
         return cache[tilesetOffset].context.canvas;
       }
 
-      if (Math.abs(xDiff) >= visibleArea[0] || Math.abs(yDiff) >= visibleArea[1]) {
+      if (
+        Math.abs(xDiff) >= visibleArea[0] ||
+        Math.abs(yDiff) >= visibleArea[1]
+      ) {
         drawImage(cache[tilesetOffset].context, { x, y, tilesetOffset });
 
         cache[tilesetOffset].x = x;
@@ -281,20 +300,17 @@ const createMap = (state: Pick<GameState, 'stage' | 'portId'>, visibleArea: [num
 
           return tile >= collisionIndices.right && tile < collisionIndices.left;
         });
-      } else {
-        offsetsToCheck.push(
-          { x: 0, y: 0 },
-          { x: 1, y: 0 },
-        );
-
-        return offsetsToCheck.some(({ x, y }) => {
-          const tile = tiles(position.x + x, position.y + y);
-          return tile >= 50;
-        });
       }
+
+      offsetsToCheck.push({ x: 0, y: 0 }, { x: 1, y: 0 });
+
+      return offsetsToCheck.some(({ x, y }) => {
+        const tile = tiles(position.x + x, position.y + y);
+        return tile >= 50;
+      });
     },
   };
-}
+};
 
 export type Map = ReturnType<typeof createMap>;
 

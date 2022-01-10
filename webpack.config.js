@@ -1,19 +1,15 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin");
-const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = (env, argv) => {
-  const config = {
-    entry: {
-      app: [
-        '@babel/polyfill',
-        './src/app',
-      ],
-    },
+  const isProduction = argv.mode === 'production';
+
+  return {
+    mode: isProduction ? 'production' : 'development',
+    entry: './src/app',
     output: {
-      path: `${__dirname}/dist/`,
       filename: '[name]-[contenthash].bundle.js',
+      path: `${__dirname}/dist/`,
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
@@ -22,33 +18,12 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
+          use: 'babel-loader',
           exclude: /node_modules/,
-          use: ['babel-loader'],
         },
         {
-          test: /\.css$/,
-          oneOf: [
-            {
-              resourceQuery: /inline/,
-              use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-              ],
-            },
-            {
-              use: [
-                'style-loader',
-                {
-                  loader: 'css-loader',
-                  options: {
-                    modules: {
-                      localIdentName: '[path][name]__[local]--[contenthash:base64:5]',
-                    },
-                  },
-                },
-              ],
-            },
-          ],
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         {
           test: /\.(json|mp3|png|bin)$/,
@@ -56,49 +31,16 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    devtool: 'source-map',
+    // following recommendations from https://webpack.js.org/configuration/devtool/
+    devtool: isProduction ? false : 'eval-source-map',
     devServer: {
-      compress: true,
-      port: 8080,
-    },
-    performance: {
-      hints: false,
+      static: false,
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: 'styles-[contenthash].css',
-      }),
       new HtmlWebpackPlugin({
-        template: './src/index.html',
-        favicon: './src/favicon.ico',
+        template: './src/interface/index.html',
+        favicon: './src/interface/assets/favicon.ico',
       }),
     ],
   };
-
-  if (argv.mode === 'production') {
-    config.plugins.push(
-      new CompressionPlugin({
-        test: /\.bin/,
-      }),
-      new WorkboxPlugin.GenerateSW({
-        swDest: 'service-worker.js',
-        clientsClaim: true,
-        skipWaiting: true,
-        runtimeCaching: [
-          {
-            urlPattern: new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
-            handler: 'cacheFirst',
-            options: {
-              cacheName: 'google-fonts',
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
-      }),
-    );
-  }
-
-  return config;
 };

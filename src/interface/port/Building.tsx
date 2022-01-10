@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../hooks';
 import Assets, { ImageKeys } from '../../assets';
 import { buildings } from '../../port/metadata';
-import { Dialog } from './Dialog';
-import classNames from 'classnames';
+import DialogBox from '../DialogBox';
 import { exitBuilding, setSail } from '../../gameState';
+import { classNames } from '../interfaceUtils';
 
-import styles from './building.css';
-
-export const Building = () => {
+export default function Building() {
   const id = useAppSelector((state) => state.interface.buildingId);
 
   const { menu } = buildings[id];
@@ -60,13 +58,11 @@ export const Building = () => {
     };
   }, [activeOption]);
 
-
   const options = menu.map((option, i) => {
-    const optionClass = classNames({
-      [styles.option]: true,
-      [styles.active]: activeOption === i,
-      [styles.disabled]: option !== 'Sail',
-    });
+    const optionClass = classNames(
+      'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer',
+      activeOption === i ? 'bg-black text-white' : 'text-black',
+    );
 
     return (
       <div
@@ -86,19 +82,29 @@ export const Building = () => {
   });
 
   // Item Shop > ItemShop
-  const imageKey = `building${buildings[id].name.replace(' ', '')}` as ImageKeys;
+  const imageKey = `building${buildings[id].name.replace(
+    ' ',
+    '',
+  )}` as ImageKeys;
 
   return (
-    <div className={styles.hud} style={{ background: `url('${Assets.images.buildingBackground.toDataURL()}')` }}>
-      <div className={styles.building}>
-        <img src={Assets.images[imageKey].toDataURL()} />
+    <div
+      className="w-full h-full absolute"
+      style={{
+        background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
+        lineHeight: 1.5,
+      }}
+    >
+      <div className="absolute top-4 left-4">
+        <img src={Assets.images[imageKey].toDataURL()} alt="" />
       </div>
-      <Dialog position="building">
-        {buildings[id].greeting || 'This feature is not implemented yet. Press ESC to exit this building.'}
-      </Dialog>
-      <Dialog position="buildingMenu">
+      <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl text-black px-8 py-6">
+        {buildings[id].greeting ||
+          'This feature is not implemented yet. Press ESC to exit this building.'}
+      </DialogBox>
+      <DialogBox className="w-[240px] top-[190px] left-[768px]">
         {options}
-      </Dialog>
+      </DialogBox>
     </div>
   );
-};
+}

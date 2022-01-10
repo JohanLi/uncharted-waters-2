@@ -8,9 +8,9 @@ import createNpc, { Npc } from '../npc';
 import { enterBuilding, getIsNight } from '../gameState';
 
 interface AlternativeDestination {
-  direction: Direction,
-  step1: Position,
-  step2: Position,
+  direction: Direction;
+  step1: Position;
+  step2: Position;
 }
 
 const alternativeDestinations = (direction: Direction, position: Position) => {
@@ -74,145 +74,6 @@ const alternativeDestinations = (direction: Direction, position: Position) => {
 
   return () => [];
 };
-
-const createPortCharacters = (map: Map, building: Building) => {
-  const { id, spawn } = portCharactersMetadata[0];
-  const { x, y } = building.get(spawn.building);
-
-  const player = createPlayer(
-    x + spawn.offset.x,
-    y + spawn.offset.y,
-    getStartFrame(id),
-    's',
-  );
-
-  const npcs: Npc[] = [];
-
-  const daySpawnNightDespawnNpcs = () => {
-    const isNight = getIsNight();
-
-    if (npcs.length === 0 && !isNight) {
-      // TODO add special case where additional NPCs should spawn to blockade the port
-      for (let i = 1; i < 8; i += 1) {
-        const { id, spawn, isStationary = false } = portCharactersMetadata[i];
-        const { x, y } = building.get(spawn.building);
-
-        npcs.push(createNpc(
-          x + spawn.offset.x,
-          y + spawn.offset.y,
-          getStartFrame(id),
-          's',
-          isStationary,
-        ));
-      }
-    }
-
-    if (npcs.length > 0 && isNight) {
-      while (npcs.length) {
-        npcs.pop();
-      }
-    }
-  }
-
-  daySpawnNightDespawnNpcs();
-
-  const alternativeDirection = (direction: Direction, player: Player): Direction | '' => {
-    let firstDirectionPossible = true;
-    let secondDirectionPossible = true;
-
-    for (let i = 1; i <= 19; i += 1) {
-      const destinations = alternativeDestinations(direction, player.position())(i);
-
-      if (firstDirectionPossible) {
-        if (collision(player, destinations[0].step1)) {
-          firstDirectionPossible = false;
-        } else if (!collision(player, destinations[0].step2)) {
-          return destinations[0].direction;
-        }
-      }
-
-      if (secondDirectionPossible) {
-        if (collision(player, destinations[1].step1)) {
-          secondDirectionPossible = false;
-        } else if (!collision(player, destinations[1].step2)) {
-          return destinations[1].direction;
-        }
-      }
-    }
-
-    return '';
-  }
-
-  // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: Player | Npc, destination?: Position) =>
-    map.collisionAt(destination || character.destination()) || collisionOthers(character, destination);
-
-  const collisionOthers = (self: Player | Npc, destination?: Position) =>
-    [player, ...npcs].some((character) => {
-      if (character === self) {
-        return false;
-      }
-
-      const { x, y } = destination || self.destination();
-      const { x: xOther, y: yOther } = character.destination();
-
-      const distanceX = Math.abs(x - xOther);
-      const distanceY = Math.abs(y - yOther);
-
-      return distanceX < 2 && distanceY < 2;
-    });
-
-  return {
-    update: () => {
-      player.update();
-
-      const direction = Input.get({ includeOrdinal: false });
-
-      if (direction) {
-        player.move(direction);
-
-        if (collision(player)) {
-          player.undoMove();
-
-          const newDirection = alternativeDirection(
-            direction,
-            player,
-          );
-
-          if (newDirection) {
-            player.move(newDirection, false);
-          }
-        }
-
-        const buildingId = building.at(player.destination());
-
-        if (buildingId) {
-          player.update();
-          player.move('s'); // TODO perform this on exit instead
-          enterBuilding(buildingId);
-        }
-      }
-
-      npcs.forEach((npc) => {
-        npc.update();
-
-        if (!npc.shouldMove()) {
-          return;
-        }
-
-        npc.move();
-
-        // TODO collision check not needed for immobile npcs
-        if (collision(npc)) {
-          npc.undoMove();
-        }
-      });
-    },
-    daySpawnNightDespawnNpcs,
-    getPlayer: () => player,
-    getNpcs: () => npcs,
-  };
-}
 
 export interface PortCharacterMetadata {
   id: number;
@@ -318,8 +179,156 @@ export const getStartFrame = (id: number) => {
     return (id - 1) * FRAMES_PER_CHARACTER;
   }
 
-  return (STATIONARY_FROM_ID - 1) * FRAMES_PER_CHARACTER + (id - STATIONARY_FROM_ID) * FRAMES_PER_STATIONARY_CHARACTER;
-}
+  return (
+    (STATIONARY_FROM_ID - 1) * FRAMES_PER_CHARACTER +
+    (id - STATIONARY_FROM_ID) * FRAMES_PER_STATIONARY_CHARACTER
+  );
+};
+
+const createPortCharacters = (map: Map, building: Building) => {
+  const { id, spawn } = portCharactersMetadata[0];
+  const { x, y } = building.get(spawn.building);
+
+  const player = createPlayer(
+    x + spawn.offset.x,
+    y + spawn.offset.y,
+    getStartFrame(id),
+    's',
+  );
+
+  const npcs: Npc[] = [];
+
+  const daySpawnNightDespawnNpcs = () => {
+    const isNight = getIsNight();
+
+    if (npcs.length === 0 && !isNight) {
+      // TODO add special case where additional NPCs should spawn to blockade the port
+      for (let i = 1; i < 8; i += 1) {
+        const { id, spawn, isStationary = false } = portCharactersMetadata[i];
+        const { x, y } = building.get(spawn.building);
+
+        npcs.push(
+          createNpc(
+            x + spawn.offset.x,
+            y + spawn.offset.y,
+            getStartFrame(id),
+            's',
+            isStationary,
+          ),
+        );
+      }
+    }
+
+    if (npcs.length > 0 && isNight) {
+      while (npcs.length) {
+        npcs.pop();
+      }
+    }
+  };
+
+  daySpawnNightDespawnNpcs();
+
+  const collisionOthers = (self: Player | Npc, destination?: Position) =>
+    [player, ...npcs].some((character) => {
+      if (character === self) {
+        return false;
+      }
+
+      const { x, y } = destination || self.destination();
+      const { x: xOther, y: yOther } = character.destination();
+
+      const distanceX = Math.abs(x - xOther);
+      const distanceY = Math.abs(y - yOther);
+
+      return distanceX < 2 && distanceY < 2;
+    });
+
+  // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
+  const collision = (character: Player | Npc, destination?: Position) =>
+    map.collisionAt(destination || character.destination()) ||
+    collisionOthers(character, destination);
+
+  const alternativeDirection = (
+    direction: Direction,
+    player: Player,
+  ): Direction | '' => {
+    let firstDirectionPossible = true;
+    let secondDirectionPossible = true;
+
+    for (let i = 1; i <= 19; i += 1) {
+      const destinations = alternativeDestinations(
+        direction,
+        player.position(),
+      )(i);
+
+      if (firstDirectionPossible) {
+        if (collision(player, destinations[0].step1)) {
+          firstDirectionPossible = false;
+        } else if (!collision(player, destinations[0].step2)) {
+          return destinations[0].direction;
+        }
+      }
+
+      if (secondDirectionPossible) {
+        if (collision(player, destinations[1].step1)) {
+          secondDirectionPossible = false;
+        } else if (!collision(player, destinations[1].step2)) {
+          return destinations[1].direction;
+        }
+      }
+    }
+
+    return '';
+  };
+
+  return {
+    update: () => {
+      player.update();
+
+      const direction = Input.get({ includeOrdinal: false });
+
+      if (direction) {
+        player.move(direction);
+
+        if (collision(player)) {
+          player.undoMove();
+
+          const newDirection = alternativeDirection(direction, player);
+
+          if (newDirection) {
+            player.move(newDirection, false);
+          }
+        }
+
+        const buildingId = building.at(player.destination());
+
+        if (buildingId) {
+          player.update();
+          player.move('s'); // TODO perform this on exit instead
+          enterBuilding(buildingId);
+        }
+      }
+
+      npcs.forEach((npc) => {
+        npc.update();
+
+        if (!npc.shouldMove()) {
+          return;
+        }
+
+        npc.move();
+
+        // TODO collision check not needed for immobile npcs
+        if (collision(npc)) {
+          npc.undoMove();
+        }
+      });
+    },
+    daySpawnNightDespawnNpcs,
+    getPlayer: () => player,
+    getNpcs: () => npcs,
+  };
+};
 
 export type PortCharacters = ReturnType<typeof createPortCharacters>;
 

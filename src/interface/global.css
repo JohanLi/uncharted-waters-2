@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#interface {
+  position: absolute;
+  width: 1280px;
+  height: 800px;
+}
+
+#camera {
+  position: absolute;
+  cursor: none;
+}

@@ -8,6 +8,6 @@ export const getHeadingWindDelta = (d1: number, d2: number) => {
   }
 
   return delta;
-}
+};
 
 export const hasOars = (ship: Ship) => ship.id >= 19;

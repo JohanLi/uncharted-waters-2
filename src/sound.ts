@@ -25,6 +25,6 @@ const createSound = () => {
       audio.play();
     },
   };
-}
+};
 
 export default createSound;

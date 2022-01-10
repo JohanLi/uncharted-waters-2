@@ -2,10 +2,10 @@
 
 Here you will find scripts that draw:
 
-* the tilesets used for the world map, including the one for ships
-* all three parts of the world map
-* a visualization of winds and ocean current, as well as zones that,
-among others, cause storms
+- the tilesets used for the world map, including the one for ships
+- all three parts of the world map
+- a visualization of winds and ocean current, as well as zones that,
+  among others, cause storms
 
 ### Getting Started
 
@@ -16,14 +16,14 @@ Using this directory as root:
 The scripts available to run, which all produce files in a newly created
 **output** directory are:
 
-* draw_tilesets.py
-* draw_world_map.py
-* draw_winds_current_anomalies.py
-* combine_world_map_parts.py
-* ports/combine_tilemaps.py
-* ports/draw_tilesets.py
-* ports/extract_metadata.py
-* ships/extract_metadata.py
+- draw_tilesets.py
+- draw_world_map.py
+- draw_winds_current_anomalies.py
+- combine_world_map_parts.py
+- ports/combine_tilemaps.py
+- ports/draw_tilesets.py
+- ports/extract_metadata.py
+- ships/extract_metadata.py
 
 Python 3.8.12 was used.
 

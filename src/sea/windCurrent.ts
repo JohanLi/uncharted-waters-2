@@ -1,16 +1,36 @@
 import Assets from '../assets';
 import { random } from '../utils';
 
-export const getSeaArea = (position: { x: number, y: number }) => {
+export const getSeaArea = (position: { x: number; y: number }) => {
   const areaColumn = Math.floor(position.x / 72);
   const areaRow = Math.floor(position.y / 72);
 
   return areaColumn + areaRow * 30;
-}
+};
+
+/*
+  Guesswork through observing the game.
+  The original direction seems to rarely change between updates.
+ */
+const randomDirection = (direction: number) => {
+  const roll = random(1, 100);
+
+  if (roll <= 80) {
+    return direction;
+  }
+
+  if (roll <= 90) {
+    return direction === 7 ? 0 : direction + 1;
+  }
+
+  return direction === 0 ? 7 : direction - 1;
+};
 
 export const getWind = (seaArea: number, isSummer: boolean) => {
-  const baseDirection = Assets.data.windsCurrent[isSummer ? seaArea : seaArea + 900];
-  const baseSpeed = Assets.data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350];
+  const baseDirection =
+    Assets.data.windsCurrent[isSummer ? seaArea : seaArea + 900];
+  const baseSpeed =
+    Assets.data.windsCurrent[isSummer ? seaArea + 450 : seaArea + 1350];
 
   return {
     direction: randomDirection(baseDirection),
@@ -24,21 +44,6 @@ export const getIsSummer = (startDate: Date, timePassed: number) => {
   const currentMonth = date.getMonth();
 
   return currentMonth >= 3 && currentMonth < 9;
-}
-
-// guesswork through observing the game. The original direction seems to rarely change between updates
-const randomDirection = (direction: number) => {
-  const roll = random(1, 100);
-
-  if (roll <= 80) {
-    return direction;
-  }
-
-  if (roll <= 90) {
-    return direction === 7 ? 0 : direction + 1;
-  }
-
-  return direction === 0 ? 7 : direction - 1;
 };
 
 export const getCurrent = (seaArea: number) => ({

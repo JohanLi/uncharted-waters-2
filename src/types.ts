@@ -7,7 +7,7 @@ export type Direction = CardinalDirection | OrdinalDirection;
 
 export type CardinalDirection = 'n' | 'e' | 's' | 'w';
 
-export type OrdinalDirection = 'ne' | 'se' | 'sw'  | 'nw';
+export type OrdinalDirection = 'ne' | 'se' | 'sw' | 'nw';
 
 interface Changes {
   xDelta: number;

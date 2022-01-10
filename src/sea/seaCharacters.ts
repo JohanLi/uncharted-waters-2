@@ -7,6 +7,15 @@ import gameState from '../gameState';
 import { Ship } from './fleets';
 import { hasOars } from './seaUtils';
 
+const FRAMES_PER_SHIP = 8;
+const SHIP_VARIANTS = 2;
+
+export const getStartFrame = (flagship: Ship, isPlayer = false) => {
+  const startFrame = hasOars(flagship) ? 0 : FRAMES_PER_SHIP;
+
+  return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
+};
+
 const createSeaCharacters = (map: Map) => {
   const playerFleetPosition = gameState.fleets[0].position;
 
@@ -22,17 +31,14 @@ const createSeaCharacters = (map: Map) => {
   gameState.fleets.slice(1).forEach((npcFleet) => {
     const { position, ships } = npcFleet;
 
-    npcs.push(createNpc(
-      position.x,
-      position.y,
-      getStartFrame(ships[0]),
-      'n',
-      true,
-    ));
+    npcs.push(
+      createNpc(position.x, position.y, getStartFrame(ships[0]), 'n', true),
+    );
   });
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: Player | Npc, destination?: Position) => map.collisionAt(destination || character.destination());
+  const collision = (character: Player | Npc, destination?: Position) =>
+    map.collisionAt(destination || character.destination());
 
   return {
     update: () => {
@@ -66,16 +72,7 @@ const createSeaCharacters = (map: Map) => {
     getPlayer: () => player,
     getNpcs: () => npcs,
   };
-}
-
-const FRAMES_PER_SHIP = 8;
-const SHIP_VARIANTS = 2;
-
-export const getStartFrame = (flagship: Ship, isPlayer = false) => {
-  const startFrame = hasOars(flagship) ? 0 : FRAMES_PER_SHIP;
-
-  return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
-}
+};
 
 export type SeaCharacters = ReturnType<typeof createSeaCharacters>;
 

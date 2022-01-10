@@ -2,18 +2,28 @@ import { PortCharacters } from './port/portCharacters';
 import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
 import { START_DATE, START_PORT_ID, START_TIME_PASSED } from './constants';
-import { dockAction, nextDayAtSea, update, updateSeaIndicators } from './interface/interfaceSlice';
+import {
+  dockAction,
+  nextDayAtSea,
+  update,
+  updateSeaIndicators,
+} from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleet } from './sea/fleets';
-import { getWind, getSeaArea, getCurrent, getIsSummer } from './sea/windCurrent';
+import {
+  getWind,
+  getSeaArea,
+  getCurrent,
+  getIsSummer,
+} from './sea/windCurrent';
 
 export type Stage = 'port' | 'building' | 'sea';
 
 export type Velocity = {
   direction: number;
   speed: number;
-}
+};
 
 export interface GameState {
   stage: Stage;
@@ -24,11 +34,11 @@ export interface GameState {
   timePassed: number;
   fleets: Fleet[];
   seaArea: number | undefined;
-  wind: Velocity,
-  current: Velocity,
+  wind: Velocity;
+  current: Velocity;
 }
 
-export const gameState = {
+const gameState = {
   stage: 'port',
   portId: START_PORT_ID,
   buildingId: 0,
@@ -36,13 +46,23 @@ export const gameState = {
   fleets,
 } as GameState;
 
+const dispatchUpdate = () => {
+  store.dispatch(
+    update({
+      portId: gameState.portId,
+      buildingId: gameState.buildingId,
+      timePassed: gameState.timePassed,
+    }),
+  );
+};
+
 export const getTimeOfDay = () => gameState.timePassed % 1440;
 
 export const getIsNight = () => {
   const timeOfDay = getTimeOfDay();
 
   return timeOfDay >= 1200 || timeOfDay < 240;
-}
+};
 
 export const shouldCheckSeaArea = () => gameState.timePassed % 240 === 0;
 
@@ -51,7 +71,7 @@ export const enterBuilding = (buildingId: number) => {
   gameState.buildingId = buildingId;
 
   dispatchUpdate();
-}
+};
 
 export const exitBuilding = () => {
   gameState.timePassed += sample([40, 60, 80]);
@@ -62,7 +82,7 @@ export const exitBuilding = () => {
   dispatchUpdate();
 
   gameState.portCharacters.daySpawnNightDespawnNpcs();
-}
+};
 
 export const seaTimeTick = () => {
   gameState.timePassed += 20;
@@ -74,7 +94,10 @@ export const seaTimeTick = () => {
   if (shouldCheckSeaArea()) {
     const seaArea = getSeaArea(gameState.seaCharacters.getPlayer().position());
 
-    const wind = getWind(seaArea, getIsSummer(START_DATE, gameState.timePassed));
+    const wind = getWind(
+      seaArea,
+      getIsSummer(START_DATE, gameState.timePassed),
+    );
     const current = getCurrent(seaArea);
 
     store.dispatch(updateSeaIndicators({ wind, current }));
@@ -83,7 +106,7 @@ export const seaTimeTick = () => {
   if (getTimeOfDay() === 0) {
     store.dispatch(nextDayAtSea({ timePassed: gameState.timePassed }));
   }
-}
+};
 
 export const setSail = () => {
   gameState.stage = 'sea';
@@ -93,14 +116,17 @@ export const setSail = () => {
   dispatchUpdate();
 
   document.addEventListener('keyup', dock);
-}
+};
 
-const portAdjacentAt = (x: number, y: number) => Number(Object.keys(ports).find((portId) => {
-  const deltaX = Math.abs(ports[portId].x - x);
-  const deltaY = Math.abs(ports[portId].y - y);
+const portAdjacentAt = (x: number, y: number) =>
+  Number(
+    Object.keys(ports).find((portId) => {
+      const deltaX = Math.abs(ports[portId].x - x);
+      const deltaY = Math.abs(ports[portId].y - y);
 
-  return deltaX + deltaY <= 3 && deltaX < 3 && deltaY < 3;
-}));
+      return deltaX + deltaY <= 3 && deltaX < 3 && deltaY < 3;
+    }),
+  );
 
 export const dock = (e: KeyboardEvent) => {
   if (e.key !== 'e') {
@@ -127,14 +153,6 @@ export const dock = (e: KeyboardEvent) => {
   dispatchUpdate();
 
   document.removeEventListener('keyup', dock);
-}
-
-const dispatchUpdate = () => {
-  store.dispatch(update({
-    portId: gameState.portId,
-    buildingId: gameState.buildingId,
-    timePassed: gameState.timePassed,
-  }));
-}
+};
 
 export default gameState;
