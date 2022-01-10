@@ -4,14 +4,18 @@ import { Velocity } from '../gameState';
 import { getHeadingWindDelta, hasOars } from './seaUtils';
 
 /*
-  In contrast to the original game, we do not round down during each step of the calculation.
+  In contrast to the original game, we do not round down during each step of
+  the calculation.
 
-  An oversight in the game is that your ship will continue moving faster as the headwind gets
-  stronger. Consider imposing a heavier penalty sailing into the wind, if the gameplay doesn’t
-  get tedious.
+  An oversight in the game is that your ship will continue moving faster as
+  the headwind gets stronger. Also, if wind speed is 0, wind direction still
+  matters when calculating the speed of a ship with oars.
 
-  It’s also worth looking into requiring higher captain stats to handle end-game ships
-  so mid-tier ships have their uses outside exploration.
+  Consider imposing a heavier penalty sailing into the wind, if the gameplay
+  doesn’t get tedious.
+
+  It’s also worth looking into requiring higher captain stats to handle
+  end-game ships so mid-tier ships have their uses outside exploration.
  */
 const getShipSpeed = (
   ship: Ship,

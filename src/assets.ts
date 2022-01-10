@@ -3,10 +3,6 @@ const imagesToLoad = {
   portCharacters: import('./port/portCharacters.png'),
   seaTileset: import('./sea/tileset.png'),
   seaCharacters: import('./sea/seaCharacters.png'),
-  seaWater: import('./interface/sea/assets/water.png'),
-  seaFood: import('./interface/sea/assets/food.png'),
-  seaLumber: import('./interface/sea/assets/lumber.png'),
-  seaShot: import('./interface/sea/assets/shot.png'),
 };
 
 const interfaceImagesToLoad = {
@@ -14,6 +10,10 @@ const interfaceImagesToLoad = {
   buildingBackground: import('./interface/port/assets/background.png'),
   buildings: import('./interface/port/assets/buildings.png'),
   seaIndicators: import('./interface/sea/assets/indicators.png'),
+  seaWater: import('./interface/sea/assets/water.png'),
+  seaFood: import('./interface/sea/assets/food.png'),
+  seaLumber: import('./interface/sea/assets/lumber.png'),
+  seaShot: import('./interface/sea/assets/shot.png'),
 };
 
 const dataToLoad = {
@@ -59,7 +59,7 @@ const slice = (image: HTMLCanvasElement, i: number, widthPerSlice: number) => {
 
   context.drawImage(
     image,
-    (i - 1) * widthPerSlice,
+    i * widthPerSlice,
     0,
     canvas.width,
     canvas.height,
@@ -104,7 +104,7 @@ const Assets = {
     ),
   images: {} as { [key in ImageKeys | ImageInterfaceKeys]: HTMLCanvasElement },
   data: {} as { [key in DataKeys]: Uint8Array },
-  buildings: (id: number) => slice(Assets.images.buildings, id, 136),
+  buildings: (id: number) => slice(Assets.images.buildings, id - 1, 136),
   indicators: (direction: number) =>
     slice(Assets.images.seaIndicators, direction, 80),
 };

@@ -17,7 +17,12 @@ export default function Indicators() {
         <div>
           <div className="text-sm mb-4">Wind</div>
           <div className={indicatorClass}>
-            <img src={Assets.indicators(wind.direction).toDataURL()} alt="" />
+            <img
+              src={Assets.indicators(
+                wind.speed ? wind.direction : 8,
+              ).toDataURL()}
+              alt=""
+            />
             <div className={speedClass}>{wind.speed}</div>
           </div>
         </div>
@@ -25,7 +30,9 @@ export default function Indicators() {
           <div className="text-sm mb-4">Current</div>
           <div className={indicatorClass}>
             <img
-              src={Assets.indicators(current.direction).toDataURL()}
+              src={Assets.indicators(
+                current.speed ? current.direction : 8,
+              ).toDataURL()}
               alt=""
             />
             <div className={speedClass}>{current.speed}</div>
@@ -35,7 +42,9 @@ export default function Indicators() {
           <div className="text-sm mb-4">Direction</div>
           <div className={indicatorClass}>
             <img
-              src={Assets.indicators(direction.direction).toDataURL()}
+              src={Assets.indicators(
+                direction.speed ? direction.direction : 8,
+              ).toDataURL()}
               alt=""
             />
             <div className={speedClass}>{direction.speed}</div>
