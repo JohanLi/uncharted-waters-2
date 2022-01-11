@@ -1,33 +1,36 @@
 import Assets from './assets';
 import Input from './input';
-import createWorld, { World } from './world';
+import Sound from './sound';
 import renderInterface from './interface/Interface';
-import createSound from './sound';
+import createWorld from './world/world';
+import createPort from './port/port';
 
-import gameState, { Stage } from './gameState';
+import gameState, { getStage, setDockedFleetPositions } from './gameState';
 
 const start = async () => {
   await Assets.load();
   Input.setup();
+  Sound.setup();
 
   renderInterface();
-  const sound = createSound();
 
-  let lastStage: Stage;
-  let world: World;
+  gameState.port = createPort(gameState.portId);
+  setDockedFleetPositions();
+  gameState.world = createWorld();
+
+  Sound.play('port');
 
   const loop = () => {
-    const { stage } = gameState;
+    const stage = getStage();
 
-    if (stage !== 'building') {
-      if (lastStage !== stage) {
-        lastStage = stage;
-        world = createWorld();
-        sound.play();
-      }
+    if (stage === 'port') {
+      gameState.port.update();
+      gameState.port.draw();
+    }
 
-      world.update();
-      world.draw();
+    if (stage === 'world') {
+      gameState.world.update();
+      gameState.world.draw();
     }
 
     requestAnimationFrame(loop);

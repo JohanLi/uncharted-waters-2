@@ -1,4 +1,4 @@
-import { getHeadingWindDelta } from './seaUtils';
+import { getHeadingWindDelta } from './worldUtils';
 
 describe('getDirectionDelta', () => {
   test('tailwind', () => {

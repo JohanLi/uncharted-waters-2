@@ -1,7 +1,11 @@
-import { PortCharacters } from './port/portCharacters';
-import { SeaCharacters } from './sea/seaCharacters';
 import { store } from './interface/store';
-import { START_DATE, START_PORT_ID, START_TIME_PASSED } from './constants';
+import {
+  START_DATE,
+  START_PORT_ID,
+  START_POSITION_X,
+  START_POSITION_Y,
+  START_TIME_PASSED,
+} from './constants';
 import {
   dockAction,
   nextDayAtSea,
@@ -10,15 +14,18 @@ import {
 } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
-import { fleets, Fleet } from './sea/fleets';
+import { fleets, Fleets } from './world/fleets';
 import {
   getWind,
   getSeaArea,
   getCurrent,
   getIsSummer,
-} from './sea/windCurrent';
+} from './world/windCurrent';
+import type { Port } from './port/port';
+import type { World } from './world/world';
+import Sound from './sound';
 
-export type Stage = 'port' | 'building' | 'sea';
+export type Stage = 'world' | 'port' | 'building';
 
 export type Velocity = {
   direction: number;
@@ -26,20 +33,18 @@ export type Velocity = {
 };
 
 export interface GameState {
-  stage: Stage;
   portId: number;
   buildingId: number;
-  portCharacters: PortCharacters;
-  seaCharacters: SeaCharacters;
   timePassed: number;
-  fleets: Fleet[];
+  world: World;
+  fleets: Fleets;
   seaArea: number | undefined;
   wind: Velocity;
   current: Velocity;
+  port: Port;
 }
 
 const gameState = {
-  stage: 'port',
   portId: START_PORT_ID,
   buildingId: 0,
   timePassed: START_TIME_PASSED,
@@ -56,18 +61,29 @@ const dispatchUpdate = () => {
   );
 };
 
-export const getTimeOfDay = () => gameState.timePassed % 1440;
+export const getStage = (): Stage => {
+  if (!gameState.portId) {
+    return 'world';
+  }
 
-export const getIsNight = () => {
-  const timeOfDay = getTimeOfDay();
+  if (gameState.buildingId) {
+    return 'building';
+  }
 
-  return timeOfDay >= 1200 || timeOfDay < 240;
+  return 'port';
 };
 
-export const shouldCheckSeaArea = () => gameState.timePassed % 240 === 0;
+export const getTimeOfDay = () => gameState.timePassed % 1440;
+
+export const isDay = () => {
+  const timeOfDay = getTimeOfDay();
+
+  return timeOfDay >= 240 && timeOfDay < 1200;
+};
+
+export const updateWorldStatus = () => gameState.timePassed % 240 === 0;
 
 export const enterBuilding = (buildingId: number) => {
-  gameState.stage = 'building';
   gameState.buildingId = buildingId;
 
   dispatchUpdate();
@@ -75,24 +91,30 @@ export const enterBuilding = (buildingId: number) => {
 
 export const exitBuilding = () => {
   gameState.timePassed += sample([40, 60, 80]);
-
-  gameState.stage = 'port';
   gameState.buildingId = 0;
 
-  dispatchUpdate();
+  if (isDay()) {
+    gameState.port.characters().spawnNpcs();
+  } else {
+    gameState.port.characters().despawnNpcs();
+  }
 
-  gameState.portCharacters.daySpawnNightDespawnNpcs();
+  gameState.port.characters().getPlayer().move('s');
+
+  dispatchUpdate();
 };
 
-export const seaTimeTick = () => {
+export const worldTimeTick = () => {
   gameState.timePassed += 20;
 
   /*
    TODO
     WindCurrent is not immediately set after setting sail
    */
-  if (shouldCheckSeaArea()) {
-    const seaArea = getSeaArea(gameState.seaCharacters.getPlayer().position());
+  if (updateWorldStatus()) {
+    const seaArea = getSeaArea(
+      gameState.world.characters().getPlayer().position(),
+    );
 
     const wind = getWind(
       seaArea,
@@ -123,7 +145,7 @@ export const dock = (e: KeyboardEvent) => {
     return;
   }
 
-  const { x, y } = gameState.seaCharacters.getPlayer().position();
+  const { x, y } = gameState.world.characters().getPlayer().position();
 
   const portId = portAdjacentAt(x, y);
 
@@ -132,12 +154,17 @@ export const dock = (e: KeyboardEvent) => {
   }
 
   // TODO NPC fleet positions need to be saved as well
-  const playerFleet = gameState.fleets[0];
-  playerFleet.position.x = x;
-  playerFleet.position.y = y;
+  const playerFleet = gameState.fleets[1];
 
-  gameState.stage = 'port';
+  if (playerFleet.position) {
+    playerFleet.position.x = x;
+    playerFleet.position.y = y;
+  }
+
+  gameState.port.reset(portId);
   gameState.portId = portId;
+
+  Sound.play('port');
 
   store.dispatch(dockAction());
   dispatchUpdate();
@@ -146,13 +173,36 @@ export const dock = (e: KeyboardEvent) => {
 };
 
 export const setSail = () => {
-  gameState.stage = 'sea';
   gameState.portId = 0;
   gameState.buildingId = 0;
+
+  Sound.play('world');
 
   dispatchUpdate();
 
   document.addEventListener('keyup', dock);
+};
+
+const positionAdjacentToPort = (portId: number) => {
+  if (portId === 1) {
+    return { x: START_POSITION_X, y: START_POSITION_Y };
+  }
+
+  throw Error('Method is not implemented for ports other than Lisbon');
+};
+
+/*
+  While fleets under normal circumstances always have a position even when
+  docked, there are two exceptions:
+    - The player at the start of the game
+    - NPC sailors who have respawned
+ */
+export const setDockedFleetPositions = () => {
+  const playerFleet = gameState.fleets[1];
+
+  if (!playerFleet.position) {
+    playerFleet.position = positionAdjacentToPort(gameState.portId);
+  }
 };
 
 export default gameState;

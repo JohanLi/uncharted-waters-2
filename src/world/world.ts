@@ -1,10 +1,8 @@
-import Assets from './assets';
-import createMap from './map';
-import PercentNextMove from './percentNextMove';
-import gameState, { getTimeOfDay, seaTimeTick } from './gameState';
-import createBuilding from './building';
-import createPortCharacters from './port/portCharacters';
-import createSeaCharacters from './sea/seaCharacters';
+import Assets from '../assets';
+import createMap from '../map';
+import PercentNextMove from '../percentNextMove';
+import { getTimeOfDay, worldTimeTick } from '../gameState';
+import createWorldCharacters from './worldCharacters';
 
 const TILE_SIZE = 32;
 
@@ -15,25 +13,9 @@ const createWorld = () => {
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap(gameState, [
-    Math.ceil(width + 1),
-    Math.ceil(height + 1),
-  ]);
+  const map = createMap(0, [Math.ceil(width + 1), Math.ceil(height + 1)]);
 
-  const { stage, portId } = gameState;
-
-  let characterAsset: CanvasImageSource;
-
-  if (stage === 'port') {
-    const building = createBuilding(portId);
-    gameState.portCharacters = createPortCharacters(map, building);
-
-    characterAsset = Assets.images.portCharacters;
-  } else {
-    gameState.seaCharacters = createSeaCharacters(map);
-
-    characterAsset = Assets.images.seaCharacters;
-  }
+  const characters = createWorldCharacters(map);
 
   return {
     update: () => {
@@ -43,19 +25,12 @@ const createWorld = () => {
         return;
       }
 
-      if (stage === 'port') {
-        gameState.portCharacters.update();
-      } else {
-        gameState.seaCharacters.update();
+      characters.update();
 
-        seaTimeTick();
-      }
+      worldTimeTick();
     },
     draw: () => {
-      const player =
-        stage === 'port'
-          ? gameState.portCharacters.getPlayer()
-          : gameState.seaCharacters.getPlayer();
+      const player = characters.getPlayer();
       const { x: characterX, y: characterY } = player.position(
         PercentNextMove.get(),
       );
@@ -81,14 +56,11 @@ const createWorld = () => {
         height * TILE_SIZE,
       );
 
-      const npcs =
-        stage === 'port'
-          ? gameState.portCharacters.getNpcs()
-          : gameState.seaCharacters.getNpcs();
+      const npcs = characters.getNpcs();
 
       npcs.forEach((npc) => {
         context.drawImage(
-          characterAsset,
+          Assets.images.worldShips,
           npc.frame() * npc.width * TILE_SIZE,
           0,
           npc.width * TILE_SIZE,
@@ -100,9 +72,9 @@ const createWorld = () => {
         );
       });
 
-      // player is drawn last because characters can stack at sea
+      // player drawn last as there’s no collision at sea
       context.drawImage(
-        characterAsset,
+        Assets.images.worldShips,
         player.frame() * player.width * TILE_SIZE,
         0,
         player.width * TILE_SIZE,
@@ -113,6 +85,7 @@ const createWorld = () => {
         player.height * TILE_SIZE,
       );
     },
+    characters: () => characters,
   };
 };
 

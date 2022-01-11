@@ -1,25 +1,25 @@
 const imagesToLoad = {
   portTilesets: import('./port/tilesets.png'),
-  portCharacters: import('./port/portCharacters.png'),
-  seaTileset: import('./sea/tileset.png'),
-  seaCharacters: import('./sea/seaCharacters.png'),
+  portCharacters: import('./port/characters.png'),
+  worldTileset: import('./world/tileset.png'),
+  worldShips: import('./world/ships.png'),
 };
 
 const interfaceImagesToLoad = {
   dialogCorner: import('./interface/assets/dialog-corner.png'),
   buildingBackground: import('./interface/port/assets/background.png'),
   buildings: import('./interface/port/assets/buildings.png'),
-  seaIndicators: import('./interface/sea/assets/indicators.png'),
-  seaWater: import('./interface/sea/assets/water.png'),
-  seaFood: import('./interface/sea/assets/food.png'),
-  seaLumber: import('./interface/sea/assets/lumber.png'),
-  seaShot: import('./interface/sea/assets/shot.png'),
+  worldIndicators: import('./interface/world/assets/indicators.png'),
+  worldWater: import('./interface/world/assets/water.png'),
+  worldFood: import('./interface/world/assets/food.png'),
+  worldLumber: import('./interface/world/assets/lumber.png'),
+  worldShot: import('./interface/world/assets/shot.png'),
 };
 
 const dataToLoad = {
   portTilemaps: import('./port/tilemaps.bin'),
-  seaTilemap: import('./sea/tilemap.bin'),
-  windsCurrent: import('./sea/windsCurrent.bin'),
+  worldTilemap: import('./world/tilemap.bin'),
+  windsCurrent: import('./world/windsCurrent.bin'),
 };
 
 const loadImage = (url: string, upscale: boolean) =>
@@ -106,7 +106,7 @@ const Assets = {
   data: {} as { [key in DataKeys]: Uint8Array },
   buildings: (id: number) => slice(Assets.images.buildings, id - 1, 136),
   indicators: (direction: number) =>
-    slice(Assets.images.seaIndicators, direction, 80),
+    slice(Assets.images.worldIndicators, direction, 80),
 };
 
 export default Assets;

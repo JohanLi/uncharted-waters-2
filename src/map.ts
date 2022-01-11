@@ -1,7 +1,6 @@
 import Assets from './assets';
 import { ports, tilesets, CollisionIndices } from './port/metadata';
 import { Position } from './types';
-import { GameState } from './gameState';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -23,12 +22,7 @@ interface Options {
   tilesetOffset: number;
 }
 
-const createMap = (
-  state: Pick<GameState, 'stage' | 'portId'>,
-  visibleArea: [number, number],
-) => {
-  const { stage } = state;
-
+const createMap = (portId: number, visibleArea: [number, number]) => {
   const tileSize = 32;
   const cache = <Cache>{};
 
@@ -39,8 +33,7 @@ const createMap = (
   let getTilesetOffset: (time: number) => number;
   let collisionIndices: CollisionIndices;
 
-  if (stage === 'port') {
-    const { portId } = state;
+  if (portId) {
     const port = ports[portId];
 
     tilemapColumns = 96;
@@ -70,8 +63,8 @@ const createMap = (
   } else {
     tilemapColumns = 2160;
     tilemapRows = 1080;
-    tilemap = Assets.data.seaTilemap;
-    tileset = Assets.images.seaTileset;
+    tilemap = Assets.data.worldTilemap;
+    tileset = Assets.images.worldTileset;
 
     getTilesetOffset = (time: number) => {
       let timeOffset: number;
@@ -286,7 +279,7 @@ const createMap = (
         { x: 1, y: 1 },
       ];
 
-      if (stage === 'port') {
+      if (portId) {
         return offsetsToCheck.some(({ x, y }, i) => {
           const tile = tiles(position.x + x, position.y + y);
 

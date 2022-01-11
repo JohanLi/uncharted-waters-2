@@ -1,7 +1,7 @@
 import { Ship } from './fleets';
 import { shipMetadata, shipWindFactorMap } from './shipMetadata';
 import { Velocity } from '../gameState';
-import { getHeadingWindDelta, hasOars } from './seaUtils';
+import { getHeadingWindDelta, hasOars } from './worldUtils';
 
 /*
   In contrast to the original game, we do not round down during each step of

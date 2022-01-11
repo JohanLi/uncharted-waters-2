@@ -8,8 +8,8 @@ import Right from './Right';
 import Left from './Left';
 import PortInfo from './port/PortInfo';
 import Building from './port/Building';
-import Provisions from './sea/Provisions';
-import Indicators from './sea/Indicators';
+import Provisions from './world/Provisions';
+import Indicators from './world/Indicators';
 
 import './global.css';
 

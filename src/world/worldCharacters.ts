@@ -5,7 +5,7 @@ import createPlayer, { Player } from '../player';
 import createNpc, { Npc } from '../npc';
 import gameState from '../gameState';
 import { Ship } from './fleets';
-import { hasOars } from './seaUtils';
+import { hasOars } from './worldUtils';
 
 const FRAMES_PER_SHIP = 8;
 const SHIP_VARIANTS = 2;
@@ -16,25 +16,33 @@ export const getStartFrame = (flagship: Ship, isPlayer = false) => {
   return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
 };
 
-const createSeaCharacters = (map: Map) => {
-  const playerFleetPosition = gameState.fleets[0].position;
+const createWorldCharacters = (map: Map) => {
+  const playerFleet = gameState.fleets[1];
+
+  if (!playerFleet.position) {
+    throw Error('Player fleet has no position');
+  }
 
   const player = createPlayer(
-    playerFleetPosition.x,
-    playerFleetPosition.y,
-    getStartFrame(gameState.fleets[0].ships[0], true),
+    playerFleet.position.x,
+    playerFleet.position.y,
+    getStartFrame(playerFleet.ships[0], true),
     'n',
   );
 
   const npcs: Npc[] = [];
 
-  gameState.fleets.slice(1).forEach((npcFleet) => {
-    const { position, ships } = npcFleet;
+  for (let id = 2; id <= Object.keys(gameState.fleets).length; id += 1) {
+    const { position, ships } = gameState.fleets[id];
+
+    if (!position) {
+      throw Error('NPC fleet has no position');
+    }
 
     npcs.push(
       createNpc(position.x, position.y, getStartFrame(ships[0]), 'n', true),
     );
-  });
+  }
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
   const collision = (character: Player | Npc, destination?: Position) =>
@@ -63,7 +71,6 @@ const createSeaCharacters = (map: Map) => {
 
         npc.move();
 
-        // TODO collision check not needed for immobile npcs
         if (collision(npc)) {
           npc.undoMove();
         }
@@ -74,6 +81,6 @@ const createSeaCharacters = (map: Map) => {
   };
 };
 
-export type SeaCharacters = ReturnType<typeof createSeaCharacters>;
+export type WorldCharacters = ReturnType<typeof createWorldCharacters>;
 
-export default createSeaCharacters;
+export default createWorldCharacters;

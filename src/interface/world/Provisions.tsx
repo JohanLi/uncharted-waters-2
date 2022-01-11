@@ -16,7 +16,7 @@ export default function Provisions() {
       <div className="text-sm mb-4">Provisions</div>
       <div className={provisionClass}>
         <img
-          src={Assets.images.seaWater.toDataURL()}
+          src={Assets.images.worldWater.toDataURL()}
           alt="Water"
           className="w-8 h-16"
         />
@@ -24,7 +24,7 @@ export default function Provisions() {
       </div>
       <div className={provisionClass}>
         <img
-          src={Assets.images.seaFood.toDataURL()}
+          src={Assets.images.worldFood.toDataURL()}
           alt="food"
           className="w-8 h-16"
         />
@@ -32,7 +32,7 @@ export default function Provisions() {
       </div>
       <div className={provisionClass}>
         <img
-          src={Assets.images.seaLumber.toDataURL()}
+          src={Assets.images.worldLumber.toDataURL()}
           alt="Lumber"
           className="w-8 h-16"
         />
@@ -40,7 +40,7 @@ export default function Provisions() {
       </div>
       <div className={provisionClass}>
         <img
-          src={Assets.images.seaShot.toDataURL()}
+          src={Assets.images.worldShot.toDataURL()}
           alt="Shot"
           className="w-8 h-16"
         />

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { START_DATE, START_PORT_ID, START_TIME_PASSED } from '../constants';
-import { GameState } from '../gameState';
-import { RootState } from './store';
+import type { GameState } from '../gameState';
+import type { RootState } from './store';
 
 interface Velocity {
   direction: number;
