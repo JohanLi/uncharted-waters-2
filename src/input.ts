@@ -24,6 +24,18 @@ const ordinalKeyMap: {
   },
 };
 
+export const directionMap: { [key in Direction | '']: number } = {
+  n: 0,
+  ne: 1,
+  e: 2,
+  se: 3,
+  s: 4,
+  sw: 5,
+  w: 6,
+  nw: 7,
+  '': 8,
+};
+
 let pressedKeys: Wasd[] = [];
 
 const isWasd = (key: string): key is Wasd => key in cardinalKeyMap;

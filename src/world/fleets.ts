@@ -70,3 +70,17 @@ export const fleets: Fleets = {
     ],
   },
 };
+
+export interface Sailors {
+  [key: string]: {
+    navLvl: number;
+    seamanship: number;
+  };
+}
+
+export const sailors: Sailors = {
+  1: {
+    navLvl: 1,
+    seamanship: 75,
+  },
+};

@@ -19,7 +19,10 @@ function Interface() {
   return (
     <>
       <Left>{!portId && <Provisions />}</Left>
-      <Right>{portId ? <PortInfo /> : <Indicators />}</Right>
+      <Right>
+        {Boolean(portId) && <PortInfo />}
+        <Indicators hidden={Boolean(portId)} />
+      </Right>
       {Boolean(buildingId) && <Building />}
     </>
   );

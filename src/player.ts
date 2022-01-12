@@ -1,4 +1,9 @@
 import { CardinalDirection, Direction, directionToChanges } from './types';
+import getShipSpeed from './world/shipSpeed';
+import { sailors } from './world/fleets';
+import gameState, { Velocity } from './gameState';
+import { directionMap } from './input';
+import updateInterface from './interface/updateInterface';
 
 const createPlayer = (
   x: number,
@@ -11,6 +16,20 @@ const createPlayer = (
 
   let { frameOffset } = directionToChanges[startDirection];
   let frameAlternate = 0;
+
+  let heading: Direction | '' = '';
+  let speed = 0;
+
+  let lastHeading: Direction | '' = '';
+  let lastWind: Velocity = {
+    direction: 0,
+    speed: 0,
+  };
+
+  updateInterface.playerFleetDirection(directionMap[heading]);
+
+  const windUnchanged = (wind: Velocity) =>
+    wind.direction === lastWind.direction && wind.speed === lastWind.speed;
 
   const animate = () => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
@@ -47,6 +66,34 @@ const createPlayer = (
       x: xTo,
       y: yTo,
     }),
+    setHeading: (newHeading: Direction) => {
+      if (newHeading === heading) {
+        return;
+      }
+
+      heading = newHeading;
+
+      updateInterface.playerFleetDirection(directionMap[heading]);
+    },
+    heading: () => heading,
+    updateSpeed: () => {
+      if (heading === lastHeading && windUnchanged(gameState.wind)) {
+        return;
+      }
+
+      speed = heading
+        ? getShipSpeed(
+            gameState.fleets[1].ships[0],
+            sailors[1],
+            directionMap[heading],
+            gameState.wind,
+          )
+        : 0;
+
+      lastHeading = heading;
+      lastWind = gameState.wind;
+      updateInterface.playerFleetSpeed(speed);
+    },
     frame: () => startFrame + frameOffset + frameAlternate,
     width: 2,
     height: 2,

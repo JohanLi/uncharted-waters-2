@@ -6,12 +6,7 @@ import {
   START_POSITION_Y,
   START_TIME_PASSED,
 } from './constants';
-import {
-  dockAction,
-  nextDayAtSea,
-  update,
-  updateSeaIndicators,
-} from './interface/interfaceSlice';
+import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
 import { sample } from './utils';
 import { ports } from './port/metadata';
 import { fleets, Fleets } from './world/fleets';
@@ -24,6 +19,7 @@ import {
 import type { Port } from './port/port';
 import type { World } from './world/world';
 import Sound from './sound';
+import updateInterface from './interface/updateInterface';
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -41,6 +37,7 @@ export interface GameState {
   seaArea: number | undefined;
   wind: Velocity;
   current: Velocity;
+  playerFleet: Velocity;
   port: Port;
 }
 
@@ -81,7 +78,21 @@ export const isDay = () => {
   return timeOfDay >= 240 && timeOfDay < 1200;
 };
 
-export const updateWorldStatus = () => gameState.timePassed % 240 === 0;
+export const shouldUpdateWorldStatus = () => gameState.timePassed % 240 === 0;
+
+export const updateWorldStatus = () => {
+  const seaArea = getSeaArea(
+    gameState.world.characters().getPlayer().position(),
+  );
+
+  const wind = getWind(seaArea, getIsSummer(START_DATE, gameState.timePassed));
+  const current = getCurrent(seaArea);
+
+  gameState.wind = wind;
+  gameState.current = current;
+
+  updateInterface.indicators({ wind, current });
+};
 
 export const enterBuilding = (buildingId: number) => {
   gameState.buildingId = buildingId;
@@ -107,22 +118,8 @@ export const exitBuilding = () => {
 export const worldTimeTick = () => {
   gameState.timePassed += 20;
 
-  /*
-   TODO
-    WindCurrent is not immediately set after setting sail
-   */
-  if (updateWorldStatus()) {
-    const seaArea = getSeaArea(
-      gameState.world.characters().getPlayer().position(),
-    );
-
-    const wind = getWind(
-      seaArea,
-      getIsSummer(START_DATE, gameState.timePassed),
-    );
-    const current = getCurrent(seaArea);
-
-    store.dispatch(updateSeaIndicators({ wind, current }));
+  if (shouldUpdateWorldStatus()) {
+    updateWorldStatus();
   }
 
   if (getTimeOfDay() === 0) {
@@ -177,6 +174,8 @@ export const setSail = () => {
   gameState.buildingId = 0;
 
   Sound.play('world');
+
+  updateWorldStatus();
 
   dispatchUpdate();
 

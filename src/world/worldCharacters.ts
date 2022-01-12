@@ -1,10 +1,10 @@
 import Input from '../input';
-import { Position } from '../types';
+import type { Position } from '../types';
 import { Map } from '../map';
 import createPlayer, { Player } from '../player';
 import createNpc, { Npc } from '../npc';
 import gameState from '../gameState';
-import { Ship } from './fleets';
+import type { Ship } from './fleets';
 import { hasOars } from './worldUtils';
 
 const FRAMES_PER_SHIP = 8;
@@ -55,7 +55,15 @@ const createWorldCharacters = (map: Map) => {
       const direction = Input.get({ includeOrdinal: true });
 
       if (direction) {
-        player.move(direction);
+        player.setHeading(direction);
+      }
+
+      player.updateSpeed();
+
+      const heading = player.heading();
+
+      if (heading) {
+        player.move(heading);
 
         if (collision(player)) {
           player.undoMove();

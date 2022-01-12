@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { START_DATE, START_PORT_ID, START_TIME_PASSED } from '../constants';
-import type { GameState } from '../gameState';
+import type { GameState, Velocity } from '../gameState';
 import type { RootState } from './store';
-
-interface Velocity {
-  direction: number;
-  speed: number;
-}
 
 interface State {
   portId: number;
@@ -18,7 +13,7 @@ interface State {
   indicators: {
     wind: Velocity;
     current: Velocity;
-    direction: Velocity;
+    playerFleet: Velocity;
   };
   water: number;
   food: number;
@@ -41,13 +36,13 @@ const initialState: State = {
       direction: 0,
       speed: 0,
     },
-    direction: {
+    playerFleet: {
       direction: 0,
-      speed: 14,
+      speed: 0,
     },
   },
-  water: 40,
-  food: 40,
+  water: 20,
+  food: 20,
   lumber: 0,
   shot: 0,
 };
@@ -67,15 +62,6 @@ export const interfaceSlice = createSlice({
       state.portId = portId;
       state.buildingId = buildingId;
       state.timePassed = timePassed;
-    },
-    updateSeaIndicators: (
-      state,
-      action: PayloadAction<Pick<GameState, 'wind' | 'current'>>,
-    ) => {
-      const { wind, current } = action.payload;
-
-      state.indicators.wind = wind;
-      state.indicators.current = current;
     },
     nextDayAtSea: (
       state,
@@ -129,7 +115,6 @@ export const getIngots = (state: RootState) =>
 
 export const getCoins = (state: RootState) => state.interface.gold % 10000;
 
-export const { update, updateSeaIndicators, nextDayAtSea, dockAction } =
-  interfaceSlice.actions;
+export const { update, nextDayAtSea, dockAction } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
   moduleNameMapper: {
-    '\\.(png|bin)$': 'identity-obj-proxy',
+    '\\.(png|bin|mp3)$': 'identity-obj-proxy',
   },
   testEnvironment: 'jsdom',
 };
