@@ -62,7 +62,7 @@ export default function Building() {
     <button
       key={option}
       className={classNames(
-        'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer w-full block',
+        'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer w-full block outline-none',
         activeOption === i && option === 'Sail' ? 'bg-black text-white' : '',
         activeOption === i && option !== 'Sail' ? 'bg-black text-gray-400' : '',
         activeOption !== i && option === 'Sail' ? 'text-black' : '',

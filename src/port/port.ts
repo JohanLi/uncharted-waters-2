@@ -43,11 +43,10 @@ const createPort = (portId: number) => {
       characters.update();
 
       // TODO destination should be undefined if player is not moving – check for that instead
-      const buildingId = building.at(characters.getPlayer().destination());
+      const buildingId = building.at(characters.getPlayer().position());
 
       if (buildingId) {
         enterBuilding(buildingId);
-        characters.getPlayer().update();
       }
     },
     draw: () => {
