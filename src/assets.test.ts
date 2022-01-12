@@ -1,6 +1,6 @@
 import Assets from './assets';
 
-test('loading assets', async () => {
+test('assets', async () => {
   Object.defineProperty(global.Image.prototype, 'src', {
     set() {
       setTimeout(() => this.onload());
@@ -18,11 +18,21 @@ test('loading assets', async () => {
     arrayBuffer: () => Promise.resolve(tilemap),
   });
 
+  const dataUrl = 'data:image/png;base64...';
+
+  global.HTMLCanvasElement.prototype.toDataURL = jest
+    .fn()
+    .mockReturnValue(dataUrl);
+
   await Assets.load();
 
-  expect(Assets.images.portTilesets instanceof HTMLCanvasElement).toEqual(true);
-  expect(Assets.images.dialogCorner instanceof HTMLCanvasElement).toEqual(true);
+  expect(Assets.images.portTilesets.constructor.name).toEqual(
+    'HTMLCanvasElement',
+  );
+  expect(Assets.images.dialogCorner.constructor.name).toEqual(
+    'HTMLCanvasElement',
+  );
   expect(Assets.data.portTilemaps).toEqual(new Uint8Array(tilemap));
-  expect(Assets.buildings(12) instanceof HTMLCanvasElement).toEqual(true);
-  expect(Assets.indicators(0) instanceof HTMLCanvasElement).toEqual(true);
+  expect(Assets.buildings(12)).toEqual(dataUrl);
+  expect(Assets.indicators(0)).toEqual(dataUrl);
 });

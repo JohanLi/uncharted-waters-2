@@ -50,7 +50,22 @@ export type ImageKeys = keyof typeof imagesToLoad;
 export type ImageInterfaceKeys = keyof typeof interfaceImagesToLoad;
 type DataKeys = keyof typeof dataToLoad;
 
-const slice = (image: HTMLCanvasElement, i: number, widthPerSlice: number) => {
+interface SliceCache {
+  [key: string]: string;
+}
+
+const sliceCache = {} as SliceCache;
+
+const slice = (key: ImageInterfaceKeys, i: number, widthPerSlice: number) => {
+  const cacheKey = `${key}:${i}`;
+  const cache = sliceCache[cacheKey];
+
+  if (cache) {
+    return cache;
+  }
+
+  const image = Assets.images[key];
+
   const canvas = document.createElement('canvas');
   canvas.width = widthPerSlice;
   canvas.height = image.height;
@@ -69,7 +84,10 @@ const slice = (image: HTMLCanvasElement, i: number, widthPerSlice: number) => {
     canvas.height,
   );
 
-  return canvas;
+  const result = canvas.toDataURL();
+  sliceCache[cacheKey] = result;
+
+  return result;
 };
 
 const Assets = {
@@ -104,9 +122,8 @@ const Assets = {
     ),
   images: {} as { [key in ImageKeys | ImageInterfaceKeys]: HTMLCanvasElement },
   data: {} as { [key in DataKeys]: Uint8Array },
-  buildings: (id: number) => slice(Assets.images.buildings, id - 1, 136),
-  indicators: (direction: number) =>
-    slice(Assets.images.worldIndicators, direction, 80),
+  buildings: (id: number) => slice('buildings', id - 1, 136),
+  indicators: (direction: number) => slice('worldIndicators', direction, 80),
 };
 
 export default Assets;

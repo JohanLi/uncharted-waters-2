@@ -91,11 +91,7 @@ export default function Building() {
       }}
     >
       <div className="absolute top-4 left-4">
-        <img
-          src={Assets.buildings(id).toDataURL()}
-          alt=""
-          className="w-[272px]"
-        />
+        <img src={Assets.buildings(id)} alt="" className="w-[272px]" />
       </div>
       <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl text-black px-8 py-6">
         {buildings[id].greeting ||

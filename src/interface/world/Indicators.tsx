@@ -32,20 +32,15 @@ export default function Indicators({ hidden }: Props) {
     wind,
     current,
   }: Pick<GameState, 'wind' | 'current'>) => {
-    windDirectionRef.current.src = Assets.indicators(
-      wind.direction,
-    ).toDataURL();
+    windDirectionRef.current.src = Assets.indicators(wind.direction);
     windSpeedRef.current.textContent = String(wind.speed);
 
-    currentDirectionRef.current.src = Assets.indicators(
-      current.direction,
-    ).toDataURL();
+    currentDirectionRef.current.src = Assets.indicators(current.direction);
     currentSpeedRef.current.textContent = String(current.speed);
   };
 
   updateInterface.playerFleetDirection = (direction: number) => {
-    playerFleetDirectionRef.current.src =
-      Assets.indicators(direction).toDataURL();
+    playerFleetDirectionRef.current.src = Assets.indicators(direction);
   };
 
   updateInterface.playerFleetSpeed = (speed: number) => {
