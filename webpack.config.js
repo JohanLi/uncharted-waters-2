@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
     entry: './src/app',
     output: {
       filename: '[name]-[contenthash].bundle.js',
-      path: `${__dirname}/dist/`,
+      path: `${__dirname}/build/`,
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],

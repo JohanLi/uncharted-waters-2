@@ -1,4 +1,4 @@
-# Uncharted Waters: New Horizons (大航海時代 II)
+# Uncharted Waters: New Horizons (大航海時代II)
 
 [Uncharted Waters: New Horizons](https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons)
 is an open world RPG and simulation game, set during the Age of Exploration
@@ -26,8 +26,8 @@ find your way to this repo to star and fork it – thank you!
 
 The following is being worked on:
 
-- A general code cleanup, and conversion to TypeScript.
-- When sailing, the rendering of the game causes high CPU usage. Each and every tile is currently
+- [x] A general code cleanup, and conversion to TypeScript.
+- [x] When sailing, the rendering of the game causes high CPU usage. Each and every tile is currently
   being redrawn for each frame, when much of the previous frame can be reused. Medieval ships can’t
   teleport after all, last I checked.
 - Markets, Shipyards, and sailing. You should be able to do sail from port to port, trade goods,

@@ -7,7 +7,7 @@
     "lint": "eslint src/ --ext .ts --ext .tsx",
     "prettier": "prettier --write src/",
     "test": "jest --verbose",
-    "build": "rm -rf dist && webpack --mode production"
+    "build": "rm -rf build/ && webpack --mode production"
   },
   "author": "Johan Li",
   "license": "MIT",
