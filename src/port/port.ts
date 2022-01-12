@@ -4,7 +4,7 @@ import PercentNextMove from '../percentNextMove';
 import { enterBuilding, getTimeOfDay, isDay } from '../gameState';
 import createBuilding from '../building';
 import createPortCharacters from './portCharacters';
-import { getPortMetadata } from './portUtils'
+import { getPortMetadata } from './portUtils';
 
 const TILE_SIZE = 32;
 
@@ -16,10 +16,17 @@ const createPort = (portId: number) => {
   const height = canvas.height / TILE_SIZE;
 
   let portMetadata = getPortMetadata(portId);
-  let map = createMap([Math.ceil(width + 1), Math.ceil(height + 1)], portMetadata);
+  let map = createMap(
+    [Math.ceil(width + 1), Math.ceil(height + 1)],
+    portMetadata,
+  );
 
   let building = createBuilding(portId);
-  let characters = createPortCharacters(map, building, portMetadata.isSupplyPort);
+  let characters = createPortCharacters(
+    map,
+    building,
+    portMetadata.isSupplyPort,
+  );
 
   if (isDay()) {
     characters.spawnNpcs();
@@ -100,10 +107,17 @@ const createPort = (portId: number) => {
     },
     reset: (newPortId: number) => {
       portMetadata = getPortMetadata(newPortId);
-      map = createMap([Math.ceil(width + 1), Math.ceil(height + 1)], portMetadata);
+      map = createMap(
+        [Math.ceil(width + 1), Math.ceil(height + 1)],
+        portMetadata,
+      );
 
       building = createBuilding(newPortId);
-      characters = createPortCharacters(map, building, portMetadata.isSupplyPort);
+      characters = createPortCharacters(
+        map,
+        building,
+        portMetadata.isSupplyPort,
+      );
 
       if (isDay()) {
         characters.spawnNpcs();

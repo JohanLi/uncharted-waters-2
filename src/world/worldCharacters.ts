@@ -54,6 +54,7 @@ const createWorldCharacters = (map: Map) => {
 
       const direction = Input.get({ includeOrdinal: true });
 
+      // this check allows the player to keep their heading even after releasing input
       if (direction) {
         player.setHeading(direction);
       }

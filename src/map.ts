@@ -1,11 +1,7 @@
 import Assets from './assets';
-import {
-  tilesets,
-  CollisionIndices,
-
-} from './port/portMetadata'
+import { tilesets, CollisionIndices } from './port/portMetadata';
 import { Position } from './types';
-import { PortMetadata } from './port/portUtils'
+import { PortMetadata } from './port/portUtils';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -27,7 +23,10 @@ interface Options {
   tilesetOffset: number;
 }
 
-const createMap = (visibleArea: [number, number], portMetadata?: PortMetadata) => {
+const createMap = (
+  visibleArea: [number, number],
+  portMetadata?: PortMetadata,
+) => {
   const tileSize = 32;
   const cache = <Cache>{};
 

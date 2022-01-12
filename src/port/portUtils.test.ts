@@ -1,4 +1,4 @@
-import { getPortMetadata } from './portUtils'
+import { getPortMetadata } from './portUtils';
 import { regularPorts, SUPPLY_PORT_BUILDINGS } from './portMetadata';
 
 jest.mock('./portMetadata', () => ({
@@ -11,8 +11,8 @@ jest.mock('./portMetadata', () => ({
         '1': {
           x: 41,
           y: 59,
-        }
-      }
+        },
+      },
     },
     {
       name: 'Nagasaki',
@@ -22,9 +22,9 @@ jest.mock('./portMetadata', () => ({
         '1': {
           x: 41,
           y: 61,
-        }
-      }
-    }
+        },
+      },
+    },
   ],
   supplyPorts: [
     {

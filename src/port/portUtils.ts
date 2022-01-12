@@ -3,21 +3,23 @@ import {
   SupplyPortBase,
   BuildingLocations,
   regularPorts,
-  supplyPorts, SUPPLY_PORT_BUILDINGS, SUPPLY_PORT_TILESET,
-} from './portMetadata'
+  supplyPorts,
+  SUPPLY_PORT_BUILDINGS,
+  SUPPLY_PORT_TILESET,
+} from './portMetadata';
 
 export type PortMetadata = (
   | (RegularPort & { isSupplyPort: false })
   | (SupplyPortBase & {
-  buildings: BuildingLocations;
-  tileset: 3;
-  isSupplyPort: true;
-})
-  ) & { id: number; tilemap: number };
+      buildings: BuildingLocations;
+      tileset: 3;
+      isSupplyPort: true;
+    })
+) & { id: number; tilemap: number };
 
 export const getPortMetadata = (id: number): PortMetadata => {
   if (id > regularPorts.length + supplyPorts.length) {
-    throw Error('Port does not exist!')
+    throw Error('Port does not exist!');
   }
 
   const isSupplyPort = id > regularPorts.length;
@@ -28,7 +30,7 @@ export const getPortMetadata = (id: number): PortMetadata => {
       id,
       isSupplyPort,
       tilemap: id - 1,
-    }
+    };
   }
 
   return {
@@ -39,7 +41,7 @@ export const getPortMetadata = (id: number): PortMetadata => {
     isSupplyPort,
     tilemap: regularPorts.length,
   };
-}
+};
 
 const portCoordinates = regularPorts
   .map(({ x, y }) => ({ x, y }))

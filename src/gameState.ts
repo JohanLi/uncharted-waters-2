@@ -1,25 +1,26 @@
-import { store } from './interface/store'
+import { store } from './interface/store';
 import {
   START_DATE,
   START_PORT_ID,
   START_POSITION_X,
   START_POSITION_Y,
   START_TIME_PASSED,
-} from './constants'
-import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice'
-import { sample } from './utils'
-import { fleets, Fleets } from './world/fleets'
+} from './constants';
+import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
+import { sample } from './utils';
+import { fleets, Fleets } from './world/fleets';
 import {
   getCurrent,
   getIsSummer,
   getSeaArea,
   getWind,
-} from './world/windCurrent'
-import type { Port } from './port/port'
-import type { World } from './world/world'
-import Sound from './sound'
-import updateInterface from './interface/updateInterface'
-import { portAdjacentAt } from './port/portUtils'
+} from './world/windCurrent';
+import type { Port } from './port/port';
+import type { World } from './world/world';
+import Sound from './sound';
+import updateInterface from './interface/updateInterface';
+import { portAdjacentAt } from './port/portUtils';
+import Input from './input';
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -153,6 +154,9 @@ export const dock = (e: KeyboardEvent) => {
 
   Sound.play('port');
 
+  gameState.world.characters().getPlayer().setHeading('');
+  Input.reset();
+
   store.dispatch(dockAction());
   dispatchUpdate();
 
@@ -166,6 +170,8 @@ export const setSail = () => {
   Sound.play('world');
 
   updateWorldStatus();
+
+  Input.reset();
 
   dispatchUpdate();
 

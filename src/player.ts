@@ -66,7 +66,7 @@ const createPlayer = (
       x: xTo,
       y: yTo,
     }),
-    setHeading: (newHeading: Direction) => {
+    setHeading: (newHeading: Direction | '') => {
       if (newHeading === heading) {
         return;
       }

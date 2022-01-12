@@ -84,6 +84,9 @@ const Input = {
 
     return cardinalKeyMap[pressedKeys[0]];
   },
+  reset: () => {
+    pressedKeys = [];
+  },
 };
 
 export default Input;
