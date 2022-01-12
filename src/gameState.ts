@@ -1,25 +1,25 @@
-import { store } from './interface/store';
+import { store } from './interface/store'
 import {
   START_DATE,
   START_PORT_ID,
   START_POSITION_X,
   START_POSITION_Y,
   START_TIME_PASSED,
-} from './constants';
-import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
-import { sample } from './utils';
-import { ports } from './port/metadata';
-import { fleets, Fleets } from './world/fleets';
+} from './constants'
+import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice'
+import { sample } from './utils'
+import { fleets, Fleets } from './world/fleets'
 import {
-  getWind,
-  getSeaArea,
   getCurrent,
   getIsSummer,
-} from './world/windCurrent';
-import type { Port } from './port/port';
-import type { World } from './world/world';
-import Sound from './sound';
-import updateInterface from './interface/updateInterface';
+  getSeaArea,
+  getWind,
+} from './world/windCurrent'
+import type { Port } from './port/port'
+import type { World } from './world/world'
+import Sound from './sound'
+import updateInterface from './interface/updateInterface'
+import { portAdjacentAt } from './port/portUtils'
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -126,16 +126,6 @@ export const worldTimeTick = () => {
     store.dispatch(nextDayAtSea({ timePassed: gameState.timePassed }));
   }
 };
-
-const portAdjacentAt = (x: number, y: number) =>
-  Number(
-    Object.keys(ports).find((portId) => {
-      const deltaX = Math.abs(ports[portId].x - x);
-      const deltaY = Math.abs(ports[portId].y - y);
-
-      return deltaX + deltaY <= 3 && deltaX < 3 && deltaY < 3;
-    }),
-  );
 
 export const dock = (e: KeyboardEvent) => {
   if (e.key !== 'e') {

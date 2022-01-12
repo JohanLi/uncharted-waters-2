@@ -90,7 +90,7 @@ export const getStartFrame = (id: number) => {
   );
 };
 
-const createPortCharacters = (map: Map, building: Building) => {
+const createPortCharacters = (map: Map, building: Building, isSupplyPort: boolean) => {
   const { id, spawn } = portCharactersMetadata[0];
   const { x, y } = building.get(spawn.building);
 
@@ -192,7 +192,7 @@ const createPortCharacters = (map: Map, building: Building) => {
       });
     },
     spawnNpcs: () => {
-      if (npcs.length) {
+      if (npcs.length || isSupplyPort) {
         return;
       }
 

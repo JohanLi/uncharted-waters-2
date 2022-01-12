@@ -1,6 +1,11 @@
 import Assets from './assets';
-import { ports, tilesets, CollisionIndices } from './port/metadata';
+import {
+  tilesets,
+  CollisionIndices,
+
+} from './port/portMetadata'
 import { Position } from './types';
+import { PortMetadata } from './port/portUtils'
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -22,7 +27,7 @@ interface Options {
   tilesetOffset: number;
 }
 
-const createMap = (portId: number, visibleArea: [number, number]) => {
+const createMap = (visibleArea: [number, number], portMetadata?: PortMetadata) => {
   const tileSize = 32;
   const cache = <Cache>{};
 
@@ -33,17 +38,15 @@ const createMap = (portId: number, visibleArea: [number, number]) => {
   let getTilesetOffset: (time: number) => number;
   let collisionIndices: CollisionIndices;
 
-  if (portId) {
-    const port = ports[portId];
-
+  if (portMetadata) {
     tilemapColumns = 96;
     tilemapRows = 96;
     tilemap = Assets.data.portTilemaps.slice(
-      (portId - 1) * tilemapColumns * tilemapRows,
-      portId * tilemapColumns * tilemapRows,
+      portMetadata.tilemap * tilemapColumns * tilemapRows,
+      (portMetadata.tilemap + 1) * tilemapColumns * tilemapRows,
     );
     tileset = Assets.images.portTilesets;
-    collisionIndices = tilesets[port.tileset].collisionIndices;
+    collisionIndices = tilesets[portMetadata.tileset].collisionIndices;
 
     getTilesetOffset = (time: number) => {
       let timeOffset: number;
@@ -58,7 +61,7 @@ const createMap = (portId: number, visibleArea: [number, number]) => {
         timeOffset = 3;
       }
 
-      return timeOffset + port.tileset * 4;
+      return timeOffset + portMetadata.tileset * 4;
     };
   } else {
     tilemapColumns = 2160;
@@ -279,7 +282,7 @@ const createMap = (portId: number, visibleArea: [number, number]) => {
         { x: 1, y: 1 },
       ];
 
-      if (portId) {
+      if (portMetadata) {
         return offsetsToCheck.some(({ x, y }, i) => {
           const tile = tiles(position.x + x, position.y + y);
 

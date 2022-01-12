@@ -1,12 +1,13 @@
-import { ports } from './port/metadata';
+import type { Position } from './types'
+import { getPortMetadata } from './port/portUtils'
 
 const createBuilding = (portId: number) => ({
-  get: (id: number): { x: number; y: number } => {
-    const port = ports[portId];
+  get: (id: number): Position => {
+    const port = getPortMetadata(portId);
     return port.buildings[id];
   },
-  at: (position: { x: number; y: number }): number => {
-    const port = ports[portId];
+  at: (position: Position): number => {
+    const port = getPortMetadata(portId);
 
     return Number(
       Object.keys(port.buildings).find((id) => {

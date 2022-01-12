@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useAppSelector } from '../hooks';
 import Assets from '../../assets';
-import { buildings } from '../../port/metadata';
+import { buildings } from '../../port/portMetadata';
 import DialogBox from '../DialogBox';
 import { exitBuilding, setSail } from '../../gameState';
 import { classNames } from '../interfaceUtils';

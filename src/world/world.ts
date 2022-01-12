@@ -13,7 +13,7 @@ const createWorld = () => {
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const map = createMap(0, [Math.ceil(width + 1), Math.ceil(height + 1)]);
+  const map = createMap([Math.ceil(width + 1), Math.ceil(height + 1)]);
 
   const characters = createWorldCharacters(map);
 
