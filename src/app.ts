@@ -5,7 +5,11 @@ import renderInterface from './interface/Interface';
 import createWorld from './world/world';
 import createPort from './port/port';
 
-import gameState, { getStage, setDockedFleetPositions } from './gameState';
+import gameState, {
+  getStage,
+  setDockedFleetPositions,
+  updateGeneral,
+} from './gameState';
 
 const start = async () => {
   await Assets.load();
@@ -13,6 +17,8 @@ const start = async () => {
   Sound.setup();
 
   renderInterface();
+
+  updateGeneral();
 
   gameState.port = createPort(gameState.portId);
   setDockedFleetPositions();

@@ -1,15 +1,17 @@
 import React from 'react';
 
 import Assets from '../../assets';
-import { useAppSelector } from '../hooks';
+import type { ProvisionsType } from '../../gameState';
 
 const provisionClass = 'flex items-center py-2';
 const quantityClass = 'flex-1 text-right text-xl';
 
-export default function Provisions() {
-  const { water, food, lumber, shot } = useAppSelector(
-    (state) => state.interface,
-  );
+interface Props {
+  provisions: ProvisionsType;
+}
+
+export default function Provisions({ provisions }: Props) {
+  const { water, food, lumber, shot } = provisions;
 
   return (
     <div className="mt-20">

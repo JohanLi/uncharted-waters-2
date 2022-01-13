@@ -1,33 +1,40 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
-import { useAppSelector } from './hooks';
 import {
   getCoins,
   getDate,
   getHoursMinutes,
   getIngots,
-} from './interfaceSlice';
-import { hudClass } from './interfaceUtils';
+  hudClass,
+} from './interfaceUtils';
+import updateInterface from './updateInterface';
 
 interface Props {
+  inPort: boolean;
+  timePassed: number;
+  gold: number;
   children?: ReactNode;
 }
 
-export default function Left({ children }: Props) {
-  const { portId, dayAtSea } = useAppSelector((state) => state.interface);
+export default function Left({ inPort, timePassed, gold, children }: Props) {
+  const [dayAtSea, setDayAtSea] = useState(0);
 
-  const hoursMinutes = useAppSelector(getHoursMinutes);
+  updateInterface.dayAtSea = (d) => {
+    setDayAtSea(d);
+  };
 
   return (
     <div className={hudClass} style={{ left: '-180px', width: '180px' }}>
       <div className="text-2xl font-bold whitespace-nowrap">
-        {useAppSelector(getDate)}
+        {getDate(timePassed)}
       </div>
-      <div className="mb-20">{portId ? hoursMinutes : `Day ${dayAtSea}`}</div>
+      <div className="mb-20">
+        {inPort ? getHoursMinutes(timePassed) : `Day ${dayAtSea}`}
+      </div>
       <div className="text-sm">Ingots</div>
-      <div className="mb-4 text-right text-xl">{useAppSelector(getIngots)}</div>
+      <div className="mb-4 text-right text-xl">{getIngots(gold)}</div>
       <div className="text-sm">Coins</div>
-      <div className="mb-4 text-right text-xl">{useAppSelector(getCoins)}</div>
+      <div className="mb-4 text-right text-xl">{getCoins(gold)}</div>
       {Boolean(children) && <div>{children}</div>}
     </div>
   );

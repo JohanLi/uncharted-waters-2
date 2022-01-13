@@ -1,29 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 
-import { store } from './store';
-import { useAppSelector } from './hooks';
 import Right from './Right';
 import Left from './Left';
 import PortInfo from './port/PortInfo';
 import Building from './port/Building';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
+import updateInterface from './updateInterface';
+import type { ProvisionsType } from '../gameState';
 
 import './global.css';
 
 function Interface() {
-  const { portId, buildingId } = useAppSelector((state) => state.interface);
+  const [portId, setPortId] = useState(0);
+  const [buildingId, setBuildingId] = useState(0);
+  const [timePassed, setTimePassed] = useState(0);
+  const [gold, setGold] = useState(0);
+
+  updateInterface.general = (general) => {
+    setPortId(general.portId);
+    setBuildingId(general.buildingId);
+    setTimePassed(general.timePassed);
+    setGold(general.gold);
+  };
+
+  /*
+    TODO
+      Defined here, as <Provisions /> won’t be immediately mounted after setting sail.
+      Look into using hidden or useEffect.
+      Lumber and shot do not change while sailing, so could be split out
+   */
+  const [provisions, setProvisions] = useState<ProvisionsType>({
+    water: 0,
+    food: 0,
+    lumber: 0,
+    shot: 0,
+  });
+
+  updateInterface.provisions = (p) => {
+    setProvisions(p);
+  };
 
   return (
     <>
-      <Left>{!portId && <Provisions />}</Left>
+      <Left inPort={Boolean(portId)} timePassed={timePassed} gold={gold}>
+        {!portId && <Provisions provisions={provisions} />}
+      </Left>
       <Right>
-        {Boolean(portId) && <PortInfo />}
+        {Boolean(portId) && <PortInfo portId={portId} />}
         <Indicators hidden={Boolean(portId)} />
       </Right>
-      {Boolean(buildingId) && <Building />}
+      {Boolean(buildingId) && <Building buildingId={buildingId} />}
     </>
   );
 }
@@ -42,9 +70,7 @@ const renderInterface = () => {
 
   ReactDOM.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <Interface />
-      </Provider>
+      <Interface />
     </React.StrictMode>,
     document.getElementById('interface'),
   );

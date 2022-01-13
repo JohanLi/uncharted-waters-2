@@ -1,4 +1,3 @@
-import { store } from './interface/store';
 import {
   START_DATE,
   START_PORT_ID,
@@ -6,9 +5,8 @@ import {
   START_POSITION_Y,
   START_TIME_PASSED,
 } from './constants';
-import { dockAction, nextDayAtSea, update } from './interface/interfaceSlice';
 import { sample } from './utils';
-import { fleets, Fleets } from './world/fleets';
+import { CargoType, fleets, Fleets } from './world/fleets';
 import {
   getCurrent,
   getIsSummer,
@@ -29,6 +27,10 @@ export type Velocity = {
   speed: number;
 };
 
+export type ProvisionsType = {
+  [key in CargoType]: number;
+};
+
 export interface GameState {
   portId: number;
   buildingId: number;
@@ -40,6 +42,8 @@ export interface GameState {
   current: Velocity;
   playerFleet: Velocity;
   port: Port;
+  dayAtSea: number;
+  gold: number;
 }
 
 const gameState = {
@@ -47,16 +51,38 @@ const gameState = {
   buildingId: 0,
   timePassed: START_TIME_PASSED,
   fleets,
+  dayAtSea: 0,
+  gold: 2000,
 } as GameState;
 
-const dispatchUpdate = () => {
-  store.dispatch(
-    update({
-      portId: gameState.portId,
-      buildingId: gameState.buildingId,
-      timePassed: gameState.timePassed,
-    }),
-  );
+export const updateGeneral = () => {
+  updateInterface.general({
+    portId: gameState.portId,
+    buildingId: gameState.buildingId,
+    timePassed: gameState.timePassed,
+    gold: gameState.gold,
+  });
+};
+
+const updateProvisions = () => {
+  const provisions = {
+    water: 0,
+    food: 0,
+    lumber: 0,
+    shot: 0,
+  };
+
+  const playerFleet = gameState.fleets[1];
+
+  playerFleet.ships.forEach((ship) => {
+    ship.cargo.forEach((item) => {
+      if (item.type in provisions) {
+        provisions[item.type] += item.quantity;
+      }
+    });
+  });
+
+  updateInterface.provisions(provisions);
 };
 
 export const getStage = (): Stage => {
@@ -98,7 +124,7 @@ export const updateWorldStatus = () => {
 export const enterBuilding = (buildingId: number) => {
   gameState.buildingId = buildingId;
 
-  dispatchUpdate();
+  updateGeneral();
 };
 
 export const exitBuilding = () => {
@@ -113,7 +139,7 @@ export const exitBuilding = () => {
 
   gameState.port.characters().getPlayer().move('s');
 
-  dispatchUpdate();
+  updateGeneral();
 };
 
 export const worldTimeTick = () => {
@@ -124,7 +150,10 @@ export const worldTimeTick = () => {
   }
 
   if (getTimeOfDay() === 0) {
-    store.dispatch(nextDayAtSea({ timePassed: gameState.timePassed }));
+    updateGeneral();
+
+    gameState.dayAtSea += 1;
+    updateInterface.dayAtSea(gameState.dayAtSea);
   }
 };
 
@@ -157,8 +186,10 @@ export const dock = (e: KeyboardEvent) => {
   gameState.world.characters().getPlayer().setHeading('');
   Input.reset();
 
-  store.dispatch(dockAction());
-  dispatchUpdate();
+  updateGeneral();
+
+  gameState.dayAtSea = 0;
+  updateInterface.dayAtSea(gameState.dayAtSea);
 
   document.removeEventListener('keyup', dock);
 };
@@ -173,7 +204,8 @@ export const setSail = () => {
 
   Input.reset();
 
-  dispatchUpdate();
+  updateGeneral();
+  updateProvisions();
 
   document.addEventListener('keyup', dock);
 };

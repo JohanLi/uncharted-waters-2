@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { useAppSelector } from '../hooks';
 import { markets } from '../../port/portMetadata';
 import { getPortMetadata } from '../../port/portUtils';
 
-// TODO Investments
-export default function PortInfo() {
-  const { portId } = useAppSelector((state) => state.interface);
+interface Props {
+  portId: number;
+}
 
+// TODO Investments
+export default function PortInfo({ portId }: Props) {
   const port = getPortMetadata(portId);
 
   let economy = 0;

@@ -1,7 +1,7 @@
 import type { Position } from '../types';
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 
-type CargoType = 'water' | 'food' | 'lumber' | 'shot';
+export type CargoType = 'water' | 'food' | 'lumber' | 'shot';
 
 interface Cargo {
   type: CargoType;
