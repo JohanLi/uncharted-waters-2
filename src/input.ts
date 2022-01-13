@@ -41,7 +41,7 @@ let pressedKeys: Wasd[] = [];
 const isWasd = (key: string): key is Wasd => key in cardinalKeyMap;
 
 const onKeydown = (e: KeyboardEvent) => {
-  const pressedKey = e.key;
+  const pressedKey = e.key.toLowerCase();
 
   if (!isWasd(pressedKey)) {
     return;
@@ -53,7 +53,7 @@ const onKeydown = (e: KeyboardEvent) => {
 };
 
 const onKeyup = (e: KeyboardEvent) => {
-  const pressedKey = e.key;
+  const pressedKey = e.key.toLowerCase();
 
   if (!isWasd(pressedKey)) {
     return;

@@ -19,7 +19,7 @@ import {
 } from './selectors';
 
 export const dock = (e: KeyboardEvent) => {
-  if (e.key !== 'e') {
+  if (e.key.toLowerCase() !== 'e') {
     return;
   }
 

@@ -18,13 +18,14 @@ export default function Building({ buildingId }: Props) {
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
       let newActiveOption = activeOption;
 
-      if (e.key === 's') {
+      if (key === 's') {
         newActiveOption += 1;
       }
 
-      if (e.key === 'w') {
+      if (key === 'w') {
         newActiveOption -= 1;
       }
 
