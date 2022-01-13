@@ -3,7 +3,7 @@ import type { Position } from '../types';
 import { Map } from '../map';
 import createWorldPlayer, { WorldPlayer } from './worldPlayer';
 import createWorldNpc, { WorldNpc } from './worldNpc';
-import gameState from '../gameState';
+import state from '../state/state';
 import type { Ship } from './fleets';
 import { hasOars } from './worldUtils';
 
@@ -17,37 +17,28 @@ export const getStartFrame = (flagship: Ship, isPlayer = false) => {
 };
 
 const createWorldCharacters = (map: Map) => {
-  const playerFleet = gameState.fleets[1];
+  const playerFleet = state.fleets[1];
 
   if (!playerFleet.position) {
     throw Error('Player fleet has no position');
   }
 
   const player = createWorldPlayer(
-    playerFleet.position.x,
-    playerFleet.position.y,
+    playerFleet.position,
     getStartFrame(playerFleet.ships[0], true),
     'n',
   );
 
   const npcs: WorldNpc[] = [];
 
-  for (let id = 2; id <= Object.keys(gameState.fleets).length; id += 1) {
-    const { position, ships } = gameState.fleets[id];
+  for (let id = 2; id <= Object.keys(state.fleets).length; id += 1) {
+    const { position, ships } = state.fleets[id];
 
     if (!position) {
       throw Error('NPC fleet has no position');
     }
 
-    npcs.push(
-      createWorldNpc(
-        position.x,
-        position.y,
-        getStartFrame(ships[0]),
-        'n',
-        true,
-      ),
-    );
+    npcs.push(createWorldNpc(position, getStartFrame(ships[0]), 'n', true));
   }
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()

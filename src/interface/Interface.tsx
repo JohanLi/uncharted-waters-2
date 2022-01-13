@@ -8,7 +8,7 @@ import Building from './port/Building';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
 import updateInterface from './updateInterface';
-import type { ProvisionsType } from '../gameState';
+import type { ProvisionsType } from '../state/state';
 
 import './global.css';
 

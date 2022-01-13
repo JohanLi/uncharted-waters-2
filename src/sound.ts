@@ -1,4 +1,4 @@
-import type { Stage } from './gameState';
+import type { Stage } from './state/state';
 
 import mastInTheMist from './sound/mast-in-the-mist.mp3';
 import capriceForLute from './sound/caprice-for-lute.mp3';

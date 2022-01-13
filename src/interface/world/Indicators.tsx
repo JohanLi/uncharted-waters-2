@@ -9,7 +9,7 @@ import React, { useRef } from 'react';
 
 import Assets from '../../assets';
 import updateInterface from '../updateInterface';
-import { GameState } from '../../gameState';
+import { State } from '../../state/state';
 import { classNames } from '../interfaceUtils';
 
 const indicatorClass = 'flex items-center';
@@ -31,7 +31,7 @@ export default function Indicators({ hidden }: Props) {
   updateInterface.indicators = ({
     wind,
     current,
-  }: Pick<GameState, 'wind' | 'current'>) => {
+  }: Pick<State, 'wind' | 'current'>) => {
     windDirectionRef.current.src = Assets.indicators(wind.direction);
     windSpeedRef.current.textContent = String(wind.speed);
 

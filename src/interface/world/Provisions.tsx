@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Assets from '../../assets';
-import type { ProvisionsType } from '../../gameState';
+import type { ProvisionsType } from '../../state/state';
 
 const provisionClass = 'flex items-center py-2';
 const quantityClass = 'flex-1 text-right text-xl';

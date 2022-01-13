@@ -1,12 +1,12 @@
-import type { GameState, ProvisionsType } from '../gameState';
+import type { State, ProvisionsType } from '../state/state';
 
 interface UpdateInterface {
   general: (
-    general: Pick<GameState, 'portId' | 'buildingId' | 'timePassed' | 'gold'>,
+    general: Pick<State, 'portId' | 'buildingId' | 'timePassed' | 'gold'>,
   ) => void;
   dayAtSea: (dayAtSea: number) => void;
   provisions: (provisions: ProvisionsType) => void;
-  indicators: (indicators: Pick<GameState, 'wind' | 'current'>) => void;
+  indicators: (indicators: Pick<State, 'wind' | 'current'>) => void;
   playerFleetDirection: (direction: number) => void;
   playerFleetSpeed: (speed: number) => void;
 }

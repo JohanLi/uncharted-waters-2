@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Assets from '../../assets';
 import { buildings } from '../../port/portMetadata';
 import DialogBox from '../DialogBox';
-import { exitBuilding, setSail } from '../../gameState';
 import { classNames } from '../interfaceUtils';
+import { exitBuilding } from '../../state/actionsPort';
+import { setSail } from '../../state/actionsWorld';
 
 interface Props {
   buildingId: number;

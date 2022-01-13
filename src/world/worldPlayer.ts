@@ -1,17 +1,23 @@
-import { CardinalDirection, Direction, directionToChanges } from '../types';
+import {
+  CardinalDirection,
+  Direction,
+  directionToChanges,
+  Position,
+} from '../types';
 import getShipSpeed from './shipSpeed';
 import { sailors } from './fleets';
-import gameState, { Velocity } from '../gameState';
+import state, { Velocity } from '../state/state';
 import { directionMap } from '../input';
 import updateInterface from '../interface/updateInterface';
 import { getXWrapAround } from './worldUtils';
 
 const createWorldPlayer = (
-  x: number,
-  y: number,
+  position: Position,
   startFrame: number,
   startDirection: CardinalDirection,
 ) => {
+  let { x, y } = position;
+
   let xTo = x;
   let yTo = y;
 
@@ -78,21 +84,21 @@ const createWorldPlayer = (
     },
     heading: () => heading,
     updateSpeed: () => {
-      if (heading === lastHeading && windUnchanged(gameState.wind)) {
+      if (heading === lastHeading && windUnchanged(state.wind)) {
         return;
       }
 
       speed = heading
         ? getShipSpeed(
-            gameState.fleets[1].ships[0],
+            state.fleets[1].ships[0],
             sailors[1],
             directionMap[heading],
-            gameState.wind,
+            state.wind,
           )
         : 0;
 
       lastHeading = heading;
-      lastWind = gameState.wind;
+      lastWind = state.wind;
       updateInterface.playerFleetSpeed(speed);
     },
     frame: () => startFrame + frameOffset + frameAlternate,

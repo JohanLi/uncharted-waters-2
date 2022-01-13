@@ -1,6 +1,6 @@
 import { shipMetadata, shipWindFactorMap } from './shipMetadata';
 import { getHeadingWindDelta, hasOars } from './worldUtils';
-import type { Velocity } from '../gameState';
+import type { Velocity } from '../state/state';
 import type { Ship } from './fleets';
 
 /*

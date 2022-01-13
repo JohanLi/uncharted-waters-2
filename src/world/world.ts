@@ -3,7 +3,8 @@ import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import createWorldCharacters from './worldCharacters';
 import { getXWrapAround } from './worldUtils';
-import { getTimeOfDay, worldTimeTick } from '../gameState';
+import { getTimeOfDay } from '../state/selectors';
+import { worldTimeTick } from '../state/actionsWorld';
 
 const TILE_SIZE = 32;
 

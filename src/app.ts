@@ -5,11 +5,10 @@ import renderInterface from './interface/Interface';
 import createWorld from './world/world';
 import createPort from './port/port';
 
-import gameState, {
-  getStage,
-  setDockedFleetPositions,
-  updateGeneral,
-} from './gameState';
+import state from './state/state';
+import { updateGeneral } from './state/actionsPort';
+import { getStage } from './state/selectors';
+import { setDockedFleetPositions } from './state/actionsWorld';
 
 const start = async () => {
   await Assets.load();
@@ -20,9 +19,9 @@ const start = async () => {
 
   updateGeneral();
 
-  gameState.port = createPort(gameState.portId);
+  state.port = createPort(state.portId);
   setDockedFleetPositions();
-  gameState.world = createWorld();
+  state.world = createWorld();
 
   Sound.play('port');
 
@@ -30,13 +29,13 @@ const start = async () => {
     const stage = getStage();
 
     if (stage === 'port') {
-      gameState.port.update();
-      gameState.port.draw();
+      state.port.update();
+      state.port.draw();
     }
 
     if (stage === 'world') {
-      gameState.world.update();
-      gameState.world.draw();
+      state.world.update();
+      state.world.draw();
     }
 
     requestAnimationFrame(loop);
