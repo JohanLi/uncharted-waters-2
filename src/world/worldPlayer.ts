@@ -1,12 +1,12 @@
-import { CardinalDirection, Direction, directionToChanges } from './types';
-import getShipSpeed from './world/shipSpeed';
-import { sailors } from './world/fleets';
-import gameState, { Velocity } from './gameState';
-import { directionMap } from './input';
-import updateInterface from './interface/updateInterface';
-import { getXWrapAround } from './world/worldUtils';
+import { CardinalDirection, Direction, directionToChanges } from '../types';
+import getShipSpeed from './shipSpeed';
+import { sailors } from './fleets';
+import gameState, { Velocity } from '../gameState';
+import { directionMap } from '../input';
+import updateInterface from '../interface/updateInterface';
+import { getXWrapAround } from './worldUtils';
 
-const createPlayer = (
+const createWorldPlayer = (
   x: number,
   y: number,
   startFrame: number,
@@ -101,6 +101,6 @@ const createPlayer = (
   };
 };
 
-export type Player = ReturnType<typeof createPlayer>;
+export type WorldPlayer = ReturnType<typeof createWorldPlayer>;
 
-export default createPlayer;
+export default createWorldPlayer;

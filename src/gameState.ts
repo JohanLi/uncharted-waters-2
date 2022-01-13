@@ -108,9 +108,7 @@ export const isDay = () => {
 export const shouldUpdateWorldStatus = () => gameState.timePassed % 240 === 0;
 
 export const updateWorldStatus = () => {
-  const seaArea = getSeaArea(
-    gameState.world.characters().getPlayer().position(),
-  );
+  const seaArea = getSeaArea(gameState.world.characters().player().position());
 
   const wind = getWind(seaArea, getIsSummer(START_DATE, gameState.timePassed));
   const current = getCurrent(seaArea);
@@ -137,7 +135,7 @@ export const exitBuilding = () => {
     gameState.port.characters().despawnNpcs();
   }
 
-  gameState.port.characters().getPlayer().move('s');
+  gameState.port.characters().player().move('s');
 
   updateGeneral();
 };
@@ -162,7 +160,7 @@ export const dock = (e: KeyboardEvent) => {
     return;
   }
 
-  const { x, y } = gameState.world.characters().getPlayer().position();
+  const { x, y } = gameState.world.characters().player().position();
 
   const portId = portAdjacentAt(x, y);
 
@@ -183,7 +181,7 @@ export const dock = (e: KeyboardEvent) => {
 
   Sound.play('port');
 
-  gameState.world.characters().getPlayer().setHeading('');
+  gameState.world.characters().player().setHeading('');
   Input.reset();
 
   updateGeneral();

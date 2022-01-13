@@ -1,8 +1,8 @@
 import Input from '../input';
 import type { Position } from '../types';
 import { Map } from '../map';
-import createPlayer, { Player } from '../player';
-import createNpc, { Npc } from '../npc';
+import createWorldPlayer, { WorldPlayer } from './worldPlayer';
+import createWorldNpc, { WorldNpc } from './worldNpc';
 import gameState from '../gameState';
 import type { Ship } from './fleets';
 import { hasOars } from './worldUtils';
@@ -23,14 +23,14 @@ const createWorldCharacters = (map: Map) => {
     throw Error('Player fleet has no position');
   }
 
-  const player = createPlayer(
+  const player = createWorldPlayer(
     playerFleet.position.x,
     playerFleet.position.y,
     getStartFrame(playerFleet.ships[0], true),
     'n',
   );
 
-  const npcs: Npc[] = [];
+  const npcs: WorldNpc[] = [];
 
   for (let id = 2; id <= Object.keys(gameState.fleets).length; id += 1) {
     const { position, ships } = gameState.fleets[id];
@@ -40,13 +40,21 @@ const createWorldCharacters = (map: Map) => {
     }
 
     npcs.push(
-      createNpc(position.x, position.y, getStartFrame(ships[0]), 'n', true),
+      createWorldNpc(
+        position.x,
+        position.y,
+        getStartFrame(ships[0]),
+        'n',
+        true,
+      ),
     );
   }
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: Player | Npc, destination?: Position) =>
-    map.collisionAt(destination || character.destination());
+  const collision = (
+    character: WorldPlayer | WorldNpc,
+    destination?: Position,
+  ) => map.collisionAt(destination || character.destination());
 
   return {
     update: () => {
@@ -85,8 +93,8 @@ const createWorldCharacters = (map: Map) => {
         }
       });
     },
-    getPlayer: () => player,
-    getNpcs: () => npcs,
+    player: () => player,
+    npcs: () => npcs,
   };
 };
 

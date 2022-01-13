@@ -1,7 +1,7 @@
-import { CardinalDirection, Direction, directionToChanges } from './types';
-import { sample, directions, random } from './utils';
+import { CardinalDirection, Direction, directionToChanges } from '../types';
+import { sample, directions, random } from '../utils';
 
-const createNpc = (
+const createWorldNpc = (
   x: number,
   y: number,
   startFrame: number,
@@ -93,6 +93,6 @@ const createNpc = (
   };
 };
 
-export type Npc = ReturnType<typeof createNpc>;
+export type WorldNpc = ReturnType<typeof createWorldNpc>;
 
-export default createNpc;
+export default createWorldNpc;

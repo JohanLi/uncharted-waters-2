@@ -3,8 +3,8 @@ import Input from '../input';
 import { Direction, Position } from '../types';
 import { Map } from '../map';
 import { Building } from '../building';
-import createPlayer, { Player } from '../player';
-import createNpc, { Npc } from '../npc';
+import createPlayer, { PortPlayer } from './portPlayer';
+import createNpc, { PortNpc } from './portNpc';
 import portCharactersMetadata from './portCharactersMetadata';
 
 interface AlternativeDestination {
@@ -105,9 +105,12 @@ const createPortCharacters = (
     's',
   );
 
-  const npcs: Npc[] = [];
+  const npcs: PortNpc[] = [];
 
-  const collisionOthers = (self: Player | Npc, destination?: Position) =>
+  const collisionOthers = (
+    self: PortPlayer | PortNpc,
+    destination?: Position,
+  ) =>
     [player, ...npcs].some((character) => {
       if (character === self) {
         return false;
@@ -123,13 +126,13 @@ const createPortCharacters = (
     });
 
   // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: Player | Npc, destination?: Position) =>
+  const collision = (character: PortPlayer | PortNpc, destination?: Position) =>
     map.collisionAt(destination || character.destination()) ||
     collisionOthers(character, destination);
 
   const alternativeDirection = (
     direction: Direction,
-    player: Player,
+    player: PortPlayer,
   ): Direction | '' => {
     let firstDirectionPossible = true;
     let secondDirectionPossible = true;
@@ -221,8 +224,8 @@ const createPortCharacters = (
         npcs.pop();
       }
     },
-    getPlayer: () => player,
-    getNpcs: () => npcs,
+    player: () => player,
+    npcs: () => npcs,
   };
 };
 

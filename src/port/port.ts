@@ -1,10 +1,10 @@
 import Assets from '../assets';
 import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
-import { enterBuilding, getTimeOfDay, isDay } from '../gameState';
 import createBuilding from '../building';
 import createPortCharacters from './portCharacters';
 import { getPortMetadata } from './portUtils';
+import { enterBuilding, getTimeOfDay, isDay } from '../gameState';
 
 const TILE_SIZE = 32;
 
@@ -43,14 +43,14 @@ const createPort = (portId: number) => {
       characters.update();
 
       // TODO destination should be undefined if player is not moving – check for that instead
-      const buildingId = building.at(characters.getPlayer().position());
+      const buildingId = building.at(characters.player().position());
 
       if (buildingId) {
         enterBuilding(buildingId);
       }
     },
     draw: () => {
-      const player = characters.getPlayer();
+      const player = characters.player();
       const { x: characterX, y: characterY } = player.position(
         PercentNextMove.get(),
       );
@@ -88,7 +88,7 @@ const createPort = (portId: number) => {
         player.height * TILE_SIZE,
       );
 
-      const npcs = characters.getNpcs();
+      const npcs = characters.npcs();
 
       npcs.forEach((npc) => {
         context.drawImage(

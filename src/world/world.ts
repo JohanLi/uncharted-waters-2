@@ -1,9 +1,9 @@
 import Assets from '../assets';
 import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
-import { getTimeOfDay, worldTimeTick } from '../gameState';
 import createWorldCharacters from './worldCharacters';
 import { getXWrapAround } from './worldUtils';
+import { getTimeOfDay, worldTimeTick } from '../gameState';
 
 const TILE_SIZE = 32;
 
@@ -31,7 +31,7 @@ const createWorld = () => {
       worldTimeTick();
     },
     draw: () => {
-      const player = characters.getPlayer();
+      const player = characters.player();
       const { x: playerX, y: playerY } = player.position(PercentNextMove.get());
 
       const cameraCenterX = playerX + player.width / 2;
@@ -54,7 +54,7 @@ const createWorld = () => {
         height * TILE_SIZE,
       );
 
-      const npcs = characters.getNpcs();
+      const npcs = characters.npcs();
 
       npcs.forEach((npc) => {
         const { x: npcX, y: npcY } = npc.position(PercentNextMove.get());
