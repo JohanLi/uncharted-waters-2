@@ -4,6 +4,7 @@ import { sailors } from './world/fleets';
 import gameState, { Velocity } from './gameState';
 import { directionMap } from './input';
 import updateInterface from './interface/updateInterface';
+import { getXWrapAround } from './world/worldUtils';
 
 const createPlayer = (
   x: number,
@@ -59,7 +60,7 @@ const createPlayer = (
       y = yTo;
     },
     position: (percentNextMove = 0) => ({
-      x: x + (xTo - x) * percentNextMove,
+      x: getXWrapAround(x + (xTo - x) * percentNextMove),
       y: y + (yTo - y) * percentNextMove,
     }),
     destination: () => ({

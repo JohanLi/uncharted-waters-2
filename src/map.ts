@@ -2,6 +2,7 @@ import Assets from './assets';
 import { tilesets, CollisionIndices } from './port/portMetadata';
 import { Position } from './types';
 import { PortMetadata } from './port/portUtils';
+import { getXWrapAround } from './world/worldUtils';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -106,7 +107,7 @@ const createMap = (
   }
 
   const tiles = (x: number, y: number): number =>
-    tilemap[y * tilemapColumns + x] || 0;
+    tilemap[y * tilemapColumns + getXWrapAround(x)] || 0;
 
   const drawImage = (context: CanvasRenderingContext2D, options: Options) => {
     const {
@@ -139,7 +140,16 @@ const createMap = (
 
   const outOfBoundsAt = (position: Position): boolean => {
     const { x, y } = position;
-    return x < 0 || x + 1 >= tilemapColumns || y < 0 || y + 1 >= tilemapRows;
+
+    if (y < 0 || y + 1 >= tilemapRows) {
+      return true;
+    }
+
+    if (!portMetadata) {
+      return false;
+    }
+
+    return x < 0 || x + 1 >= tilemapColumns;
   };
 
   return {
@@ -148,6 +158,7 @@ const createMap = (
         throw Error('Out of bounds');
       }
 
+      // TODO reimplement this together with unit tests
       // if (x > tilemapColumns - visibleArea[0] || y > tilemapRows - visibleArea[1]) {
       //   throw Error('Out of bounds');
       // }

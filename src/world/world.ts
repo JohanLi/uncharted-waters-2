@@ -3,6 +3,7 @@ import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import { getTimeOfDay, worldTimeTick } from '../gameState';
 import createWorldCharacters from './worldCharacters';
+import { getXWrapAround } from './worldUtils';
 
 const TILE_SIZE = 32;
 
@@ -31,17 +32,14 @@ const createWorld = () => {
     },
     draw: () => {
       const player = characters.getPlayer();
-      const { x: characterX, y: characterY } = player.position(
-        PercentNextMove.get(),
-      );
+      const { x: playerX, y: playerY } = player.position(PercentNextMove.get());
 
-      const cameraCenterX = characterX + player.width / 2;
-      const cameraCenterY = characterY + player.height / 2;
+      const cameraCenterX = playerX + player.width / 2;
+      const cameraCenterY = playerY + player.height / 2;
 
-      let cameraX = Math.max(cameraCenterX - width / 2, 0);
+      const cameraX = getXWrapAround(cameraCenterX - width / 2);
+
       let cameraY = Math.max(cameraCenterY - height / 2, 0);
-
-      cameraX = Math.min(cameraX, map.tilemapColumns - width);
       cameraY = Math.min(cameraY, map.tilemapRows - height);
 
       context.drawImage(
@@ -59,14 +57,16 @@ const createWorld = () => {
       const npcs = characters.getNpcs();
 
       npcs.forEach((npc) => {
+        const { x: npcX, y: npcY } = npc.position(PercentNextMove.get());
+
         context.drawImage(
           Assets.images.worldShips,
           npc.frame() * npc.width * TILE_SIZE,
           0,
           npc.width * TILE_SIZE,
           npc.height * TILE_SIZE,
-          (npc.position(PercentNextMove.get()).x - cameraX) * TILE_SIZE,
-          (npc.position(PercentNextMove.get()).y - cameraY) * TILE_SIZE,
+          getXWrapAround(npcX - cameraX) * TILE_SIZE,
+          (npcY - cameraY) * TILE_SIZE,
           npc.width * TILE_SIZE,
           npc.height * TILE_SIZE,
         );
@@ -79,8 +79,8 @@ const createWorld = () => {
         0,
         player.width * TILE_SIZE,
         player.height * TILE_SIZE,
-        (characterX - cameraX) * TILE_SIZE,
-        (characterY - cameraY) * TILE_SIZE,
+        getXWrapAround(playerX - cameraX) * TILE_SIZE,
+        (playerY - cameraY) * TILE_SIZE,
         player.width * TILE_SIZE,
         player.height * TILE_SIZE,
       );

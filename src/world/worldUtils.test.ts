@@ -1,4 +1,4 @@
-import { getHeadingWindDelta } from './worldUtils';
+import { getHeadingWindDelta, getXWrapAround } from './worldUtils';
 
 describe('getDirectionDelta', () => {
   test('tailwind', () => {
@@ -24,5 +24,19 @@ describe('getDirectionDelta', () => {
   test('headwind', () => {
     expect(getHeadingWindDelta(5, 1)).toEqual(4);
     expect(getHeadingWindDelta(2, 6)).toEqual(4);
+  });
+});
+
+describe('getXWrapAround', () => {
+  test('X wraps around to the end of the world map after reaching the eastern boundary', () => {
+    expect(getXWrapAround(2159)).toEqual(2159);
+    expect(getXWrapAround(0)).toEqual(0);
+    expect(getXWrapAround(-1)).toEqual(2159);
+  });
+
+  test('X wraps around to the start of the world map after reaching the western boundary', () => {
+    expect(getXWrapAround(2160)).toEqual(0);
+    expect(getXWrapAround(2161)).toEqual(1);
+    expect(getXWrapAround(-1)).toEqual(2159);
   });
 });
