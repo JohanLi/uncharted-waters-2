@@ -6,6 +6,7 @@ import createWorldNpc, { WorldNpc } from './worldNpc';
 import state from '../state/state';
 import type { Ship } from './fleets';
 import { hasOars } from './worldUtils';
+import { dock } from '../state/actionsWorld';
 
 const FRAMES_PER_SHIP = 8;
 const SHIP_VARIANTS = 2;
@@ -51,7 +52,12 @@ const createWorldCharacters = (map: Map) => {
     update: () => {
       player.update();
 
-      const direction = Input.get({ includeOrdinal: true });
+      if (Input.getPressedE() && dock(player.position())) {
+        player.setHeading('');
+        return;
+      }
+
+      const direction = Input.getDirection({ includeOrdinal: true });
 
       // this check allows the player to keep their heading even after releasing input
       if (direction) {

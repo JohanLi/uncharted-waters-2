@@ -6,6 +6,7 @@ import { Building } from '../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
 import portCharactersMetadata from './portCharactersMetadata';
+import { applyPositionDelta } from '../utils';
 
 interface AlternativeDestination {
   direction: Direction;
@@ -96,11 +97,9 @@ const createPortCharacters = (
   isSupplyPort: boolean,
 ) => {
   const { id, spawn } = portCharactersMetadata[0];
-  const { x, y } = building.get(spawn.building);
 
   const player = createPlayer(
-    x + spawn.offset.x,
-    y + spawn.offset.y,
+    applyPositionDelta(building.get(spawn.building), spawn.offset),
     getStartFrame(id),
     's',
   );
@@ -132,6 +131,7 @@ const createPortCharacters = (
 
   const alternativeDirection = (
     direction: Direction,
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     player: PortPlayer,
   ): Direction | '' => {
     let firstDirectionPossible = true;
@@ -167,7 +167,7 @@ const createPortCharacters = (
     update: () => {
       player.update();
 
-      const direction = Input.get({ includeOrdinal: false });
+      const direction = Input.getDirection({ includeOrdinal: false });
 
       if (direction) {
         player.move(direction);
@@ -205,14 +205,19 @@ const createPortCharacters = (
 
       // TODO add special case where additional NPCs should spawn to blockade the port
       for (let i = 1; i < 8; i += 1) {
-        const { id, spawn, isStationary = false } = portCharactersMetadata[i];
-        const { x, y } = building.get(spawn.building);
+        const {
+          id: npcId,
+          spawn: npcSpawn,
+          isStationary = false,
+        } = portCharactersMetadata[i];
 
         npcs.push(
           createNpc(
-            x + spawn.offset.x,
-            y + spawn.offset.y,
-            getStartFrame(id),
+            applyPositionDelta(
+              building.get(npcSpawn.building),
+              npcSpawn.offset,
+            ),
+            getStartFrame(npcId),
             's',
             isStationary,
           ),

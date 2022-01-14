@@ -1,11 +1,17 @@
-import { CardinalDirection, Direction, directionToChanges } from '../types';
+import {
+  CardinalDirection,
+  Direction,
+  directionToChanges,
+  Position,
+} from '../types';
 
 const createPortPlayer = (
-  x: number,
-  y: number,
+  position: Position,
   startFrame: number,
   startDirection: CardinalDirection,
 ) => {
+  let { x, y } = position;
+
   let xTo = x;
   let yTo = y;
 

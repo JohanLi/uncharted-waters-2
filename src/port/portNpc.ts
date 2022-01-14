@@ -1,13 +1,19 @@
-import { CardinalDirection, Direction, directionToChanges } from '../types';
+import {
+  CardinalDirection,
+  Direction,
+  directionToChanges,
+  Position,
+} from '../types';
 import { sample, directions, random } from '../utils';
 
 const createPortNpc = (
-  x: number,
-  y: number,
+  position: Position,
   startFrame: number,
   startDirection: CardinalDirection,
   isStationary: boolean,
 ) => {
+  let { x, y } = position;
+
   let xTo = x;
   let yTo = y;
 

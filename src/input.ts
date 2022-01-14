@@ -36,30 +36,32 @@ export const directionMap: { [key in Direction | '']: number } = {
   '': 8,
 };
 
-let pressedKeys: Wasd[] = [];
-
 const isWasd = (key: string): key is Wasd => key in cardinalKeyMap;
+
+let pressedWasd: Wasd[] = [];
+
+let pressedE = false;
 
 const onKeydown = (e: KeyboardEvent) => {
   const pressedKey = e.key.toLowerCase();
 
-  if (!isWasd(pressedKey)) {
-    return;
-  }
-
-  if (!pressedKeys.includes(pressedKey)) {
-    pressedKeys.unshift(pressedKey);
+  if (isWasd(pressedKey)) {
+    if (!pressedWasd.includes(pressedKey)) {
+      pressedWasd.unshift(pressedKey);
+    }
   }
 };
 
 const onKeyup = (e: KeyboardEvent) => {
   const pressedKey = e.key.toLowerCase();
 
-  if (!isWasd(pressedKey)) {
-    return;
+  if (isWasd(pressedKey)) {
+    pressedWasd = pressedWasd.filter((key) => key !== pressedKey);
   }
 
-  pressedKeys = pressedKeys.filter((key) => key !== pressedKey);
+  if (pressedKey === 'e') {
+    pressedE = true;
+  }
 };
 
 const Input = {
@@ -67,25 +69,34 @@ const Input = {
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('keyup', onKeyup);
   },
-  get: (options: { includeOrdinal: boolean }): Direction | '' => {
-    if (!pressedKeys.length) {
+  getDirection: (options: { includeOrdinal: boolean }): Direction | '' => {
+    if (!pressedWasd.length) {
       return '';
     }
 
-    if (options.includeOrdinal && pressedKeys.length > 1) {
+    if (options.includeOrdinal && pressedWasd.length > 1) {
       const direction =
-        ordinalKeyMap[pressedKeys[0]]?.[pressedKeys[1]] ||
-        ordinalKeyMap[pressedKeys[1]]?.[pressedKeys[0]];
+        ordinalKeyMap[pressedWasd[0]]?.[pressedWasd[1]] ||
+        ordinalKeyMap[pressedWasd[1]]?.[pressedWasd[0]];
 
       if (direction) {
         return direction;
       }
     }
 
-    return cardinalKeyMap[pressedKeys[0]];
+    return cardinalKeyMap[pressedWasd[0]];
+  },
+  getPressedE: () => {
+    if (pressedE) {
+      pressedE = false;
+      return true;
+    }
+
+    return false;
   },
   reset: () => {
-    pressedKeys = [];
+    pressedWasd = [];
+    pressedE = false;
   },
 };
 

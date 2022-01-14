@@ -7,6 +7,7 @@ import {
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
 } from './portMetadata';
+import { Position } from '../types';
 
 export type PortMetadata = (
   | (RegularPort & { isSupplyPort: false })
@@ -47,7 +48,7 @@ const portCoordinates = regularPorts
   .map(({ x, y }) => ({ x, y }))
   .concat(supplyPorts.map(({ x, y }) => ({ x, y })));
 
-export const portAdjacentAt = (x: number, y: number) =>
+export const portAdjacentAt = ({ x, y }: Position) =>
   portCoordinates.findIndex((portCoordinate) => {
     const deltaX = Math.abs(portCoordinate.x - x);
     const deltaY = Math.abs(portCoordinate.y - y);

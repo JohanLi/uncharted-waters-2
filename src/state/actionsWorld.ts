@@ -17,26 +17,20 @@ import {
   positionAdjacentToPort,
   shouldUpdateWorldStatus,
 } from './selectors';
+import { Position } from '../types';
 
-export const dock = (e: KeyboardEvent) => {
-  if (e.key.toLowerCase() !== 'e') {
-    return;
-  }
-
-  const { x, y } = state.world.characters().player().position();
-
-  const portId = portAdjacentAt(x, y);
+export const dock = (position: Position) => {
+  const portId = portAdjacentAt(position);
 
   if (!portId) {
-    return; // TODO show message
+    return false; // TODO show message
   }
 
   // TODO NPC fleet positions need to be saved as well
   const playerFleet = state.fleets[1];
 
   if (playerFleet.position) {
-    playerFleet.position.x = x;
-    playerFleet.position.y = y;
+    playerFleet.position = position;
   }
 
   state.port = createPort(portId);
@@ -44,7 +38,6 @@ export const dock = (e: KeyboardEvent) => {
 
   Sound.play('port');
 
-  state.world.characters().player().setHeading('');
   Input.reset();
 
   updateGeneral();
@@ -52,7 +45,7 @@ export const dock = (e: KeyboardEvent) => {
   state.dayAtSea = 0;
   updateInterface.dayAtSea(state.dayAtSea);
 
-  document.removeEventListener('keyup', dock);
+  return true;
 };
 
 const updateProvisions = () => {
@@ -132,6 +125,4 @@ export const setSail = () => {
 
   updateGeneral();
   updateProvisions();
-
-  document.addEventListener('keyup', dock);
 };
