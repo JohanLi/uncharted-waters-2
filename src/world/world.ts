@@ -80,8 +80,8 @@ const createWorld = () => {
         0,
         player.width * TILE_SIZE,
         player.height * TILE_SIZE,
-        getXWrapAround(playerX - cameraX) * TILE_SIZE,
-        (playerY - cameraY) * TILE_SIZE,
+        Math.floor(getFromTo(cameraX, playerX) * TILE_SIZE),
+        Math.floor((playerY - cameraY) * TILE_SIZE),
         player.width * TILE_SIZE,
         player.height * TILE_SIZE,
       );
