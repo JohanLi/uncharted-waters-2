@@ -2,7 +2,7 @@ import Assets from '../assets';
 import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import createWorldCharacters from './worldCharacters';
-import { getXWrapAround } from './worldUtils';
+import { getFromTo, getXWrapAround } from './worldUtils';
 import { getTimeOfDay } from '../state/selectors';
 import { worldTimeTick } from '../state/actionsWorld';
 
@@ -66,8 +66,8 @@ const createWorld = () => {
           0,
           npc.width * TILE_SIZE,
           npc.height * TILE_SIZE,
-          getXWrapAround(npcX - cameraX) * TILE_SIZE,
-          (npcY - cameraY) * TILE_SIZE,
+          Math.floor(getFromTo(cameraX, npcX) * TILE_SIZE),
+          Math.floor((npcY - cameraY) * TILE_SIZE),
           npc.width * TILE_SIZE,
           npc.height * TILE_SIZE,
         );

@@ -23,3 +23,17 @@ export const getXWrapAround = (x: number) => {
 
   return x;
 };
+
+export const getFromTo = (x1: number, x2: number) => {
+  const fromTo = x2 - x1;
+
+  if (fromTo > 2160 / 2) {
+    return fromTo - 2160;
+  }
+
+  if (-fromTo > 2160 / 2) {
+    return fromTo + 2160;
+  }
+
+  return fromTo;
+};
