@@ -1,4 +1,8 @@
-import { getFromTo, getHeadingWindDelta, getXWrapAround } from './worldUtils';
+import {
+  getFromToAccountingForWrapAround,
+  getHeadingWindDelta,
+  getXWrapAround,
+} from './worldUtils';
 
 describe('getDirectionDelta', () => {
   test('tailwind', () => {
@@ -41,15 +45,13 @@ describe('getXWrapAround', () => {
   });
 });
 
-describe('getFromTo', () => {
-  test('takes into account the wrap around', () => {
-    expect(getFromTo(0, 0)).toEqual(0);
-    expect(getFromTo(0, 1)).toEqual(1);
-    expect(getFromTo(2, 1)).toEqual(-1);
-    expect(getFromTo(0, 2159)).toEqual(-1);
-    expect(getFromTo(2159, 0)).toEqual(1);
-    expect(getFromTo(1000, 0)).toEqual(-1000);
-    expect(getFromTo(2000, 0)).toEqual(160);
-    expect(getFromTo(0, 1080)).toEqual(1080);
-  });
+test('getFromToAccountingForWrapAround', () => {
+  expect(getFromToAccountingForWrapAround(0, 0)).toEqual(0);
+  expect(getFromToAccountingForWrapAround(0, 1)).toEqual(1);
+  expect(getFromToAccountingForWrapAround(2, 1)).toEqual(-1);
+  expect(getFromToAccountingForWrapAround(0, 2159)).toEqual(-1);
+  expect(getFromToAccountingForWrapAround(2159, 0)).toEqual(1);
+  expect(getFromToAccountingForWrapAround(1000, 0)).toEqual(-1000);
+  expect(getFromToAccountingForWrapAround(2000, 0)).toEqual(160);
+  expect(getFromToAccountingForWrapAround(0, 1080)).toEqual(1080);
 });

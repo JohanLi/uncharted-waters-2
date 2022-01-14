@@ -2,11 +2,9 @@ import Assets from '../assets';
 import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import createWorldCharacters from './worldCharacters';
-import { getFromTo, getXWrapAround } from './worldUtils';
+import { drawCharacter, getXWrapAround, TILE_SIZE } from './worldUtils';
 import { getTimeOfDay } from '../state/selectors';
 import { worldTimeTick } from '../state/actionsWorld';
-
-const TILE_SIZE = 32;
 
 const createWorld = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -58,32 +56,22 @@ const createWorld = () => {
       const npcs = characters.npcs();
 
       npcs.forEach((npc) => {
-        const { x: npcX, y: npcY } = npc.position(PercentNextMove.get());
-
-        context.drawImage(
+        drawCharacter(
+          context,
           Assets.images.worldShips,
-          npc.frame() * npc.width * TILE_SIZE,
-          0,
-          npc.width * TILE_SIZE,
-          npc.height * TILE_SIZE,
-          Math.floor(getFromTo(cameraX, npcX) * TILE_SIZE),
-          Math.floor((npcY - cameraY) * TILE_SIZE),
-          npc.width * TILE_SIZE,
-          npc.height * TILE_SIZE,
+          npc,
+          { x: cameraX, y: cameraY },
+          PercentNextMove.get(),
         );
       });
 
       // player drawn last as there’s no collision at sea
-      context.drawImage(
+      drawCharacter(
+        context,
         Assets.images.worldShips,
-        player.frame() * player.width * TILE_SIZE,
-        0,
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
-        Math.floor(getFromTo(cameraX, playerX) * TILE_SIZE),
-        Math.floor((playerY - cameraY) * TILE_SIZE),
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
+        player,
+        { x: cameraX, y: cameraY },
+        PercentNextMove.get(),
       );
     },
     characters: () => characters,

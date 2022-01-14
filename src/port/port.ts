@@ -6,8 +6,7 @@ import createPortCharacters from './portCharacters';
 import { getPortMetadata } from './portUtils';
 import { enterBuilding } from '../state/actionsPort';
 import { getTimeOfDay, isDay } from '../state/selectors';
-
-const TILE_SIZE = 32;
+import { drawCharacter, TILE_SIZE } from '../world/worldUtils';
 
 const createPort = (portId: number) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -52,12 +51,10 @@ const createPort = (portId: number) => {
     },
     draw: () => {
       const player = characters.player();
-      const { x: characterX, y: characterY } = player.position(
-        PercentNextMove.get(),
-      );
+      const { x: playerX, y: playerY } = player.position(PercentNextMove.get());
 
-      const cameraCenterX = characterX + player.width / 2;
-      const cameraCenterY = characterY + player.height / 2;
+      const cameraCenterX = playerX + player.width / 2;
+      const cameraCenterY = playerY + player.height / 2;
 
       let cameraX = Math.max(cameraCenterX - width / 2, 0);
       let cameraY = Math.max(cameraCenterY - height / 2, 0);
@@ -77,31 +74,23 @@ const createPort = (portId: number) => {
         height * TILE_SIZE,
       );
 
-      context.drawImage(
+      drawCharacter(
+        context,
         Assets.images.portCharacters,
-        player.frame() * player.width * TILE_SIZE,
-        0,
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
-        (characterX - cameraX) * TILE_SIZE,
-        (characterY - cameraY) * TILE_SIZE,
-        player.width * TILE_SIZE,
-        player.height * TILE_SIZE,
+        player,
+        { x: cameraX, y: cameraY },
+        PercentNextMove.get(),
       );
 
       const npcs = characters.npcs();
 
       npcs.forEach((npc) => {
-        context.drawImage(
+        drawCharacter(
+          context,
           Assets.images.portCharacters,
-          npc.frame() * npc.width * TILE_SIZE,
-          0,
-          npc.width * TILE_SIZE,
-          npc.height * TILE_SIZE,
-          (npc.position(PercentNextMove.get()).x - cameraX) * TILE_SIZE,
-          (npc.position(PercentNextMove.get()).y - cameraY) * TILE_SIZE,
-          npc.width * TILE_SIZE,
-          npc.height * TILE_SIZE,
+          npc,
+          { x: cameraX, y: cameraY },
+          PercentNextMove.get(),
         );
       });
     },
