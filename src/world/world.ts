@@ -4,7 +4,8 @@ import PercentNextMove from '../percentNextMove';
 import createWorldCharacters from './worldCharacters';
 import { getTimeOfDay } from '../state/selectors';
 import { worldTimeTick } from '../state/actionsWorld';
-import { drawCharacter, getCameraPosition, TILE_SIZE } from './sharedUtils';
+import { drawCamera, drawCharacter, getCameraPosition } from './sharedUtils';
+import { TILE_SIZE } from '../constants';
 
 const createWorld = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -39,17 +40,7 @@ const createWorld = () => {
         true,
       );
 
-      context.drawImage(
-        map.draw(Math.floor(camera.x), Math.floor(camera.y), getTimeOfDay()),
-        Math.floor((camera.x % 1) * TILE_SIZE),
-        Math.floor((camera.y % 1) * TILE_SIZE),
-        width * TILE_SIZE,
-        height * TILE_SIZE,
-        0,
-        0,
-        width * TILE_SIZE,
-        height * TILE_SIZE,
-      );
+      drawCamera(context, { ...camera, width, height }, map, getTimeOfDay());
 
       const npcs = characters.npcs();
 

@@ -7,10 +7,11 @@ import { getPortMetadata } from './portUtils';
 import { enterBuilding } from '../state/actionsPort';
 import { getTimeOfDay, isDay } from '../state/selectors';
 import {
+  drawCamera,
   drawCharacter,
   getCameraPosition,
-  TILE_SIZE,
 } from '../world/sharedUtils';
+import { TILE_SIZE } from '../constants';
 
 const createPort = (portId: number) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -63,17 +64,7 @@ const createPort = (portId: number) => {
         false,
       );
 
-      context.drawImage(
-        map.draw(Math.floor(camera.x), Math.floor(camera.y), getTimeOfDay()),
-        Math.floor((camera.x % 1) * TILE_SIZE),
-        Math.floor((camera.y % 1) * TILE_SIZE),
-        width * TILE_SIZE,
-        height * TILE_SIZE,
-        0,
-        0,
-        width * TILE_SIZE,
-        height * TILE_SIZE,
-      );
+      drawCamera(context, { ...camera, width, height }, map, getTimeOfDay());
 
       drawCharacter(
         context,

@@ -1,9 +1,28 @@
-import { WORLD_MAP_COLUMNS } from '../constants';
+import { TILE_SIZE, WORLD_MAP_COLUMNS } from '../constants';
 import type { WorldPlayer } from './worldPlayer';
 import type { PortPlayer } from '../port/portPlayer';
 import type { Map } from '../map';
 import type { Position } from '../types';
 import type { PortNpc } from '../port/portNpc';
+
+export const drawCamera = (
+  context: CanvasRenderingContext2D,
+  camera: Position & { width: number; height: number },
+  map: Map,
+  timeOfDay: number,
+) => {
+  context.drawImage(
+    map.draw(Math.floor(camera.x), Math.floor(camera.y), timeOfDay),
+    Math.floor((camera.x % 1) * TILE_SIZE),
+    Math.floor((camera.y % 1) * TILE_SIZE),
+    camera.width * TILE_SIZE,
+    camera.height * TILE_SIZE,
+    0,
+    0,
+    camera.width * TILE_SIZE,
+    camera.height * TILE_SIZE,
+  );
+};
 
 export const getXWrapAround = (x: number) => {
   if (x < 0) {
@@ -60,8 +79,6 @@ export const getFromToAccountingForWrapAround = (x1: number, x2: number) => {
 
   return fromTo;
 };
-
-export const TILE_SIZE = 32;
 
 export const drawCharacter = (
   context: CanvasRenderingContext2D,
