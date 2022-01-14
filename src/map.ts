@@ -2,7 +2,8 @@ import Assets from './assets';
 import { tilesets, CollisionIndices } from './port/portMetadata';
 import { Position } from './types';
 import { PortMetadata } from './port/portUtils';
-import { getXWrapAround } from './world/worldUtils';
+import { WORLD_MAP_COLUMNS } from './constants';
+import { getXWrapAround } from './world/sharedUtils';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -64,7 +65,7 @@ const createMap = (
       return timeOffset + portMetadata.tileset * 4;
     };
   } else {
-    tilemapColumns = 2160;
+    tilemapColumns = WORLD_MAP_COLUMNS;
     tilemapRows = 1080;
     tilemap = Assets.data.worldTilemap;
     tileset = Assets.images.worldTileset;
@@ -280,8 +281,6 @@ const createMap = (
 
       return cache[tilesetOffset].context.canvas;
     },
-    tilemapColumns,
-    tilemapRows,
     collisionAt: (position: Position): boolean => {
       if (outOfBoundsAt(position)) {
         return true;
@@ -315,6 +314,8 @@ const createMap = (
         return tile >= 50;
       });
     },
+    tilemapColumns,
+    tilemapRows,
   };
 };
 

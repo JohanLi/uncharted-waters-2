@@ -6,7 +6,11 @@ import createPortCharacters from './portCharacters';
 import { getPortMetadata } from './portUtils';
 import { enterBuilding } from '../state/actionsPort';
 import { getTimeOfDay, isDay } from '../state/selectors';
-import { drawCharacter, TILE_SIZE } from '../world/worldUtils';
+import {
+  drawCharacter,
+  getCameraPosition,
+  TILE_SIZE,
+} from '../world/sharedUtils';
 
 const createPort = (portId: number) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -51,21 +55,18 @@ const createPort = (portId: number) => {
     },
     draw: () => {
       const player = characters.player();
-      const { x: playerX, y: playerY } = player.position(PercentNextMove.get());
-
-      const cameraCenterX = playerX + player.width / 2;
-      const cameraCenterY = playerY + player.height / 2;
-
-      let cameraX = Math.max(cameraCenterX - width / 2, 0);
-      let cameraY = Math.max(cameraCenterY - height / 2, 0);
-
-      cameraX = Math.min(cameraX, map.tilemapColumns - width);
-      cameraY = Math.min(cameraY, map.tilemapRows - height);
+      const camera = getCameraPosition(
+        player,
+        { width, height },
+        map,
+        PercentNextMove.get(),
+        false,
+      );
 
       context.drawImage(
-        map.draw(Math.floor(cameraX), Math.floor(cameraY), getTimeOfDay()),
-        Math.floor((cameraX % 1) * TILE_SIZE),
-        Math.floor((cameraY % 1) * TILE_SIZE),
+        map.draw(Math.floor(camera.x), Math.floor(camera.y), getTimeOfDay()),
+        Math.floor((camera.x % 1) * TILE_SIZE),
+        Math.floor((camera.y % 1) * TILE_SIZE),
         width * TILE_SIZE,
         height * TILE_SIZE,
         0,
@@ -78,7 +79,7 @@ const createPort = (portId: number) => {
         context,
         Assets.images.portCharacters,
         player,
-        { x: cameraX, y: cameraY },
+        camera,
         PercentNextMove.get(),
       );
 
@@ -89,7 +90,7 @@ const createPort = (portId: number) => {
           context,
           Assets.images.portCharacters,
           npc,
-          { x: cameraX, y: cameraY },
+          camera,
           PercentNextMove.get(),
         );
       });

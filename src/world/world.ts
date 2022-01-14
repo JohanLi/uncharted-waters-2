@@ -2,9 +2,9 @@ import Assets from '../assets';
 import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import createWorldCharacters from './worldCharacters';
-import { drawCharacter, getXWrapAround, TILE_SIZE } from './worldUtils';
 import { getTimeOfDay } from '../state/selectors';
 import { worldTimeTick } from '../state/actionsWorld';
+import { drawCharacter, getCameraPosition, TILE_SIZE } from './sharedUtils';
 
 const createWorld = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
@@ -31,20 +31,18 @@ const createWorld = () => {
     },
     draw: () => {
       const player = characters.player();
-      const { x: playerX, y: playerY } = player.position(PercentNextMove.get());
-
-      const cameraCenterX = playerX + player.width / 2;
-      const cameraCenterY = playerY + player.height / 2;
-
-      const cameraX = getXWrapAround(cameraCenterX - width / 2);
-
-      let cameraY = Math.max(cameraCenterY - height / 2, 0);
-      cameraY = Math.min(cameraY, map.tilemapRows - height);
+      const camera = getCameraPosition(
+        player,
+        { width, height },
+        map,
+        PercentNextMove.get(),
+        true,
+      );
 
       context.drawImage(
-        map.draw(Math.floor(cameraX), Math.floor(cameraY), getTimeOfDay()),
-        Math.floor((cameraX % 1) * TILE_SIZE),
-        Math.floor((cameraY % 1) * TILE_SIZE),
+        map.draw(Math.floor(camera.x), Math.floor(camera.y), getTimeOfDay()),
+        Math.floor((camera.x % 1) * TILE_SIZE),
+        Math.floor((camera.y % 1) * TILE_SIZE),
         width * TILE_SIZE,
         height * TILE_SIZE,
         0,
@@ -60,7 +58,7 @@ const createWorld = () => {
           context,
           Assets.images.worldShips,
           npc,
-          { x: cameraX, y: cameraY },
+          camera,
           PercentNextMove.get(),
         );
       });
@@ -70,7 +68,7 @@ const createWorld = () => {
         context,
         Assets.images.worldShips,
         player,
-        { x: cameraX, y: cameraY },
+        camera,
         PercentNextMove.get(),
       );
     },

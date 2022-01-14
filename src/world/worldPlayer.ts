@@ -9,7 +9,7 @@ import { sailors } from './fleets';
 import state, { Velocity } from '../state/state';
 import { directionMap } from '../input';
 import updateInterface from '../state/updateInterface';
-import { getXWrapAround } from './worldUtils';
+import { getXWrapAround } from './sharedUtils';
 
 const createWorldPlayer = (
   position: Position,

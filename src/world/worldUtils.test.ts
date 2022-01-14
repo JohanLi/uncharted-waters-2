@@ -1,8 +1,8 @@
+import { getHeadingWindDelta } from './worldUtils';
 import {
   getFromToAccountingForWrapAround,
-  getHeadingWindDelta,
   getXWrapAround,
-} from './worldUtils';
+} from './sharedUtils';
 
 describe('getDirectionDelta', () => {
   test('tailwind', () => {

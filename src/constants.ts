@@ -5,3 +5,5 @@ export const START_PORT_ID = 1;
 
 export const START_POSITION_X = 838;
 export const START_POSITION_Y = 358;
+
+export const WORLD_MAP_COLUMNS = 2160;
