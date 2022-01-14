@@ -1,4 +1,4 @@
-import updateInterface from '../interface/updateInterface';
+import updateInterface from './updateInterface';
 import { sample } from '../utils';
 import state from './state';
 import { isDay } from './selectors';

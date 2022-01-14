@@ -7,8 +7,7 @@ import PortInfo from './port/PortInfo';
 import Building from './port/Building';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
-import updateInterface from './updateInterface';
-import type { ProvisionsType } from '../state/state';
+import updateInterface from '../state/updateInterface';
 
 import './global.css';
 
@@ -25,31 +24,16 @@ function Interface() {
     setGold(general.gold);
   };
 
-  /*
-    TODO
-      Defined here, as <Provisions /> won’t be immediately mounted after setting sail.
-      Look into using hidden or useEffect.
-      Lumber and shot do not change while sailing, so could be split out
-   */
-  const [provisions, setProvisions] = useState<ProvisionsType>({
-    water: 0,
-    food: 0,
-    lumber: 0,
-    shot: 0,
-  });
-
-  updateInterface.provisions = (p) => {
-    setProvisions(p);
-  };
+  const inPort = Boolean(portId);
 
   return (
     <>
-      <Left inPort={Boolean(portId)} timePassed={timePassed} gold={gold}>
-        {!portId && <Provisions provisions={provisions} />}
+      <Left inPort={inPort} timePassed={timePassed} gold={gold}>
+        <Provisions hidden={inPort} />
       </Left>
       <Right>
-        {Boolean(portId) && <PortInfo portId={portId} />}
-        <Indicators hidden={Boolean(portId)} />
+        {inPort && <PortInfo portId={portId} />}
+        <Indicators hidden={inPort} />
       </Right>
       {Boolean(buildingId) && <Building buildingId={buildingId} />}
     </>

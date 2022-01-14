@@ -1,4 +1,4 @@
-import type { State, ProvisionsType } from '../state/state';
+import type { State, ProvisionsType } from './state';
 
 interface UpdateInterface {
   general: (

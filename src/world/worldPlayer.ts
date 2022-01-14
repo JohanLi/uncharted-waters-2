@@ -8,7 +8,7 @@ import getShipSpeed from './shipSpeed';
 import { sailors } from './fleets';
 import state, { Velocity } from '../state/state';
 import { directionMap } from '../input';
-import updateInterface from '../interface/updateInterface';
+import updateInterface from '../state/updateInterface';
 import { getXWrapAround } from './worldUtils';
 
 const createWorldPlayer = (

@@ -7,7 +7,7 @@ import {
   getIngots,
   hudClass,
 } from './interfaceUtils';
-import updateInterface from './updateInterface';
+import updateInterface from '../state/updateInterface';
 
 interface Props {
   inPort: boolean;

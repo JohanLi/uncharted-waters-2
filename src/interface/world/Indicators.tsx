@@ -8,7 +8,7 @@
 import React, { useRef } from 'react';
 
 import Assets from '../../assets';
-import updateInterface from '../updateInterface';
+import updateInterface from '../../state/updateInterface';
 import { State } from '../../state/state';
 import { classNames } from '../interfaceUtils';
 

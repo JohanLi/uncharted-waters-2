@@ -3,7 +3,7 @@ import { portAdjacentAt } from '../port/portUtils';
 import createPort from '../port/port';
 import Sound from '../sound';
 import Input from '../input';
-import updateInterface from '../interface/updateInterface';
+import updateInterface from './updateInterface';
 import { updateGeneral } from './actionsPort';
 import {
   getCurrent,

@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Assets from '../../assets';
 import type { ProvisionsType } from '../../state/state';
+import { classNames } from '../interfaceUtils';
+import updateInterface from '../../state/updateInterface';
 
 const provisionClass = 'flex items-center py-2';
 const quantityClass = 'flex-1 text-right text-xl';
 
 interface Props {
-  provisions: ProvisionsType;
+  hidden: boolean;
 }
 
-export default function Provisions({ provisions }: Props) {
+export default function Provisions({ hidden }: Props) {
+  const [provisions, setProvisions] = useState<ProvisionsType>({
+    water: 0,
+    food: 0,
+    lumber: 0,
+    shot: 0,
+  });
+
+  updateInterface.provisions = (p) => {
+    setProvisions(p);
+  };
+
   const { water, food, lumber, shot } = provisions;
 
   return (
-    <div className="mt-20">
+    <div className={classNames('mt-20', hidden ? 'hidden' : '')}>
       <div className="text-sm mb-4">Provisions</div>
       <div className={provisionClass}>
         <img
