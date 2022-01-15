@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -9,8 +9,9 @@ module.exports = (env, argv) => {
     mode: 'development',
     entry: './src/app',
     output: {
-      filename: '[name]-[contenthash].bundle.js',
+      filename: '[contenthash].js',
       path: `${__dirname}/build/`,
+      assetModuleFilename: '[name]-[contenthash][ext]',
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
@@ -51,9 +52,8 @@ module.exports = (env, argv) => {
 
     config.plugins.push(
       new CompressionPlugin({
-        filename: "[path][base].gz",
         test: /\.(js|css|html|bin)$/,
-      })
+      }),
     );
   }
 
