@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:1.21.5-alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./docker/data/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/data/nginx/cert:/etc/nginx/cert
+      - ./build:/home/johanli/uncharted-waters-2

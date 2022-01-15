@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
-  return {
-    mode: isProduction ? 'production' : 'development',
+  const config = {
+    mode: 'development',
     entry: './src/app',
     output: {
       filename: '[name]-[contenthash].bundle.js',
@@ -26,13 +27,13 @@ module.exports = (env, argv) => {
           use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         {
-          test: /\.(json|mp3|png|bin)$/,
+          test: /\.(mp3|png|bin)$/,
           type: 'asset/resource',
         },
       ],
     },
     // following recommendations from https://webpack.js.org/configuration/devtool/
-    devtool: isProduction ? false : 'eval-source-map',
+    devtool: 'eval-source-map',
     devServer: {
       static: false,
     },
@@ -43,4 +44,18 @@ module.exports = (env, argv) => {
       }),
     ],
   };
+
+  if (isProduction) {
+    config.mode = 'production';
+    delete config.devtool;
+
+    config.plugins.push(
+      new CompressionPlugin({
+        filename: "[path][base].gz",
+        test: /\.(js|css|html|bin)$/,
+      })
+    );
+  }
+
+  return config;
 };
