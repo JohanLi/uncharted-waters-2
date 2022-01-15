@@ -50,6 +50,13 @@ module.exports = (env, argv) => {
     config.mode = 'production';
     delete config.devtool;
 
+    /*
+      The tilemap bin files are large, but compress to less than 100 kb each.
+      As of now, Brotli is still non-trivial to set up for nginx, so we’ll
+      use gzip.
+      Another approach is to add a MIME type for bin, and rely on Cloudflare’s
+      Brotli compression.
+     */
     config.plugins.push(
       new CompressionPlugin({
         test: /\.(js|css|html|bin)$/,
