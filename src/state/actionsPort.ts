@@ -28,7 +28,5 @@ export const exitBuilding = () => {
     state.port.characters().despawnNpcs();
   }
 
-  state.port.characters().player().move('s');
-
   updateGeneral();
 };

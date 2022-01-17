@@ -4,7 +4,6 @@ import PercentNextMove from '../percentNextMove';
 import createBuilding from '../building';
 import createPortCharacters from './portCharacters';
 import { getPortMetadata } from './portUtils';
-import { enterBuilding } from '../state/actionsPort';
 import { getTimeOfDay, isDay } from '../state/selectors';
 import {
   drawCamera,
@@ -46,13 +45,6 @@ const createPort = (portId: number) => {
       }
 
       characters.update();
-
-      // TODO destination should be undefined if player is not moving – check for that instead
-      const buildingId = building.at(characters.player().position());
-
-      if (buildingId) {
-        enterBuilding(buildingId);
-      }
     },
     draw: () => {
       const player = characters.player();

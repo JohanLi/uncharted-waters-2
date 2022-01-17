@@ -1,80 +1,12 @@
 import Input from '../input';
 
-import { Direction, Position } from '../types';
+import { Position } from '../types';
 import { Map } from '../map';
 import { Building } from '../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
 import portCharactersMetadata from './portCharactersMetadata';
 import { applyPositionDelta } from '../utils';
-
-interface AlternativeDestination {
-  direction: Direction;
-  step1: Position;
-  step2: Position;
-}
-
-const alternativeDestinations = (direction: Direction, position: Position) => {
-  if (direction === 'n' || direction === 's') {
-    const secondStepY = direction === 'n' ? position.y - 1 : position.y + 1;
-
-    return (i: number): AlternativeDestination[] => [
-      {
-        direction: 'e',
-        step1: {
-          x: position.x + i,
-          y: position.y,
-        },
-        step2: {
-          x: position.x + i,
-          y: secondStepY,
-        },
-      },
-      {
-        direction: 'w',
-        step1: {
-          x: position.x - i,
-          y: position.y,
-        },
-        step2: {
-          x: position.x - i,
-          y: secondStepY,
-        },
-      },
-    ];
-  }
-
-  if (direction === 'e' || direction === 'w') {
-    const secondStepX = direction === 'e' ? position.x + 1 : position.x - 1;
-
-    return (i: number): AlternativeDestination[] => [
-      {
-        direction: 'n',
-        step1: {
-          x: position.x,
-          y: position.y - i,
-        },
-        step2: {
-          x: secondStepX,
-          y: position.y - i,
-        },
-      },
-      {
-        direction: 's',
-        step1: {
-          x: position.x,
-          y: position.y + i,
-        },
-        step2: {
-          x: secondStepX,
-          y: position.y + i,
-        },
-      },
-    ];
-  }
-
-  return () => [];
-};
 
 const FRAMES_PER_CHARACTER = 8;
 const FRAMES_PER_STATIONARY_CHARACTER = 2;
@@ -106,17 +38,15 @@ const createPortCharacters = (
 
   const npcs: PortNpc[] = [];
 
-  const collisionOthers = (
-    self: PortPlayer | PortNpc,
-    destination?: Position,
-  ) =>
+  const collisionOthersAt = (position: Position, self: PortPlayer | PortNpc) =>
     [player, ...npcs].some((character) => {
       if (character === self) {
         return false;
       }
 
-      const { x, y } = destination || self.destination();
-      const { x: xOther, y: yOther } = character.destination();
+      const { x, y } = position;
+      const { x: xOther, y: yOther } =
+        character.destination() || character.position();
 
       const distanceX = Math.abs(x - xOther);
       const distanceY = Math.abs(y - yOther);
@@ -124,77 +54,44 @@ const createPortCharacters = (
       return distanceX < 2 && distanceY < 2;
     });
 
-  // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (character: PortPlayer | PortNpc, destination?: Position) =>
-    map.collisionAt(destination || character.destination()) ||
-    collisionOthers(character, destination);
-
-  const alternativeDirection = (
-    direction: Direction,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    player: PortPlayer,
-  ): Direction | '' => {
-    let firstDirectionPossible = true;
-    let secondDirectionPossible = true;
-
-    for (let i = 1; i <= 19; i += 1) {
-      const destinations = alternativeDestinations(
-        direction,
-        player.position(),
-      )(i);
-
-      if (firstDirectionPossible) {
-        if (collision(player, destinations[0].step1)) {
-          firstDirectionPossible = false;
-        } else if (!collision(player, destinations[0].step2)) {
-          return destinations[0].direction;
-        }
-      }
-
-      if (secondDirectionPossible) {
-        if (collision(player, destinations[1].step1)) {
-          secondDirectionPossible = false;
-        } else if (!collision(player, destinations[1].step2)) {
-          return destinations[1].direction;
-        }
-      }
-    }
-
-    return '';
-  };
+  const collisionAt = (position: Position, self: PortPlayer | PortNpc) =>
+    map.collisionAt(position) || collisionOthersAt(position, self);
 
   return {
     update: () => {
       player.update();
 
+      npcs.forEach((npc) => {
+        npc.update();
+      });
+
+      /*
+        When entering a building, we want the movement towards the door to
+        be rendered.
+
+        At the same time, we want to prevent the rare case where an NPC could
+        be blocking when we exit. To accomplish this, NPC movement is skipped
+        both when entering and exiting.
+       */
+      if (player.enteredBuilding()) {
+        return;
+      }
+
       const direction = Input.getDirection({ includeOrdinal: false });
 
       if (direction) {
-        player.move(direction);
+        player.move(direction, (position: Position) =>
+          collisionAt(position, player),
+        );
+      }
 
-        if (collision(player)) {
-          player.undoMove();
-
-          const newDirection = alternativeDirection(direction, player);
-
-          if (newDirection) {
-            player.move(newDirection, false);
-          }
-        }
+      if (player.willEnterBuilding(building.at)) {
+        return;
       }
 
       npcs.forEach((npc) => {
-        npc.update();
-
-        if (!npc.shouldMove()) {
-          return;
-        }
-
-        npc.move();
-
-        // TODO collision check not needed for immobile npcs
-        if (collision(npc)) {
-          npc.undoMove();
+        if (npc.shouldMove()) {
+          npc.move((position: Position) => collisionAt(position, npc));
         }
       });
     },

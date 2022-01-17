@@ -7,15 +7,13 @@ import {
 import { sample, directions, random } from '../utils';
 
 const createPortNpc = (
-  position: Position,
+  startPosition: Position,
   startFrame: number,
   startDirection: CardinalDirection,
   isStationary: boolean,
 ) => {
-  let { x, y } = position;
-
-  let xTo = x;
-  let yTo = y;
+  let position = startPosition;
+  let destination: Position | undefined;
 
   let frameOffset = isStationary
     ? 0
@@ -55,43 +53,51 @@ const createPortNpc = (
       movesSkipped += 1;
       return false;
     },
-    move: () => {
-      if (!isStationary) {
-        const direction = randomDirection();
+    move: (collisionAt: (position: Position) => boolean) => {
+      animate();
 
-        const {
-          xDelta,
-          yDelta,
-          frameOffset: newFrameOffset,
-        } = directionToChanges[direction];
-        frameOffset = newFrameOffset;
-        xTo = x + xDelta;
-        yTo = y + yDelta;
-
-        currentDirection = direction;
-        directionWasCollision = false;
+      if (isStationary) {
+        return;
       }
 
-      animate();
-    },
-    undoMove: () => {
-      xTo = x;
-      yTo = y;
+      const direction = randomDirection();
 
-      directionWasCollision = true;
+      const {
+        xDelta,
+        yDelta,
+        frameOffset: newFrameOffset,
+      } = directionToChanges[direction];
+      frameOffset = newFrameOffset;
+
+      destination = {
+        x: position.x + xDelta,
+        y: position.y + yDelta,
+      };
+
+      if (!collisionAt(destination)) {
+        currentDirection = direction;
+        directionWasCollision = false;
+      } else {
+        destination = undefined;
+        directionWasCollision = true;
+      }
     },
     update: () => {
-      x = xTo;
-      y = yTo;
+      if (destination) {
+        position = destination;
+      }
     },
-    position: (percentNextMove = 0) => ({
-      x: x + (xTo - x) * percentNextMove,
-      y: y + (yTo - y) * percentNextMove,
-    }),
-    destination: () => ({
-      x: xTo,
-      y: yTo,
-    }),
+    position: (percentNextMove = 0) => {
+      if (!destination) {
+        return position;
+      }
+
+      return {
+        x: position.x + (destination.x - position.x) * percentNextMove,
+        y: position.y + (destination.y - position.y) * percentNextMove,
+      };
+    },
+    destination: () => destination,
     frame: () => startFrame + frameOffset + frameAlternate,
     width: 2,
     height: 2,
