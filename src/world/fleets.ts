@@ -28,7 +28,7 @@ export const fleets: Fleets = {
     position: undefined,
     ships: [
       {
-        id: 1,
+        id: 6,
         crew: 10,
         cargo: [
           {

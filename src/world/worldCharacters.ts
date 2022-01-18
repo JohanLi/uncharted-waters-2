@@ -1,7 +1,7 @@
 import Input from '../input';
 import type { Position } from '../types';
 import { Map } from '../map';
-import createWorldPlayer, { WorldPlayer } from './worldPlayer';
+import createWorldPlayer from './worldPlayer';
 import createWorldNpc, { WorldNpc } from './worldNpc';
 import state from '../state/state';
 import type { Ship } from './fleets';
@@ -42,11 +42,7 @@ const createWorldCharacters = (map: Map) => {
     npcs.push(createWorldNpc(position, getStartFrame(ships[0]), 'n', true));
   }
 
-  // TODO: find way to rid the destination argument. It's currently needed by alternativeDirection()
-  const collision = (
-    character: WorldPlayer | WorldNpc,
-    destination?: Position,
-  ) => map.collisionAt(destination || character.destination());
+  const collision = (position: Position) => map.collisionAt(position);
 
   return {
     update: () => {
@@ -69,11 +65,7 @@ const createWorldCharacters = (map: Map) => {
       const heading = player.heading();
 
       if (heading) {
-        player.move(heading);
-
-        if (collision(player)) {
-          player.undoMove();
-        }
+        player.move(heading, collision);
       }
 
       npcs.forEach((npc) => {
@@ -85,9 +77,9 @@ const createWorldCharacters = (map: Map) => {
 
         npc.move();
 
-        if (collision(npc)) {
-          npc.undoMove();
-        }
+        // if (collision(npc)) {
+        //   npc.undoMove();
+        // }
       });
     },
     player: () => player,

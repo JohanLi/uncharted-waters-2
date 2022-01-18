@@ -9,17 +9,16 @@ import { sailors } from './fleets';
 import state, { Velocity } from '../state/state';
 import { directionMap } from '../input';
 import updateInterface from '../state/updateInterface';
+import { calculateDestination } from './worldUtils';
 import { getXWrapAround } from './sharedUtils';
 
 const createWorldPlayer = (
-  position: Position,
+  startPosition: Position,
   startFrame: number,
   startDirection: CardinalDirection,
 ) => {
-  let { x, y } = position;
-
-  let xTo = x;
-  let yTo = y;
+  let position = startPosition;
+  let destination: Position | undefined;
 
   let { frameOffset } = directionToChanges[startDirection];
   let frameAlternate = 0;
@@ -43,36 +42,71 @@ const createWorldPlayer = (
   };
 
   return {
-    move: (direction: Direction, shouldAnimate = true) => {
+    move: (
+      direction: Direction,
+      collisionAt: (position: Position) => boolean,
+    ) => {
+      animate();
+
       const {
         xDelta,
         yDelta,
         frameOffset: newFrameOffset,
       } = directionToChanges[direction];
       frameOffset = newFrameOffset;
-      xTo = x + xDelta;
-      yTo = y + yDelta;
 
-      if (shouldAnimate) {
-        animate();
+      const isDiagonal = Math.abs(xDelta) > 0 && Math.abs(yDelta) > 0;
+      const multiplier = speed / 40 / (isDiagonal ? Math.SQRT2 : 1);
+
+      if (!isDiagonal) {
+        destination = calculateDestination(
+          position,
+          xDelta,
+          yDelta,
+          multiplier,
+          collisionAt,
+        );
+
+        return;
       }
-    },
-    undoMove: () => {
-      xTo = x;
-      yTo = y;
+
+      const firstDestination = calculateDestination(
+        position,
+        xDelta,
+        0,
+        multiplier,
+        collisionAt,
+      );
+
+      destination = calculateDestination(
+        firstDestination,
+        0,
+        yDelta,
+        multiplier,
+        collisionAt,
+      );
     },
     update: () => {
-      x = xTo;
-      y = yTo;
+      if (destination) {
+        position = {
+          x: getXWrapAround(destination.x),
+          y: destination.y,
+        };
+      }
     },
-    position: (percentNextMove = 0) => ({
-      x: getXWrapAround(x + (xTo - x) * percentNextMove),
-      y: y + (yTo - y) * percentNextMove,
-    }),
-    destination: () => ({
-      x: xTo,
-      y: yTo,
-    }),
+    position: (percentNextMove = 0) => {
+      if (!destination) {
+        return position;
+      }
+
+      return {
+        x: getXWrapAround(
+          position.x + (destination.x - position.x) * percentNextMove,
+        ),
+        y: position.y + (destination.y - position.y) * percentNextMove,
+      };
+    },
+    destination: () => destination,
     setHeading: (newHeading: Direction | '') => {
       if (newHeading === heading) {
         return;
