@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   const config = {
-    mode: 'development',
     entry: './src/app',
     output: {
       filename: '[contenthash].js',
@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'babel-loader',
+          loader: 'babel-loader',
           exclude: /node_modules/,
         },
         {
@@ -32,11 +32,6 @@ module.exports = (env, argv) => {
           type: 'asset/resource',
         },
       ],
-    },
-    // following recommendations from https://webpack.js.org/configuration/devtool/
-    devtool: 'eval-source-map',
-    devServer: {
-      static: false,
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -62,6 +57,20 @@ module.exports = (env, argv) => {
         test: /\.(js|css|html|bin)$/,
       }),
     );
+  } else {
+    config.mode = 'development';
+
+    // following recommendations from https://webpack.js.org/configuration/devtool/
+    config.devtool = 'eval-source-map';
+
+    config.devServer = {
+      static: false,
+    };
+
+    config.module.rules[0].options = {
+      plugins: [require.resolve('react-refresh/babel')],
+    };
+    config.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
   }
 
   return config;
