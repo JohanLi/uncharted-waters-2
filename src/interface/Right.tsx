@@ -7,9 +7,5 @@ interface Props {
 }
 
 export default function Right({ children }: Props) {
-  return (
-    <div className={hudClass} style={{ right: '-180px', width: '180px' }}>
-      {children}
-    </div>
-  );
+  return <div className={hudClass}>{children}</div>;
 }

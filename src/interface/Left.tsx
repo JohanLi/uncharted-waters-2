@@ -24,7 +24,7 @@ export default function Left({ inPort, timePassed, gold, children }: Props) {
   };
 
   return (
-    <div className={hudClass} style={{ left: '-180px', width: '180px' }}>
+    <div className={hudClass}>
       <div className="text-2xl font-bold whitespace-nowrap">
         {getDate(timePassed)}
       </div>

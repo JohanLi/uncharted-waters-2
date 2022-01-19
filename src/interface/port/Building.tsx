@@ -88,7 +88,7 @@ export default function Building({ buildingId }: Props) {
 
   return (
     <div
-      className="w-full h-full absolute"
+      className="w-[1280px] h-[800px] relative"
       style={{
         background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
         lineHeight: 1.5,

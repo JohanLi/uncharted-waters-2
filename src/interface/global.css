@@ -1,15 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-#interface {
-  position: absolute;
-  width: 1280px;
-  height: 800px;
-  image-rendering: pixelated;
-}
-
-#camera {
-  position: absolute;
-  cursor: none;
-}

@@ -10,6 +10,7 @@ import Indicators from './world/Indicators';
 import updateInterface from '../state/updateInterface';
 
 import './global.css';
+import Camera from './Camera';
 
 function Interface() {
   const [portId, setPortId] = useState(0);
@@ -27,36 +28,28 @@ function Interface() {
   const inPort = Boolean(portId);
 
   return (
-    <>
+    <div className="flex items-stretch [image-rendering:pixelated]">
       <Left inPort={inPort} timePassed={timePassed} gold={gold}>
         <Provisions hidden={inPort} />
       </Left>
+      {Boolean(buildingId) && <Building buildingId={buildingId} />}
+      <div className={buildingId ? 'hidden' : ''}>
+        <Camera />
+      </div>
       <Right>
         {inPort && <PortInfo portId={portId} />}
         <Indicators hidden={inPort} />
       </Right>
-      {Boolean(buildingId) && <Building buildingId={buildingId} />}
-    </>
+    </div>
   );
 }
 
 const renderInterface = () => {
-  const game = document.getElementById('game');
-
-  if (!game) {
-    throw Error('The element used for rendering the game is missing!');
-  }
-
-  game.innerHTML = `
-    <canvas id="camera" width="1280" height="800"></canvas>
-    <div id="interface"></div>
-  `;
-
   ReactDOM.render(
     <React.StrictMode>
       <Interface />
     </React.StrictMode>,
-    document.getElementById('interface'),
+    document.getElementById('game'),
   );
 };
 
