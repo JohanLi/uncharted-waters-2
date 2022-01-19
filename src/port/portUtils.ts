@@ -53,5 +53,9 @@ export const portAdjacentAt = ({ x, y }: Position) =>
     const deltaX = Math.abs(portCoordinate.x - x);
     const deltaY = Math.abs(portCoordinate.y - y);
 
-    return deltaX + deltaY <= 3 && deltaX < 3 && deltaY < 3;
+    if (deltaX > 2 || deltaY > 2) {
+      return false;
+    }
+
+    return deltaX + deltaY <= 3;
   }) + 1;

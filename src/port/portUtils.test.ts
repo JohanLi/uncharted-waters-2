@@ -1,4 +1,4 @@
-import { getPortMetadata } from './portUtils';
+import { getPortMetadata, portAdjacentAt } from './portUtils';
 import { regularPorts, SUPPLY_PORT_BUILDINGS } from './portMetadata';
 
 jest.mock('./portMetadata', () => ({
@@ -81,5 +81,22 @@ describe('portUtils', () => {
 
     ({ tilemap } = getPortMetadata(4));
     expect(tilemap).toEqual(regularPorts.length);
+  });
+
+  test('must be within [2, 1] or [1, 2] of a port to dock', () => {
+    expect(portAdjacentAt({ x: 10, y: 10 })).toEqual(0);
+
+    expect(portAdjacentAt({ x: 1674, y: 402 })).toEqual(2);
+    expect(portAdjacentAt({ x: 1674, y: 401 })).toEqual(2);
+    expect(portAdjacentAt({ x: 1674, y: 400.9 })).toEqual(0);
+    expect(portAdjacentAt({ x: 1674, y: 403 })).toEqual(2);
+    expect(portAdjacentAt({ x: 1674, y: 403.1 })).toEqual(0);
+    expect(portAdjacentAt({ x: 1673.9, y: 402 })).toEqual(0);
+
+    expect(portAdjacentAt({ x: 784, y: 208 })).toEqual(3);
+    expect(portAdjacentAt({ x: 785, y: 208 })).toEqual(3);
+    expect(portAdjacentAt({ x: 785.1, y: 208 })).toEqual(0);
+    expect(portAdjacentAt({ x: 783, y: 208 })).toEqual(3);
+    expect(portAdjacentAt({ x: 782.9, y: 208 })).toEqual(0);
   });
 });

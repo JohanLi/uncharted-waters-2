@@ -1,9 +1,7 @@
 import { TILE_SIZE, WORLD_MAP_COLUMNS } from '../constants';
 import type { WorldPlayer } from './worldPlayer';
-import type { PortPlayer } from '../port/portPlayer';
 import type { Map } from '../map';
 import type { Position } from '../types';
-import type { PortNpc } from '../port/portNpc';
 
 export const drawCamera = (
   context: CanvasRenderingContext2D,
@@ -37,7 +35,7 @@ export const getXWrapAround = (x: number) => {
 };
 
 export const getCameraPosition = (
-  player: WorldPlayer | PortPlayer,
+  player: Pick<WorldPlayer, 'position' | 'width' | 'height'>,
   camera: { width: number; height: number },
   map: Map,
   percentNextMove: number,
@@ -83,7 +81,7 @@ export const getFromToAccountingForWrapAround = (x1: number, x2: number) => {
 export const drawCharacter = (
   context: CanvasRenderingContext2D,
   spritesheet: HTMLCanvasElement,
-  character: PortPlayer | PortNpc,
+  character: Pick<WorldPlayer, 'position' | 'frame' | 'width' | 'height'>,
   camera: Position,
   percentNextMove: number,
 ) => {
