@@ -42,13 +42,14 @@ let pressedWasd: Wasd[] = [];
 
 let pressedE = false;
 
+const PRESSED_E_TIME_MARGIN = 250;
+let pressedETimeoutId: number;
+
 const onKeydown = (e: KeyboardEvent) => {
   const pressedKey = e.key.toLowerCase();
 
-  if (isWasd(pressedKey)) {
-    if (!pressedWasd.includes(pressedKey)) {
-      pressedWasd.unshift(pressedKey);
-    }
+  if (isWasd(pressedKey) && !pressedWasd.includes(pressedKey)) {
+    pressedWasd.unshift(pressedKey);
   }
 };
 
@@ -61,6 +62,11 @@ const onKeyup = (e: KeyboardEvent) => {
 
   if (pressedKey === 'e') {
     pressedE = true;
+
+    window.clearTimeout(pressedETimeoutId);
+    pressedETimeoutId = window.setTimeout(() => {
+      pressedE = false;
+    }, PRESSED_E_TIME_MARGIN);
   }
 };
 
@@ -86,17 +92,13 @@ const Input = {
 
     return cardinalKeyMap[pressedWasd[0]];
   },
-  getPressedE: () => {
-    if (pressedE) {
-      pressedE = false;
-      return true;
-    }
-
-    return false;
-  },
+  getPressedE: () => pressedE,
   reset: () => {
     pressedWasd = [];
+
     pressedE = false;
+
+    window.clearTimeout(pressedETimeoutId);
   },
 };
 

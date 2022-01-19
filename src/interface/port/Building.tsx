@@ -18,14 +18,14 @@ export default function Building({ buildingId }: Props) {
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
-      const key = e.key.toLowerCase();
+      const pressedKey = e.key.toLowerCase();
       let newActiveOption = activeOption;
 
-      if (key === 's') {
+      if (pressedKey === 's') {
         newActiveOption += 1;
       }
 
-      if (key === 'w') {
+      if (pressedKey === 'w') {
         newActiveOption -= 1;
       }
 
@@ -41,11 +41,13 @@ export default function Building({ buildingId }: Props) {
     };
 
     const keyupHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      const pressedKey = e.key.toLowerCase();
+
+      if (pressedKey === 'escape') {
         exitBuilding();
       }
 
-      if (e.key === 'Enter') {
+      if (pressedKey === 'e' || pressedKey === 'enter') {
         if (menu[activeOption] === 'Sail') {
           setSail();
         }
