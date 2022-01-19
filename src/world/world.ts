@@ -26,9 +26,9 @@ const createWorld = () => {
         return;
       }
 
-      characters.update();
-
       worldTimeTick();
+
+      characters.update();
     },
     draw: () => {
       const player = characters.player();
