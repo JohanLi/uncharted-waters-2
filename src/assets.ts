@@ -14,6 +14,7 @@ const interfaceImagesToLoad = {
   worldFood: import('./interface/world/assets/food.png'),
   worldLumber: import('./interface/world/assets/lumber.png'),
   worldShot: import('./interface/world/assets/shot.png'),
+  ships: import('./interface/assets/ships.png'),
 };
 
 const dataToLoad = {
@@ -64,6 +65,7 @@ const slice = (key: ImageInterfaceKeys, i: number, widthPerSlice: number) => {
     return cache;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const image = Assets.images[key];
 
   const canvas = document.createElement('canvas');
@@ -124,6 +126,7 @@ const Assets = {
   data: {} as { [key in DataKeys]: Uint8Array },
   buildings: (id: number) => slice('buildings', id - 1, 136),
   indicators: (direction: number) => slice('worldIndicators', direction, 80),
+  ships: (id: number) => slice('ships', id - 1, 128),
 };
 
 export default Assets;

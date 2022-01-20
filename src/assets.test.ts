@@ -35,4 +35,5 @@ test('assets', async () => {
   expect(Assets.data.portTilemaps).toEqual(new Uint8Array(tilemap));
   expect(Assets.buildings(12)).toEqual(dataUrl);
   expect(Assets.indicators(0)).toEqual(dataUrl);
+  expect(Assets.ships(25)).toEqual(dataUrl);
 });

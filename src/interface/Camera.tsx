@@ -7,9 +7,7 @@ import React from 'react';
  */
 
 function Camera() {
-  return (
-    <canvas id="camera" width="1280" height="800" className="cursor-none" />
-  );
+  return <canvas id="camera" width="1280" height="800" />;
 }
 
 export default React.memo(Camera, () => true);

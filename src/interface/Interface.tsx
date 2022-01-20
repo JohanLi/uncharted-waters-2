@@ -7,10 +7,12 @@ import PortInfo from './port/PortInfo';
 import Building from './port/Building';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
+import Camera from './Camera';
+import Tabs, { Tab } from './Tabs';
+import Fleet from './Fleet';
 import updateInterface from '../state/updateInterface';
 
 import './global.css';
-import Camera from './Camera';
 
 function Interface() {
   const [portId, setPortId] = useState(0);
@@ -27,19 +29,29 @@ function Interface() {
 
   const inPort = Boolean(portId);
 
+  const [currentTab, setCurrentTab] = useState<Tab>('Home');
+
   return (
-    <div className="flex items-stretch [image-rendering:pixelated]">
-      <Left inPort={inPort} timePassed={timePassed} gold={gold}>
-        <Provisions hidden={inPort} />
-      </Left>
-      {Boolean(buildingId) && <Building buildingId={buildingId} />}
-      <div className={buildingId ? 'hidden' : ''}>
-        <Camera />
+    <div className="[image-rendering:pixelated]">
+      <Tabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <div className="flex items-stretch">
+        <Left inPort={inPort} timePassed={timePassed} gold={gold}>
+          <Provisions hidden={inPort} />
+        </Left>
+        <div className="w-[1280px] h-[800px] relative">
+          {currentTab === 'Home' && Boolean(buildingId) && (
+            <Building buildingId={buildingId} />
+          )}
+          {currentTab === 'Fleet' && <Fleet />}
+          <div className={currentTab !== 'Home' || buildingId ? 'hidden' : ''}>
+            <Camera />
+          </div>
+        </div>
+        <Right>
+          {inPort && <PortInfo portId={portId} />}
+          <Indicators hidden={inPort} />
+        </Right>
       </div>
-      <Right>
-        {inPort && <PortInfo portId={portId} />}
-        <Indicators hidden={inPort} />
-      </Right>
     </div>
   );
 }
