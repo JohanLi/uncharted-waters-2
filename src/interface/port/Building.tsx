@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Assets from '../../assets';
-import { buildings } from '../../port/portMetadata';
+import { buildings } from '../../port/metadata/portMetadata';
 import DialogBox from '../DialogBox';
 import { classNames } from '../interfaceUtils';
 import { exitBuilding } from '../../state/actionsPort';

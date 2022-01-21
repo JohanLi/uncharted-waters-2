@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { markets } from '../../port/portMetadata';
+import { markets } from '../../port/metadata/portMetadata';
 import { getPortMetadata } from '../../port/portUtils';
 
 interface Props {

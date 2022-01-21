@@ -5,7 +5,7 @@ import { Map } from '../map';
 import { Building } from '../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
-import portCharactersMetadata from './portCharactersMetadata';
+import portCharactersMetadata from './metadata/portCharactersMetadata';
 import { applyPositionDelta } from '../utils';
 
 const FRAMES_PER_CHARACTER = 8;

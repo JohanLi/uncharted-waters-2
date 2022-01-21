@@ -6,7 +6,7 @@ import {
   supplyPorts,
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
-} from './portMetadata';
+} from './metadata/portMetadata';
 import { Position } from '../types';
 
 export type PortMetadata = (

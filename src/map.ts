@@ -1,5 +1,5 @@
 import Assets from './assets';
-import { tilesets, CollisionIndices } from './port/portMetadata';
+import { tilesets, CollisionIndices } from './port/metadata/portMetadata';
 import { Position } from './types';
 import { PortMetadata } from './port/portUtils';
 import { WORLD_MAP_COLUMNS } from './constants';
