@@ -1,4 +1,4 @@
-import { shipMetadata, shipWindFactorMap } from './shipMetadata';
+import { shipData, shipWindFactorMap } from '../data/shipData';
 import { getHeadingWindDelta, hasOars } from './worldUtils';
 import type { Velocity } from '../state/state';
 import type { Ship } from './fleets';
@@ -23,8 +23,7 @@ const getShipSpeed = (
   heading: number,
   wind: Velocity,
 ) => {
-  const { power, tacking, sailType, minimumCrew, capacity } =
-    shipMetadata[ship.id];
+  const { power, tacking, sailType, minimumCrew, capacity } = shipData[ship.id];
   const directionDelta = getHeadingWindDelta(heading, wind.direction);
   const shipWindFactor = shipWindFactorMap[sailType][directionDelta];
 

@@ -6,10 +6,10 @@ import {
   supplyPorts,
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
-} from './metadata/portMetadata';
+} from '../data/portData';
 import { Position } from '../types';
 
-export type PortMetadata = (
+export type PortData = (
   | (RegularPort & { isSupplyPort: false })
   | (SupplyPortBase & {
       buildings: BuildingLocations;
@@ -18,7 +18,7 @@ export type PortMetadata = (
     })
 ) & { id: number; tilemap: number };
 
-export const getPortMetadata = (id: number): PortMetadata => {
+export const getPortData = (id: number): PortData => {
   if (id > regularPorts.length + supplyPorts.length) {
     throw Error('Port does not exist!');
   }

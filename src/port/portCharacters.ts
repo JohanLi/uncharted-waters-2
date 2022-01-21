@@ -5,7 +5,7 @@ import { Map } from '../map';
 import { Building } from '../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
-import portCharactersMetadata from './metadata/portCharactersMetadata';
+import portCharactersData from '../data/portCharactersData';
 import { applyPositionDelta } from '../utils';
 
 const FRAMES_PER_CHARACTER = 8;
@@ -28,7 +28,7 @@ const createPortCharacters = (
   building: Building,
   isSupplyPort: boolean,
 ) => {
-  const { id, spawn } = portCharactersMetadata[0];
+  const { id, spawn } = portCharactersData[0];
 
   const player = createPlayer(
     applyPositionDelta(building.get(spawn.building), spawn.offset),
@@ -106,7 +106,7 @@ const createPortCharacters = (
           id: npcId,
           spawn: npcSpawn,
           isStationary = false,
-        } = portCharactersMetadata[i];
+        } = portCharactersData[i];
 
         npcs.push(
           createNpc(

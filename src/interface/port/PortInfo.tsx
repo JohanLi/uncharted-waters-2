@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { markets } from '../../port/metadata/portMetadata';
-import { getPortMetadata } from '../../port/portUtils';
+import { markets } from '../../data/portData';
+import { getPortData } from '../../port/portUtils';
 
 interface Props {
   portId: number;
@@ -9,7 +9,7 @@ interface Props {
 
 // TODO Investments
 export default function PortInfo({ portId }: Props) {
-  const port = getPortMetadata(portId);
+  const port = getPortData(portId);
 
   let economy = 0;
   let industry = 0;

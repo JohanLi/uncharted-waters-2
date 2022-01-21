@@ -1,7 +1,7 @@
 import Assets from './assets';
-import { tilesets, CollisionIndices } from './port/metadata/portMetadata';
+import { tilesets, CollisionIndices } from './data/portData';
 import { Position } from './types';
-import { PortMetadata } from './port/portUtils';
+import { PortData } from './port/portUtils';
 import { WORLD_MAP_COLUMNS } from './constants';
 import { getXWrapAround } from './world/sharedUtils';
 
@@ -25,10 +25,7 @@ interface Options {
   tilesetOffset: number;
 }
 
-const createMap = (
-  visibleArea: [number, number],
-  portMetadata?: PortMetadata,
-) => {
+const createMap = (visibleArea: [number, number], portData?: PortData) => {
   const tileSize = 32;
   const cache = <Cache>{};
 
@@ -39,15 +36,15 @@ const createMap = (
   let getTilesetOffset: (time: number) => number;
   let collisionIndices: CollisionIndices;
 
-  if (portMetadata) {
+  if (portData) {
     tilemapColumns = 96;
     tilemapRows = 96;
     tilemap = Assets.data.portTilemaps.slice(
-      portMetadata.tilemap * tilemapColumns * tilemapRows,
-      (portMetadata.tilemap + 1) * tilemapColumns * tilemapRows,
+      portData.tilemap * tilemapColumns * tilemapRows,
+      (portData.tilemap + 1) * tilemapColumns * tilemapRows,
     );
     tileset = Assets.images.portTilesets;
-    collisionIndices = tilesets[portMetadata.tileset].collisionIndices;
+    collisionIndices = tilesets[portData.tileset].collisionIndices;
 
     getTilesetOffset = (time: number) => {
       let timeOffset: number;
@@ -62,7 +59,7 @@ const createMap = (
         timeOffset = 3;
       }
 
-      return timeOffset + portMetadata.tileset * 4;
+      return timeOffset + portData.tileset * 4;
     };
   } else {
     tilemapColumns = WORLD_MAP_COLUMNS;
@@ -146,7 +143,7 @@ const createMap = (
       return true;
     }
 
-    if (!portMetadata) {
+    if (!portData) {
       return false;
     }
 
@@ -291,7 +288,7 @@ const createMap = (
         { x: 1, y: 1 },
       ];
 
-      if (portMetadata) {
+      if (portData) {
         return offsetsToCheck.some(({ x, y }, i) => {
           const tile = tiles(position.x + x, position.y + y);
 

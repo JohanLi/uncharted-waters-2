@@ -3,7 +3,7 @@ import createMap from '../map';
 import PercentNextMove from '../percentNextMove';
 import createBuilding from '../building';
 import createPortCharacters from './portCharacters';
-import { getPortMetadata } from './portUtils';
+import { getPortData } from './portUtils';
 import { getTimeOfDay, isDay } from '../state/selectors';
 import {
   drawCamera,
@@ -19,18 +19,14 @@ const createPort = (portId: number) => {
   const width = canvas.width / TILE_SIZE;
   const height = canvas.height / TILE_SIZE;
 
-  const portMetadata = getPortMetadata(portId);
+  const portData = getPortData(portId);
   const map = createMap(
     [Math.ceil(width + 1), Math.ceil(height + 1)],
-    portMetadata,
+    portData,
   );
 
   const building = createBuilding(portId);
-  const characters = createPortCharacters(
-    map,
-    building,
-    portMetadata.isSupplyPort,
-  );
+  const characters = createPortCharacters(map, building, portData.isSupplyPort);
 
   if (isDay()) {
     characters.spawnNpcs();

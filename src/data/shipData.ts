@@ -11,7 +11,7 @@ export const shipWindFactorMap: ShipWindFactorMap = {
   6: [8, 10, 10, 10, 8],
 };
 
-interface ShipMetadata {
+interface ShipData {
   [key: string]: {
     name: string;
     usedGuns: number;
@@ -26,11 +26,12 @@ interface ShipMetadata {
     maximumGuns: number;
     sailType: number;
     basePrice: number;
+    description: string;
   };
 }
 
-export const shipMetadata: ShipMetadata = {
-  1: {
+export const shipData: ShipData = {
+  '1': {
     name: 'Balsa',
     usedGuns: 5,
     usedCrew: 15,
@@ -44,8 +45,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 10,
     sailType: 5,
     basePrice: 1200,
+    description:
+      'This one was popular in Lisbon - about 100 years ago! However, it’s very easy to maneuver.',
   },
-  2: {
+  '2': {
     name: 'Hansa Cog',
     usedGuns: 5,
     usedCrew: 20,
@@ -59,8 +62,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 10,
     sailType: 5,
     basePrice: 1300,
+    description:
+      'This classic vessel was first built about two centuries ago. Unfortunately, it doesn’t stack up to today’s ships.',
   },
-  3: {
+  '3': {
     name: 'Dhow',
     usedGuns: 5,
     usedCrew: 15,
@@ -74,8 +79,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 15,
     sailType: 5,
     basePrice: 1800,
+    description:
+      'This durable craft’s shallow hull makes it easy to maneuver, but its cargo capacity is limited.',
   },
-  4: {
+  '4': {
     name: 'Buss',
     usedGuns: 30,
     usedCrew: 150,
@@ -89,8 +96,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 1,
     basePrice: 20000,
+    description:
+      'It’s large and durable, but I wouldn’t use it on the open seas.',
   },
-  5: {
+  '5': {
     name: 'Tallette',
     usedGuns: 10,
     usedCrew: 15,
@@ -104,8 +113,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 15,
     sailType: 5,
     basePrice: 1400,
+    description:
+      'It used to be popular in Venice, as even the smallest crew can navigate it with ease.',
   },
-  6: {
+  '6': {
     name: 'Caravela Latina',
     usedGuns: 10,
     usedCrew: 30,
@@ -119,8 +130,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 20,
     sailType: 6,
     basePrice: 2400,
+    description:
+      'This is a well-balanced lateen ship. It’s perfect for a novice sailor.',
   },
-  7: {
+  '7': {
     name: 'Caravela Redonda',
     usedGuns: 10,
     usedCrew: 30,
@@ -134,8 +147,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 20,
     sailType: 5,
     basePrice: 2400,
+    description:
+      'This one is easy to handle and makes for smooth sailing over the ocean.',
   },
-  8: {
+  '8': {
     name: 'Brigantine',
     usedGuns: 15,
     usedCrew: 45,
@@ -149,8 +164,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 20,
     sailType: 6,
     basePrice: 10000,
+    description:
+      'This may be a bit expensive, but it’s worth the cost when trading around coastal seas.',
   },
-  9: {
+  '9': {
     name: 'Nao',
     usedGuns: 30,
     usedCrew: 80,
@@ -164,8 +181,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 3,
     basePrice: 30000,
+    description:
+      'This is a mid-size ship with a large cargo space. It’s easy to maneuver and suitable for adventurous voyages.',
   },
-  10: {
+  '10': {
     name: 'Carrack',
     usedGuns: 30,
     usedCrew: 100,
@@ -179,8 +198,9 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 50,
     sailType: 3,
     basePrice: 40000,
+    description: 'This large trading ship is for the experienced navigator.',
   },
-  11: {
+  '11': {
     name: 'Galleon',
     usedGuns: 70,
     usedCrew: 180,
@@ -194,8 +214,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 70,
     sailType: 1,
     basePrice: 60000,
+    description:
+      'This is a battleship, but it’s also useful for trading if its payload is kept low. Not for the unseasoned sailor.',
   },
-  12: {
+  '12': {
     name: 'Xebec',
     usedGuns: 30,
     usedCrew: 120,
@@ -209,8 +231,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 4,
     basePrice: 44000,
+    description:
+      'For such a large ship, this is quite easy to maneuver. I highly recommend it.',
   },
-  13: {
+  '13': {
     name: 'Pinnace',
     usedGuns: 15,
     usedCrew: 40,
@@ -224,8 +248,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 20,
     sailType: 6,
     basePrice: 6000,
+    description:
+      'It’s quite durable for its size. Ye can even use it when fighting pirates if ye manuever it carefully.',
   },
-  14: {
+  '14': {
     name: 'Sloop',
     usedGuns: 15,
     usedCrew: 40,
@@ -239,8 +265,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 6,
     basePrice: 16000,
+    description:
+      'A small, high-performance sailing ship. It has the capacity to carry guns for battles.',
   },
-  15: {
+  '15': {
     name: 'Frigate',
     usedGuns: 65,
     usedCrew: 180,
@@ -254,8 +282,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 70,
     sailType: 5,
     basePrice: 224000,
+    description:
+      'We are proud of this great ship. It combines the storage capacity of a galleon with the mobility of a caravel. A true work of art!',
   },
-  16: {
+  '16': {
     name: 'Barge',
     usedGuns: 120,
     usedCrew: 270,
@@ -269,8 +299,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 120,
     sailType: 3,
     basePrice: 300000,
+    description:
+      'Only a few shipyards have the ability to build this ship. Ye’ll never regret buying it.',
   },
-  17: {
+  '17': {
     name: 'Full-rigged Ship',
     usedGuns: 120,
     usedCrew: 300,
@@ -284,8 +316,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 150,
     sailType: 3,
     basePrice: 320000,
+    description:
+      'This is the ultimate ship, but it’s only for highly skilled navigators.',
   },
-  18: {
+  '18': {
     name: 'Junk',
     usedGuns: 30,
     usedCrew: 75,
@@ -299,8 +333,9 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 4,
     basePrice: 16000,
+    description: 'Well, this is the only type of ship built in China.',
   },
-  19: {
+  '19': {
     name: 'Light Galley',
     usedGuns: 10,
     usedCrew: 30,
@@ -314,8 +349,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 10,
     sailType: 6,
     basePrice: 1400,
+    description:
+      'This small ship can’t withstand rough waves, so it’s pretty useless on the high seas.',
   },
-  20: {
+  '20': {
     name: 'Flemish Galleon',
     usedGuns: 30,
     usedCrew: 180,
@@ -329,8 +366,9 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 30,
     sailType: 2,
     basePrice: 34000,
+    description: 'This ship isn’t bad. Just remember the payload is high...',
   },
-  21: {
+  '21': {
     name: 'Venetian Galeass',
     usedGuns: 50,
     usedCrew: 320,
@@ -344,8 +382,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 50,
     sailType: 2,
     basePrice: 64000,
+    description:
+      'No other ship can overcome this floating bastion in close combat.',
   },
-  22: {
+  '22': {
     name: 'La Reale',
     usedGuns: 30,
     usedCrew: 160,
@@ -359,8 +399,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 4,
     basePrice: 40000,
+    description:
+      'Galleys are normally battleships, but this one is fast enough to be used for trading, as well.',
   },
-  23: {
+  '23': {
     name: 'Tekkousen',
     usedGuns: 80,
     usedCrew: 360,
@@ -374,8 +416,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 100,
     sailType: 3,
     basePrice: 140000,
+    description:
+      'This huge rowing ship is armored with steel, and has space for lots of guns.',
   },
-  24: {
+  '24': {
     name: 'Atakabune',
     usedGuns: 30,
     usedCrew: 160,
@@ -389,8 +433,10 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 40,
     sailType: 3,
     basePrice: 14000,
+    description:
+      'This ship was made for many Japanese warlords. Ye may want to own one, too.',
   },
-  25: {
+  '25': {
     name: 'Kansen',
     usedGuns: 15,
     usedCrew: 60,
@@ -404,5 +450,7 @@ export const shipMetadata: ShipMetadata = {
     maximumGuns: 20,
     sailType: 6,
     basePrice: 2000,
+    description:
+      'This is only a mid-sized ship. I don’t think ye can make it home in this one.',
   },
 };

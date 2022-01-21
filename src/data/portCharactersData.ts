@@ -1,6 +1,6 @@
-import type { Position } from '../../types';
+import type { Position } from '../types';
 
-interface PortCharacterMetadata {
+interface PortCharacterData {
   id: number;
   spawn: {
     building: number;
@@ -9,7 +9,7 @@ interface PortCharacterMetadata {
   isStationary?: boolean;
 }
 
-const portCharactersMetadata: PortCharacterMetadata[] = [
+const portCharactersData: PortCharacterData[] = [
   {
     id: 1,
     spawn: {
@@ -95,4 +95,4 @@ const portCharactersMetadata: PortCharacterMetadata[] = [
   },
 ];
 
-export default portCharactersMetadata;
+export default portCharactersData;
