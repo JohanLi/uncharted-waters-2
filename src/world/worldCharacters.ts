@@ -12,7 +12,7 @@ const FRAMES_PER_SHIP = 8;
 const SHIP_VARIANTS = 2;
 
 export const getStartFrame = (flagship: Ship, isPlayer = false) => {
-  const startFrame = hasOars(flagship) ? 0 : FRAMES_PER_SHIP;
+  const startFrame = hasOars(flagship.id) ? 0 : FRAMES_PER_SHIP;
 
   return isPlayer ? startFrame : startFrame + FRAMES_PER_SHIP * SHIP_VARIANTS;
 };

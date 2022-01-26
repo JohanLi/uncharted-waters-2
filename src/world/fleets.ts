@@ -1,17 +1,20 @@
 import type { Position } from '../types';
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 
-export type CargoType = 'water' | 'food' | 'lumber' | 'shot';
+export const provisions = ['water', 'food', 'lumber', 'shot'] as const;
+export type Provisions = typeof provisions[number];
 
 interface Cargo {
-  type: CargoType;
+  type: Provisions; // will be both Provisions and Goods
   quantity: number;
 }
 
 export interface Ship {
-  id: number;
+  id: string;
+  name: string;
   crew: number;
   cargo: Cargo[];
+  durability: number;
 }
 
 interface Fleet {
@@ -28,7 +31,8 @@ export const fleets: Fleets = {
     position: undefined,
     ships: [
       {
-        id: 6,
+        id: '6',
+        name: 'Hermes II',
         crew: 10,
         cargo: [
           {
@@ -40,6 +44,7 @@ export const fleets: Fleets = {
             quantity: 20,
           },
         ],
+        durability: 1,
       },
     ],
   },
@@ -50,9 +55,11 @@ export const fleets: Fleets = {
     },
     ships: [
       {
-        id: 19,
+        id: '19',
+        name: '',
         crew: 5,
         cargo: [],
+        durability: 1,
       },
     ],
   },
@@ -63,9 +70,11 @@ export const fleets: Fleets = {
     },
     ships: [
       {
-        id: 1,
+        id: '1',
+        name: '',
         crew: 10,
         cargo: [],
+        durability: 1,
       },
     ],
   },

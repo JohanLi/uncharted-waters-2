@@ -18,7 +18,7 @@ import type { Ship } from './fleets';
   end-game ships so mid-tier ships have their uses outside exploration.
  */
 const getShipSpeed = (
-  ship: Ship,
+  ship: Pick<Ship, 'id' | 'crew' | 'cargo'>,
   captain: { navLvl: number; seamanship: number },
   heading: number,
   wind: Velocity,
@@ -31,7 +31,7 @@ const getShipSpeed = (
    TODO if wind speed = 0 as a mechanic is introduced,
     ships with oars should count as having 2 wind speed
    */
-  const windSpeed = hasOars(ship) ? Math.max(3, wind.speed) : wind.speed;
+  const windSpeed = hasOars(ship.id) ? Math.max(3, wind.speed) : wind.speed;
 
   const propulsionFactor = (power * shipWindFactor * windSpeed) / 150;
 

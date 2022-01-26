@@ -7,6 +7,10 @@ const imagesToLoad = {
 
 const interfaceImagesToLoad = {
   dialogCorner: import('./interface/assets/dialog-corner.png'),
+  dialogCaretDown: import('./interface/assets/dialog-caret-down.png'),
+  dialogShip: import('./interface/assets/dialog-ship.png'),
+  dialogYes: import('./interface/assets/dialog-yes.png'),
+  dialogNo: import('./interface/assets/dialog-no.png'),
   buildingBackground: import('./interface/port/assets/background.png'),
   buildings: import('./interface/port/assets/buildings.png'),
   worldIndicators: import('./interface/world/assets/indicators.png'),
@@ -126,7 +130,7 @@ const Assets = {
   data: {} as { [key in DataKeys]: Uint8Array },
   buildings: (id: number) => slice('buildings', id - 1, 136),
   indicators: (direction: number) => slice('worldIndicators', direction, 80),
-  ships: (id: number) => slice('ships', id - 1, 128),
+  ships: (id: string) => slice('ships', Number(id) - 1, 128),
 };
 
 export default Assets;

@@ -1,5 +1,5 @@
 import { START_PORT_ID, START_TIME_PASSED } from '../constants';
-import { CargoType, fleets, Fleets } from '../world/fleets';
+import { Provisions, fleets, Fleets } from '../world/fleets';
 import type { Port } from '../port/port';
 import type { World } from '../world/world';
 
@@ -11,7 +11,7 @@ export type Velocity = {
 };
 
 export type ProvisionsType = {
-  [key in CargoType]: number;
+  [key in Provisions]: number;
 };
 
 export interface State {

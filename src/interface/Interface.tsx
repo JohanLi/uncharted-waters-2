@@ -4,13 +4,13 @@ import ReactDOM from 'react-dom';
 import Right from './Right';
 import Left from './Left';
 import PortInfo from './port/PortInfo';
-import Building from './port/Building';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
 import Camera from './Camera';
 import Tabs, { Tab } from './Tabs';
 import Fleet from './Fleet';
 import updateInterface from '../state/updateInterface';
+import Building from './port/Building';
 
 import './global.css';
 

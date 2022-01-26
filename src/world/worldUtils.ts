@@ -1,4 +1,3 @@
-import type { Ship } from './fleets';
 import { Position } from '../types';
 
 export const getHeadingWindDelta = (d1: number, d2: number) => {
@@ -11,7 +10,7 @@ export const getHeadingWindDelta = (d1: number, d2: number) => {
   return delta;
 };
 
-export const hasOars = (ship: Ship) => ship.id >= 19;
+export const hasOars = (shipId: string) => Number(shipId) >= 19;
 
 export const calculateDestination = (
   position: Position,

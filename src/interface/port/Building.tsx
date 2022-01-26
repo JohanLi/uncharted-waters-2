@@ -2,89 +2,57 @@ import React, { useEffect, useState } from 'react';
 
 import Assets from '../../assets';
 import { buildings } from '../../data/portData';
-import DialogBox from '../DialogBox';
-import { classNames } from '../interfaceUtils';
-import { exitBuilding } from '../../state/actionsPort';
+import DialogBox from '../common/DialogBox';
+import Shipyard from './Shipyard';
+import Menu from '../common/Menu';
 import { setSail } from '../../state/actionsWorld';
+import { exitBuilding } from '../../state/actionsPort';
+import Harbor from './Harbor';
 
 interface Props {
   buildingId: number;
 }
 
 export default function Building({ buildingId }: Props) {
-  const { menu } = buildings[buildingId];
+  const { name, menu } = buildings[buildingId];
+  const [selected, setSelected] = useState<string | undefined>();
 
-  const [activeOption, setActiveOption] = useState(0);
+  if (name === 'Harbor') {
+    return <Harbor />;
+  }
+
+  if (name === 'Shipyard') {
+    return <Shipyard />;
+  }
 
   useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-      let newActiveOption = activeOption;
+    if (selected === 'Sail') {
+      setSail();
+    }
+  }, [selected]);
 
-      if (pressedKey === 's') {
-        newActiveOption += 1;
-      }
-
-      if (pressedKey === 'w') {
-        newActiveOption -= 1;
-      }
-
-      if (newActiveOption >= menu.length) {
-        newActiveOption = 0;
-      }
-
-      if (newActiveOption < 0) {
-        newActiveOption = menu.length - 1;
-      }
-
-      setActiveOption(newActiveOption);
-    };
-
-    const keyupHandler = (e: KeyboardEvent) => {
+  useEffect(() => {
+    const onKeyup = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
       if (pressedKey === 'escape') {
         exitBuilding();
       }
-
-      if (pressedKey === 'e' || pressedKey === 'enter') {
-        if (menu[activeOption] === 'Sail') {
-          setSail();
-        }
-      }
     };
 
-    window.addEventListener('keydown', keydownHandler);
-    window.addEventListener('keyup', keyupHandler);
+    const onContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      exitBuilding();
+    };
+
+    window.addEventListener('keyup', onKeyup);
+    window.addEventListener('contextmenu', onContextMenu);
 
     return () => {
-      window.removeEventListener('keydown', keydownHandler);
-      window.removeEventListener('keyup', keyupHandler);
+      window.removeEventListener('keyup', onKeyup);
+      window.removeEventListener('contextmenu', onContextMenu);
     };
-  }, [activeOption]);
-
-  const options = menu.map((option, i) => (
-    <button
-      key={option}
-      className={classNames(
-        'text-center text-2xl px-0 py-1 mx-0 my-2 cursor-pointer w-full block outline-none',
-        activeOption === i && option === 'Sail' ? 'bg-black text-white' : '',
-        activeOption === i && option !== 'Sail' ? 'bg-black text-gray-400' : '',
-        activeOption !== i && option === 'Sail' ? 'text-black' : '',
-        activeOption !== i && option !== 'Sail' ? 'text-gray-400' : '',
-      )}
-      onClick={() => {
-        setActiveOption(i);
-
-        if (menu[i] === 'Sail') {
-          setSail();
-        }
-      }}
-      type="button"
-    >
-      {option}
-    </button>
-  ));
+  }, []);
 
   return (
     <div
@@ -98,13 +66,20 @@ export default function Building({ buildingId }: Props) {
       <div className="absolute top-4 left-4">
         <img src={Assets.buildings(buildingId)} alt="" className="w-[272px]" />
       </div>
-      <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl text-black px-8 py-6">
+      <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl px-8 py-6">
         {buildings[buildingId].greeting ||
           'This feature is not implemented yet. Press ESC to exit this building.'}
       </DialogBox>
-      <DialogBox className="w-[240px] top-[190px] left-[768px]">
-        {options}
-      </DialogBox>
+      <Menu
+        options={menu.map((option) => ({
+          label: option,
+          value: option,
+          disabled: option !== 'Sail',
+        }))}
+        setSelected={(value) => {
+          setSelected(value);
+        }}
+      />
     </div>
   );
 }

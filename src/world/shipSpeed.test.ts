@@ -2,7 +2,7 @@ import getShipSpeed from './shipSpeed';
 
 jest.mock('../data/shipData', () => ({
   shipData: {
-    1: {
+    '1': {
       name: 'Slow ship to prevent hitting the speed cap',
       tacking: 100,
       power: 20,
@@ -10,7 +10,7 @@ jest.mock('../data/shipData', () => ({
       capacity: 100,
       sailType: 1,
     },
-    2: {
+    '2': {
       name: 'Ship affected by tacking in headwind',
       tacking: 90,
       power: 20,
@@ -18,7 +18,7 @@ jest.mock('../data/shipData', () => ({
       capacity: 100,
       sailType: 2,
     },
-    19: {
+    '19': {
       name: 'Ship with oars',
       tacking: 100,
       power: 20,
@@ -38,7 +38,7 @@ const captain = { navLvl: 1, seamanship: 80 };
 describe('getShipSpeed', () => {
   test('higher the faster the wind speed', () => {
     const byWindSpeed = (speed: number) =>
-      getShipSpeed({ id: 1, cargo: [], crew: 5 }, captain, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew: 5 }, captain, 0, {
         direction: 0,
         speed,
       });
@@ -50,7 +50,7 @@ describe('getShipSpeed', () => {
 
   test('ships with oars have a minimum "wind speed" of 3', () => {
     const byWindSpeed = (speed: number) =>
-      getShipSpeed({ id: 19, cargo: [], crew: 5 }, captain, 0, {
+      getShipSpeed({ id: '19', cargo: [], crew: 5 }, captain, 0, {
         direction: 0,
         speed,
       });
@@ -62,7 +62,7 @@ describe('getShipSpeed', () => {
 
   test('depends on wind direction relative to heading', () => {
     const byWindDirection = (direction: number) =>
-      getShipSpeed({ id: 1, cargo: [], crew: 5 }, captain, 3, {
+      getShipSpeed({ id: '1', cargo: [], crew: 5 }, captain, 3, {
         direction,
         speed: 3,
       });
@@ -75,7 +75,7 @@ describe('getShipSpeed', () => {
 
   test('depends on having enough navigation crew', () => {
     const byCrew = (crew: number) =>
-      getShipSpeed({ id: 1, cargo: [], crew }, captain, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew }, captain, 0, {
         direction: 0,
         speed: 3,
       });
@@ -86,7 +86,7 @@ describe('getShipSpeed', () => {
 
   test('exceeding minimum navigation crew provides no boost', () => {
     const byCrew = (crew: number) =>
-      getShipSpeed({ id: 1, cargo: [], crew }, captain, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew }, captain, 0, {
         direction: 0,
         speed: 3,
       });
@@ -97,7 +97,7 @@ describe('getShipSpeed', () => {
   test('load starts affecting speed when above 30%', () => {
     const byCargo = (total: number) =>
       getShipSpeed(
-        { id: 1, cargo: [{ type: 'water', quantity: total }], crew: 5 },
+        { id: '1', cargo: [{ type: 'water', quantity: total }], crew: 5 },
         captain,
         0,
         { direction: 0, speed: 3 },
@@ -111,7 +111,7 @@ describe('getShipSpeed', () => {
   test('is increased by the captain’s Navigation Level', () => {
     const byNavLvl = (navLvl: number) =>
       getShipSpeed(
-        { id: 1, cargo: [], crew: 5 },
+        { id: '1', cargo: [], crew: 5 },
         { navLvl, seamanship: 80 },
         0,
         { direction: 0, speed: 3 },
@@ -124,7 +124,7 @@ describe('getShipSpeed', () => {
   test('is affected by the captain’s Seamanship', () => {
     const bySeamanship = (seamanship: number) =>
       getShipSpeed(
-        { id: 1, cargo: [], crew: 5 },
+        { id: '1', cargo: [], crew: 5 },
         { navLvl: 1, seamanship },
         0,
         { direction: 0, speed: 3 },
@@ -135,7 +135,7 @@ describe('getShipSpeed', () => {
 
   test('ship’s tacking rating is used when sailing with a side headwind or headwind', () => {
     const byWindDirection = (direction: number) =>
-      getShipSpeed({ id: 2, cargo: [], crew: 5 }, captain, 0, {
+      getShipSpeed({ id: '2', cargo: [], crew: 5 }, captain, 0, {
         direction,
         speed: 3,
       });
@@ -147,7 +147,7 @@ describe('getShipSpeed', () => {
 
   test('is capped at 40', () => {
     const fast = getShipSpeed(
-      { id: 1, cargo: [], crew: 5 },
+      { id: '1', cargo: [], crew: 5 },
       { navLvl: 90, seamanship: 100 },
       0,
       { direction: 0, speed: 7 },
@@ -158,7 +158,7 @@ describe('getShipSpeed', () => {
 
   test('is capped at 40', () => {
     const fast = getShipSpeed(
-      { id: 1, cargo: [], crew: 5 },
+      { id: '1', cargo: [], crew: 5 },
       { navLvl: 90, seamanship: 100 },
       0,
       { direction: 0, speed: 7 },
