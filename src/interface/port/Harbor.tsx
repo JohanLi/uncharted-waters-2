@@ -2,84 +2,25 @@ import React, { useEffect, useState } from 'react';
 
 import DialogBox from '../common/DialogBox';
 import Menu from '../common/Menu';
-import { exitBuilding } from '../../state/actionsPort';
 import { setSail } from '../../state/actionsWorld';
 import { provisions } from '../../world/fleets';
 import ProgressBar from '../common/ProgressBar';
 import HarborSupply, { SupplyProvision } from './HarborSupply';
 import { getLoadPercent, getPlayerFleet } from '../../state/selectorsFleet';
 import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
+import useBuildingState from './hooks/useBuildingState';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
-export type HarborOptions = typeof harborOptions[number];
+type HarborOptions = typeof harborOptions[number];
 
 const harborDisabledOptions: HarborOptions[] = ['Moor'];
 
-type State = { option: HarborOptions | undefined; step: number };
-
-const initialState = { option: undefined, step: 0 };
-
 export default function Harbor() {
-  const [state, setState] = useState<State>(initialState);
+  const { selectOption, back, next, state } = useBuildingState<HarborOptions>();
+
   const [supplyProvision, setSupplyProvision] = useState<
     SupplyProvision | undefined
   >();
-
-  const back = (steps = 1) => {
-    if (state.step > 0) {
-      setState({
-        ...state,
-        step: state.step - steps,
-      });
-      return;
-    }
-
-    if (!state.option) {
-      exitBuilding();
-      return;
-    }
-
-    setState({
-      option: undefined,
-      step: 0,
-    });
-  };
-
-  const next = () => {
-    setState({
-      ...state,
-      step: state.step + 1,
-    });
-  };
-
-  useEffect(() => {
-    const onKeyup = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-
-      if (pressedKey === 'enter') {
-        if (state.option) {
-          next();
-        }
-      }
-
-      if (pressedKey === 'escape') {
-        back();
-      }
-    };
-
-    const onContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
-      back();
-    };
-
-    window.addEventListener('keyup', onKeyup);
-    window.addEventListener('contextmenu', onContextMenu);
-
-    return () => {
-      window.removeEventListener('keyup', onKeyup);
-      window.removeEventListener('contextmenu', onContextMenu);
-    };
-  }, [state]);
 
   useEffect(() => {
     const { option, step } = state;
@@ -113,12 +54,9 @@ export default function Harbor() {
         disabled: harborDisabledOptions.includes(s),
       }))}
       setSelected={(s) => {
-        setState({
-          option: s,
-          step: 0,
-        });
+        selectOption(s);
       }}
-      hidden={option !== undefined}
+      hidden={option !== null}
     />
   );
 

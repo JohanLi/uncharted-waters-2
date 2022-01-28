@@ -1,17 +1,17 @@
 interface Building {
   name: string;
-  menu: string[];
+  options: string[];
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export const buildings: { [key: string]: Building } = {
   '1': {
     name: 'Market',
-    menu: ['Buy Goods', 'Sell Goods', 'Invest', 'Market Rate'],
+    options: ['Buy Goods', 'Sell Goods', 'Invest', 'Market Rate'],
   },
   '2': {
     name: 'Pub',
-    menu: [
+    options: [
       'Recruit Crew',
       'Dismiss Crew',
       'Treat',
@@ -22,42 +22,42 @@ export const buildings: { [key: string]: Building } = {
   },
   '3': {
     name: 'Shipyard',
-    menu: ['New Ship', 'Used Ship', 'Repair', 'Sell', 'Remodel', 'Invest'],
+    options: ['New Ship', 'Used Ship', 'Repair', 'Sell', 'Remodel', 'Invest'],
   },
   '4': {
     name: 'Harbor',
-    menu: ['Sail', 'Supply', 'Moor'],
+    options: ['Sail', 'Supply', 'Moor'],
   },
   '5': {
     name: 'Lodge',
-    menu: ['Check In', 'Gossip', 'Port Info'],
+    options: ['Check In', 'Gossip', 'Port Info'],
   },
   '6': {
     name: 'Palace',
-    menu: ['Meet Ruler', 'Defect', 'Gold', 'Ship'],
+    options: ['Meet Ruler', 'Defect', 'Gold', 'Ship'],
   },
   '7': {
     name: 'Guild',
-    menu: ['Job Assignment', 'Country Info'],
+    options: ['Job Assignment', 'Country Info'],
   },
   '8': {
     name: 'Misc',
-    menu: [],
+    options: [],
   },
   '9': {
     name: 'Bank',
-    menu: ['Deposit', 'Withdraw', 'Borrow', 'Repay'],
+    options: ['Deposit', 'Withdraw', 'Borrow', 'Repay'],
   },
   '10': {
     name: 'Item Shop',
-    menu: ['Buy', 'Sell'],
+    options: ['Buy', 'Sell'],
   },
   '11': {
     name: 'Church',
-    menu: ['Pray', 'Donate'],
+    options: ['Pray', 'Donate'],
   },
   '12': {
     name: 'Fortune Teller',
-    menu: ['Life', 'Career', 'Love', 'Mates'],
+    options: ['Life', 'Career', 'Love', 'Mates'],
   },
 };

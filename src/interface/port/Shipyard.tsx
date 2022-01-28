@@ -3,7 +3,6 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import DialogBox from '../common/DialogBox';
 import Menu from '../common/Menu';
 import {
-  exitBuilding,
   purchaseUsedShip,
   SELL_SHIP_MODIFIER,
   sellShipNumber,
@@ -13,6 +12,7 @@ import { shipData } from '../../data/shipData';
 import DialogYesNo from '../common/DialogYesNo';
 import { getPlayerFleet, getPlayerFleetShip } from '../../state/selectorsFleet';
 import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
+import useBuildingState from './hooks/useBuildingState';
 
 const shipyardOptions = [
   'New Ship',
@@ -22,7 +22,7 @@ const shipyardOptions = [
   'Remodel',
   'Invest',
 ] as const;
-export type ShipyardOptions = typeof shipyardOptions[number];
+type ShipyardOptions = typeof shipyardOptions[number];
 
 const shipyardDisabledOptions: ShipyardOptions[] = [
   'New Ship',
@@ -30,88 +30,30 @@ const shipyardDisabledOptions: ShipyardOptions[] = [
   'Invest',
 ];
 
-type State = { option: ShipyardOptions | undefined; step: number };
-
-const initialState = { option: undefined, step: 0 };
-
 export default function Shipyard() {
-  const [state, setState] = useState<State>(initialState);
+  const { selectOption, back, next, reset, state } =
+    useBuildingState<ShipyardOptions>();
+
   const [selectedShipId, setSelectedShipId] = useState<string>();
   const [purchasedShipName, setPurchasedShipName] = useState('');
 
   const [selectedShipNumberToSell, setSelectedShipNumberToSell] =
     useState<number>();
 
-  const back = (steps = 1) => {
-    if (state.step > 0) {
-      setState({
-        ...state,
-        step: state.step - steps,
-      });
-      return;
-    }
-
-    if (!state.option) {
-      exitBuilding();
-      return;
-    }
-
-    setState({
-      option: undefined,
-      step: 0,
-    });
-  };
-
-  const next = () => {
-    setState({
-      ...state,
-      step: state.step + 1,
-    });
-  };
-
-  useEffect(() => {
-    const onKeyup = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-
-      if (pressedKey === 'enter') {
-        if (state.option) {
-          next();
-        }
-      }
-
-      if (pressedKey === 'escape') {
-        back();
-      }
-    };
-
-    const onContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
-      back();
-    };
-
-    window.addEventListener('keyup', onKeyup);
-    window.addEventListener('contextmenu', onContextMenu);
-
-    return () => {
-      window.removeEventListener('keyup', onKeyup);
-      window.removeEventListener('contextmenu', onContextMenu);
-    };
-  }, [state]);
-
   useEffect(() => {
     const { option, step } = state;
 
     if (option === 'Repair' && step >= 1) {
-      setState(initialState);
+      reset();
     }
 
     if (option === 'Used Ship' && step >= 5 && selectedShipId) {
       purchaseUsedShip(selectedShipId, purchasedShipName);
-      setState(initialState);
+      reset();
     }
 
     if (option === 'Sell' && step === 1 && getPlayerFleet().length === 1) {
-      setState(initialState);
+      reset();
     }
 
     if (
@@ -120,7 +62,7 @@ export default function Shipyard() {
       selectedShipNumberToSell !== undefined
     ) {
       sellShipNumber(selectedShipNumberToSell);
-      setState(initialState);
+      reset();
     }
   }, [state]);
 
@@ -181,12 +123,9 @@ export default function Shipyard() {
         disabled: shipyardDisabledOptions.includes(s),
       }))}
       setSelected={(s) => {
-        setState({
-          option: s,
-          step: 0,
-        });
+        selectOption(s);
       }}
-      hidden={option !== undefined}
+      hidden={option !== null}
     />
   );
 
