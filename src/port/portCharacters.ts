@@ -31,7 +31,7 @@ const createPortCharacters = (
   const { id, spawn } = portCharactersData[0];
 
   const player = createPlayer(
-    applyPositionDelta(building.get(spawn.building), spawn.offset),
+    applyPositionDelta(building.get(spawn.buildingId), spawn.offset),
     getStartFrame(id),
     's',
   );
@@ -111,7 +111,7 @@ const createPortCharacters = (
         npcs.push(
           createNpc(
             applyPositionDelta(
-              building.get(npcSpawn.building),
+              building.get(npcSpawn.buildingId),
               npcSpawn.offset,
             ),
             getStartFrame(npcId),

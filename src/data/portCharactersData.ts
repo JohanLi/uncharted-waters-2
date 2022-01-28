@@ -3,7 +3,7 @@ import type { Position } from '../types';
 interface PortCharacterData {
   id: number;
   spawn: {
-    building: number;
+    buildingId: string;
     offset: Position;
   };
   isStationary?: boolean;
@@ -13,7 +13,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 1,
     spawn: {
-      building: 4,
+      buildingId: '4',
       offset: {
         x: 0,
         y: 1,
@@ -23,7 +23,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 2,
     spawn: {
-      building: 1,
+      buildingId: '1',
       offset: {
         x: -2,
         y: 1,
@@ -33,7 +33,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 2,
     spawn: {
-      building: 3,
+      buildingId: '3',
       offset: {
         x: 0,
         y: 0,
@@ -43,7 +43,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 3,
     spawn: {
-      building: 2,
+      buildingId: '2',
       offset: {
         x: -2,
         y: 1,
@@ -53,7 +53,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 3,
     spawn: {
-      building: 5,
+      buildingId: '5',
       offset: {
         x: -2,
         y: 1,
@@ -63,7 +63,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 4,
     spawn: {
-      building: 1,
+      buildingId: '1',
       offset: {
         x: 2,
         y: 1,
@@ -74,7 +74,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 5,
     spawn: {
-      building: 5,
+      buildingId: '5',
       offset: {
         x: 2,
         y: 1,
@@ -85,7 +85,7 @@ const portCharactersData: PortCharacterData[] = [
   {
     id: 6,
     spawn: {
-      building: 2,
+      buildingId: '2',
       offset: {
         x: 2,
         y: 1,

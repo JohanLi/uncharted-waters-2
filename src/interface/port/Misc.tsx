@@ -1,10 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 
-import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
 import { classNames } from '../interfaceUtils';
 import MessageBody, { Message, UpperOrLower } from './MessageBody';
 import { exitBuilding } from '../../state/actionsPort';
+import BuildingWrapper from './BuildingWrapper';
 
 const messages: Message[] = [
   {
@@ -284,34 +284,20 @@ export default function Misc() {
   }
 
   return (
-    <div
-      className="w-full h-full flex items-center justify-center"
-      style={{
-        background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        backgroundSize: '256px 128px',
-      }}
-    >
-      <div className="absolute top-4 left-4">
-        <img src={Assets.buildings(8)} alt="" className="w-[272px]" />
-      </div>
-      <div className="w-[768px] h-[768px]">
-        <DialogBox
+    <BuildingWrapper buildingId="8" vendorMessage={null}>
+      <div className="absolute top-0 bottom-0 left-[288px] right-0 p-4">
+        <div className={hideUpper ? 'invisible' : ''}>
+          <DialogBox className="">{upper}</DialogBox>
+        </div>
+        <div
           className={classNames(
-            'w-[624px] h-[288px] text-2xl p-8',
-            hideUpper ? 'invisible' : '',
-          )}
-        >
-          {upper}
-        </DialogBox>
-        <DialogBox
-          className={classNames(
-            'w-[624px] h-[288px] text-2xl p-8 mt-4 ml-auto',
+            'mt-4 ml-[112px]',
             hideLower ? 'invisible' : '',
           )}
         >
-          {lower}
-        </DialogBox>
+          <DialogBox className="">{lower}</DialogBox>
+        </div>
       </div>
-    </div>
+    </BuildingWrapper>
   );
 }

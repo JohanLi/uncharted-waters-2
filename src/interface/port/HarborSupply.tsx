@@ -22,7 +22,7 @@ export default function HarborSupply({ supplyProvision, selected }: Props) {
   const availableSpace = getAvailableSpace(shipNumber);
 
   return (
-    <DialogBox className="w-[800px] top-[600px] left-[16px] text-2xl px-8 py-6">
+    <DialogBox className="w-[400px] text-2xl px-8 py-6">
       {provision === 'water' &&
         'Water is free. How many barrels should we load?'}
       {provision === 'food' &&

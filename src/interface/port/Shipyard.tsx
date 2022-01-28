@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
 import Menu from '../common/Menu';
 import {
@@ -13,6 +12,7 @@ import DialogShipInfo from './DialogShipInfo';
 import { shipData } from '../../data/shipData';
 import DialogYesNo from '../common/DialogYesNo';
 import { getPlayerFleet, getPlayerFleetShip } from '../../state/selectorsFleet';
+import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
 
 const shipyardOptions = [
   'New Ship',
@@ -126,114 +126,102 @@ export default function Shipyard() {
 
   const { option, step } = state;
 
-  let vendorMessage = 'What brings you to this shipyard?';
-  let showCaretDown = false;
+  const vendorMessage: VendorMessage = {
+    body: 'What brings you to this shipyard?',
+    showCaretDown: false,
+  };
 
   if (option === 'Repair') {
-    vendorMessage = 'Your fleet’s already in tiptop shape, matey!';
-    showCaretDown = true;
+    vendorMessage.body = 'Your fleet’s already in tiptop shape, matey!';
+    vendorMessage.showCaretDown = true;
   }
 
   if (option === 'Used Ship') {
     if (step === 1 && selectedShipId) {
-      vendorMessage = shipData[selectedShipId].description;
-      showCaretDown = true;
+      vendorMessage.body = shipData[selectedShipId].description;
+      vendorMessage.showCaretDown = true;
     }
 
     if (step === 2) {
-      vendorMessage = 'Will ye buy this one?';
+      vendorMessage.body = 'Will ye buy this one?';
     }
 
     if (step === 3 && selectedShipId) {
-      vendorMessage = `I’d sell this ship for ${shipData[selectedShipId].basePrice} gold pieces. What do ye say?`;
+      vendorMessage.body = `I’d sell this ship for ${shipData[selectedShipId].basePrice} gold pieces. What do ye say?`;
     }
 
     if (step === 4) {
-      vendorMessage = `All right, it’s yers. Time to name yer ship.`;
+      vendorMessage.body = `All right, it’s yers. Time to name yer ship.`;
     }
   }
 
   if (option === 'Sell') {
     if (step === 0) {
       if (getPlayerFleet().length === 1) {
-        vendorMessage = 'We only have the flag ship.';
-        showCaretDown = true;
+        vendorMessage.body = 'We only have the flag ship.';
+        vendorMessage.showCaretDown = true;
       } else {
-        vendorMessage = 'Which one is for sale?';
+        vendorMessage.body = 'Which one is for sale?';
       }
     }
 
     if (step === 1 && selectedShipNumberToSell !== undefined) {
       const shipId = getPlayerFleetShip(selectedShipNumberToSell).id;
-      vendorMessage = `For this ship, I’ll give you ${
+      vendorMessage.body = `For this ship, I’ll give you ${
         shipData[shipId].basePrice * SELL_SHIP_MODIFIER
       } gold pieces. OK?`;
     }
   }
 
-  return (
-    <div
-      className="w-full h-full"
-      style={{
-        background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        backgroundSize: '256px 128px',
+  const menu = (
+    <Menu
+      options={shipyardOptions.map((s) => ({
+        label: s,
+        value: s,
+        disabled: shipyardDisabledOptions.includes(s),
+      }))}
+      setSelected={(s) => {
+        setState({
+          option: s,
+          step: 0,
+        });
       }}
-    >
-      <div className="absolute top-4 left-4">
-        <img src={Assets.buildings(3)} alt="" className="w-[272px]" />
-      </div>
-      <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl px-8 py-6">
-        {vendorMessage}
-        {showCaretDown && (
-          <img
-            src={Assets.images.dialogCaretDown.toDataURL()}
-            alt=""
-            className="w-8 h-8 animate-ping mx-auto mt-8"
-          />
-        )}
-      </DialogBox>
-      <Menu
-        options={shipyardOptions.map((s) => ({
-          label: s,
-          value: s,
-          disabled: shipyardDisabledOptions.includes(s),
-        }))}
-        setSelected={(s) => {
-          setState({
-            option: s,
-            step: 0,
-          });
-        }}
-        hidden={option !== undefined}
-      />
+      hidden={option !== undefined}
+    />
+  );
+
+  return (
+    <BuildingWrapper buildingId="3" vendorMessage={vendorMessage} menu={menu}>
       {option === 'Used Ship' && (
-        <Menu
-          title="Ship Model"
-          options={[
-            {
-              label: 'Light Galley',
-              value: '19',
-            },
-            {
-              label: 'Brigantine',
-              value: '8',
-            },
-            {
-              label: 'Flemish Galleon',
-              value: '20',
-            },
-            {
-              label: 'Galleon',
-              value: '11',
-            },
-          ]}
-          setSelected={(shipId) => {
-            setSelectedShipId(shipId);
-            next();
-          }}
-          wide
-          hidden={step !== 0}
-        />
+        <div className="absolute top-[190px] left-[696px]">
+          <Menu
+            title="Ship Model"
+            options={[
+              {
+                label: 'Light Galley',
+                value: '19',
+              },
+              {
+                label: 'Brigantine',
+                value: '8',
+              },
+              {
+                label: 'Flemish Galleon',
+                value: '20',
+              },
+              {
+                label: 'Galleon',
+                value: '11',
+              },
+            ]}
+            setSelected={(shipId) => {
+              setSelectedShipId(shipId);
+              next();
+            }}
+            wide
+            hidden={step !== 0}
+          />
+        </div>
       )}
       {option === 'Used Ship' && step > 0 && selectedShipId && (
         <DialogShipInfo shipId={selectedShipId} />
@@ -263,34 +251,40 @@ export default function Shipyard() {
         />
       )}
       {option === 'Used Ship' && step === 4 && (
-        <DialogBox className="w-[272px] top-[500px] left-[96px] text-2xl px-8 py-6">
-          <div className="mb-4">Ship name?</div>
-          <div>
-            <input
-              type="text"
-              className="outline-none shadow-none border-b-2 border-black -mb-2 bg-transparent w-full"
-              value={purchasedShipName}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPurchasedShipName(e.target.value)
-              }
-            />
-          </div>
-        </DialogBox>
+        <div className="absolute top-[500px] left-[96px]">
+          <DialogBox className="">
+            <div className="w-[272px] text-2xl p-4">
+              <div className="mb-4">Ship name?</div>
+              <div>
+                <input
+                  type="text"
+                  className="outline-none shadow-none border-b-2 border-black -mb-2 bg-transparent w-full"
+                  value={purchasedShipName}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setPurchasedShipName(e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          </DialogBox>
+        </div>
       )}
       {option === 'Sell' && getPlayerFleet().length > 1 && (
-        <Menu
-          title="Your Ships"
-          options={getPlayerFleet().map((ship, i) => ({
-            label: ship.name,
-            value: i,
-          }))}
-          setSelected={(value) => {
-            setSelectedShipNumberToSell(value);
-            next();
-          }}
-          wide
-          hidden={step !== 0}
-        />
+        <div className="absolute top-[190px] left-[696px]">
+          <Menu
+            title="Your Ships"
+            options={getPlayerFleet().map((ship, i) => ({
+              label: ship.name,
+              value: i,
+            }))}
+            setSelected={(value) => {
+              setSelectedShipNumberToSell(value);
+              next();
+            }}
+            wide
+            hidden={step !== 0}
+          />
+        </div>
       )}
       {option === 'Sell' && step === 1 && (
         <DialogYesNo
@@ -304,6 +298,6 @@ export default function Shipyard() {
           initialPosition={{ x: 696, y: 190 }}
         />
       )}
-    </div>
+    </BuildingWrapper>
   );
 }

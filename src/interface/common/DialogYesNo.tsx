@@ -114,7 +114,7 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
 
   return (
     <div
-      className="absolute select-none"
+      className="absolute"
       ref={yesOrNoElement}
       style={{ top: initialPosition.y, left: initialPosition.x }}
     >

@@ -129,7 +129,7 @@ const Assets = {
     ),
   images: {} as { [key in ImageKeys | ImageInterfaceKeys]: HTMLCanvasElement },
   data: {} as { [key in DataKeys]: Uint8Array },
-  buildings: (id: number) => slice('buildings', id - 1, 136),
+  buildings: (id: string) => slice('buildings', Number(id) - 1, 136),
   characters: (id: string) => slice('characters', Number(id) - 1, 64),
   indicators: (direction: number) => slice('worldIndicators', direction, 80),
   ships: (id: string) => slice('ships', Number(id) - 1, 128),

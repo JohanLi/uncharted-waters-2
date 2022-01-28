@@ -116,7 +116,7 @@ const createPortPlayer = (
   let { frameOffset } = directionToChanges[startDirection];
   let frameAlternate = 0;
 
-  let buildingId = 0;
+  let buildingId: string | null = null;
 
   const animate = () => {
     frameAlternate = frameAlternate === 0 ? 1 : 0;
@@ -168,7 +168,7 @@ const createPortPlayer = (
         destination = undefined;
       }
     },
-    willEnterBuilding: (buildingAt: (position: Position) => number) => {
+    willEnterBuilding: (buildingAt: (position: Position) => string | null) => {
       if (!destination) {
         return false;
       }
@@ -184,7 +184,7 @@ const createPortPlayer = (
       }
 
       enterBuilding(buildingId);
-      buildingId = 0;
+      buildingId = null;
 
       animate();
 

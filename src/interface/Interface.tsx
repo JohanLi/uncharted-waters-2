@@ -16,7 +16,7 @@ import './global.css';
 
 function Interface() {
   const [portId, setPortId] = useState(0);
-  const [buildingId, setBuildingId] = useState(0);
+  const [buildingId, setBuildingId] = useState<string | null>(null);
   const [timePassed, setTimePassed] = useState(0);
   const [gold, setGold] = useState(0);
 
@@ -38,8 +38,8 @@ function Interface() {
         <Left inPort={inPort} timePassed={timePassed} gold={gold}>
           <Provisions hidden={inPort} />
         </Left>
-        <div className="w-[1280px] h-[800px] relative">
-          {currentTab === 'Home' && Boolean(buildingId) && (
+        <div className="w-[1280px] h-[800px] relative select-none">
+          {currentTab === 'Home' && buildingId !== null && (
             <Building buildingId={buildingId} />
           )}
           {currentTab === 'Fleet' && <Fleet />}

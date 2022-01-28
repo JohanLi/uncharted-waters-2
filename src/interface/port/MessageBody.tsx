@@ -46,7 +46,7 @@ export default function MessageBody({ message }: Props) {
     .replace('$lastName', 'Franco');
 
   return (
-    <div className="flex">
+    <div className="flex w-[592px] h-[256px] text-2xl p-4">
       <img src={Assets.characters(characterId)} className="w-32 h-40" alt="" />
       <div className="flex-1 text-2xl pl-4">
         <div className={classNames('text-base mb-2', color)}>{name}</div>

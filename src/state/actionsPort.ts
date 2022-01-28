@@ -14,7 +14,7 @@ export const updateGeneral = () => {
   });
 };
 
-export const enterBuilding = (buildingId: number) => {
+export const enterBuilding = (buildingId: string) => {
   state.buildingId = buildingId;
 
   updateGeneral();
@@ -22,7 +22,7 @@ export const enterBuilding = (buildingId: number) => {
 
 export const exitBuilding = () => {
   state.timePassed += sample([40, 60, 80]);
-  state.buildingId = 0;
+  state.buildingId = null;
 
   if (isDay()) {
     state.port.characters().spawnNpcs();

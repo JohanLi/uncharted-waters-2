@@ -16,7 +16,7 @@ export type ProvisionsType = {
 
 export interface State {
   portId: number;
-  buildingId: number;
+  buildingId: string | null;
   timePassed: number;
   world: World;
   fleets: Fleets;
@@ -31,7 +31,7 @@ export interface State {
 
 const state = {
   portId: START_PORT_ID,
-  buildingId: 0,
+  buildingId: null,
   timePassed: START_TIME_PASSED,
   fleets,
   dayAtSea: 0,

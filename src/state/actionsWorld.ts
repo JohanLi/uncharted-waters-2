@@ -115,7 +115,7 @@ export const setDockedFleetPositions = () => {
 
 export const setSail = () => {
   state.portId = 0;
-  state.buildingId = 0;
+  state.buildingId = null;
 
   Sound.play('world');
 

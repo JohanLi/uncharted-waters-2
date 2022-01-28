@@ -80,8 +80,7 @@ export default function Menu<T extends number | string>({
   return (
     <DialogBox
       className={classNames(
-        'top-[190px]',
-        wide ? 'w-[280px] left-[696px]' : 'w-[208px] left-[768px]',
+        wide ? 'w-[280px]' : 'w-[208px]',
         hidden ? 'hidden' : '',
       )}
     >

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
 import Menu from '../common/Menu';
 import { exitBuilding } from '../../state/actionsPort';
@@ -9,6 +8,7 @@ import { provisions } from '../../world/fleets';
 import ProgressBar from '../common/ProgressBar';
 import HarborSupply, { SupplyProvision } from './HarborSupply';
 import { getLoadPercent, getPlayerFleet } from '../../state/selectorsFleet';
+import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
 export type HarborOptions = typeof harborOptions[number];
@@ -88,106 +88,93 @@ export default function Harbor() {
       setSail();
     }
 
-    if (option === 'Supply' && step === 2) {
-      setSupplyProvision(undefined);
-    }
-
     if (option === 'Supply' && step >= 2) {
-      setState(initialState);
+      setSupplyProvision(undefined);
+      back(2);
     }
   }, [state]);
 
   const { option, step } = state;
 
-  let vendorMessage = 'Ahoy there, matey, will ye be shoving off?';
-  let showCaretDown = false;
+  let vendorMessage: VendorMessage = {
+    body: 'Ahoy there, matey, will ye be shoving off?',
+    showCaretDown: false,
+  };
 
   if (option === 'Supply') {
-    vendorMessage = '';
-    showCaretDown = false;
+    vendorMessage = null;
   }
 
-  return (
-    <div
-      className="w-full h-full"
-      style={{
-        background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        backgroundSize: '256px 128px',
+  const menu = (
+    <Menu
+      options={harborOptions.map((s) => ({
+        label: s,
+        value: s,
+        disabled: harborDisabledOptions.includes(s),
+      }))}
+      setSelected={(s) => {
+        setState({
+          option: s,
+          step: 0,
+        });
       }}
-    >
-      <div className="absolute top-4 left-4">
-        <img src={Assets.buildings(4)} alt="" className="w-[272px]" />
-      </div>
-      {Boolean(vendorMessage) && (
-        <DialogBox className="w-[480px] h-[256px] top-0 left-[288px] text-2xl px-8 py-6">
-          {vendorMessage}
-          {showCaretDown && (
-            <img
-              src={Assets.images.dialogCaretDown.toDataURL()}
-              alt=""
-              className="w-8 h-8 animate-ping mx-auto mt-8"
-            />
-          )}
-        </DialogBox>
-      )}
-      <Menu
-        options={harborOptions.map((s) => ({
-          label: s,
-          value: s,
-          disabled: harborDisabledOptions.includes(s),
-        }))}
-        setSelected={(s) => {
-          setState({
-            option: s,
-            step: 0,
-          });
-        }}
-        hidden={option !== undefined}
-      />
-      {option === 'Supply' && step >= 0 && (
-        <DialogBox className="top-[256px] left-[16px] px-8 py-6">
-          <div className="flex items-center">
-            <div className="w-64 text-green-600">Ship</div>
-            <div className="w-24 text-[#d34100]">Load</div>
-            <div className="w-24 text-blue-600 text-right">Water</div>
-            <div className="w-24 text-blue-600 text-right">Food</div>
-            <div className="w-24 text-blue-600 text-right">Lumber</div>
-            <div className="w-24 text-blue-600 text-right">Shot</div>
-          </div>
-          {getPlayerFleet().map((ship, i) => (
-            // TODO give ships an ID; current key isn’t fool-proof
-            <div
-              className="flex items-center mt-2"
-              key={`${ship.id}-${ship.name}`}
-            >
-              <div className="w-64 text-2xl">{ship.name}</div>
-              <div className="w-24">
-                <ProgressBar percent={getLoadPercent(i)} />
-              </div>
-              {provisions.map((provision) => {
-                const { quantity = 0 } =
-                  ship.cargo.find((items) => items.type === provision) || {};
+      hidden={option !== undefined}
+    />
+  );
 
-                return (
-                  <div
-                    className="w-24 text-2xl text-right cursor-pointer"
-                    onClick={() => {
-                      setSupplyProvision({ shipNumber: i, provision });
-                      next();
-                    }}
-                    key={provision}
-                  >
-                    {quantity}
-                  </div>
-                );
-              })}
+  return (
+    <BuildingWrapper buildingId="4" vendorMessage={vendorMessage} menu={menu}>
+      {option === 'Supply' && step >= 0 && (
+        <div className="absolute top-[256px] left-[16px]">
+          <DialogBox className="px-8 py-6">
+            <div className="flex items-center">
+              <div className="w-64 text-green-600">Ship</div>
+              <div className="w-24 text-[#d34100]">Load</div>
+              <div className="w-24 text-blue-600 text-right">Water</div>
+              <div className="w-24 text-blue-600 text-right">Food</div>
+              <div className="w-24 text-blue-600 text-right">Lumber</div>
+              <div className="w-24 text-blue-600 text-right">Shot</div>
             </div>
-          ))}
-        </DialogBox>
+            {getPlayerFleet().map((ship, i) => (
+              // TODO give ships an ID; current key isn’t fool-proof
+              <div
+                className="flex items-center mt-2"
+                key={`${ship.id}-${ship.name}`}
+              >
+                <div className="w-64 text-2xl">{ship.name}</div>
+                <div className="w-24">
+                  <ProgressBar percent={getLoadPercent(i)} />
+                </div>
+                {provisions.map((provision) => {
+                  const { quantity = 0 } =
+                    ship.cargo.find((items) => items.type === provision) || {};
+
+                  return (
+                    <div
+                      className="w-24 text-2xl text-right cursor-pointer"
+                      onClick={() => {
+                        setSupplyProvision({ shipNumber: i, provision });
+
+                        if (supplyProvision === undefined) {
+                          next();
+                        }
+                      }}
+                      key={provision}
+                    >
+                      {quantity}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </DialogBox>
+        </div>
       )}
       {option === 'Supply' && step === 1 && supplyProvision !== undefined && (
-        <HarborSupply supplyProvision={supplyProvision} selected={back} />
+        <div className="absolute bottom-[16px] right-[304px]">
+          <HarborSupply supplyProvision={supplyProvision} selected={next} />
+        </div>
       )}
-    </div>
+    </BuildingWrapper>
   );
 }
