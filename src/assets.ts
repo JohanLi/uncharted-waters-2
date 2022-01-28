@@ -13,6 +13,7 @@ const interfaceImagesToLoad = {
   dialogNo: import('./interface/assets/dialog-no.png'),
   buildingBackground: import('./interface/port/assets/background.png'),
   buildings: import('./interface/port/assets/buildings.png'),
+  characters: import('./interface/assets/characters.png'),
   worldIndicators: import('./interface/world/assets/indicators.png'),
   worldWater: import('./interface/world/assets/water.png'),
   worldFood: import('./interface/world/assets/food.png'),
@@ -129,6 +130,7 @@ const Assets = {
   images: {} as { [key in ImageKeys | ImageInterfaceKeys]: HTMLCanvasElement },
   data: {} as { [key in DataKeys]: Uint8Array },
   buildings: (id: number) => slice('buildings', id - 1, 136),
+  characters: (id: string) => slice('characters', Number(id) - 1, 64),
   indicators: (direction: number) => slice('worldIndicators', direction, 80),
   ships: (id: string) => slice('ships', Number(id) - 1, 128),
 };

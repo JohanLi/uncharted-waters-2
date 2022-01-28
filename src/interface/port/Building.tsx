@@ -8,6 +8,7 @@ import Menu from '../common/Menu';
 import { setSail } from '../../state/actionsWorld';
 import { exitBuilding } from '../../state/actionsPort';
 import Harbor from './Harbor';
+import Misc from './Misc';
 
 interface Props {
   buildingId: number;
@@ -23,6 +24,10 @@ export default function Building({ buildingId }: Props) {
 
   if (name === 'Shipyard') {
     return <Shipyard />;
+  }
+
+  if (name === 'Misc') {
+    return <Misc />;
   }
 
   useEffect(() => {
@@ -59,7 +64,6 @@ export default function Building({ buildingId }: Props) {
       className="w-full h-full"
       style={{
         background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        lineHeight: 1.5,
         backgroundSize: '256px 128px',
       }}
     >

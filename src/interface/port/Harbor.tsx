@@ -112,7 +112,6 @@ export default function Harbor() {
       className="w-full h-full"
       style={{
         background: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        lineHeight: 1.5,
         backgroundSize: '256px 128px',
       }}
     >
