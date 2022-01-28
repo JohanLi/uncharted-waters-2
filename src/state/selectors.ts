@@ -1,5 +1,6 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
+import type { Quests } from '../interface/quests';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
@@ -33,3 +34,5 @@ export const positionAdjacentToPort = (portId: number) => {
 
   throw Error('Method is not implemented for ports other than Lisbon');
 };
+
+export const finishedQuest = (quest: Quests) => state.quests.includes(quest);

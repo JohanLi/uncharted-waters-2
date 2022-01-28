@@ -4,6 +4,7 @@ import state from './state';
 import { isDay } from './selectors';
 import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
+import type { Quests } from '../data/questData';
 
 export const updateGeneral = () => {
   updateInterface.general({
@@ -99,4 +100,8 @@ export const supplyShipNumber = (
   state.gold -= provisionCost[provision] * quantity;
 
   updateGeneral();
+};
+
+export const completeQuest = (quest: Quests) => {
+  state.quests.push(quest);
 };
