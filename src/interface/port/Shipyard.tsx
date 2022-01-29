@@ -191,7 +191,7 @@ export default function Shipyard() {
       )}
       {option === 'Used Ship' && step === 4 && (
         <div className="absolute top-[500px] left-[96px]">
-          <DialogBox className="">
+          <DialogBox>
             <div className="w-[272px] text-2xl p-4">
               <div className="mb-4">Ship name?</div>
               <div>

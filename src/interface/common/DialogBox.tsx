@@ -11,14 +11,13 @@ const cornerClasses = [
 ];
 
 interface Props {
-  className: string;
-  children?: ReactNode;
+  children: ReactNode;
 }
 
-export default function DialogBox({ className, children }: Props) {
+export default function DialogBox({ children }: Props) {
   return (
     <div
-      className={classNames('relative p-4 bg-[#f3e3d3]', className)}
+      className="relative p-4 bg-[#f3e3d3]"
       style={{
         boxShadow: `
           inset 0 0 0 2px #000,
@@ -44,7 +43,3 @@ export default function DialogBox({ className, children }: Props) {
     </div>
   );
 }
-
-DialogBox.defaultProps = {
-  children: null,
-};

@@ -78,53 +78,52 @@ export default function Menu<T extends number | string>({
   }, [activeIndex, hidden]);
 
   return (
-    <DialogBox
-      className={classNames(
-        wide ? 'w-[280px]' : 'w-[208px]',
-        hidden ? 'hidden' : '',
-      )}
-    >
-      {Boolean(title) && (
-        <div className="text-center text-2xl py-2 mb-4 cursor-pointer bg-orange-200">
-          {title}
-        </div>
-      )}
-      {options.map(({ label, value, disabled }, i) => {
-        let buttonClass = '';
+    <div className={hidden ? 'hidden' : ''}>
+      <DialogBox>
+        <div className={wide ? 'w-[280px]' : 'w-[208px]'}>
+          {Boolean(title) && (
+            <div className="text-center text-2xl py-2 mb-4 cursor-pointer bg-orange-200">
+              {title}
+            </div>
+          )}
+          {options.map(({ label, value, disabled }, i) => {
+            let buttonClass = '';
 
-        if (activeIndex === i) {
-          if (disabled) {
-            buttonClass = 'bg-black text-gray-400';
-          } else {
-            buttonClass = 'bg-black text-white';
-          }
-        } else if (disabled) {
-          buttonClass = 'text-gray-400';
-        } else {
-          buttonClass = 'text-black';
-        }
-
-        return (
-          <div
-            key={value}
-            className={classNames(
-              'text-2xl py-1 my-2 cursor-pointer',
-              buttonClass,
-            )}
-            onClick={() => {
-              setActiveIndex(i);
-
-              if (!options[i].disabled) {
-                setSelected(value);
+            if (activeIndex === i) {
+              if (disabled) {
+                buttonClass = 'bg-black text-gray-400';
+              } else {
+                buttonClass = 'bg-black text-white';
               }
-            }}
-            role="button"
-          >
-            <div className={wide ? 'pl-4' : 'text-center'}>{label}</div>
-          </div>
-        );
-      })}
-    </DialogBox>
+            } else if (disabled) {
+              buttonClass = 'text-gray-400';
+            } else {
+              buttonClass = 'text-black';
+            }
+
+            return (
+              <div
+                key={value}
+                className={classNames(
+                  'text-2xl py-1 my-2 cursor-pointer',
+                  buttonClass,
+                )}
+                onClick={() => {
+                  setActiveIndex(i);
+
+                  if (!options[i].disabled) {
+                    setSelected(value);
+                  }
+                }}
+                role="button"
+              >
+                <div className={wide ? 'pl-4' : 'text-center'}>{label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </DialogBox>
+    </div>
   );
 }
 

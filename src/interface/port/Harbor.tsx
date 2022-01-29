@@ -64,47 +64,50 @@ export default function Harbor() {
     <BuildingWrapper buildingId="4" vendorMessage={vendorMessage} menu={menu}>
       {option === 'Supply' && step >= 0 && (
         <div className="absolute top-[256px] left-[16px]">
-          <DialogBox className="px-8 py-6">
-            <div className="flex items-center">
-              <div className="w-64 text-green-600">Ship</div>
-              <div className="w-24 text-[#d34100]">Load</div>
-              <div className="w-24 text-blue-600 text-right">Water</div>
-              <div className="w-24 text-blue-600 text-right">Food</div>
-              <div className="w-24 text-blue-600 text-right">Lumber</div>
-              <div className="w-24 text-blue-600 text-right">Shot</div>
-            </div>
-            {getPlayerFleet().map((ship, i) => (
-              // TODO give ships an ID; current key isn’t fool-proof
-              <div
-                className="flex items-center mt-2"
-                key={`${ship.id}-${ship.name}`}
-              >
-                <div className="w-64 text-2xl">{ship.name}</div>
-                <div className="w-24">
-                  <ProgressBar percent={getLoadPercent(i)} />
-                </div>
-                {provisions.map((provision) => {
-                  const { quantity = 0 } =
-                    ship.cargo.find((items) => items.type === provision) || {};
-
-                  return (
-                    <div
-                      className="w-24 text-2xl text-right cursor-pointer"
-                      onClick={() => {
-                        setSupplyProvision({ shipNumber: i, provision });
-
-                        if (supplyProvision === undefined) {
-                          next();
-                        }
-                      }}
-                      key={provision}
-                    >
-                      {quantity}
-                    </div>
-                  );
-                })}
+          <DialogBox>
+            <div className="px-4 py-2">
+              <div className="flex items-center">
+                <div className="w-64 text-green-600">Ship</div>
+                <div className="w-24 text-[#d34100]">Load</div>
+                <div className="w-24 text-blue-600 text-right">Water</div>
+                <div className="w-24 text-blue-600 text-right">Food</div>
+                <div className="w-24 text-blue-600 text-right">Lumber</div>
+                <div className="w-24 text-blue-600 text-right">Shot</div>
               </div>
-            ))}
+              {getPlayerFleet().map((ship, i) => (
+                // TODO give ships an ID; current key isn’t fool-proof
+                <div
+                  className="flex items-center mt-2"
+                  key={`${ship.id}-${ship.name}`}
+                >
+                  <div className="w-64 text-2xl">{ship.name}</div>
+                  <div className="w-24">
+                    <ProgressBar percent={getLoadPercent(i)} />
+                  </div>
+                  {provisions.map((provision) => {
+                    const { quantity = 0 } =
+                      ship.cargo.find((items) => items.type === provision) ||
+                      {};
+
+                    return (
+                      <div
+                        className="w-24 text-2xl text-right cursor-pointer"
+                        onClick={() => {
+                          setSupplyProvision({ shipNumber: i, provision });
+
+                          if (supplyProvision === undefined) {
+                            next();
+                          }
+                        }}
+                        key={provision}
+                      >
+                        {quantity}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </DialogBox>
         </div>
       )}

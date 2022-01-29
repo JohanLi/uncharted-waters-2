@@ -74,7 +74,7 @@ export default function MessageDialog({ message }: Props) {
 
   return (
     <div className={message !== null ? '' : 'invisible'}>
-      <DialogBox className="">
+      <DialogBox>
         <div className="flex w-[592px] h-[256px] text-2xl p-4">{inner}</div>
       </DialogBox>
     </div>
