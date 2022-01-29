@@ -18,10 +18,7 @@ interface Props {
 export default function DialogBox({ className, children }: Props) {
   return (
     <div
-      className={classNames(
-        'inline-block relative p-4 bg-[#f3e3d3]',
-        className,
-      )}
+      className={classNames('relative p-4 bg-[#f3e3d3]', className)}
       style={{
         boxShadow: `
           inset 0 0 0 2px #000,
