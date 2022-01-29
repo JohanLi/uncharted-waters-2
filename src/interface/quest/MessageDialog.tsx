@@ -2,7 +2,7 @@ import React from 'react';
 
 import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
-import { CharacterMessage } from '../../data/questData';
+import { CharacterMessage } from './questData';
 import DialogBox from '../common/DialogBox';
 
 type CharacterData = {

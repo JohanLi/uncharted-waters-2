@@ -4,7 +4,7 @@ import state from './state';
 import { isDay } from './selectors';
 import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
-import type { Quests } from '../data/questData';
+import type { Quests } from '../interface/quest/questData';
 
 export const updateGeneral = () => {
   updateInterface.general({

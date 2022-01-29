@@ -1,8 +1,8 @@
-import state from '../state/state';
-import { finishedQuest } from '../state/selectors';
-import { Quests } from '../data/questData';
+import state from '../../state/state';
+import { finishedQuest } from '../../state/selectors';
+import { Quests } from './questData';
 
-const getQuest = () => {
+const getAvailableQuest = () => {
   if (state.portId === 0) {
     return null;
   }
@@ -48,4 +48,4 @@ const getQuest = () => {
   return null;
 };
 
-export default getQuest;
+export default getAvailableQuest;

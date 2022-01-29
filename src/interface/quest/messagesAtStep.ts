@@ -1,14 +1,9 @@
-import { useEffect, useState } from 'react';
-
-import { completeQuest, exitBuilding } from '../../../state/actionsPort';
-import getQuest from '../../quest';
 import {
   CharacterMessage,
   Message,
   MessagePosition,
-  questToMessages,
   VendorMessage,
-} from '../../../data/questData';
+} from './questData';
 
 const getLatestCharacterId = (
   step: number,
@@ -27,55 +22,12 @@ const getLatestCharacterId = (
   return characterId;
 };
 
-export default function useQuest() {
-  const quest = getQuest();
-
-  if (quest === null) {
-    return null;
-  }
-
-  const [step, setStep] = useState(0);
-
-  const messages = questToMessages[quest];
+const messagesAtStep = (messages: Message[], step: number) => {
   const { messagePosition, ...message } = messages[step];
 
   message.body = message.body
     .replace('$firstName', 'João')
     .replace('$lastName', 'Franco');
-
-  useEffect(() => {
-    const next = () => {
-      if (step >= messages.length - 1) {
-        completeQuest(quest);
-        exitBuilding();
-      } else {
-        setStep(step + 1);
-      }
-    };
-
-    const onClick = () => {
-      next();
-    };
-
-    const onKeyup = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-
-      if (!['enter', 'e'].includes(pressedKey)) {
-        return;
-      }
-
-      e.preventDefault();
-      next();
-    };
-
-    window.addEventListener('click', onClick);
-    window.addEventListener('keyup', onKeyup);
-
-    return () => {
-      window.removeEventListener('click', onClick);
-      window.removeEventListener('keyup', onKeyup);
-    };
-  }, [step]);
 
   let vendor = null;
   let upper = null;
@@ -119,4 +71,6 @@ export default function useQuest() {
     upper,
     lower,
   };
-}
+};
+
+export default messagesAtStep;

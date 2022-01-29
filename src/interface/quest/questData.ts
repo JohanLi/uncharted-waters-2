@@ -24,7 +24,7 @@ export type VendorMessage = {
   messagePosition: 0;
 };
 
-export const questToMessages: { [key in Quests]: Message[] } = {
+const questData: { [key in Quests]: Message[] } = {
   [Quests.pubBeforeQuest]: [
     {
       body: 'Well isn’t this a rare treat, Master $firstName.',
@@ -430,3 +430,5 @@ export const questToMessages: { [key in Quests]: Message[] } = {
     },
   ],
 };
+
+export default questData;

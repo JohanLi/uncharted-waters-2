@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 
 import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
-import useQuest from './hooks/useQuest';
-import MessageDialog from './MessageDialog';
+import useQuest from '../quest/useQuest';
+import MessageDialog from '../quest/MessageDialog';
 
 export type VendorMessage = {
   body: string;
