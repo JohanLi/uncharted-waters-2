@@ -2,8 +2,8 @@ import React from 'react';
 
 import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
-import { CharacterMessage } from './questData';
 import DialogBox from '../common/DialogBox';
+import { CharacterMessageDialog } from './messagesAtStep';
 
 type CharacterData = {
   [key: string]: {
@@ -40,7 +40,7 @@ const characterData: CharacterData = {
 };
 
 interface Props {
-  message: Pick<CharacterMessage, 'body' | 'characterId'> | null;
+  message: CharacterMessageDialog;
 }
 
 export default function MessageDialog({ message }: Props) {

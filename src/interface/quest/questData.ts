@@ -1,3 +1,5 @@
+import { receiveGold } from '../../state/actionsPort';
+
 export enum Quests {
   pubBeforeQuest,
   pubBeforeQuestHeadHome,
@@ -15,13 +17,19 @@ export type Message = CharacterMessage | VendorMessage;
 export type CharacterMessage = {
   body: string;
   characterId: string;
-  messagePosition: MessagePosition;
+  messagePosition: Extract<MessagePosition, 1 | 2>;
+  action?: () => void;
+  completeQuest?: true;
+  exitBuilding?: true;
 };
 
 export type VendorMessage = {
   body: string;
   characterId: null;
-  messagePosition: 0;
+  messagePosition: Extract<MessagePosition, 0>;
+  action?: () => void;
+  completeQuest?: true;
+  exitBuilding?: true;
 };
 
 const questData: { [key in Quests]: Message[] } = {
@@ -60,6 +68,8 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Oh, $firstName! You’re leaving already?!',
       characterId: '99',
       messagePosition: 1,
+      completeQuest: true,
+      exitBuilding: true,
     },
   ],
   [Quests.pubBeforeQuestHeadHome]: [
@@ -67,6 +77,7 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Master $firstName, I think you’d better be heading home now.',
       characterId: '98',
       messagePosition: 1,
+      exitBuilding: true,
     },
   ],
   [Quests.lodgeBeforeQuest]: [
@@ -106,6 +117,7 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'I see. Well then, I guess I’ll go back to the house.',
       characterId: '1',
       messagePosition: 2,
+      exitBuilding: true,
     },
   ],
   [Quests.obtainedQuestFromFather]: [
@@ -303,6 +315,8 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Righto, Rocco, but first I’ve got to say good-bye to Lucia and Carlotta.',
       characterId: '1',
       messagePosition: 2,
+      completeQuest: true,
+      exitBuilding: true,
     },
   ],
   [Quests.expelled]: [
@@ -310,6 +324,7 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'I’m awfully sorry, but the Duke’s orders were quite specific. You are not to enter the house.',
       characterId: '7',
       messagePosition: 1,
+      exitBuilding: true,
     },
   ],
   [Quests.pubAfterQuest]: [
@@ -382,6 +397,9 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'My father...?',
       characterId: '1',
       messagePosition: 2,
+      action: () => {
+        receiveGold(1000);
+      },
     },
     {
       body: 'This is all well and good, but we’ll be needing a little more money if ye wants to get further than Lisbon...',
@@ -427,6 +445,7 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Thanks for the advice Carlotta. Thank you Lucia.',
       characterId: '1',
       messagePosition: 2,
+      exitBuilding: true,
     },
   ],
 };

@@ -22,19 +22,25 @@ const getLatestCharacterId = (
   return characterId;
 };
 
+type VendorMessageDialog = Pick<VendorMessage, 'body' | 'characterId'> | null;
+export type CharacterMessageDialog = Pick<
+  CharacterMessage,
+  'body' | 'characterId'
+> | null;
+
 const messagesAtStep = (messages: Message[], step: number) => {
-  const { messagePosition, ...message } = messages[step];
+  const message = messages[step];
 
   message.body = message.body
     .replace('$firstName', 'João')
     .replace('$lastName', 'Franco');
 
-  let vendor = null;
-  let upper = null;
-  let lower = null;
+  let vendor: VendorMessageDialog = null;
+  let upper: CharacterMessageDialog = null;
+  let lower: CharacterMessageDialog = null;
 
-  if (messagePosition === 0) {
-    vendor = message as VendorMessage;
+  if (message.messagePosition === 0) {
+    vendor = { body: message.body, characterId: message.characterId };
   } else {
     const latestCharacterId = getLatestCharacterId(step, 0, messages);
 
@@ -46,8 +52,8 @@ const messagesAtStep = (messages: Message[], step: number) => {
     }
   }
 
-  if (messagePosition === 1) {
-    upper = message as CharacterMessage;
+  if (message.messagePosition === 1) {
+    upper = { body: message.body, characterId: message.characterId };
   } else {
     const latestCharacterId = getLatestCharacterId(step, 1, messages);
 
@@ -56,8 +62,8 @@ const messagesAtStep = (messages: Message[], step: number) => {
     }
   }
 
-  if (messagePosition === 2) {
-    lower = message as CharacterMessage;
+  if (message.messagePosition === 2) {
+    lower = { body: message.body, characterId: message.characterId };
   } else {
     const latestCharacterId = getLatestCharacterId(step, 2, messages);
 

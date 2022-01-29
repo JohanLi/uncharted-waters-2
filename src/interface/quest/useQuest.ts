@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { completeQuest, exitBuilding } from '../../state/actionsPort';
 import getAvailableQuest from './getAvailableQuest';
 import questData from './questData';
 import messagesAtStep from './messagesAtStep';
+import { completeQuest, exitBuilding } from '../../state/actionsPort';
 
 export default function useQuest() {
   const quest = getAvailableQuest();
@@ -15,11 +15,23 @@ export default function useQuest() {
   const [step, setStep] = useState(0);
 
   const messages = questData[quest];
+  const message = messages[step];
 
   useEffect(() => {
+    if (!message) {
+      return () => {};
+    }
+
     const next = () => {
-      if (step >= messages.length - 1) {
+      if (message.action) {
+        message.action();
+      }
+
+      if (message.completeQuest) {
         completeQuest(quest);
+      }
+
+      if (message.exitBuilding) {
         exitBuilding();
       } else {
         setStep(step + 1);
@@ -49,6 +61,10 @@ export default function useQuest() {
       window.removeEventListener('keyup', onKeyup);
     };
   }, [step]);
+
+  if (!message) {
+    return null;
+  }
 
   return messagesAtStep(messages, step);
 }

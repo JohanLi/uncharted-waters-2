@@ -105,3 +105,9 @@ export const supplyShipNumber = (
 export const completeQuest = (quest: Quests) => {
   state.quests.push(quest);
 };
+
+export const receiveGold = (amount: number) => {
+  state.gold += amount;
+
+  updateGeneral();
+};
