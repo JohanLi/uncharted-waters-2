@@ -1,14 +1,15 @@
 import { receiveGold } from '../../state/actionsPort';
 
-export enum Quests {
-  pubBeforeQuest,
-  pubBeforeQuestHeadHome,
-  lodgeBeforeQuest,
-  churchBeforeQuest,
-  obtainedQuestFromFather,
-  expelled,
-  pubAfterQuest,
-}
+type QuestsAct1 =
+  | 'pubBeforeQuest'
+  | 'pubBeforeQuestHeadHome'
+  | 'lodgeBeforeQuest'
+  | 'churchBeforeQuest'
+  | 'obtainedQuestFromFather'
+  | 'expelled'
+  | 'pubAfterQuest';
+
+export type Quests = QuestsAct1;
 
 export type MessagePosition = 0 | 1 | 2;
 
@@ -33,7 +34,7 @@ export type VendorMessage = {
 };
 
 const questData: { [key in Quests]: Message[] } = {
-  [Quests.pubBeforeQuest]: [
+  pubBeforeQuest: [
     {
       body: 'Well isn’t this a rare treat, Master $firstName.',
       characterId: '98',
@@ -72,7 +73,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  [Quests.pubBeforeQuestHeadHome]: [
+  pubBeforeQuestHeadHome: [
     {
       body: 'Master $firstName, I think you’d better be heading home now.',
       characterId: '98',
@@ -80,7 +81,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  [Quests.lodgeBeforeQuest]: [
+  lodgeBeforeQuest: [
     {
       body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
       characterId: null,
@@ -92,7 +93,7 @@ const questData: { [key in Quests]: Message[] } = {
       messagePosition: 0,
     },
   ],
-  [Quests.churchBeforeQuest]: [
+  churchBeforeQuest: [
     {
       body: 'Master $firstName, is there anyone in the Duke $lastName’s household that could possibly take a trip?',
       characterId: null,
@@ -120,7 +121,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  [Quests.obtainedQuestFromFather]: [
+  obtainedQuestFromFather: [
     {
       body: 'Father, did you send for me?',
       characterId: '1',
@@ -319,7 +320,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  [Quests.expelled]: [
+  expelled: [
     {
       body: 'I’m awfully sorry, but the Duke’s orders were quite specific. You are not to enter the house.',
       characterId: '7',
@@ -327,7 +328,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  [Quests.pubAfterQuest]: [
+  pubAfterQuest: [
     {
       body: 'Master $firstName, what’s going on? The whole town is in an uproar.',
       characterId: '98',

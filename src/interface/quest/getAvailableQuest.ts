@@ -1,6 +1,5 @@
 import state from '../../state/state';
 import { finishedQuest } from '../../state/selectors';
-import { Quests } from './questData';
 
 const getAvailableQuest = () => {
   if (state.portId === 0) {
@@ -8,39 +7,39 @@ const getAvailableQuest = () => {
   }
 
   if (state.buildingId === '2') {
-    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
-      if (!finishedQuest(Quests.pubBeforeQuest)) {
-        return Quests.pubBeforeQuest;
+    if (!finishedQuest('obtainedQuestFromFather')) {
+      if (!finishedQuest('pubBeforeQuest')) {
+        return 'pubBeforeQuest';
       }
 
-      return Quests.pubBeforeQuestHeadHome;
+      return 'pubBeforeQuestHeadHome';
     }
 
-    if (!finishedQuest(Quests.pubAfterQuest)) {
-      return Quests.pubAfterQuest;
+    if (!finishedQuest('pubAfterQuest')) {
+      return 'pubAfterQuest';
     }
   }
 
   if (state.buildingId === '5') {
-    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
-      if (!finishedQuest(Quests.lodgeBeforeQuest)) {
-        return Quests.lodgeBeforeQuest;
+    if (!finishedQuest('obtainedQuestFromFather')) {
+      if (!finishedQuest('lodgeBeforeQuest')) {
+        return 'lodgeBeforeQuest';
       }
     }
   }
 
   if (state.buildingId === '8') {
-    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
-      return Quests.obtainedQuestFromFather;
+    if (!finishedQuest('obtainedQuestFromFather')) {
+      return 'obtainedQuestFromFather';
     }
 
-    return Quests.expelled;
+    return 'expelled';
   }
 
   if (state.buildingId === '11') {
-    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
-      if (!finishedQuest(Quests.churchBeforeQuest)) {
-        return Quests.churchBeforeQuest;
+    if (!finishedQuest('obtainedQuestFromFather')) {
+      if (!finishedQuest('churchBeforeQuest')) {
+        return 'churchBeforeQuest';
       }
     }
   }
