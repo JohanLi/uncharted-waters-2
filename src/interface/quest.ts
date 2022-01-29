@@ -7,25 +7,41 @@ const getQuest = () => {
     return null;
   }
 
+  if (state.buildingId === '2') {
+    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
+      if (!finishedQuest(Quests.pubBeforeQuest)) {
+        return Quests.pubBeforeQuest;
+      }
+
+      return Quests.pubBeforeQuestHeadHome;
+    }
+
+    if (!finishedQuest(Quests.pubAfterQuest)) {
+      return Quests.pubAfterQuest;
+    }
+  }
+
+  if (state.buildingId === '5') {
+    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
+      if (!finishedQuest(Quests.lodgeBeforeQuest)) {
+        return Quests.lodgeBeforeQuest;
+      }
+    }
+  }
+
   if (state.buildingId === '8') {
-    if (!finishedQuest(Quests.spokenToFather)) {
-      return Quests.spokenToFather;
+    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
+      return Quests.obtainedQuestFromFather;
     }
 
     return Quests.expelled;
   }
 
-  if (state.buildingId === '2') {
-    if (!finishedQuest(Quests.spokenToFather)) {
-      if (!finishedQuest(Quests.pubFirstVisit)) {
-        return Quests.pubFirstVisit;
+  if (state.buildingId === '11') {
+    if (!finishedQuest(Quests.obtainedQuestFromFather)) {
+      if (!finishedQuest(Quests.churchBeforeQuest)) {
+        return Quests.churchBeforeQuest;
       }
-
-      return Quests.pubHeadHome;
-    }
-
-    if (!finishedQuest(Quests.pubAfterQuest)) {
-      return Quests.pubAfterQuest;
     }
   }
 

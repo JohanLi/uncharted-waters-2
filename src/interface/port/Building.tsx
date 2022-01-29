@@ -6,7 +6,6 @@ import Harbor from './Harbor';
 import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
 import useBuildingState from './hooks/useBuildingState';
-import Quest from './Quest';
 
 interface Props {
   buildingId: string;
@@ -44,8 +43,6 @@ export default function Building({ buildingId }: Props) {
         showCaretDown: false,
       }}
       menu={menu}
-    >
-      <Quest />
-    </BuildingWrapper>
+    />
   );
 }

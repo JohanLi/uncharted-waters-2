@@ -1,6 +1,6 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
-import type { Quests } from '../interface/quests';
+import type { Quests } from '../data/questData';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
