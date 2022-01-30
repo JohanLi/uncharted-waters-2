@@ -5,7 +5,7 @@ import questData from './questData';
 import messagesAtStep from './messagesAtStep';
 import { completeQuest, exitBuilding } from '../../state/actionsPort';
 
-export default function useQuest() {
+export default function useQuestStep() {
   const quest = getAvailableQuest();
 
   if (quest === null) {
@@ -38,27 +38,36 @@ export default function useQuest() {
       }
     };
 
-    const onClick = () => {
+    const onClick = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
       next();
     };
 
     const onKeyup = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
-      if (!['enter', 'e'].includes(pressedKey)) {
-        return;
+      if (['e', 'enter', 'escape', 'backspace'].includes(pressedKey)) {
+        e.preventDefault();
+        e.stopPropagation();
+        next();
       }
+    };
 
+    const onContextMenu = (e: MouseEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       next();
     };
 
-    window.addEventListener('click', onClick);
-    window.addEventListener('keyup', onKeyup);
+    window.addEventListener('click', onClick, true);
+    window.addEventListener('keyup', onKeyup, true);
+    window.addEventListener('contextmenu', onContextMenu, true);
 
     return () => {
-      window.removeEventListener('click', onClick);
-      window.removeEventListener('keyup', onKeyup);
+      window.removeEventListener('click', onClick, true);
+      window.removeEventListener('keyup', onKeyup, true);
+      window.removeEventListener('contextmenu', onContextMenu, true);
     };
   }, [step]);
 

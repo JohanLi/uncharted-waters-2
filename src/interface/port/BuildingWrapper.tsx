@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
-import useQuest from '../quest/useQuest';
+import useQuestStep from '../quest/useQuestStep';
 import MessageDialog from '../quest/MessageDialog';
 
 export type VendorMessage = {
@@ -24,7 +24,7 @@ export default function BuildingWrapper({
   children,
 }: Props) {
   const { body, showCaretDown } = vendorMessage || {};
-  const hasQuest = useQuest();
+  const hasQuest = useQuestStep();
 
   if (hasQuest) {
     const { vendor, upper, lower } = hasQuest;
