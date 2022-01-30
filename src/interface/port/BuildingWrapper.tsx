@@ -63,11 +63,11 @@ export default function BuildingWrapper({
             </DialogBox>
           </div>
         </div>
-        <div className="absolute top-0 left-[288px] p-4">
+        <div className="absolute top-4 left-[304px]">
           <MessageDialog message={upper} />
-          <div className="mt-4 ml-[112px]">
-            <MessageDialog message={lower} />
-          </div>
+        </div>
+        <div className="absolute top-[320px] ml-[416px]">
+          <MessageDialog message={lower} />
         </div>
       </div>
     );
