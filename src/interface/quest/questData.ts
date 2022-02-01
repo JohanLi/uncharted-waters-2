@@ -13,25 +13,35 @@ export type Quests = QuestsAct1;
 
 export type MessagePosition = 0 | 1 | 2;
 
-export type Message = CharacterMessage | VendorMessage;
-
-export type CharacterMessage = {
-  body: string;
-  characterId: string;
-  messagePosition: Extract<MessagePosition, 1 | 2>;
-  action?: () => void;
-  completeQuest?: true;
-  exitBuilding?: true;
-};
+export type Message = VendorMessage | CharacterMessage;
 
 export type VendorMessage = {
-  body: string;
   characterId: null;
   messagePosition: Extract<MessagePosition, 0>;
+} & MessageCommon;
+
+export type CharacterMessage = {
+  characterId: string;
+  messagePosition: Extract<MessagePosition, 1 | 2>;
+} & MessageCommon;
+
+type MessageCommon = {
+  body: string;
+  sideEffects?: MessageSideEffects;
+};
+
+export type MessageSideEffects = {
   action?: () => void;
   completeQuest?: true;
   exitBuilding?: true;
-};
+} & (
+  | {}
+  | {
+      type: 'confirm';
+      yes: () => void;
+      no: () => void;
+    }
+);
 
 const questData: { [key in Quests]: Message[] } = {
   pubBeforeQuest: [
@@ -69,8 +79,10 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Oh, $firstName! You’re leaving already?!',
       characterId: '99',
       messagePosition: 1,
-      completeQuest: true,
-      exitBuilding: true,
+      sideEffects: {
+        completeQuest: true,
+        exitBuilding: true,
+      },
     },
   ],
   pubBeforeQuestHeadHome: [
@@ -78,7 +90,9 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Master $firstName, I think you’d better be heading home now.',
       characterId: '98',
       messagePosition: 1,
-      exitBuilding: true,
+      sideEffects: {
+        exitBuilding: true,
+      },
     },
   ],
   lodgeBeforeQuest: [
@@ -118,7 +132,9 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'I see. Well then, I guess I’ll go back to the house.',
       characterId: '1',
       messagePosition: 2,
-      exitBuilding: true,
+      sideEffects: {
+        exitBuilding: true,
+      },
     },
   ],
   obtainedQuestFromFather: [
@@ -316,8 +332,10 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Righto, Rocco, but first I’ve got to say good-bye to Lucia and Carlotta.',
       characterId: '1',
       messagePosition: 2,
-      completeQuest: true,
-      exitBuilding: true,
+      sideEffects: {
+        completeQuest: true,
+        exitBuilding: true,
+      },
     },
   ],
   expelled: [
@@ -325,7 +343,9 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'I’m awfully sorry, but the Duke’s orders were quite specific. You are not to enter the house.',
       characterId: '7',
       messagePosition: 1,
-      exitBuilding: true,
+      sideEffects: {
+        exitBuilding: true,
+      },
     },
   ],
   pubAfterQuest: [
@@ -398,8 +418,10 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'My father...?',
       characterId: '1',
       messagePosition: 2,
-      action: () => {
-        receiveGold(1000);
+      sideEffects: {
+        action: () => {
+          receiveGold(1000);
+        },
       },
     },
     {
@@ -446,7 +468,9 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Thanks for the advice Carlotta. Thank you Lucia.',
       characterId: '1',
       messagePosition: 2,
-      exitBuilding: true,
+      sideEffects: {
+        exitBuilding: true,
+      },
     },
   ],
 };

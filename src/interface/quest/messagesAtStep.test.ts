@@ -24,7 +24,6 @@ describe('When no one has spoken yet', () => {
     expect(messagesAtStep([vendorMessage], 0)).toEqual({
       vendor: {
         body: vendorMessage.body,
-        characterId: vendorMessage.characterId,
       },
       upper: null,
       lower: null,
@@ -57,7 +56,7 @@ describe('When no one has spoken yet', () => {
 describe('Vendor message if not active', () => {
   test('Should still have an empty body if vendor has spoken prior', () => {
     expect(messagesAtStep([vendorMessage, characterMessage1], 1)).toEqual({
-      vendor: { body: '', characterId: vendorMessage.characterId },
+      vendor: { body: '' },
       upper: {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
@@ -68,7 +67,7 @@ describe('Vendor message if not active', () => {
     expect(
       messagesAtStep([vendorMessage, characterMessage2, characterMessage2], 2),
     ).toEqual({
-      vendor: { body: '', characterId: vendorMessage.characterId },
+      vendor: { body: '' },
       upper: null,
       lower: {
         body: characterMessage2.body,
@@ -132,7 +131,7 @@ describe('Lower message if not active', () => {
     expect(
       messagesAtStep([characterMessage2, vendorMessage, characterMessage1], 2),
     ).toEqual({
-      vendor: { body: '', characterId: vendorMessage.characterId },
+      vendor: { body: '' },
       upper: {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
@@ -145,17 +144,32 @@ describe('Lower message if not active', () => {
   });
 });
 
+test('Returns the side effects of the current message', () => {
+  expect(
+    messagesAtStep(
+      [{ ...characterMessage1, sideEffects: { exitBuilding: true } }],
+      0,
+    ).sideEffects,
+  ).toEqual({ exitBuilding: true });
+
+  expect(
+    messagesAtStep(
+      [
+        characterMessage1,
+        { ...characterMessage2, sideEffects: { completeQuest: true } },
+      ],
+      1,
+    ).sideEffects,
+  ).toEqual({ completeQuest: true });
+});
+
 test('Substitutes $firstName', () => {
   expect(
     messagesAtStep(
       [{ body: 'Hello, $firstName!', characterId: null, messagePosition: 0 }],
       0,
-    ),
-  ).toEqual({
-    vendor: { body: 'Hello, João!', characterId: null },
-    upper: null,
-    lower: null,
-  });
+    ).vendor,
+  ).toEqual({ body: 'Hello, João!' });
 });
 
 test('Substitutes $lastName', () => {
@@ -163,10 +177,6 @@ test('Substitutes $lastName', () => {
     messagesAtStep(
       [{ body: 'Hello, $lastName!', characterId: null, messagePosition: 0 }],
       0,
-    ),
-  ).toEqual({
-    vendor: { body: 'Hello, Franco!', characterId: null },
-    upper: null,
-    lower: null,
-  });
+    ).vendor,
+  ).toEqual({ body: 'Hello, Franco!' });
 });

@@ -4,73 +4,30 @@ import Assets from '../../assets';
 import DialogBox from '../common/DialogBox';
 import useQuestStep from '../quest/useQuestStep';
 import MessageDialog from '../quest/MessageDialog';
-
-export type VendorMessage = {
-  body: string;
-  showCaretDown: boolean;
-} | null;
+import { VendorMessageDialog } from '../quest/messagesAtStep';
 
 interface Props {
   buildingId: string;
-  vendorMessage: VendorMessage;
+  greeting: string;
+  vendorMessage: VendorMessageDialog | null;
   menu?: ReactNode;
   children?: ReactNode;
 }
 
-export default function BuildingWrapper({
-  buildingId,
-  vendorMessage,
-  menu,
-  children,
-}: Props) {
-  const { body, showCaretDown } = vendorMessage || {};
-  const hasQuest = useQuestStep();
+export default function BuildingWrapper(props: Props) {
+  const { buildingId, greeting, menu, children } = props;
+  let { vendorMessage } = props;
+  let vendorShowCaretDown = true;
 
-  if (hasQuest) {
-    const { vendor, upper, lower } = hasQuest;
+  const quest = useQuestStep();
 
-    return (
-      <div
-        className="w-full h-full bg-[length:256px_128px]"
-        style={{
-          backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
-        }}
-      >
-        <div className="flex items-start">
-          <div className="p-4 pr-0">
-            <img
-              src={Assets.buildings(buildingId)}
-              alt=""
-              className="w-[272px]"
-            />
-          </div>
-          <div className={vendor !== null ? '' : 'invisible'}>
-            <DialogBox>
-              <div className="w-[448px] h-[224px] text-2xl px-4 py-2">
-                {vendor !== null && (
-                  <>
-                    {vendor.body}
-                    {Boolean(vendor.body) && (
-                      <img
-                        src={Assets.images.dialogCaretDown.toDataURL()}
-                        alt=""
-                        className="w-8 h-8 animate-ping mx-auto mt-8"
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-            </DialogBox>
-          </div>
-        </div>
-        <div className="absolute top-4 left-[304px]">
-          <MessageDialog message={upper} />
-        </div>
-        <div className="absolute top-[320px] ml-[416px]">
-          <MessageDialog message={lower} />
-        </div>
-      </div>
-    );
+  if (quest) {
+    vendorMessage = quest.vendor;
+  } else if (!vendorMessage) {
+    vendorMessage = {
+      body: greeting,
+    };
+    vendorShowCaretDown = false;
   }
 
   return (
@@ -88,22 +45,36 @@ export default function BuildingWrapper({
             className="w-[272px]"
           />
         </div>
-        {Boolean(vendorMessage) && (
+        <div className={vendorMessage !== null ? '' : 'invisible'}>
           <DialogBox>
             <div className="w-[448px] h-[224px] text-2xl px-4 py-2">
-              {body}
-              {showCaretDown && (
-                <img
-                  src={Assets.images.dialogCaretDown.toDataURL()}
-                  alt=""
-                  className="w-8 h-8 animate-ping mx-auto mt-8"
-                />
+              {vendorMessage !== null && (
+                <>
+                  {vendorMessage.body}
+                  {!!vendorMessage.body && vendorShowCaretDown && (
+                    <img
+                      src={Assets.images.dialogCaretDown.toDataURL()}
+                      alt=""
+                      className="w-8 h-8 animate-ping mx-auto mt-8"
+                    />
+                  )}
+                </>
               )}
             </div>
           </DialogBox>
-        )}
-        {Boolean(menu) && <div className="mt-[190px]">{menu}</div>}
+        </div>
+        {!quest && !!menu && <div className="mt-[190px]">{menu}</div>}
       </div>
+      {!!quest && (
+        <div className="absolute top-4 left-[304px]">
+          <MessageDialog message={quest.upper} />
+        </div>
+      )}
+      {!!quest && (
+        <div className="absolute top-[320px] ml-[416px]">
+          <MessageDialog message={quest.lower} />
+        </div>
+      )}
       {children}
     </div>
   );

@@ -11,8 +11,9 @@ import DialogShipInfo from './DialogShipInfo';
 import { shipData } from '../../data/shipData';
 import DialogYesNo from '../common/DialogYesNo';
 import { getPlayerFleet, getPlayerFleetShip } from '../../state/selectorsFleet';
-import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
+import BuildingWrapper from './BuildingWrapper';
 import useBuildingState from './hooks/useBuildingState';
+import { VendorMessageDialog } from '../quest/messagesAtStep';
 
 const shipyardOptions = [
   'New Ship',
@@ -68,50 +69,60 @@ export default function Shipyard() {
 
   const { option, step } = state;
 
-  const vendorMessage: VendorMessage = {
-    body: 'What brings you to this shipyard?',
-    showCaretDown: false,
-  };
+  let vendorMessage: VendorMessageDialog | null = null;
 
   if (option === 'Repair') {
-    vendorMessage.body = 'Your fleet’s already in tiptop shape, matey!';
-    vendorMessage.showCaretDown = true;
+    vendorMessage = {
+      body: 'Your fleet’s already in tiptop shape, matey!',
+    };
   }
 
   if (option === 'Used Ship') {
     if (step === 1 && selectedShipId) {
-      vendorMessage.body = shipData[selectedShipId].description;
-      vendorMessage.showCaretDown = true;
+      vendorMessage = {
+        body: shipData[selectedShipId].description,
+      };
     }
 
     if (step === 2) {
-      vendorMessage.body = 'Will ye buy this one?';
+      vendorMessage = {
+        body: 'Will ye buy this one?',
+      };
     }
 
     if (step === 3 && selectedShipId) {
-      vendorMessage.body = `I’d sell this ship for ${shipData[selectedShipId].basePrice} gold pieces. What do ye say?`;
+      vendorMessage = {
+        body: `I’d sell this ship for ${shipData[selectedShipId].basePrice} gold pieces. What do ye say?`,
+      };
     }
 
     if (step === 4) {
-      vendorMessage.body = `All right, it’s yers. Time to name yer ship.`;
+      vendorMessage = {
+        body: `All right, it’s yers. Time to name yer ship.`,
+      };
     }
   }
 
   if (option === 'Sell') {
     if (step === 0) {
       if (getPlayerFleet().length === 1) {
-        vendorMessage.body = 'We only have the flag ship.';
-        vendorMessage.showCaretDown = true;
+        vendorMessage = {
+          body: 'We only have the flag ship.',
+        };
       } else {
-        vendorMessage.body = 'Which one is for sale?';
+        vendorMessage = {
+          body: 'Which one is for sale?',
+        };
       }
     }
 
     if (step === 1 && selectedShipNumberToSell !== undefined) {
       const shipId = getPlayerFleetShip(selectedShipNumberToSell).id;
-      vendorMessage.body = `For this ship, I’ll give you ${
-        shipData[shipId].basePrice * SELL_SHIP_MODIFIER
-      } gold pieces. OK?`;
+      vendorMessage = {
+        body: `For this ship, I’ll give you ${
+          shipData[shipId].basePrice * SELL_SHIP_MODIFIER
+        } gold pieces. OK?`,
+      };
     }
   }
 
@@ -130,7 +141,12 @@ export default function Shipyard() {
   );
 
   return (
-    <BuildingWrapper buildingId="3" vendorMessage={vendorMessage} menu={menu}>
+    <BuildingWrapper
+      buildingId="3"
+      greeting="What brings you to this shipyard?"
+      vendorMessage={vendorMessage}
+      menu={menu}
+    >
       {option === 'Used Ship' && (
         <div className="absolute top-[190px] left-[696px]">
           <Menu

@@ -7,8 +7,9 @@ import { provisions } from '../../world/fleets';
 import ProgressBar from '../common/ProgressBar';
 import HarborSupply, { SupplyProvision } from './HarborSupply';
 import { getLoadPercent, getPlayerFleet } from '../../state/selectorsFleet';
-import BuildingWrapper, { VendorMessage } from './BuildingWrapper';
+import BuildingWrapper from './BuildingWrapper';
 import useBuildingState from './hooks/useBuildingState';
+import { VendorMessageDialog } from '../quest/messagesAtStep';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
 type HarborOptions = typeof harborOptions[number];
@@ -37,10 +38,7 @@ export default function Harbor() {
 
   const { option, step } = state;
 
-  let vendorMessage: VendorMessage = {
-    body: 'Ahoy there, matey, will ye be shoving off?',
-    showCaretDown: false,
-  };
+  let vendorMessage: VendorMessageDialog | null = null;
 
   if (option === 'Supply') {
     vendorMessage = null;
@@ -61,7 +59,12 @@ export default function Harbor() {
   );
 
   return (
-    <BuildingWrapper buildingId="4" vendorMessage={vendorMessage} menu={menu}>
+    <BuildingWrapper
+      buildingId="4"
+      greeting="Ahoy there, matey, will ye be shoving off?"
+      vendorMessage={vendorMessage}
+      menu={menu}
+    >
       {option === 'Supply' && step >= 0 && (
         <div className="absolute top-[256px] left-[16px]">
           <DialogBox>

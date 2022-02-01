@@ -23,18 +23,23 @@ export default function useQuestStep() {
     }
 
     const next = () => {
-      if (message.action) {
-        message.action();
+      const { sideEffects } = message;
+
+      if (!sideEffects) {
+        setStep(step + 1);
+        return;
       }
 
-      if (message.completeQuest) {
+      if (sideEffects.action) {
+        sideEffects.action();
+      }
+
+      if (sideEffects.completeQuest) {
         completeQuest(quest);
       }
 
-      if (message.exitBuilding) {
+      if (sideEffects.exitBuilding) {
         exitBuilding();
-      } else {
-        setStep(step + 1);
       }
     };
 

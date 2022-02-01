@@ -40,7 +40,7 @@ const characterData: CharacterData = {
 };
 
 interface Props {
-  message: CharacterMessageDialog;
+  message: CharacterMessageDialog | null;
 }
 
 export default function MessageDialog({ message }: Props) {
