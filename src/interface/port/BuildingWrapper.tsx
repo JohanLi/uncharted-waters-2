@@ -7,19 +7,18 @@ import VendorMessageBox from './VendorMessageBox';
 import useCaretDown from './hooks/useCaretDown';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import useCancel from './hooks/useCancel';
+import { UseBuildingType } from './hooks/useBuilding';
 
 interface Props {
   buildingId: string;
   vendorMessageBox: VendorMessageBoxType;
   menu?: ReactNode;
   children?: ReactNode;
-  back: () => void;
-  backActive: boolean;
-  next: () => void;
+  building: UseBuildingType<any>;
 }
 
 export default function BuildingWrapper(props: Props) {
-  const { buildingId, menu, children, back, backActive, next } = props;
+  const { buildingId, menu, children, building } = props;
   let { vendorMessageBox } = props;
 
   const quest = useQuestStep();
@@ -41,9 +40,10 @@ export default function BuildingWrapper(props: Props) {
     const active = !!messageBoxes.find((message) => message?.showCaretDown);
     useCaretDown(quest.next, active);
   } else {
-    useCancel(back, backActive);
+    useCancel(building.back, building.state.option === null);
+
     const active = !!vendorMessageBox?.showCaretDown;
-    useCaretDown(next, active);
+    useCaretDown(building.next, active);
   }
 
   return (

@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect } from 'react';
 import Menu from '../../common/Menu';
 import { setSail } from '../../../state/actionsWorld';
 import BuildingWrapper from '../BuildingWrapper';
-import useBuildingState from '../hooks/useBuildingState';
+import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
 import HarborSupply from './HarborSupply';
 
@@ -13,7 +13,8 @@ type HarborOptions = typeof harborOptions[number];
 const harborDisabledOptions: HarborOptions[] = ['Moor'];
 
 export default function Harbor() {
-  const { selectOption, back, next, state } = useBuildingState<HarborOptions>();
+  const building = useBuilding<HarborOptions>();
+  const { selectOption, back, state } = building;
 
   useEffect(() => {
     const { option, step } = state;
@@ -55,9 +56,7 @@ export default function Harbor() {
       buildingId="4"
       vendorMessageBox={vendorMessage}
       menu={menu}
-      back={back}
-      backActive={state.option === null}
-      next={next}
+      building={building}
     >
       {children}
     </BuildingWrapper>

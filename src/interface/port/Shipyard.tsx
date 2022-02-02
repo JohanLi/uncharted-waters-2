@@ -12,7 +12,7 @@ import { shipData } from '../../data/shipData';
 import DialogYesNo from '../common/DialogYesNo';
 import { getPlayerFleet, getPlayerFleetShip } from '../../state/selectorsFleet';
 import BuildingWrapper from './BuildingWrapper';
-import useBuildingState from './hooks/useBuildingState';
+import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 
 const shipyardOptions = [
@@ -32,8 +32,8 @@ const shipyardDisabledOptions: ShipyardOptions[] = [
 ];
 
 export default function Shipyard() {
-  const { selectOption, back, next, reset, state } =
-    useBuildingState<ShipyardOptions>();
+  const building = useBuilding<ShipyardOptions>();
+  const { selectOption, back, next, reset, state } = building;
 
   const [selectedShipId, setSelectedShipId] = useState<string>();
   const [purchasedShipName, setPurchasedShipName] = useState('');
@@ -150,9 +150,7 @@ export default function Shipyard() {
       buildingId="3"
       vendorMessageBox={vendorMessage}
       menu={menu}
-      back={back}
-      backActive={option === null}
-      next={next}
+      building={building}
     >
       {option === 'Used Ship' && (
         <div className="absolute top-[190px] left-[696px]">

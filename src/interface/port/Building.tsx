@@ -5,7 +5,7 @@ import Menu from '../common/Menu';
 import Harbor from './harbor/Harbor';
 import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
-import useBuildingState from './hooks/useBuildingState';
+import useBuilding from './hooks/useBuilding';
 
 interface Props {
   buildingId: string;
@@ -22,7 +22,7 @@ export default function Building({ buildingId }: Props) {
     return <Shipyard />;
   }
 
-  const { back, next } = useBuildingState();
+  const building = useBuilding();
 
   const menu = (
     <Menu
@@ -42,9 +42,7 @@ export default function Building({ buildingId }: Props) {
         body: 'This feature is not implemented yet. Press ESC to exit this building.',
       }}
       menu={menu}
-      back={back}
-      backActive
-      next={next}
+      building={building}
     />
   );
 }

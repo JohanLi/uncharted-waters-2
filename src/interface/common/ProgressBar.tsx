@@ -5,6 +5,10 @@ interface Props {
 }
 
 export default function ProgressBar({ percent }: Props) {
+  if (percent < 0 || percent > 100) {
+    throw Error('Provided an invalid percent');
+  }
+
   return (
     <div className="h-[14px] flex flex-col">
       <div className="flex-1 flex">
