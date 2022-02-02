@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import DialogBox from './DialogBox';
+import MessageBox from './MessageBox';
 import { classNames } from '../interfaceUtils';
 
 export interface Option<T> {
@@ -79,7 +79,7 @@ export default function Menu<T extends number | string>({
 
   return (
     <div className={hidden ? 'hidden' : ''}>
-      <DialogBox>
+      <MessageBox>
         <div className={wide ? 'w-[280px]' : 'w-[208px]'}>
           {Boolean(title) && (
             <div className="text-center text-2xl py-2 mb-4 cursor-pointer bg-orange-200">
@@ -122,7 +122,7 @@ export default function Menu<T extends number | string>({
             );
           })}
         </div>
-      </DialogBox>
+      </MessageBox>
     </div>
   );
 }

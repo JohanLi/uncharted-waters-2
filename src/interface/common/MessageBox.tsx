@@ -14,7 +14,7 @@ interface Props {
   children: ReactNode;
 }
 
-export default function DialogBox({ children }: Props) {
+export default function MessageBox({ children }: Props) {
   return (
     <div
       className="relative p-4 bg-[#f3e3d3]"

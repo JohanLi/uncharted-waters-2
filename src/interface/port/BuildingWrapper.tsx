@@ -1,33 +1,46 @@
 import React, { ReactNode } from 'react';
 
 import Assets from '../../assets';
-import DialogBox from '../common/DialogBox';
 import useQuestStep from '../quest/useQuestStep';
-import MessageDialog from '../quest/MessageDialog';
-import { VendorMessageDialog } from '../quest/messagesAtStep';
+import CharacterMessageBox from './CharacterMessageBox';
+import VendorMessageBox from './VendorMessageBox';
+import useCaretDown from './hooks/useCaretDown';
+import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 
 interface Props {
   buildingId: string;
   greeting: string;
-  vendorMessage: VendorMessageDialog | null;
+  vendorMessageBox: VendorMessageBoxType;
   menu?: ReactNode;
   children?: ReactNode;
 }
 
 export default function BuildingWrapper(props: Props) {
   const { buildingId, greeting, menu, children } = props;
-  let { vendorMessage } = props;
-  let vendorShowCaretDown = true;
+  let { vendorMessageBox } = props;
 
   const quest = useQuestStep();
 
+  let characterDialogs: ReactNode;
+
   if (quest) {
-    vendorMessage = quest.vendor;
-  } else if (!vendorMessage) {
-    vendorMessage = {
+    const { messageBoxes } = quest;
+    [vendorMessageBox] = messageBoxes;
+
+    if (messageBoxes.find((message) => message?.showCaretDown)) {
+      useCaretDown(quest.next);
+    }
+
+    characterDialogs = (
+      <>
+        <CharacterMessageBox messageBox={messageBoxes[1]} position={1} />
+        <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
+      </>
+    );
+  } else if (!vendorMessageBox) {
+    vendorMessageBox = {
       body: greeting,
     };
-    vendorShowCaretDown = false;
   }
 
   return (
@@ -37,44 +50,11 @@ export default function BuildingWrapper(props: Props) {
         backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
       }}
     >
-      <div className="flex items-start">
-        <div className="p-4 pr-0">
-          <img
-            src={Assets.buildings(buildingId)}
-            alt=""
-            className="w-[272px]"
-          />
-        </div>
-        <div className={vendorMessage !== null ? '' : 'invisible'}>
-          <DialogBox>
-            <div className="w-[448px] h-[224px] text-2xl px-4 py-2">
-              {vendorMessage !== null && (
-                <>
-                  {vendorMessage.body}
-                  {!!vendorMessage.body && vendorShowCaretDown && (
-                    <img
-                      src={Assets.images.dialogCaretDown.toDataURL()}
-                      alt=""
-                      className="w-8 h-8 animate-ping mx-auto mt-8"
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          </DialogBox>
-        </div>
-        {!quest && !!menu && <div className="mt-[190px]">{menu}</div>}
-      </div>
-      {!!quest && (
-        <div className="absolute top-4 left-[304px]">
-          <MessageDialog message={quest.upper} />
-        </div>
+      <VendorMessageBox buildingId={buildingId} messageBox={vendorMessageBox} />
+      {!quest && !!menu && (
+        <div className="absolute top-[190px] left-[768px]">{menu}</div>
       )}
-      {!!quest && (
-        <div className="absolute top-[320px] ml-[416px]">
-          <MessageDialog message={quest.lower} />
-        </div>
-      )}
+      {characterDialogs}
       {children}
     </div>
   );

@@ -39,7 +39,7 @@ export default function Building({ buildingId }: Props) {
     <BuildingWrapper
       buildingId={buildingId}
       greeting="This feature is not implemented yet. Press ESC to exit this building."
-      vendorMessage={null}
+      vendorMessageBox={null}
       menu={menu}
     />
   );

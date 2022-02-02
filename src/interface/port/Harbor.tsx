@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import DialogBox from '../common/DialogBox';
+import MessageBox from '../common/MessageBox';
 import Menu from '../common/Menu';
 import { setSail } from '../../state/actionsWorld';
 import { provisions } from '../../world/fleets';
@@ -9,7 +9,7 @@ import HarborSupply, { SupplyProvision } from './HarborSupply';
 import { getLoadPercent, getPlayerFleet } from '../../state/selectorsFleet';
 import BuildingWrapper from './BuildingWrapper';
 import useBuildingState from './hooks/useBuildingState';
-import { VendorMessageDialog } from '../quest/messagesAtStep';
+import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
 type HarborOptions = typeof harborOptions[number];
@@ -38,7 +38,7 @@ export default function Harbor() {
 
   const { option, step } = state;
 
-  let vendorMessage: VendorMessageDialog | null = null;
+  let vendorMessage: VendorMessageBoxType = null;
 
   if (option === 'Supply') {
     vendorMessage = null;
@@ -62,12 +62,12 @@ export default function Harbor() {
     <BuildingWrapper
       buildingId="4"
       greeting="Ahoy there, matey, will ye be shoving off?"
-      vendorMessage={vendorMessage}
+      vendorMessageBox={vendorMessage}
       menu={menu}
     >
       {option === 'Supply' && step >= 0 && (
         <div className="absolute top-[256px] left-[16px]">
-          <DialogBox>
+          <MessageBox>
             <div className="px-4 py-2">
               <div className="flex items-center">
                 <div className="w-64 text-green-600">Ship</div>
@@ -111,7 +111,7 @@ export default function Harbor() {
                 </div>
               ))}
             </div>
-          </DialogBox>
+          </MessageBox>
         </div>
       )}
       {option === 'Supply' && step === 1 && supplyProvision !== undefined && (

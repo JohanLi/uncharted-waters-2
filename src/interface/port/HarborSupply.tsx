@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import DialogBox from '../common/DialogBox';
+import MessageBox from '../common/MessageBox';
 import { Provisions } from '../../world/fleets';
 import { getAvailableSpace } from '../../state/selectorsFleet';
 import { provisionCost, supplyShipNumber } from '../../state/actionsPort';
@@ -22,7 +22,7 @@ export default function HarborSupply({ supplyProvision, selected }: Props) {
   const availableSpace = getAvailableSpace(shipNumber);
 
   return (
-    <DialogBox>
+    <MessageBox>
       <div className="w-[400px] text-2xl px-4 py-2">
         {provision === 'water' &&
           'Water is free. How many barrels should we load?'}
@@ -65,6 +65,6 @@ export default function HarborSupply({ supplyProvision, selected }: Props) {
           </button>
         </div>
       </div>
-    </DialogBox>
+    </MessageBox>
   );
 }

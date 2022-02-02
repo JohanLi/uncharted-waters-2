@@ -2,8 +2,8 @@ import React from 'react';
 
 import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
-import DialogBox from '../common/DialogBox';
-import { CharacterMessageDialog } from './messagesAtStep';
+import MessageBox from '../common/MessageBox';
+import { CharacterMessageBoxType } from '../quest/getMessageBoxes';
 
 type CharacterData = {
   [key: string]: {
@@ -39,15 +39,23 @@ const characterData: CharacterData = {
   },
 };
 
+type Position = 1 | 2;
+
 interface Props {
-  message: CharacterMessageDialog | null;
+  messageBox: CharacterMessageBoxType;
+  position: Position;
 }
 
-export default function MessageDialog({ message }: Props) {
+const positionClassMap: { [key in Position]: string } = {
+  1: 'absolute top-4 left-[304px]',
+  2: 'absolute top-[320px] ml-[416px]',
+};
+
+export default function CharacterMessageBox({ messageBox, position }: Props) {
   let inner = null;
 
-  if (message !== null) {
-    const { body, characterId } = message;
+  if (messageBox !== null) {
+    const { body, characterId, showCaretDown } = messageBox;
     const { name, color } = characterData[characterId];
 
     inner = (
@@ -60,7 +68,7 @@ export default function MessageDialog({ message }: Props) {
         <div className="flex-1 text-2xl pl-4">
           <div className={classNames('text-base mb-2', color)}>{name}</div>
           {body}
-          {Boolean(body) && (
+          {showCaretDown && (
             <img
               src={Assets.images.dialogCaretDown.toDataURL()}
               alt=""
@@ -73,10 +81,12 @@ export default function MessageDialog({ message }: Props) {
   }
 
   return (
-    <div className={message !== null ? '' : 'invisible'}>
-      <DialogBox>
-        <div className="flex w-[592px] h-[256px] text-2xl p-4">{inner}</div>
-      </DialogBox>
+    <div className={positionClassMap[position]}>
+      <div className={messageBox !== null ? '' : 'invisible'}>
+        <MessageBox>
+          <div className="flex w-[592px] h-[256px] text-2xl p-4">{inner}</div>
+        </MessageBox>
+      </div>
     </div>
   );
 }

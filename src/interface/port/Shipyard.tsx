@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import DialogBox from '../common/DialogBox';
+import MessageBox from '../common/MessageBox';
 import Menu from '../common/Menu';
 import {
   purchaseUsedShip,
@@ -13,7 +13,7 @@ import DialogYesNo from '../common/DialogYesNo';
 import { getPlayerFleet, getPlayerFleetShip } from '../../state/selectorsFleet';
 import BuildingWrapper from './BuildingWrapper';
 import useBuildingState from './hooks/useBuildingState';
-import { VendorMessageDialog } from '../quest/messagesAtStep';
+import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 
 const shipyardOptions = [
   'New Ship',
@@ -69,11 +69,12 @@ export default function Shipyard() {
 
   const { option, step } = state;
 
-  let vendorMessage: VendorMessageDialog | null = null;
+  let vendorMessage: VendorMessageBoxType = null;
 
   if (option === 'Repair') {
     vendorMessage = {
       body: 'Your fleet’s already in tiptop shape, matey!',
+      showCaretDown: true,
     };
   }
 
@@ -81,6 +82,7 @@ export default function Shipyard() {
     if (step === 1 && selectedShipId) {
       vendorMessage = {
         body: shipData[selectedShipId].description,
+        showCaretDown: true,
       };
     }
 
@@ -108,6 +110,7 @@ export default function Shipyard() {
       if (getPlayerFleet().length === 1) {
         vendorMessage = {
           body: 'We only have the flag ship.',
+          showCaretDown: true,
         };
       } else {
         vendorMessage = {
@@ -144,7 +147,7 @@ export default function Shipyard() {
     <BuildingWrapper
       buildingId="3"
       greeting="What brings you to this shipyard?"
-      vendorMessage={vendorMessage}
+      vendorMessageBox={vendorMessage}
       menu={menu}
     >
       {option === 'Used Ship' && (
@@ -207,7 +210,7 @@ export default function Shipyard() {
       )}
       {option === 'Used Ship' && step === 4 && (
         <div className="absolute top-[500px] left-[96px]">
-          <DialogBox>
+          <MessageBox>
             <div className="w-[272px] text-2xl p-4">
               <div className="mb-4">Ship name?</div>
               <div>
@@ -221,7 +224,7 @@ export default function Shipyard() {
                 />
               </div>
             </div>
-          </DialogBox>
+          </MessageBox>
         </div>
       )}
       {option === 'Sell' && getPlayerFleet().length > 1 && (
