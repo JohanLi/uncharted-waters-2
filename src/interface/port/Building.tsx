@@ -2,7 +2,7 @@ import React from 'react';
 
 import Shipyard from './Shipyard';
 import Menu from '../common/Menu';
-import Harbor from './Harbor';
+import Harbor from './harbor/Harbor';
 import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
 import useBuildingState from './hooks/useBuildingState';
@@ -22,7 +22,7 @@ export default function Building({ buildingId }: Props) {
     return <Shipyard />;
   }
 
-  useBuildingState();
+  const { back, next } = useBuildingState();
 
   const menu = (
     <Menu
@@ -38,9 +38,13 @@ export default function Building({ buildingId }: Props) {
   return (
     <BuildingWrapper
       buildingId={buildingId}
-      greeting="This feature is not implemented yet. Press ESC to exit this building."
-      vendorMessageBox={null}
+      vendorMessageBox={{
+        body: 'This feature is not implemented yet. Press ESC to exit this building.',
+      }}
       menu={menu}
+      back={back}
+      backActive
+      next={next}
     />
   );
 }

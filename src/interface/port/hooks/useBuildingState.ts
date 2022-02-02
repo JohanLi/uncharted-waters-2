@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { exitBuilding } from '../../../state/actionsPort';
 
 type State<T> = { option: T | null; step: number };
@@ -44,35 +44,6 @@ const useBuildingState = <T extends string>() => {
   const reset = () => {
     setState(initialState);
   };
-
-  useEffect(() => {
-    const onKeyup = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-
-      if (['e', 'enter'].includes(pressedKey)) {
-        if (state.option) {
-          next();
-        }
-      }
-
-      if (['escape', 'backspace'].includes(pressedKey)) {
-        back();
-      }
-    };
-
-    const onContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
-      back();
-    };
-
-    window.addEventListener('keyup', onKeyup);
-    window.addEventListener('contextmenu', onContextMenu);
-
-    return () => {
-      window.removeEventListener('keyup', onKeyup);
-      window.removeEventListener('contextmenu', onContextMenu);
-    };
-  }, [state]);
 
   return { selectOption, back, next, reset, state };
 };

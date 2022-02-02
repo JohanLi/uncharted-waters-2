@@ -11,6 +11,7 @@ const interfaceImagesToLoad = {
   dialogShip: import('./interface/assets/dialog-ship.png'),
   dialogYes: import('./interface/assets/dialog-yes.png'),
   dialogNo: import('./interface/assets/dialog-no.png'),
+  dialogSubmit: import('./interface/assets/dialog-submit.png'),
   buildingBackground: import('./interface/port/assets/background.png'),
   buildings: import('./interface/port/assets/buildings.png'),
   characters: import('./interface/assets/characters.png'),

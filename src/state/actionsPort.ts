@@ -71,7 +71,7 @@ export const provisionCost: { [key in Provisions]: number } = {
   shot: 120,
 };
 
-export const supplyShipNumber = (
+export const supplyShip = (
   shipNumber: number,
   provision: Provisions,
   quantity: number,

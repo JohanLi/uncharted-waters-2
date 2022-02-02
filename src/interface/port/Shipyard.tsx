@@ -69,7 +69,9 @@ export default function Shipyard() {
 
   const { option, step } = state;
 
-  let vendorMessage: VendorMessageBoxType = null;
+  let vendorMessage: VendorMessageBoxType = {
+    body: 'What brings you to this shipyard?',
+  };
 
   if (option === 'Repair') {
     vendorMessage = {
@@ -146,9 +148,11 @@ export default function Shipyard() {
   return (
     <BuildingWrapper
       buildingId="3"
-      greeting="What brings you to this shipyard?"
       vendorMessageBox={vendorMessage}
       menu={menu}
+      back={back}
+      backActive={option === null}
+      next={next}
     >
       {option === 'Used Ship' && (
         <div className="absolute top-[190px] left-[696px]">

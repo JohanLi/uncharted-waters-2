@@ -6,17 +6,20 @@ import CharacterMessageBox from './CharacterMessageBox';
 import VendorMessageBox from './VendorMessageBox';
 import useCaretDown from './hooks/useCaretDown';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
+import useCancel from './hooks/useCancel';
 
 interface Props {
   buildingId: string;
-  greeting: string;
   vendorMessageBox: VendorMessageBoxType;
   menu?: ReactNode;
   children?: ReactNode;
+  back: () => void;
+  backActive: boolean;
+  next: () => void;
 }
 
 export default function BuildingWrapper(props: Props) {
-  const { buildingId, greeting, menu, children } = props;
+  const { buildingId, menu, children, back, backActive, next } = props;
   let { vendorMessageBox } = props;
 
   const quest = useQuestStep();
@@ -25,11 +28,8 @@ export default function BuildingWrapper(props: Props) {
 
   if (quest) {
     const { messageBoxes } = quest;
-    [vendorMessageBox] = messageBoxes;
 
-    if (messageBoxes.find((message) => message?.showCaretDown)) {
-      useCaretDown(quest.next);
-    }
+    [vendorMessageBox] = messageBoxes;
 
     characterDialogs = (
       <>
@@ -37,10 +37,13 @@ export default function BuildingWrapper(props: Props) {
         <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
       </>
     );
-  } else if (!vendorMessageBox) {
-    vendorMessageBox = {
-      body: greeting,
-    };
+
+    const active = !!messageBoxes.find((message) => message?.showCaretDown);
+    useCaretDown(quest.next, active);
+  } else {
+    useCancel(back, backActive);
+    const active = !!vendorMessageBox?.showCaretDown;
+    useCaretDown(next, active);
   }
 
   return (
