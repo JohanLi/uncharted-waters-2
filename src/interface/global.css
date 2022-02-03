@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.game-fade {
+  animation: gameFade linear 0.3s;
+}
+
+@keyframes gameFade {
+  0% {
+    opacity: 1;
+  }
+  67% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

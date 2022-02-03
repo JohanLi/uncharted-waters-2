@@ -40,3 +40,9 @@ export const getHoursMinutes = (timePassed: number) => {
 export const getIngots = (gold: number) => Math.floor(gold / 10000);
 
 export const getCoins = (gold: number) => gold % 10000;
+
+export const minutesUntilNextMorning = (timePassed: number) => {
+  const nextMorning = Math.floor(timePassed / 1440) * 1440 + 1440 + 480;
+
+  return nextMorning - timePassed;
+};

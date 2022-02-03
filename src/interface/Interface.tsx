@@ -11,6 +11,8 @@ import Tabs, { Tab } from './Tabs';
 import Fleet from './Fleet';
 import updateInterface from '../state/updateInterface';
 import Building from './port/Building';
+import { classNames } from './interfaceUtils';
+import useFade from './port/hooks/useFade';
 
 import './global.css';
 
@@ -27,6 +29,8 @@ function Interface() {
     setGold(general.gold);
   };
 
+  const { fade, onAnimationEnd } = useFade();
+
   const inPort = Boolean(portId);
 
   const [currentTab, setCurrentTab] = useState<Tab>('Home');
@@ -38,7 +42,13 @@ function Interface() {
         <Left inPort={inPort} timePassed={timePassed} gold={gold}>
           <Provisions hidden={inPort} />
         </Left>
-        <div className="w-[1280px] h-[800px] relative select-none">
+        <div
+          className={classNames(
+            'w-[1280px] h-[800px] relative select-none',
+            fade ? 'game-fade' : '',
+          )}
+          onAnimationEnd={onAnimationEnd}
+        >
           {currentTab === 'Home' && buildingId !== null && (
             <Building buildingId={buildingId} />
           )}

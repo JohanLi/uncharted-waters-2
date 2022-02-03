@@ -5,6 +5,7 @@ import { getUsedShips, isDay } from './selectors';
 import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
 import type { Quests } from '../interface/quest/questData';
+import { minutesUntilNextMorning } from '../interface/interfaceUtils';
 
 export const updateGeneral = () => {
   updateInterface.general({
@@ -21,8 +22,13 @@ export const enterBuilding = (buildingId: string) => {
   updateGeneral();
 };
 
-export const exitBuilding = () => {
-  state.timePassed += sample([40, 60, 80]);
+export const exitBuilding = (sleep = false) => {
+  if (!sleep) {
+    state.timePassed += sample([40, 60, 80]);
+  } else {
+    state.timePassed += minutesUntilNextMorning(state.timePassed);
+  }
+
   state.buildingId = null;
 
   if (isDay()) {
@@ -114,4 +120,10 @@ export const receiveGold = (amount: number) => {
   state.gold += amount;
 
   updateGeneral();
+};
+
+export const checkIn = () => {
+  updateInterface.fade(() => {
+    exitBuilding(true);
+  });
 };

@@ -6,6 +6,7 @@ import Harbor from './harbor/Harbor';
 import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
 import useBuilding from './hooks/useBuilding';
+import Lodge from './Lodge';
 
 interface Props {
   buildingId: string;
@@ -20,6 +21,10 @@ export default function Building({ buildingId }: Props) {
 
   if (name === 'Shipyard') {
     return <Shipyard />;
+  }
+
+  if (name === 'Lodge') {
+    return <Lodge />;
   }
 
   const { back } = useBuilding();
