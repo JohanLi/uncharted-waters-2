@@ -56,7 +56,7 @@ export default function HarborSupplyInput({
             <div className="pr-4">
               <input
                 className={classNames(
-                  'w-36 pl-4 pr-2 py-2',
+                  'w-36 px-4 py-2',
                   'border-2 border-[#d34100]',
                   'focus:outline-none focus:ring-4 focus:ring-[#f3a261]',
                 )}

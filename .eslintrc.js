@@ -31,5 +31,10 @@ module.exports = {
       'error',
       { props: true, ignorePropertyModificationsFor: ['state'] },
     ],
+    /*
+     TypeScript does not seem to pick up defaultProps on functional components.
+     Optional props will be receiving default values on destructuring.
+     */
+    'react/require-default-props': 'off',
   },
 };

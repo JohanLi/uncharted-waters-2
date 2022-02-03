@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-export default function useCaretDown(onCaretDown: () => void, active = true) {
+export default function useCaretDown(onCaretDown?: () => void) {
   useEffect(() => {
-    if (!active) {
+    if (!onCaretDown) {
       return () => {};
     }
 
@@ -15,7 +15,7 @@ export default function useCaretDown(onCaretDown: () => void, active = true) {
     const onKeyup = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
-      if (['e', 'enter', 'escape', 'backspace'].includes(pressedKey)) {
+      if (['e', 'enter', 'escape'].includes(pressedKey)) {
         e.preventDefault();
         onCaretDown();
       }

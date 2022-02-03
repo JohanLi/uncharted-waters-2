@@ -4,6 +4,7 @@ import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
 import MessageBox from '../common/MessageBox';
 import { CharacterMessageBoxType } from '../quest/getMessageBoxes';
+import useCaretDown from './hooks/useCaretDown';
 
 type CharacterData = {
   [key: string]: {
@@ -52,6 +53,8 @@ const positionClassMap: { [key in Position]: string } = {
 };
 
 export default function CharacterMessageBox({ messageBox, position }: Props) {
+  useCaretDown(messageBox?.showCaretDown);
+
   let inner = null;
 
   if (messageBox !== null) {

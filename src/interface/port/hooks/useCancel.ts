@@ -9,7 +9,7 @@ export default function useCancel(onCancel: () => void, active = true) {
     const onKeyup = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
-      if (['escape', 'backspace'].includes(pressedKey)) {
+      if (pressedKey === 'escape') {
         e.preventDefault();
         onCancel();
       }

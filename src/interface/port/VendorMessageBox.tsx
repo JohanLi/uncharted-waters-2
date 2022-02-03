@@ -3,6 +3,8 @@ import React from 'react';
 import MessageBox from '../common/MessageBox';
 import Assets from '../../assets';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
+import DialogYesNo from '../common/DialogYesNo';
+import useCaretDown from './hooks/useCaretDown';
 
 interface Props {
   buildingId: string;
@@ -10,29 +12,54 @@ interface Props {
 }
 
 export default function VendorMessageBox({ buildingId, messageBox }: Props) {
+  useCaretDown(messageBox?.showCaretDown);
+
+  const showYesNo = messageBox?.showYesNo;
+
   return (
-    <div className="flex">
-      <div className="p-4 pr-0">
-        <img src={Assets.buildings(buildingId)} alt="" className="w-[272px]" />
+    <>
+      <div className="flex">
+        <div className="p-4 pr-0">
+          <img
+            src={Assets.buildings(buildingId)}
+            alt=""
+            className="w-[272px]"
+          />
+        </div>
+        <div className={messageBox !== null ? '' : 'invisible'}>
+          <MessageBox>
+            <div className="w-[448px] h-[224px] text-2xl px-4 py-2">
+              {messageBox !== null && (
+                <>
+                  {messageBox.body}
+                  {messageBox.showCaretDown && (
+                    <img
+                      src={Assets.images.dialogCaretDown.toDataURL()}
+                      alt=""
+                      className="w-8 h-8 animate-ping mx-auto mt-8"
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          </MessageBox>
+        </div>
       </div>
-      <div className={messageBox !== null ? '' : 'invisible'}>
-        <MessageBox>
-          <div className="w-[448px] h-[224px] text-2xl px-4 py-2">
-            {messageBox !== null && (
-              <>
-                {messageBox.body}
-                {messageBox.showCaretDown && (
-                  <img
-                    src={Assets.images.dialogCaretDown.toDataURL()}
-                    alt=""
-                    className="w-8 h-8 animate-ping mx-auto mt-8"
-                  />
-                )}
-              </>
-            )}
-          </div>
-        </MessageBox>
-      </div>
-    </div>
+      {!!showYesNo && (
+        <DialogYesNo
+          onSelected={(selected) => {
+            if (selected) {
+              showYesNo.yes();
+            } else {
+              showYesNo.no();
+            }
+          }}
+          initialPosition={{
+            x: 696,
+            y: 190,
+          }}
+        />
+      )}
+    </>
   );
 }

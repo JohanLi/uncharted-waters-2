@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Assets from '../../assets';
-import { shipData } from '../../data/shipData';
+import Assets from '../../../assets';
+import { shipData } from '../../../data/shipData';
 
 interface Props {
   shipId: string;
 }
 
-export default function DialogShipInfo({ shipId }: Props) {
+export default function ShipyardShipBox({ shipId }: Props) {
   const {
     name,
     durability,

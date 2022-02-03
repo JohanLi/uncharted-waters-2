@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Shipyard from './Shipyard';
+import Shipyard from './shipyard/Shipyard';
 import Menu from '../common/Menu';
 import Harbor from './harbor/Harbor';
 import BuildingWrapper from './BuildingWrapper';

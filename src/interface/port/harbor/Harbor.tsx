@@ -30,13 +30,6 @@ export default function Harbor() {
     body: 'Ahoy there, matey, will ye be shoving off?',
   };
 
-  let children: ReactNode;
-
-  if (option === 'Supply') {
-    vendorMessage = null;
-    children = <HarborSupply back={back} />;
-  }
-
   const menu = (
     <Menu
       options={harborOptions.map((s) => ({
@@ -50,6 +43,13 @@ export default function Harbor() {
       hidden={option !== null}
     />
   );
+
+  let children: ReactNode;
+
+  if (option === 'Supply') {
+    vendorMessage = null;
+    children = <HarborSupply back={back} />;
+  }
 
   return (
     <BuildingWrapper

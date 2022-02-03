@@ -16,7 +16,12 @@ interface Props {
   children?: ReactNode;
 }
 
-export default function Left({ inPort, timePassed, gold, children }: Props) {
+export default function Left({
+  inPort,
+  timePassed,
+  gold,
+  children = null,
+}: Props) {
   const [dayAtSea, setDayAtSea] = useState(0);
 
   updateInterface.dayAtSea = (d) => {
@@ -39,7 +44,3 @@ export default function Left({ inPort, timePassed, gold, children }: Props) {
     </div>
   );
 }
-
-Left.defaultProps = {
-  children: null,
-};

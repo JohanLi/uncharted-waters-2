@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
 import getAvailableQuest from './getAvailableQuest';
-import questData from './questData';
+import questData, { Message } from './questData';
 import getMessageBoxes from './getMessageBoxes';
 import { completeQuest, exitBuilding } from '../../state/actionsPort';
+
+export const showCaretDown = (message: Pick<Message, 'confirm'> | null) =>
+  Boolean(message && message.confirm === undefined);
 
 export default function useQuestStep() {
   const [step, setStep] = useState(0);
@@ -37,8 +40,12 @@ export default function useQuestStep() {
     }
   };
 
-  return {
-    messageBoxes: getMessageBoxes(messages, step),
-    next,
-  };
+  const messageBoxes = getMessageBoxes(messages, step);
+  const currentMessageBox = messageBoxes[message.position];
+
+  if (showCaretDown(message) && currentMessageBox) {
+    currentMessageBox.showCaretDown = next;
+  }
+
+  return { messageBoxes };
 }

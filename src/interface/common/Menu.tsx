@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+
 import React, { useEffect, useState } from 'react';
 
 import MessageBox from './MessageBox';
@@ -20,9 +23,9 @@ interface Props<T> {
 export default function Menu<T extends number | string>({
   options,
   setSelected,
-  title,
-  wide,
-  hidden,
+  title = '',
+  wide = false,
+  hidden = false,
 }: Props<T>) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -59,7 +62,7 @@ export default function Menu<T extends number | string>({
     const onKeyup = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
-      if (pressedKey === 'enter') {
+      if (['e', 'enter'].includes(pressedKey)) {
         if (!options[activeIndex].disabled) {
           setSelected(options[activeIndex].value);
         }
@@ -126,9 +129,3 @@ export default function Menu<T extends number | string>({
     </div>
   );
 }
-
-Menu.defaultProps = {
-  title: '',
-  wide: false,
-  hidden: false,
-};

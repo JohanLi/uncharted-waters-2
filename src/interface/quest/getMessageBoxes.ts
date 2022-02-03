@@ -6,19 +6,20 @@ import {
 } from './questData';
 
 export type VendorMessageBoxType =
-  | (Pick<VendorMessage, 'body'> & {
-      showCaretDown?: true;
-    })
+  | (Pick<VendorMessage, 'body'> & MessageBoxCommonType)
   | null;
 
 export type CharacterMessageBoxType =
-  | (Pick<CharacterMessage, 'body' | 'characterId'> & {
-      showCaretDown?: true;
-    })
+  | (Pick<CharacterMessage, 'body' | 'characterId'> & MessageBoxCommonType)
   | null;
 
-export const showCaretDown = (message: Pick<Message, 'confirm'> | null) =>
-  Boolean(message && message.confirm === undefined);
+type MessageBoxCommonType = {
+  showCaretDown?: () => void;
+  showYesNo?: {
+    yes: () => void;
+    no: () => void;
+  };
+};
 
 const getMessageBoxes = (messages: Message[], step: number) => {
   const message = messages[step];
@@ -29,10 +30,6 @@ const getMessageBoxes = (messages: Message[], step: number) => {
   return messagePositions.map((position) => {
     if (position === 0) {
       if (message.position === position) {
-        if (showCaretDown(message)) {
-          return { body: message.body, showCaretDown: true };
-        }
-
         return { body: message.body };
       }
 
@@ -53,14 +50,6 @@ const getMessageBoxes = (messages: Message[], step: number) => {
     }
 
     if (message.position === position) {
-      if (showCaretDown(message)) {
-        return {
-          body: message.body,
-          characterId: message.characterId,
-          showCaretDown: true,
-        };
-      }
-
       return { body: message.body, characterId: message.characterId };
     }
 

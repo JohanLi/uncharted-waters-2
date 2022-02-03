@@ -1,8 +1,14 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import React, { useEffect, useState, useRef } from 'react';
 import throttle from 'lodash.throttle';
 
 import Assets from '../../assets';
 import { Position } from '../../types';
+import useCancel from '../port/hooks/useCancel';
 
 const ON_MOUSE_MOVE_THROTTLE = 20;
 const PARENT_WIDTH = 1280;
@@ -17,6 +23,8 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
   const [yesOrNo, setYesOrNo] = useState(true);
   const yesOrNoElement = useRef<HTMLDivElement>(null);
   const lastMousePosition = useRef<Position | undefined>(undefined);
+
+  useCancel(() => onSelected(false));
 
   useEffect(() => {
     const onKeyup = (e: KeyboardEvent) => {
@@ -33,24 +41,10 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
       }
     };
 
-    /*
-      https://stackoverflow.com/questions/7398290/unable-to-understand-usecapture-parameter-in-addeventlistener/7398447
-      Right-clicks normally go back 1 step, but not always when such a dialog
-      is presented. Setting useCapture = true with stopPropagation stops the
-      parent’s step logic.
-     */
-    const onContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onSelected(false);
-    };
-
     window.addEventListener('keyup', onKeyup);
-    window.addEventListener('contextmenu', onContextMenu, true);
 
     return () => {
       window.removeEventListener('keyup', onKeyup);
-      window.removeEventListener('contextmenu', onContextMenu, true);
     };
   }, [yesOrNo]);
 
@@ -114,7 +108,7 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
 
   return (
     <div
-      className="absolute"
+      className="absolute z-10"
       ref={yesOrNoElement}
       style={{ top: initialPosition.y, left: initialPosition.x }}
     >

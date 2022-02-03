@@ -23,7 +23,6 @@ describe('When no one has spoken yet', () => {
     expect(getMessageBoxes([vendorMessage], 0)).toEqual([
       {
         body: vendorMessage.body,
-        showCaretDown: true,
       },
       null,
       null,
@@ -36,7 +35,6 @@ describe('When no one has spoken yet', () => {
       {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
-        showCaretDown: true,
       },
       null,
     ]);
@@ -49,7 +47,6 @@ describe('When no one has spoken yet', () => {
       {
         body: characterMessage2.body,
         characterId: characterMessage2.characterId,
-        showCaretDown: true,
       },
     ]);
   });
@@ -62,7 +59,6 @@ describe('Vendor message if not active', () => {
       {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
-        showCaretDown: true,
       },
       null,
     ]);
@@ -75,7 +71,6 @@ describe('Vendor message if not active', () => {
       {
         body: characterMessage2.body,
         characterId: characterMessage2.characterId,
-        showCaretDown: true,
       },
     ]);
   });
@@ -92,7 +87,6 @@ describe('Upper message if not active', () => {
       {
         body: characterMessage2.body,
         characterId: characterMessage2.characterId,
-        showCaretDown: true,
       },
     ]);
 
@@ -114,7 +108,6 @@ describe('Upper message if not active', () => {
       {
         body: characterMessage2.body,
         characterId: characterMessage2.characterId,
-        showCaretDown: true,
       },
     ]);
   });
@@ -127,7 +120,6 @@ describe('Lower message if not active', () => {
       {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
-        showCaretDown: true,
       },
       {
         body: '',
@@ -142,7 +134,6 @@ describe('Lower message if not active', () => {
       {
         body: characterMessage1.body,
         characterId: characterMessage1.characterId,
-        showCaretDown: true,
       },
       {
         body: '',

@@ -4,7 +4,6 @@ import Assets from '../../assets';
 import useQuestStep from '../quest/useQuestStep';
 import CharacterMessageBox from './CharacterMessageBox';
 import VendorMessageBox from './VendorMessageBox';
-import useCaretDown from './hooks/useCaretDown';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import useCancel from './hooks/useCancel';
 import { UseBuildingType } from './hooks/useBuilding';
@@ -13,13 +12,14 @@ interface Props {
   buildingId: string;
   vendorMessageBox: VendorMessageBoxType;
   menu?: ReactNode;
+  menu2?: ReactNode;
   children?: ReactNode;
   building: UseBuildingType<any>;
 }
 
 export default function BuildingWrapper(props: Props) {
-  const { buildingId, menu, children, building } = props;
-  let { vendorMessageBox } = props;
+  const { buildingId, children, building } = props;
+  let { vendorMessageBox, menu, menu2 } = props;
 
   const quest = useQuestStep();
 
@@ -37,13 +37,10 @@ export default function BuildingWrapper(props: Props) {
       </>
     );
 
-    const active = !!messageBoxes.find((message) => message?.showCaretDown);
-    useCaretDown(quest.next, active);
+    menu = null;
+    menu2 = null;
   } else {
     useCancel(building.back, building.state.option === null);
-
-    const active = !!vendorMessageBox?.showCaretDown;
-    useCaretDown(building.next, active);
   }
 
   return (
@@ -54,16 +51,14 @@ export default function BuildingWrapper(props: Props) {
       }}
     >
       <VendorMessageBox buildingId={buildingId} messageBox={vendorMessageBox} />
-      {!quest && !!menu && (
+      {menu !== null && (
         <div className="absolute top-[190px] left-[768px]">{menu}</div>
+      )}
+      {menu2 !== null && (
+        <div className="absolute top-[190px] left-[696px]">{menu2}</div>
       )}
       {characterDialogs}
       {children}
     </div>
   );
 }
-
-BuildingWrapper.defaultProps = {
-  menu: null,
-  children: null,
-};
