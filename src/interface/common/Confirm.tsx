@@ -10,6 +10,9 @@ import Assets from '../../assets';
 import { Position } from '../../types';
 import useCancel from '../port/hooks/useCancel';
 
+// e.g., if Yes is highlighted but the user clicks No
+const SUBMIT_DELAY_IF_NOT_HIGHLIGHTED = 50;
+
 const ON_MOUSE_MOVE_THROTTLE = 20;
 const PARENT_WIDTH = 1280;
 const PARENT_HEIGHT = 800;
@@ -21,19 +24,31 @@ interface Props {
 }
 
 export default function Confirm({ onYes, onNo, initialPosition }: Props) {
-  const [yes, setYes] = useState(true);
+  const [yesHighlighted, setYesHighlighted] = useState(true);
   const yesOrNoElement = useRef<HTMLDivElement>(null);
   const lastMousePosition = useRef<Position | undefined>(undefined);
 
   useCancel(onNo);
 
-  const onSubmit = () => {
-    if (yes) {
-      onYes();
-    } else {
-      onNo();
+  const [delayedValueToSubmit, setDelayedValueToSubmit] = useState<boolean>();
+
+  useEffect(() => {
+    if (delayedValueToSubmit === undefined) {
+      return () => {};
     }
-  };
+
+    const timer = setTimeout(() => {
+      if (delayedValueToSubmit) {
+        onYes();
+      } else {
+        onNo();
+      }
+    }, SUBMIT_DELAY_IF_NOT_HIGHLIGHTED);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [delayedValueToSubmit]);
 
   useEffect(() => {
     const onKeyup = (e: KeyboardEvent) => {
@@ -41,12 +56,19 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
 
       if (['a', 'd', 'arrowleft', 'arrowright'].includes(pressedKey)) {
         e.preventDefault();
-        setYes(!yes);
+        setYesHighlighted(!yesHighlighted);
       }
 
       if (['e', 'enter'].includes(pressedKey)) {
         e.preventDefault();
-        onSubmit();
+
+        setDelayedValueToSubmit(undefined);
+
+        if (yesHighlighted) {
+          onYes();
+        } else {
+          onNo();
+        }
       }
     };
 
@@ -55,7 +77,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
     return () => {
       window.removeEventListener('keyup', onKeyup);
     };
-  }, [yes]);
+  }, [yesHighlighted]);
 
   const onMouseMove = throttle((e: MouseEvent) => {
     if (!lastMousePosition.current || !yesOrNoElement.current) {
@@ -125,7 +147,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
         <img
           className="w-72 h-28"
           src={
-            yes
+            yesHighlighted
               ? Assets.images.dialogYes.toDataURL()
               : Assets.images.dialogNo.toDataURL()
           }
@@ -142,16 +164,26 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
         <div
           className="absolute top-8 left-5 w-[120px] h-16 cursor-pointer"
           onClick={() => {
-            setYes(true);
-            onSubmit();
+            if (yesHighlighted) {
+              setDelayedValueToSubmit(undefined);
+              onYes();
+            } else {
+              setYesHighlighted(true);
+              setDelayedValueToSubmit(true);
+            }
           }}
           role="button"
         />
         <div
           className="absolute top-8 left-[148px] w-[120px] h-16 cursor-pointer"
           onClick={() => {
-            setYes(false);
-            onSubmit();
+            if (!yesHighlighted) {
+              setDelayedValueToSubmit(undefined);
+              onNo();
+            } else {
+              setYesHighlighted(false);
+              setDelayedValueToSubmit(false);
+            }
           }}
           role="button"
         />

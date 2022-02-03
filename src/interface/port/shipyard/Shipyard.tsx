@@ -144,6 +144,7 @@ export default function Shipyard() {
           <ShipyardShipNameInput
             onSubmit={(usedShipName) => {
               purchaseUsedShip(usedShipId, usedShipName);
+              setUsedShipId(undefined);
               reset();
             }}
             onCancel={() => {
@@ -196,20 +197,33 @@ export default function Shipyard() {
       }
 
       if (step === 1 && selectedShipNumberToSell !== undefined) {
-        const shipId = getPlayerFleetShip(selectedShipNumberToSell).id;
+        /*
+          TODO
+            As you currently cannot modify ships and there are no hull types,
+            we can just use the defaults for the ship model in question.
+         */
+        const ship = getPlayerFleetShip(selectedShipNumberToSell);
 
         vendorMessage = {
           body: `For this ship, I’ll give you ${
-            shipData[shipId].basePrice * SELL_SHIP_MODIFIER
+            shipData[ship.id].basePrice * SELL_SHIP_MODIFIER
           } gold pieces. OK?`,
           confirm: {
             yes: () => {
               sellShipNumber(selectedShipNumberToSell);
+              setSelectedShipNumberToSell(undefined);
               reset();
             },
-            no: back,
+            no: () => {
+              setSelectedShipNumberToSell(undefined);
+              back();
+            },
           },
         };
+
+        children = (
+          <ShipyardShipBox shipId={ship.id} customShipName={ship.name} />
+        );
       }
     }
   }

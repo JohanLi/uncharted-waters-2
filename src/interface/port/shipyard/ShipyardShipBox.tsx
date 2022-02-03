@@ -5,9 +5,10 @@ import { shipData } from '../../../data/shipData';
 
 interface Props {
   shipId: string;
+  customShipName?: string;
 }
 
-export default function ShipyardShipBox({ shipId }: Props) {
+export default function ShipyardShipBox({ shipId, customShipName }: Props) {
   const {
     name,
     durability,
@@ -38,7 +39,9 @@ export default function ShipyardShipBox({ shipId }: Props) {
           alt=""
         />
         <div className="flex-1 pl-8">
-          <div className="text-2xl text-blue-600 text-center mb-4">{name}</div>
+          <div className="text-2xl text-blue-600 text-center mb-4">
+            {customShipName || name}
+          </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-1">
             <div className="col-span-1 flex items-end justify-between">
               <div>Durability</div>
