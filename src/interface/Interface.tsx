@@ -45,7 +45,7 @@ function Interface() {
         <div
           className={classNames(
             'w-[1280px] h-[800px] relative select-none',
-            fade ? 'game-fade' : '',
+            fade ? 'fade-out' : '',
           )}
           onAnimationEnd={onAnimationEnd}
         >

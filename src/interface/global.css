@@ -2,16 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.game-fade {
-  animation: gameFade linear 0.3s;
+.fade-out {
+  animation: fadeOut linear 0.2s;
 }
 
-@keyframes gameFade {
+@keyframes fadeOut {
   0% {
     opacity: 1;
-  }
-  67% {
-    opacity: 0;
   }
   100% {
     opacity: 0;

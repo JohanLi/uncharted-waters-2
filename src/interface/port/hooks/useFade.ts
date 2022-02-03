@@ -2,6 +2,11 @@ import { useState } from 'react';
 
 import updateInterface from '../../../state/updateInterface';
 
+/*
+ TODO
+  This may be the wrong approach – fading effects should be handled at a
+  global level outside React.
+ */
 const useFade = () => {
   const [fade, setFade] = useState<{ onComplete: () => void }>();
 
