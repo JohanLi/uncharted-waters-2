@@ -1,6 +1,7 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
 import type { Quests } from '../interface/quest/questData';
+import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
@@ -38,3 +39,16 @@ export const positionAdjacentToPort = (portId: number) => {
 export const finishedQuest = (quest: Quests) => state.quests.includes(quest);
 
 export const canAfford = (cost: number) => state.gold > cost;
+
+// TODO reset used ships for a given port after some time has passed
+export const getUsedShips = () => {
+  const exitingUsedShips = state.usedShipsAtPort[state.portId];
+
+  if (exitingUsedShips) {
+    return exitingUsedShips;
+  }
+
+  const usedShips = generateUsedShips(state.portId);
+  state.usedShipsAtPort[state.portId] = usedShips;
+  return usedShips;
+};

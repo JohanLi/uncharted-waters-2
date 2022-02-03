@@ -1,7 +1,7 @@
 import updateInterface from './updateInterface';
 import { sample } from '../utils';
 import state from './state';
-import { isDay } from './selectors';
+import { getUsedShips, isDay } from './selectors';
 import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
 import type { Quests } from '../interface/quest/questData';
@@ -36,17 +36,21 @@ export const exitBuilding = () => {
 
 const USED_SHIP_DURABILITY = 0.85;
 
-export const buyUsedShip = (shipId: string, shipName: string) => {
-  const { durability, minimumCrew, basePrice } = shipData[shipId];
+export const buyUsedShip = (id: string, shipName: string) => {
+  const usedShip = getUsedShips();
+  const { durability, minimumCrew, basePrice } = shipData[usedShip[id]];
 
   state.fleets['1'].ships.push({
-    id: shipId,
+    id: usedShip[id],
     name: shipName,
     crew: minimumCrew,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
+
   state.gold -= basePrice;
+
+  delete usedShip[id];
 
   updateGeneral();
 };

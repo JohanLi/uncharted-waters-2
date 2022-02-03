@@ -15,6 +15,9 @@ export type ProvisionsType = {
   [key in Provisions]: number;
 };
 
+type UsedShipsAtPort = { [key: string]: UsedShips };
+export type UsedShips = { [key: string]: string };
+
 export interface State {
   portId: number;
   buildingId: string | null;
@@ -29,6 +32,7 @@ export interface State {
   dayAtSea: number;
   gold: number;
   quests: Quests[];
+  usedShipsAtPort: UsedShipsAtPort;
 }
 
 const state = {
@@ -39,6 +43,7 @@ const state = {
   dayAtSea: 0,
   gold: 2000,
   quests: [] as Quests[],
+  usedShipsAtPort: {},
 } as State;
 
 export default state;

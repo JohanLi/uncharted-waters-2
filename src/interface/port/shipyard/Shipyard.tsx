@@ -16,7 +16,7 @@ import BuildingWrapper from '../BuildingWrapper';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
 import ShipyardShipNameInput from './ShipyardShipNameInput';
-import { canAfford } from '../../../state/selectors';
+import { canAfford, getUsedShips } from '../../../state/selectors';
 
 const shipyardOptions = [
   'New Ship',
@@ -32,26 +32,6 @@ const shipyardDisabledOptions: ShipyardOptions[] = [
   'New Ship',
   'Remodel',
   'Invest',
-];
-
-// TODO generate this, and remove any purchased ships
-const usedShips = [
-  {
-    label: 'Light Galley',
-    value: '19',
-  },
-  {
-    label: 'Brigantine',
-    value: '8',
-  },
-  {
-    label: 'Flemish Galleon',
-    value: '20',
-  },
-  {
-    label: 'Galleon',
-    value: '11',
-  },
 ];
 
 export default function Shipyard() {
@@ -87,10 +67,15 @@ export default function Shipyard() {
   let children: ReactNode;
 
   if (option === 'Used Ship') {
+    const usedShips = getUsedShips();
+
     menu2 = (
       <Menu
         title="Ship Model"
-        options={usedShips}
+        options={Object.entries(usedShips).map(([id, shipId]) => ({
+          label: shipData[shipId].name,
+          value: id,
+        }))}
         onSelect={(shipId) => {
           setUsedShipId(shipId);
           next();
@@ -102,18 +87,20 @@ export default function Shipyard() {
     );
 
     if (usedShipId) {
-      children = <ShipyardShipBox shipId={usedShipId} />;
+      children = <ShipyardShipBox shipId={usedShips[usedShipId]} />;
 
       if (step === 1) {
         vendorMessage = {
-          body: shipData[usedShipId].description,
+          body: shipData[usedShips[usedShipId]].description,
           acknowledge: next,
         };
       }
 
       if (step === 2) {
         vendorMessage = {
-          body: `I’d sell this ship for ${shipData[usedShipId].basePrice} gold pieces. What do ye say?`,
+          body: `I’d sell this ship for ${
+            shipData[usedShips[usedShipId]].basePrice
+          } gold pieces. What do ye say?`,
           confirm: {
             yes: next,
             no: () => {
@@ -125,7 +112,7 @@ export default function Shipyard() {
       }
 
       if (step === 3) {
-        if (canAfford(shipData[usedShipId].basePrice)) {
+        if (canAfford(shipData[usedShips[usedShipId]].basePrice)) {
           vendorMessage = {
             body: 'All right, it’s yers. Time to name yer ship.',
           };
