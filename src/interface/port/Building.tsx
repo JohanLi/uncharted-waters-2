@@ -22,7 +22,7 @@ export default function Building({ buildingId }: Props) {
     return <Shipyard />;
   }
 
-  const building = useBuilding();
+  const { back } = useBuilding();
 
   const menu = (
     <Menu
@@ -31,7 +31,8 @@ export default function Building({ buildingId }: Props) {
         value: option,
         disabled: option !== 'Sail',
       }))}
-      setSelected={() => {}}
+      onSelect={() => {}}
+      onCancel={back}
     />
   );
 
@@ -42,7 +43,6 @@ export default function Building({ buildingId }: Props) {
         body: 'This feature is not implemented yet. Press ESC to exit this building.',
       }}
       menu={menu}
-      building={building}
     />
   );
 }

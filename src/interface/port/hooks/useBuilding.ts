@@ -1,19 +1,11 @@
 import { useState } from 'react';
 import { exitBuilding } from '../../../state/actionsPort';
 
-export type UseBuildingType<T> = {
-  state: State<T>;
-  selectOption: (option: T) => void;
-  next: () => void;
-  back: (steps?: number) => void;
-  reset: () => void;
-};
-
 type State<T> = { option: T | null; step: number };
 
 const initialState = { option: null, step: 0 };
 
-const useBuilding = <T extends string>(): UseBuildingType<T> => {
+const useBuilding = <T extends string>() => {
   const [state, setState] = useState<State<T>>(initialState);
 
   const selectOption = (option: T) => {

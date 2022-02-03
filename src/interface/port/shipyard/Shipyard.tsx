@@ -53,8 +53,8 @@ const usedShips = [
 ];
 
 export default function Shipyard() {
-  const building = useBuilding<ShipyardOptions>();
-  const { selectOption, back, next, reset, state } = building;
+  const { selectOption, back, next, reset, state } =
+    useBuilding<ShipyardOptions>();
 
   const [usedShipId, setUsedShipId] = useState<string>();
 
@@ -74,9 +74,8 @@ export default function Shipyard() {
         value: s,
         disabled: shipyardDisabledOptions.includes(s),
       }))}
-      setSelected={(s) => {
-        selectOption(s);
-      }}
+      onSelect={(s) => selectOption(s)}
+      onCancel={back}
       hidden={option !== null}
     />
   );
@@ -90,10 +89,11 @@ export default function Shipyard() {
       <Menu
         title="Ship Model"
         options={usedShips}
-        setSelected={(shipId) => {
+        onSelect={(shipId) => {
           setUsedShipId(shipId);
           next();
         }}
+        onCancel={back}
         wide
         hidden={step !== 0}
       />
@@ -179,10 +179,11 @@ export default function Shipyard() {
             label: ship.name,
             value: i,
           }))}
-          setSelected={(value) => {
+          onSelect={(value) => {
             setSelectedShipNumberToSell(value);
             next();
           }}
+          onCancel={back}
           wide
           hidden={step !== 0}
         />
@@ -219,7 +220,6 @@ export default function Shipyard() {
       vendorMessageBox={vendorMessage}
       menu={menu}
       menu2={menu2}
-      building={building}
     >
       {children}
     </BuildingWrapper>

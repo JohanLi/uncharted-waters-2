@@ -13,8 +13,7 @@ type HarborOptions = typeof harborOptions[number];
 const harborDisabledOptions: HarborOptions[] = ['Moor'];
 
 export default function Harbor() {
-  const building = useBuilding<HarborOptions>();
-  const { selectOption, back, state } = building;
+  const { selectOption, back, state } = useBuilding<HarborOptions>();
 
   useEffect(() => {
     const { option, step } = state;
@@ -37,9 +36,8 @@ export default function Harbor() {
         value: s,
         disabled: harborDisabledOptions.includes(s),
       }))}
-      setSelected={(s) => {
-        selectOption(s);
-      }}
+      onSelect={(s) => selectOption(s)}
+      onCancel={back}
       hidden={option !== null}
     />
   );
@@ -56,7 +54,6 @@ export default function Harbor() {
       buildingId="4"
       vendorMessageBox={vendorMessage}
       menu={menu}
-      building={building}
     >
       {children}
     </BuildingWrapper>

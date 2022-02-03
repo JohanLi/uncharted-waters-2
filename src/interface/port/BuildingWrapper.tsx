@@ -5,8 +5,6 @@ import useQuestStep from '../quest/useQuestStep';
 import CharacterMessageBox from './CharacterMessageBox';
 import VendorMessageBox from './VendorMessageBox';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import useCancel from './hooks/useCancel';
-import { UseBuildingType } from './hooks/useBuilding';
 
 interface Props {
   buildingId: string;
@@ -14,11 +12,10 @@ interface Props {
   menu?: ReactNode;
   menu2?: ReactNode;
   children?: ReactNode;
-  building: UseBuildingType<any>;
 }
 
 export default function BuildingWrapper(props: Props) {
-  const { buildingId, children, building } = props;
+  const { buildingId, children } = props;
   let { vendorMessageBox, menu, menu2 } = props;
 
   const quest = useQuestStep();
@@ -39,8 +36,6 @@ export default function BuildingWrapper(props: Props) {
 
     menu = null;
     menu2 = null;
-  } else {
-    useCancel(building.state.option === null ? building.back : undefined);
   }
 
   return (

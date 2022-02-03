@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import MessageBox from './MessageBox';
 import { classNames } from '../interfaceUtils';
+import useCancel from '../port/hooks/useCancel';
 
 export interface Option<T> {
   label: string;
@@ -14,7 +15,8 @@ export interface Option<T> {
 
 interface Props<T> {
   options: Option<T>[];
-  setSelected: (value: T) => void;
+  onSelect: (value: T) => void;
+  onCancel: () => void;
   title?: string;
   wide?: boolean;
   hidden?: boolean;
@@ -22,12 +24,15 @@ interface Props<T> {
 
 export default function Menu<T extends number | string>({
   options,
-  setSelected,
+  onSelect,
+  onCancel,
   title = '',
   wide = false,
   hidden = false,
 }: Props<T>) {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useCancel(!hidden ? onCancel : undefined);
 
   useEffect(() => {
     if (hidden) {
@@ -64,7 +69,7 @@ export default function Menu<T extends number | string>({
 
       if (['e', 'enter'].includes(pressedKey)) {
         if (!options[activeIndex].disabled) {
-          setSelected(options[activeIndex].value);
+          onSelect(options[activeIndex].value);
         }
 
         e.preventDefault();
@@ -115,7 +120,7 @@ export default function Menu<T extends number | string>({
                   setActiveIndex(i);
 
                   if (!options[i].disabled) {
-                    setSelected(value);
+                    onSelect(value);
                   }
                 }}
                 role="button"
