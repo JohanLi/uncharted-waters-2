@@ -17,7 +17,7 @@ import useFade from './port/hooks/useFade';
 import './global.css';
 
 function Interface() {
-  const [portId, setPortId] = useState(0);
+  const [portId, setPortId] = useState<string | null>(null);
   const [buildingId, setBuildingId] = useState<string | null>(null);
   const [timePassed, setTimePassed] = useState(0);
   const [gold, setGold] = useState(0);
@@ -31,7 +31,7 @@ function Interface() {
 
   const { fade, onAnimationEnd } = useFade();
 
-  const inPort = Boolean(portId);
+  const inPort = portId !== null;
 
   const [currentTab, setCurrentTab] = useState<Tab>('Home');
 

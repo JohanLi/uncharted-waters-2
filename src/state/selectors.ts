@@ -25,8 +25,8 @@ export const isDay = () => {
 
 export const shouldUpdateWorldStatus = () => state.timePassed % 240 === 0;
 
-export const positionAdjacentToPort = (portId: number) => {
-  if (portId === 1) {
+export const positionAdjacentToPort = (portId: string) => {
+  if (portId === '1') {
     return {
       x: START_POSITION_X,
       y: START_POSITION_Y,
@@ -42,13 +42,13 @@ export const canAfford = (cost: number) => state.gold > cost;
 
 // TODO reset used ships for a given port after some time has passed
 export const getUsedShips = () => {
-  const exitingUsedShips = state.usedShipsAtPort[state.portId];
+  const exitingUsedShips = state.usedShipsAtPort[state.portId!];
 
   if (exitingUsedShips) {
     return exitingUsedShips;
   }
 
-  const usedShips = generateUsedShips(state.portId);
-  state.usedShipsAtPort[state.portId] = usedShips;
+  const usedShips = generateUsedShips(state.portId!);
+  state.usedShipsAtPort[state.portId!] = usedShips;
   return usedShips;
 };

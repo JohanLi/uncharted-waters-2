@@ -19,7 +19,7 @@ type UsedShipsAtPort = { [key: string]: UsedShips };
 export type UsedShips = { [key: string]: string };
 
 export interface State {
-  portId: number;
+  portId: string | null;
   buildingId: string | null;
   timePassed: number;
   world: World;

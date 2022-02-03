@@ -105,16 +105,16 @@ export const worldTimeTick = () => {
     - The player at the start of the game
     - NPC sailors who have respawned
  */
-export const setDockedFleetPositions = () => {
+export const setDockedFleetPositions = (portId: string) => {
   const playerFleet = state.fleets[1];
 
   if (!playerFleet.position) {
-    playerFleet.position = positionAdjacentToPort(state.portId);
+    playerFleet.position = positionAdjacentToPort(portId);
   }
 };
 
 export const setSail = () => {
-  state.portId = 0;
+  state.portId = null;
   state.buildingId = null;
 
   Sound.play('world');

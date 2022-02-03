@@ -4,7 +4,7 @@ import { markets } from '../../data/portData';
 import { getPortData } from '../../port/portUtils';
 
 interface Props {
-  portId: number;
+  portId: string;
 }
 
 // TODO Investments

@@ -6,7 +6,7 @@ import {
 import { generateId, random, sample } from '../../../utils';
 import { UsedShips } from '../../../state/state';
 
-const generateUsedShips = (portId: number) => {
+const generateUsedShips = (portId: string) => {
   const port = getPortData(portId);
 
   if (port.isSupplyPort) {

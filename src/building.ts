@@ -1,7 +1,7 @@
 import type { Position } from './types';
 import { getPortData } from './port/portUtils';
 
-const createBuilding = (portId: number) => ({
+const createBuilding = (portId: string) => ({
   get: (id: string): Position => {
     const port = getPortData(portId);
     return port.buildings[id];

@@ -16,26 +16,28 @@ export type PortData = (
       tileset: 3;
       isSupplyPort: true;
     })
-) & { id: number; tilemap: number };
+) & { id: string; tilemap: number };
 
-export const getPortData = (id: number): PortData => {
-  if (id > regularPorts.length + supplyPorts.length) {
+export const getPortData = (id: string): PortData => {
+  const number = Number(id) - 1;
+
+  if (number >= regularPorts.length + supplyPorts.length) {
     throw Error('Port does not exist!');
   }
 
-  const isSupplyPort = id > regularPorts.length;
+  const isSupplyPort = number >= regularPorts.length;
 
   if (!isSupplyPort) {
     return {
-      ...regularPorts[id - 1],
+      ...regularPorts[number],
       id,
       isSupplyPort,
-      tilemap: id - 1,
+      tilemap: number,
     };
   }
 
   return {
-    ...supplyPorts[id - 1 - regularPorts.length],
+    ...supplyPorts[number - regularPorts.length],
     buildings: SUPPLY_PORT_BUILDINGS,
     tileset: SUPPLY_PORT_TILESET,
     id,
@@ -48,8 +50,8 @@ const portCoordinates = regularPorts
   .map(({ x, y }) => ({ x, y }))
   .concat(supplyPorts.map(({ x, y }) => ({ x, y })));
 
-export const portAdjacentAt = ({ x, y }: Position) =>
-  portCoordinates.findIndex((portCoordinate) => {
+export const portAdjacentAt = ({ x, y }: Position) => {
+  const i = portCoordinates.findIndex((portCoordinate) => {
     const deltaX = Math.abs(portCoordinate.x - x);
     const deltaY = Math.abs(portCoordinate.y - y);
 
@@ -58,4 +60,11 @@ export const portAdjacentAt = ({ x, y }: Position) =>
     }
 
     return deltaX + deltaY <= 3;
-  }) + 1;
+  });
+
+  if (i === -1) {
+    return null;
+  }
+
+  return String(i + 1);
+};

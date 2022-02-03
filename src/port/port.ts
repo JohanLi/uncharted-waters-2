@@ -12,7 +12,7 @@ import {
 } from '../world/sharedUtils';
 import { TILE_SIZE } from '../constants';
 
-const createPort = (portId: number) => {
+const createPort = (portId: string) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
   const context = canvas.getContext('2d', { alpha: false })!;
 

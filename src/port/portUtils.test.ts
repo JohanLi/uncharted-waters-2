@@ -41,62 +41,72 @@ jest.mock('../data/portData', () => ({
 }));
 
 describe('portUtils', () => {
+  test('accessing a port that doesn’t exist', () => {
+    expect(() => {
+      getPortData('5');
+    }).toThrow();
+
+    expect(() => {
+      getPortData('100');
+    }).toThrow();
+  });
+
   test('regular port data', () => {
-    let { id, name, isSupplyPort, tilemap } = getPortData(1);
-    expect(id).toEqual(1);
+    let { id, name, isSupplyPort, tilemap } = getPortData('1');
+    expect(id).toEqual('1');
     expect(name).toEqual('Lisbon');
     expect(isSupplyPort).toEqual(false);
     expect(tilemap).toEqual(0);
 
-    ({ id, name, isSupplyPort, tilemap } = getPortData(2));
-    expect(id).toEqual(2);
+    ({ id, name, isSupplyPort, tilemap } = getPortData('2'));
+    expect(id).toEqual('2');
     expect(name).toEqual('Nagasaki');
     expect(isSupplyPort).toEqual(false);
     expect(tilemap).toEqual(1);
   });
 
   test('supply port data', () => {
-    let { id, name, isSupplyPort } = getPortData(3);
-    expect(id).toEqual(3);
+    let { id, name, isSupplyPort } = getPortData('3');
+    expect(id).toEqual('3');
     expect(name).toEqual('Hekla');
     expect(isSupplyPort).toEqual(true);
 
-    ({ id, name, isSupplyPort } = getPortData(4));
-    expect(id).toEqual(4);
+    ({ id, name, isSupplyPort } = getPortData('4'));
+    expect(id).toEqual('4');
     expect(name).toEqual('Forel');
     expect(isSupplyPort).toEqual(true);
   });
 
   test('supply ports only have the Harbor as their sole building', () => {
-    let { buildings } = getPortData(3);
+    let { buildings } = getPortData('3');
     expect(buildings).toEqual(SUPPLY_PORT_BUILDINGS);
 
-    ({ buildings } = getPortData(4));
+    ({ buildings } = getPortData('4'));
     expect(buildings).toEqual(SUPPLY_PORT_BUILDINGS);
   });
 
   test('supply ports share the same tilemap index', () => {
-    let { tilemap } = getPortData(3);
+    let { tilemap } = getPortData('3');
     expect(tilemap).toEqual(regularPorts.length);
 
-    ({ tilemap } = getPortData(4));
+    ({ tilemap } = getPortData('4'));
     expect(tilemap).toEqual(regularPorts.length);
   });
 
   test('must be within [2, 1] or [1, 2] of a port to dock', () => {
-    expect(portAdjacentAt({ x: 10, y: 10 })).toEqual(0);
+    expect(portAdjacentAt({ x: 10, y: 10 })).toEqual(null);
 
-    expect(portAdjacentAt({ x: 1674, y: 402 })).toEqual(2);
-    expect(portAdjacentAt({ x: 1674, y: 401 })).toEqual(2);
-    expect(portAdjacentAt({ x: 1674, y: 400.9 })).toEqual(0);
-    expect(portAdjacentAt({ x: 1674, y: 403 })).toEqual(2);
-    expect(portAdjacentAt({ x: 1674, y: 403.1 })).toEqual(0);
-    expect(portAdjacentAt({ x: 1673.9, y: 402 })).toEqual(0);
+    expect(portAdjacentAt({ x: 1674, y: 402 })).toEqual('2');
+    expect(portAdjacentAt({ x: 1674, y: 401 })).toEqual('2');
+    expect(portAdjacentAt({ x: 1674, y: 400.9 })).toEqual(null);
+    expect(portAdjacentAt({ x: 1674, y: 403 })).toEqual('2');
+    expect(portAdjacentAt({ x: 1674, y: 403.1 })).toEqual(null);
+    expect(portAdjacentAt({ x: 1673.9, y: 402 })).toEqual(null);
 
-    expect(portAdjacentAt({ x: 784, y: 208 })).toEqual(3);
-    expect(portAdjacentAt({ x: 785, y: 208 })).toEqual(3);
-    expect(portAdjacentAt({ x: 785.1, y: 208 })).toEqual(0);
-    expect(portAdjacentAt({ x: 783, y: 208 })).toEqual(3);
-    expect(portAdjacentAt({ x: 782.9, y: 208 })).toEqual(0);
+    expect(portAdjacentAt({ x: 784, y: 208 })).toEqual('3');
+    expect(portAdjacentAt({ x: 785, y: 208 })).toEqual('3');
+    expect(portAdjacentAt({ x: 785.1, y: 208 })).toEqual(null);
+    expect(portAdjacentAt({ x: 783, y: 208 })).toEqual('3');
+    expect(portAdjacentAt({ x: 782.9, y: 208 })).toEqual(null);
   });
 });

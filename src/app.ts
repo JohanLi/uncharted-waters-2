@@ -19,8 +19,11 @@ const start = async () => {
 
   updateGeneral();
 
-  state.port = createPort(state.portId);
-  setDockedFleetPositions();
+  if (state.portId) {
+    state.port = createPort(state.portId);
+    setDockedFleetPositions(state.portId);
+  }
+
   state.world = createWorld();
 
   Sound.play('port');
