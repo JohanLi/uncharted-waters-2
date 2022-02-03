@@ -3,7 +3,7 @@ import React from 'react';
 import MessageBox from '../common/MessageBox';
 import Assets from '../../assets';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import DialogYesNo from '../common/DialogYesNo';
+import Confirm from '../common/Confirm';
 import useAcknowledge from './hooks/useAcknowledge';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 export default function VendorMessageBox({ buildingId, messageBox }: Props) {
   useAcknowledge(messageBox?.acknowledge);
 
-  const showYesNo = messageBox?.showYesNo;
+  const confirm = messageBox?.confirm;
 
   return (
     <>
@@ -45,15 +45,10 @@ export default function VendorMessageBox({ buildingId, messageBox }: Props) {
           </MessageBox>
         </div>
       </div>
-      {!!showYesNo && (
-        <DialogYesNo
-          onSelected={(selected) => {
-            if (selected) {
-              showYesNo.yes();
-            } else {
-              showYesNo.no();
-            }
-          }}
+      {!!confirm && (
+        <Confirm
+          onYes={confirm.yes}
+          onNo={confirm.no}
           initialPosition={{
             x: 696,
             y: 190,

@@ -40,7 +40,7 @@ export default function BuildingWrapper(props: Props) {
     menu = null;
     menu2 = null;
   } else {
-    useCancel(building.back, building.state.option === null);
+    useCancel(building.state.option === null ? building.back : undefined);
   }
 
   return (

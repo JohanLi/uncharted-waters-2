@@ -17,7 +17,7 @@ interface Props {
 export default function HarborSupply({ back }: Props) {
   const [shipProvision, setShipProvision] = useState<ShipProvision>();
 
-  useCancel(back, shipProvision === undefined);
+  useCancel(shipProvision === undefined ? back : undefined);
 
   return (
     <>

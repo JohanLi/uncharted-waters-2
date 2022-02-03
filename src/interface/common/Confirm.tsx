@@ -15,16 +15,25 @@ const PARENT_WIDTH = 1280;
 const PARENT_HEIGHT = 800;
 
 interface Props {
-  onSelected: (selected: boolean) => void;
+  onYes: () => void;
+  onNo: () => void;
   initialPosition: Position;
 }
 
-export default function DialogYesNo({ onSelected, initialPosition }: Props) {
-  const [yesOrNo, setYesOrNo] = useState(true);
+export default function Confirm({ onYes, onNo, initialPosition }: Props) {
+  const [yes, setYes] = useState(true);
   const yesOrNoElement = useRef<HTMLDivElement>(null);
   const lastMousePosition = useRef<Position | undefined>(undefined);
 
-  useCancel(() => onSelected(false));
+  useCancel(onNo);
+
+  const onSubmit = () => {
+    if (yes) {
+      onYes();
+    } else {
+      onNo();
+    }
+  };
 
   useEffect(() => {
     const onKeyup = (e: KeyboardEvent) => {
@@ -32,12 +41,12 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
 
       if (['a', 'd', 'arrowleft', 'arrowright'].includes(pressedKey)) {
         e.preventDefault();
-        setYesOrNo(!yesOrNo);
+        setYes(!yes);
       }
 
       if (['e', 'enter'].includes(pressedKey)) {
         e.preventDefault();
-        onSelected(yesOrNo);
+        onSubmit();
       }
     };
 
@@ -46,7 +55,7 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
     return () => {
       window.removeEventListener('keyup', onKeyup);
     };
-  }, [yesOrNo]);
+  }, [yes]);
 
   const onMouseMove = throttle((e: MouseEvent) => {
     if (!lastMousePosition.current || !yesOrNoElement.current) {
@@ -116,7 +125,7 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
         <img
           className="w-72 h-28"
           src={
-            yesOrNo
+            yes
               ? Assets.images.dialogYes.toDataURL()
               : Assets.images.dialogNo.toDataURL()
           }
@@ -133,16 +142,16 @@ export default function DialogYesNo({ onSelected, initialPosition }: Props) {
         <div
           className="absolute top-8 left-5 w-[120px] h-16 cursor-pointer"
           onClick={() => {
-            setYesOrNo(true);
-            onSelected(true);
+            setYes(true);
+            onSubmit();
           }}
           role="button"
         />
         <div
           className="absolute top-8 left-[148px] w-[120px] h-16 cursor-pointer"
           onClick={() => {
-            setYesOrNo(false);
-            onSelected(false);
+            setYes(false);
+            onSubmit();
           }}
           role="button"
         />

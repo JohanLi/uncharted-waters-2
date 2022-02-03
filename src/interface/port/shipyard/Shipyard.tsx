@@ -112,7 +112,7 @@ export default function Shipyard() {
       if (step === 2) {
         vendorMessage = {
           body: 'Will ye buy this one?',
-          showYesNo: {
+          confirm: {
             yes: next,
             no: () => {
               setUsedShipId(undefined);
@@ -125,7 +125,7 @@ export default function Shipyard() {
       if (step === 3) {
         vendorMessage = {
           body: `I’d sell this ship for ${shipData[usedShipId].basePrice} gold pieces. What do ye say?`,
-          showYesNo: {
+          confirm: {
             yes: next,
             no: () => {
               setUsedShipId(undefined);
@@ -201,7 +201,7 @@ export default function Shipyard() {
           body: `For this ship, I’ll give you ${
             shipData[shipId].basePrice * SELL_SHIP_MODIFIER
           } gold pieces. OK?`,
-          showYesNo: {
+          confirm: {
             yes: () => {
               sellShipNumber(selectedShipNumberToSell);
               reset();

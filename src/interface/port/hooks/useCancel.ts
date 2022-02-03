@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-export default function useCancel(onCancel: () => void, active = true) {
+export default function useCancel(onCancel?: () => void) {
   useEffect(() => {
-    if (!active) {
+    if (!onCancel) {
       return () => {};
     }
 
