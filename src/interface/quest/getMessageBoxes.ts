@@ -14,7 +14,7 @@ export type CharacterMessageBoxType =
   | null;
 
 type MessageBoxCommonType = {
-  showCaretDown?: () => void;
+  acknowledge?: () => void;
   showYesNo?: {
     yes: () => void;
     no: () => void;

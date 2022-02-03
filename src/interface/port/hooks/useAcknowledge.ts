@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
-export default function useCaretDown(onCaretDown?: () => void) {
+export default function useAcknowledge(onAcknowledge?: () => void) {
   useEffect(() => {
-    if (!onCaretDown) {
+    if (!onAcknowledge) {
       return () => {};
     }
 
     const onClick = (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      onCaretDown();
+      onAcknowledge();
     };
 
     const onKeyup = (e: KeyboardEvent) => {
@@ -17,13 +17,13 @@ export default function useCaretDown(onCaretDown?: () => void) {
 
       if (['e', 'enter', 'escape'].includes(pressedKey)) {
         e.preventDefault();
-        onCaretDown();
+        onAcknowledge();
       }
     };
 
     const onContextMenu = (e: MouseEvent) => {
       e.preventDefault();
-      onCaretDown();
+      onAcknowledge();
     };
 
     window.addEventListener('click', onClick);

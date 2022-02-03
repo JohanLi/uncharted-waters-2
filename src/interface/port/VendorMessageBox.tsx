@@ -4,7 +4,7 @@ import MessageBox from '../common/MessageBox';
 import Assets from '../../assets';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import DialogYesNo from '../common/DialogYesNo';
-import useCaretDown from './hooks/useCaretDown';
+import useAcknowledge from './hooks/useAcknowledge';
 
 interface Props {
   buildingId: string;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function VendorMessageBox({ buildingId, messageBox }: Props) {
-  useCaretDown(messageBox?.showCaretDown);
+  useAcknowledge(messageBox?.acknowledge);
 
   const showYesNo = messageBox?.showYesNo;
 
@@ -32,7 +32,7 @@ export default function VendorMessageBox({ buildingId, messageBox }: Props) {
               {messageBox !== null && (
                 <>
                   {messageBox.body}
-                  {messageBox.showCaretDown && (
+                  {messageBox.acknowledge && (
                     <img
                       src={Assets.images.dialogCaretDown.toDataURL()}
                       alt=""

@@ -5,7 +5,7 @@ import questData, { Message } from './questData';
 import getMessageBoxes from './getMessageBoxes';
 import { completeQuest, exitBuilding } from '../../state/actionsPort';
 
-export const showCaretDown = (message: Pick<Message, 'confirm'> | null) =>
+export const acknowledge = (message: Pick<Message, 'confirm'> | null) =>
   Boolean(message && message.confirm === undefined);
 
 export default function useQuestStep() {
@@ -43,8 +43,8 @@ export default function useQuestStep() {
   const messageBoxes = getMessageBoxes(messages, step);
   const currentMessageBox = messageBoxes[message.position];
 
-  if (showCaretDown(message) && currentMessageBox) {
-    currentMessageBox.showCaretDown = next;
+  if (acknowledge(message) && currentMessageBox) {
+    currentMessageBox.acknowledge = next;
   }
 
   return { messageBoxes };

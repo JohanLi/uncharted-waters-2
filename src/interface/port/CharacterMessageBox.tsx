@@ -4,7 +4,7 @@ import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
 import MessageBox from '../common/MessageBox';
 import { CharacterMessageBoxType } from '../quest/getMessageBoxes';
-import useCaretDown from './hooks/useCaretDown';
+import useAcknowledge from './hooks/useAcknowledge';
 
 type CharacterData = {
   [key: string]: {
@@ -53,12 +53,12 @@ const positionClassMap: { [key in Position]: string } = {
 };
 
 export default function CharacterMessageBox({ messageBox, position }: Props) {
-  useCaretDown(messageBox?.showCaretDown);
+  useAcknowledge(messageBox?.acknowledge);
 
   let inner = null;
 
   if (messageBox !== null) {
-    const { body, characterId, showCaretDown } = messageBox;
+    const { body, characterId, acknowledge } = messageBox;
     const { name, color } = characterData[characterId];
 
     inner = (
@@ -71,7 +71,7 @@ export default function CharacterMessageBox({ messageBox, position }: Props) {
         <div className="flex-1 text-2xl pl-4">
           <div className={classNames('text-base mb-2', color)}>{name}</div>
           {body}
-          {showCaretDown && (
+          {acknowledge && (
             <img
               src={Assets.images.dialogCaretDown.toDataURL()}
               alt=""

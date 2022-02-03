@@ -105,7 +105,7 @@ export default function Shipyard() {
       if (step === 1) {
         vendorMessage = {
           body: shipData[usedShipId].description,
-          showCaretDown: next,
+          acknowledge: next,
         };
       }
 
@@ -159,7 +159,7 @@ export default function Shipyard() {
   if (option === 'Repair') {
     vendorMessage = {
       body: 'Your fleet’s already in tiptop shape, matey!',
-      showCaretDown: back,
+      acknowledge: back,
     };
   }
 
@@ -168,7 +168,7 @@ export default function Shipyard() {
       if (step === 0) {
         vendorMessage = {
           body: 'We only have the flag ship.',
-          showCaretDown: back,
+          acknowledge: back,
         };
       }
     } else {
