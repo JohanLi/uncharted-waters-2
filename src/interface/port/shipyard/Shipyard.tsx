@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 
 import Menu from '../../common/Menu';
 import {
-  purchaseUsedShip,
+  buyUsedShip,
   SELL_SHIP_MODIFIER,
   sellShipNumber,
 } from '../../../state/actionsPort';
@@ -16,6 +16,7 @@ import BuildingWrapper from '../BuildingWrapper';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
 import ShipyardShipNameInput from './ShipyardShipNameInput';
+import { canAfford } from '../../../state/selectors';
 
 const shipyardOptions = [
   'New Ship',
@@ -33,6 +34,7 @@ const shipyardDisabledOptions: ShipyardOptions[] = [
   'Invest',
 ];
 
+// TODO generate this, and remove any purchased ships
 const usedShips = [
   {
     label: 'Light Galley',
@@ -111,7 +113,7 @@ export default function Shipyard() {
 
       if (step === 2) {
         vendorMessage = {
-          body: 'Will ye buy this one?',
+          body: `I’d sell this ship for ${shipData[usedShipId].basePrice} gold pieces. What do ye say?`,
           confirm: {
             yes: next,
             no: () => {
@@ -123,36 +125,33 @@ export default function Shipyard() {
       }
 
       if (step === 3) {
-        vendorMessage = {
-          body: `I’d sell this ship for ${shipData[usedShipId].basePrice} gold pieces. What do ye say?`,
-          confirm: {
-            yes: next,
-            no: () => {
+        if (canAfford(shipData[usedShipId].basePrice)) {
+          vendorMessage = {
+            body: 'All right, it’s yers. Time to name yer ship.',
+          };
+
+          children = (
+            <ShipyardShipNameInput
+              onSubmit={(usedShipName) => {
+                buyUsedShip(usedShipId, usedShipName);
+                setUsedShipId(undefined);
+                reset();
+              }}
+              onCancel={() => {
+                setUsedShipId(undefined);
+                back(3);
+              }}
+            />
+          );
+        } else {
+          vendorMessage = {
+            body: 'I’m afraid you don’t have enough gold.',
+            acknowledge: () => {
               setUsedShipId(undefined);
               back(3);
             },
-          },
-        };
-      }
-
-      if (step === 4) {
-        vendorMessage = {
-          body: `All right, it’s yers. Time to name yer ship.`,
-        };
-
-        children = (
-          <ShipyardShipNameInput
-            onSubmit={(usedShipName) => {
-              purchaseUsedShip(usedShipId, usedShipName);
-              setUsedShipId(undefined);
-              reset();
-            }}
-            onCancel={() => {
-              setUsedShipId(undefined);
-              back(4);
-            }}
-          />
-        );
+          };
+        }
       }
     }
   }

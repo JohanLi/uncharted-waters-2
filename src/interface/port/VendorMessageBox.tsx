@@ -50,8 +50,8 @@ export default function VendorMessageBox({ buildingId, messageBox }: Props) {
           onYes={confirm.yes}
           onNo={confirm.no}
           initialPosition={{
-            x: 696,
-            y: 190,
+            x: 760,
+            y: 290,
           }}
         />
       )}

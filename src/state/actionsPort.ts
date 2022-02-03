@@ -36,7 +36,7 @@ export const exitBuilding = () => {
 
 const USED_SHIP_DURABILITY = 0.85;
 
-export const purchaseUsedShip = (shipId: string, shipName: string) => {
+export const buyUsedShip = (shipId: string, shipName: string) => {
   const { durability, minimumCrew, basePrice } = shipData[shipId];
 
   state.fleets['1'].ships.push({

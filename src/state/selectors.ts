@@ -36,3 +36,5 @@ export const positionAdjacentToPort = (portId: number) => {
 };
 
 export const finishedQuest = (quest: Quests) => state.quests.includes(quest);
+
+export const canAfford = (cost: number) => state.gold > cost;
