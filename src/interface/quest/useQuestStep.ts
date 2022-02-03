@@ -4,6 +4,7 @@ import getAvailableQuest from './getAvailableQuest';
 import questData, { Message } from './questData';
 import getMessageBoxes from './getMessageBoxes';
 import { completeQuest, exitBuilding } from '../../state/actionsPort';
+import updateInterface from '../../state/updateInterface';
 
 export const acknowledge = (message: Pick<Message, 'confirm'> | null) =>
   Boolean(message && message.confirm === undefined);
@@ -33,11 +34,17 @@ export default function useQuestStep() {
       completeQuest(availableQuest);
     }
 
+    if (message.fadeBeforeNext) {
+      updateInterface.fade(() => setStep(step + 1));
+      return;
+    }
+
     if (message.exitBuilding) {
       exitBuilding();
-    } else {
-      setStep(step + 1);
+      return;
     }
+
+    setStep(step + 1);
   };
 
   const messageBoxes = getMessageBoxes(messages, step);

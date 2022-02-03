@@ -34,6 +34,7 @@ type MessageCommon = {
     yes: () => void;
     no: () => void;
   };
+  fadeBeforeNext?: true;
 };
 
 const questData: { [key in Quests]: Message[] } = {
@@ -424,7 +425,8 @@ const questData: { [key in Quests]: Message[] } = {
       body: 'Lucia!',
       characterId: '1',
       position: 2,
-    }, // TODO delay effect
+      fadeBeforeNext: true,
+    },
     {
       body: 'I’m back.',
       characterId: '99',
