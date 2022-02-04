@@ -39,7 +39,12 @@ function Interface() {
     <div className="[image-rendering:pixelated]">
       <Tabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       <div className="flex items-stretch">
-        <Left inPort={inPort} timePassed={timePassed} gold={gold}>
+        <Left
+          portId={portId}
+          buildingId={buildingId}
+          timePassed={timePassed}
+          gold={gold}
+        >
           <Provisions hidden={inPort} />
         </Left>
         <div

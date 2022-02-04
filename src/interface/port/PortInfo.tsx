@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { markets } from '../../data/portData';
-import { getPortData } from '../../port/portUtils';
+import { getRegionOrIfSupplyPort, getPortData } from '../../port/portUtils';
 
 interface Props {
   portId: string;
@@ -13,12 +12,9 @@ export default function PortInfo({ portId }: Props) {
 
   let economy = 0;
   let industry = 0;
-  let economyId;
-  let territory = 'Supply port';
 
   if (!port.isSupplyPort) {
-    ({ economy, industry, economyId } = port);
-    territory = markets[economyId];
+    ({ economy, industry } = port);
   }
 
   const { name } = port;
@@ -26,7 +22,7 @@ export default function PortInfo({ portId }: Props) {
   return (
     <>
       <div className="text-2xl font-bold whitespace-nowrap">{name}</div>
-      <div className="mb-20">{territory}</div>
+      <div className="mb-20">{getRegionOrIfSupplyPort(portId)}</div>
       <div className="text-sm">Economy</div>
       <div className="mb-4 text-right text-xl">{economy}</div>
       <div className="text-sm">Investment</div>

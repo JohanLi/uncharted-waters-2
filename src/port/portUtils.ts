@@ -6,6 +6,7 @@ import {
   supplyPorts,
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
+  markets,
 } from '../data/portData';
 import { Position } from '../types';
 
@@ -67,4 +68,15 @@ export const portAdjacentAt = ({ x, y }: Position) => {
   }
 
   return String(i + 1);
+};
+
+export const getRegionOrIfSupplyPort = (portId: string) => {
+  const port = getPortData(portId);
+
+  if (!port.isSupplyPort) {
+    const { industryId } = port;
+    return markets[industryId];
+  }
+
+  return 'Supply port';
 };

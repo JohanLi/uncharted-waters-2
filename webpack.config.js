@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
           use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         {
-          test: /\.(mp3|png|bin)$/,
+          test: /\.(ogg|mp3|png|bin)$/,
           type: 'asset/resource',
         },
       ],

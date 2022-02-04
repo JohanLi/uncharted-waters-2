@@ -1,7 +1,6 @@
 import state from './state';
 import { portAdjacentAt } from '../port/portUtils';
 import createPort from '../port/port';
-import Sound from '../sound';
 import Input from '../input';
 import updateInterface from './updateInterface';
 import { updateGeneral } from './actionsPort';
@@ -35,8 +34,6 @@ export const dock = (position: Position) => {
 
   state.port = createPort(portId);
   state.portId = portId;
-
-  Sound.play('port');
 
   Input.reset();
 
@@ -116,8 +113,6 @@ export const setDockedFleetPositions = (portId: string) => {
 export const setSail = () => {
   state.portId = null;
   state.buildingId = null;
-
-  Sound.play('world');
 
   updateWorldStatus();
 
