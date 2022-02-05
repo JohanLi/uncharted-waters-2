@@ -6,6 +6,7 @@
     "start": "webpack serve --mode development",
     "lint": "eslint src/ --ext .ts --ext .tsx",
     "prettier": "prettier --write src/",
+    "tsc": "tsc --noEmit",
     "test": "jest --verbose",
     "build": "rm -rf build/ && webpack --mode production"
   },
