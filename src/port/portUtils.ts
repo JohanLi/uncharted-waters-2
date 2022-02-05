@@ -6,9 +6,9 @@ import {
   supplyPorts,
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
-  markets,
 } from '../data/portData';
 import { Position } from '../types';
+import { markets } from '../data/portExtraData';
 
 export type PortData = (
   | (RegularPort & { isSupplyPort: false })
@@ -74,8 +74,8 @@ export const getRegionOrIfSupplyPort = (portId: string) => {
   const port = getPortData(portId);
 
   if (!port.isSupplyPort) {
-    const { economyId } = port;
-    return markets[economyId];
+    const { marketId } = port;
+    return markets[marketId];
   }
 
   return 'Supply port';

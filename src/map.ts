@@ -1,9 +1,9 @@
 import Assets from './assets';
-import { tilesets, CollisionIndices } from './data/portData';
 import { Position } from './types';
 import { PortData } from './port/portUtils';
 import { WORLD_MAP_COLUMNS } from './constants';
 import { getXWrapAround } from './world/sharedUtils';
+import { CollisionIndices, tilesets } from './data/portExtraData';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
