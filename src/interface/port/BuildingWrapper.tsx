@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode } from 'react';
 
 import Assets from '../../assets';
 import useQuestStep from '../quest/useQuestStep';
@@ -6,8 +6,7 @@ import CharacterMessageBox from './CharacterMessageBox';
 import VendorMessageBox from './VendorMessageBox';
 import { MessageBoxes, VendorMessageBoxType } from '../quest/getMessageBoxes';
 import Confirm from '../common/Confirm';
-import useAcknowledge from './hooks/useAcknowledge';
-import { classNames } from '../interfaceUtils';
+import Acknowledge from '../common/Acknowledge';
 
 interface Props {
   buildingId: string;
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export default function BuildingWrapper(props: Props) {
-  const buildingRef = useRef<HTMLDivElement>(null);
-
   const { buildingId, vendorMessageBox, children } = props;
   let { menu, menu2 } = props;
   let messageBoxes: MessageBoxes;
@@ -37,32 +34,17 @@ export default function BuildingWrapper(props: Props) {
 
   const { acknowledge } =
     messageBoxes.find((messageBox) => !!messageBox?.acknowledge) || {};
-  useAcknowledge(acknowledge, buildingRef.current);
 
   const { confirm } =
     messageBoxes.find((messageBox) => !!messageBox?.confirm) || {};
 
   return (
     <div
-      className={classNames(
-        'w-full h-full bg-[length:256px_128px]',
-        acknowledge ? 'cursor-pointer' : '',
-      )}
+      className="w-full h-full bg-[length:256px_128px]"
       style={{
         backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
       }}
-      ref={buildingRef}
     >
-      {!!confirm && (
-        <Confirm
-          onYes={confirm.yes}
-          onNo={confirm.no}
-          initialPosition={{
-            x: 760,
-            y: 290,
-          }}
-        />
-      )}
       <VendorMessageBox buildingId={buildingId} messageBox={messageBoxes[0]} />
       <CharacterMessageBox messageBox={messageBoxes[1]} position={1} />
       <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
@@ -73,6 +55,17 @@ export default function BuildingWrapper(props: Props) {
         <div className="absolute top-[190px] left-[696px]">{menu2}</div>
       )}
       {children}
+      {!!confirm && (
+        <Confirm
+          onYes={confirm.yes}
+          onNo={confirm.no}
+          initialPosition={{
+            x: 760,
+            y: 290,
+          }}
+        />
+      )}
+      {!!acknowledge && <Acknowledge onAcknowledge={acknowledge} />}
     </div>
   );
 }
