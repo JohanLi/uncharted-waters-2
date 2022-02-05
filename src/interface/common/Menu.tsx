@@ -36,7 +36,7 @@ export default function Menu<T extends number | string>({
 
   useEffect(() => {
     if (hidden) {
-      return () => {};
+      return undefined;
     }
 
     const onKeydown = (e: KeyboardEvent) => {

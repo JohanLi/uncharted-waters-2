@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export default function useCancel(onCancel?: () => void) {
   useEffect(() => {
     if (!onCancel) {
-      return () => {};
+      return undefined;
     }
 
     const onKeyup = (e: KeyboardEvent) => {

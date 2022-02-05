@@ -34,7 +34,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
 
   useEffect(() => {
     if (delayedValueToSubmit === undefined) {
-      return () => {};
+      return undefined;
     }
 
     const timer = setTimeout(() => {

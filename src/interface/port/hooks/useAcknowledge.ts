@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export default function useAcknowledge(onAcknowledge?: () => void) {
   useEffect(() => {
     if (!onAcknowledge) {
-      return () => {};
+      return undefined;
     }
 
     const onClick = (e: MouseEvent) => {

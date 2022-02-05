@@ -107,7 +107,7 @@ export default function Sound({ portId, buildingId }: Props) {
 
   useEffect(() => {
     if (hasPlayed) {
-      return () => {};
+      return undefined;
     }
 
     window.addEventListener('click', triggerAutoplay);
