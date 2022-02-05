@@ -74,8 +74,8 @@ export const getRegionOrIfSupplyPort = (portId: string) => {
   const port = getPortData(portId);
 
   if (!port.isSupplyPort) {
-    const { industryId } = port;
-    return markets[industryId];
+    const { economyId } = port;
+    return markets[economyId];
   }
 
   return 'Supply port';
