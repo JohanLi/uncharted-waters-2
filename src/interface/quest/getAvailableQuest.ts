@@ -1,8 +1,9 @@
 import state from '../../state/state';
 import { finishedQuest } from '../../state/selectors';
+import { QuestId } from './questData';
 
-const getAvailableQuest = () => {
-  if (state.portId === 0) {
+const getAvailableQuest = (): QuestId | null => {
+  if (state.portId !== '1') {
     return null;
   }
 
@@ -12,7 +13,7 @@ const getAvailableQuest = () => {
         return 'pubBeforeQuest';
       }
 
-      return 'pubBeforeQuestHeadHome';
+      return 'pubBeforeQuest2';
     }
 
     if (!finishedQuest('pubAfterQuest')) {

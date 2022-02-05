@@ -16,3 +16,17 @@ export const applyPositionDelta = (p1: Position, p2: Position) => ({
 });
 
 export const generateId = () => nanoid(6);
+
+/*
+ This allows us to infer an object’s keys, while defining the type of the values
+ at the same time. Slight modification from the answers posted here:
+ https://stackoverflow.com/questions/54598322/how-to-make-typescript-infer-the-keys-of-an-object-but-define-type-of-its-value
+
+ TODO check every now and then if there’s a better approach
+ */
+export const asInferredKeysWithValue =
+  <ValueType>() =>
+  <InferredKey>(x: {
+    [key in keyof InferredKey]: ValueType;
+  }) =>
+    x;

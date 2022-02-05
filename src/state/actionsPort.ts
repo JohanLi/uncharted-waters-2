@@ -4,8 +4,8 @@ import state from './state';
 import { getUsedShips, isDay } from './selectors';
 import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
-import type { Quests } from '../interface/quest/questData';
 import { minutesUntilNextMorning } from '../interface/interfaceUtils';
+import type { QuestId } from '../interface/quest/questData';
 
 export const updateGeneral = () => {
   updateInterface.general({
@@ -112,8 +112,8 @@ export const supplyShip = (
   updateGeneral();
 };
 
-export const completeQuest = (quest: Quests) => {
-  state.quests.push(quest);
+export const completeQuest = (id: QuestId) => {
+  state.quests.push(id);
 };
 
 export const receiveGold = (amount: number) => {

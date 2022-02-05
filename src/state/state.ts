@@ -2,7 +2,7 @@ import { START_PORT_ID, START_TIME_PASSED } from '../constants';
 import { Provisions, fleets, Fleets } from '../world/fleets';
 import type { Port } from '../port/port';
 import type { World } from '../world/world';
-import type { Quests } from '../interface/quest/questData';
+import type { QuestId } from '../interface/quest/questData';
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -31,7 +31,7 @@ export interface State {
   port: Port;
   dayAtSea: number;
   gold: number;
-  quests: Quests[];
+  quests: QuestId[];
   usedShipsAtPort: UsedShipsAtPort;
 }
 
@@ -42,7 +42,7 @@ const state = {
   fleets,
   dayAtSea: 0,
   gold: 2000,
-  quests: [] as Quests[],
+  quests: [] as QuestId[],
   usedShipsAtPort: {},
 } as State;
 

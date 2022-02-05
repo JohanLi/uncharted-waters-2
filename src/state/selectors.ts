@@ -1,7 +1,7 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
-import type { Quests } from '../interface/quest/questData';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
+import type { QuestId } from '../interface/quest/questData';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
@@ -36,7 +36,7 @@ export const positionAdjacentToPort = (portId: string) => {
   throw Error('Method is not implemented for ports other than Lisbon');
 };
 
-export const finishedQuest = (quest: Quests) => state.quests.includes(quest);
+export const finishedQuest = (id: QuestId) => state.quests.includes(id);
 
 export const canAfford = (cost: number) => state.gold > cost;
 

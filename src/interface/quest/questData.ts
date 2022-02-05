@@ -1,15 +1,5 @@
 import { receiveGold } from '../../state/actionsPort';
-
-type QuestsAct1 =
-  | 'pubBeforeQuest'
-  | 'pubBeforeQuestHeadHome'
-  | 'lodgeBeforeQuest'
-  | 'churchBeforeQuest'
-  | 'obtainedQuestFromFather'
-  | 'expelled'
-  | 'pubAfterQuest';
-
-export type Quests = QuestsAct1;
+import { asInferredKeysWithValue } from '../../utils';
 
 export const messagePositions = [0, 1, 2] as const;
 export type MessagePosition = typeof messagePositions[number];
@@ -37,7 +27,7 @@ type MessageCommon = {
   fadeBeforeNext?: true;
 };
 
-const questData: { [key in Quests]: Message[] } = {
+const questData = asInferredKeysWithValue<Message[]>()({
   pubBeforeQuest: [
     {
       body: 'Well isn’t this a rare treat, Master $firstName.',
@@ -77,7 +67,7 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-  pubBeforeQuestHeadHome: [
+  pubBeforeQuest2: [
     {
       body: 'Master $firstName, I think you’d better be heading home now.',
       characterId: '98',
@@ -449,6 +439,8 @@ const questData: { [key in Quests]: Message[] } = {
       exitBuilding: true,
     },
   ],
-};
+});
+
+export type QuestId = keyof typeof questData;
 
 export default questData;
