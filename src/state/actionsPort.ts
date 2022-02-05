@@ -23,23 +23,21 @@ export const enterBuilding = (buildingId: string) => {
 };
 
 export const exitBuilding = (sleep = false) => {
-  updateInterface.fade(() => {
-    if (!sleep) {
-      state.timePassed += sample([40, 60, 80]);
-    } else {
-      state.timePassed += minutesUntilNextMorning(state.timePassed);
-    }
+  if (!sleep) {
+    state.timePassed += sample([40, 60, 80]);
+  } else {
+    state.timePassed += minutesUntilNextMorning(state.timePassed);
+  }
 
-    state.buildingId = null;
+  state.buildingId = null;
 
-    if (isDay()) {
-      state.port.characters().spawnNpcs();
-    } else {
-      state.port.characters().despawnNpcs();
-    }
+  if (isDay()) {
+    state.port.characters().spawnNpcs();
+  } else {
+    state.port.characters().despawnNpcs();
+  }
 
-    updateGeneral();
-  });
+  updateGeneral();
 };
 
 const USED_SHIP_DURABILITY = 0.85;
@@ -125,5 +123,7 @@ export const receiveGold = (amount: number) => {
 };
 
 export const checkIn = () => {
-  exitBuilding(true);
+  updateInterface.fade(() => {
+    exitBuilding(true);
+  });
 };
