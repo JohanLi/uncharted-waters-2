@@ -4,7 +4,6 @@ import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
 import MessageBox from '../common/MessageBox';
 import { CharacterMessageBoxType } from '../quest/getMessageBoxes';
-import useAcknowledge from './hooks/useAcknowledge';
 
 type CharacterData = {
   [key: string]: {
@@ -53,43 +52,35 @@ const positionClassMap: { [key in Position]: string } = {
 };
 
 export default function CharacterMessageBox({ messageBox, position }: Props) {
-  useAcknowledge(messageBox?.acknowledge);
-
-  let inner = null;
-
-  if (messageBox !== null) {
-    const { body, characterId, acknowledge } = messageBox;
-    const { name, color } = characterData[characterId];
-
-    inner = (
-      <>
-        <img
-          src={Assets.characters(characterId)}
-          className="w-32 h-40"
-          alt=""
-        />
-        <div className="flex-1 text-2xl pl-4">
-          <div className={classNames('text-base mb-2', color)}>{name}</div>
-          {body}
-          {acknowledge && (
-            <img
-              src={Assets.images.dialogCaretDown.toDataURL()}
-              alt=""
-              className="w-8 h-8 animate-ping mx-auto mt-8"
-            />
-          )}
-        </div>
-      </>
-    );
+  if (messageBox === null) {
+    return null;
   }
+
+  const { body, characterId, acknowledge } = messageBox;
+  const { name, color } = characterData[characterId];
 
   return (
     <div className={positionClassMap[position]}>
-      <div className={messageBox !== null ? '' : 'invisible'}>
-        <MessageBox>
-          <div className="flex w-[592px] h-[256px] text-2xl p-4">{inner}</div>
-        </MessageBox>
-      </div>
+      <MessageBox>
+        <div className="flex w-[592px] h-[256px] text-2xl p-4">
+          <img
+            src={Assets.characters(characterId)}
+            className="w-32 h-40"
+            alt=""
+          />
+          <div className="flex-1 text-2xl pl-4">
+            <div className={classNames('text-base mb-2', color)}>{name}</div>
+            {body}
+            {acknowledge && (
+              <img
+                src={Assets.images.dialogCaretDown.toDataURL()}
+                alt=""
+                className="w-8 h-8 animate-ping mx-auto mt-8"
+              />
+            )}
+          </div>
+        </div>
+      </MessageBox>
     </div>
   );
 }

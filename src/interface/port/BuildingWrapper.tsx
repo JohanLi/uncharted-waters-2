@@ -1,10 +1,13 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 import Assets from '../../assets';
 import useQuestStep from '../quest/useQuestStep';
 import CharacterMessageBox from './CharacterMessageBox';
 import VendorMessageBox from './VendorMessageBox';
-import { VendorMessageBoxType } from '../quest/getMessageBoxes';
+import { MessageBoxes, VendorMessageBoxType } from '../quest/getMessageBoxes';
+import Confirm from '../common/Confirm';
+import useAcknowledge from './hooks/useAcknowledge';
+import { classNames } from '../interfaceUtils';
 
 interface Props {
   buildingId: string;
@@ -15,44 +18,60 @@ interface Props {
 }
 
 export default function BuildingWrapper(props: Props) {
-  const { buildingId, children } = props;
-  let { vendorMessageBox, menu, menu2 } = props;
+  const buildingRef = useRef<HTMLDivElement>(null);
+
+  const { buildingId, vendorMessageBox, children } = props;
+  let { menu, menu2 } = props;
+  let messageBoxes: MessageBoxes;
 
   const quest = useQuestStep();
 
-  let characterDialogs: ReactNode;
-
   if (quest) {
-    const { messageBoxes } = quest;
-
-    [vendorMessageBox] = messageBoxes;
-
-    characterDialogs = (
-      <>
-        <CharacterMessageBox messageBox={messageBoxes[1]} position={1} />
-        <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
-      </>
-    );
+    ({ messageBoxes } = quest);
 
     menu = null;
     menu2 = null;
+  } else {
+    messageBoxes = [vendorMessageBox, null, null];
   }
+
+  const { acknowledge } =
+    messageBoxes.find((messageBox) => !!messageBox?.acknowledge) || {};
+  useAcknowledge(acknowledge, buildingRef.current);
+
+  const { confirm } =
+    messageBoxes.find((messageBox) => !!messageBox?.confirm) || {};
 
   return (
     <div
-      className="w-full h-full bg-[length:256px_128px]"
+      className={classNames(
+        'w-full h-full bg-[length:256px_128px]',
+        acknowledge ? 'cursor-pointer' : '',
+      )}
       style={{
         backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
       }}
+      ref={buildingRef}
     >
-      <VendorMessageBox buildingId={buildingId} messageBox={vendorMessageBox} />
-      {menu !== null && (
+      {!!confirm && (
+        <Confirm
+          onYes={confirm.yes}
+          onNo={confirm.no}
+          initialPosition={{
+            x: 760,
+            y: 290,
+          }}
+        />
+      )}
+      <VendorMessageBox buildingId={buildingId} messageBox={messageBoxes[0]} />
+      <CharacterMessageBox messageBox={messageBoxes[1]} position={1} />
+      <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
+      {!!menu && (
         <div className="absolute top-[190px] left-[768px]">{menu}</div>
       )}
-      {menu2 !== null && (
+      {!!menu2 && (
         <div className="absolute top-[190px] left-[696px]">{menu2}</div>
       )}
-      {characterDialogs}
       {children}
     </div>
   );

@@ -21,6 +21,12 @@ type MessageBoxCommonType = {
   };
 };
 
+export type MessageBoxes = [
+  VendorMessageBoxType,
+  CharacterMessageBoxType,
+  CharacterMessageBoxType,
+];
+
 const getMessageBoxes = (messages: Message[], step: number) => {
   const message = messages[step];
   message.body = message.body
@@ -72,11 +78,7 @@ const getMessageBoxes = (messages: Message[], step: number) => {
     }
 
     return null;
-  }) as [
-    VendorMessageBoxType,
-    CharacterMessageBoxType,
-    CharacterMessageBoxType,
-  ];
+  }) as MessageBoxes;
 };
 
 export default getMessageBoxes;

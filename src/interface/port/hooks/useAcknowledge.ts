@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 
-export default function useAcknowledge(onAcknowledge?: () => void) {
+export default function useAcknowledge(
+  onAcknowledge: (() => void) | undefined,
+  element: HTMLDivElement | null,
+) {
   useEffect(() => {
-    if (!onAcknowledge) {
+    if (!onAcknowledge || !element) {
       return undefined;
     }
 
@@ -26,14 +29,16 @@ export default function useAcknowledge(onAcknowledge?: () => void) {
       onAcknowledge();
     };
 
-    window.addEventListener('click', onClick);
+    element.addEventListener('click', onClick);
+    element.addEventListener('contextmenu', onContextMenu);
+
     window.addEventListener('keyup', onKeyup);
-    window.addEventListener('contextmenu', onContextMenu);
 
     return () => {
-      window.removeEventListener('click', onClick);
+      element.removeEventListener('click', onClick);
+      element.removeEventListener('contextmenu', onContextMenu);
+
       window.removeEventListener('keyup', onKeyup);
-      window.removeEventListener('contextmenu', onContextMenu);
     };
   });
 }

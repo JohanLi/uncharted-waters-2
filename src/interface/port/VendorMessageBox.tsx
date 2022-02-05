@@ -3,8 +3,6 @@ import React from 'react';
 import MessageBox from '../common/MessageBox';
 import Assets from '../../assets';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import Confirm from '../common/Confirm';
-import useAcknowledge from './hooks/useAcknowledge';
 
 interface Props {
   buildingId: string;
@@ -12,13 +10,8 @@ interface Props {
 }
 
 export default function VendorMessageBox({ buildingId, messageBox }: Props) {
-  useAcknowledge(messageBox?.acknowledge);
-
-  const confirm = messageBox?.confirm;
-
   return (
-    <>
-      <div className="flex">
+    <div className="flex">
         <div className="p-4 pr-0">
           <img
             src={Assets.buildings(buildingId)}
@@ -45,16 +38,5 @@ export default function VendorMessageBox({ buildingId, messageBox }: Props) {
           </MessageBox>
         </div>
       </div>
-      {!!confirm && (
-        <Confirm
-          onYes={confirm.yes}
-          onNo={confirm.no}
-          initialPosition={{
-            x: 760,
-            y: 290,
-          }}
-        />
-      )}
-    </>
   );
 }

@@ -136,10 +136,6 @@ export default function Sound({ portId, buildingId }: Props) {
 
 /*
  TODO
-  Clicks on the sound button will trigger quest dialog as well.
-  Solve it by attaching quest dialog clicks to Interface rather than window.
-
- TODO
   Fall back to mp3 if ogg is not supported, using HTMLMediaElement.canPlayType()
   require.context() may come in handy
 
