@@ -28,176 +28,7 @@ type MessageCommon = {
 };
 
 const questData = asInferredKeysWithValue<Message[]>()({
-  pubBeforeQuest: [
-    {
-      body: 'Well isn’t this a rare treat, Master $firstName.',
-      characterId: '98',
-      position: 1,
-    },
-    {
-      body: 'Hey $firstName, how about playing a tune for me on that lute of yours? I feel like singing!',
-      characterId: '99',
-      position: 1,
-    },
-    {
-      body: 'Lucia! You should be more polite to the son of a noble.',
-      characterId: '98',
-      position: 1,
-    },
-    {
-      body: 'Oh, don’t worry, Lucia and I have been friends forever!',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'By the way, $firstName, Rocco came by here looking for you. He said the Duke was calling for you.',
-      characterId: '98',
-      position: 1,
-    },
-    {
-      body: 'My father? Well then, I apologize, but I’d better be going.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'Oh, $firstName! You’re leaving already?!',
-      characterId: '99',
-      position: 1,
-      completeQuest: true,
-      exitBuilding: true,
-    },
-  ],
-  pubBeforeQuest2: [
-    {
-      body: 'Master $firstName, I think you’d better be heading home now.',
-      characterId: '98',
-      position: 1,
-      exitBuilding: true,
-    },
-  ],
-  churchBeforeQuest: [
-    {
-      body: 'Master $firstName, is there anyone in the Duke $lastName’s household that could possibly take a trip?',
-      position: 0,
-    },
-    {
-      body: 'I’m afraid not. My father is too busy, and I’ve no experience.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'I’m looking for a reliable man to... Well, never mind.',
-      position: 0,
-    },
-    {
-      body: 'Oh, that reminds me, Rocco was here looking for you.',
-      position: 0,
-    },
-    {
-      body: 'I see. Well then, I guess I’ll go back to the house.',
-      characterId: '1',
-      position: 2,
-      exitBuilding: true,
-    },
-  ],
-  churchBeforeQuest2: [
-    {
-      body: 'Master $firstName, are you going to go to the house now?',
-      position: 0,
-      exitBuilding: true,
-    },
-  ],
-  harborBeforeQuest: [
-    {
-      body: 'Master $firstName, whenever you have a problem, just go on over to the pub.',
-      position: 0,
-    },
-    {
-      body: 'The pub owner, Carlotta, helped out the Duke quite a bit when he was your age.',
-      position: 0,
-    },
-  ],
-  marketBeforeQuest: [
-    {
-      body: 'Welcome Master $lastName. It’s always a pleasure to see the son of my favorite customer, the Duke.',
-      position: 0,
-    },
-    {
-      body: 'Rocco was just here looking for you.',
-      position: 0,
-    },
-    {
-      body: 'By the way, you can sell our rock salt for a pretty profit in the Mediterranean.',
-      position: 0,
-    },
-    {
-      body: 'Furthermore, a trade route between here and Seville, with their porcelain, turns a nice profit as well.',
-      position: 0,
-      exitBuilding: true,
-    },
-  ],
-  // Only the Lodge doesn’t trigger an exit
-  lodgeBankGuildBeforeQuestRandom1: [
-    {
-      body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
-      position: 0,
-    },
-    {
-      body: 'You’re part of the $lastName family, so I guess you’ll be taking a trip soon, right?',
-      position: 0,
-    },
-  ],
-  lodgeBankGuildBeforeQuestRandom2: [
-    {
-      body: 'Welcome Master $lastName. You know, your father’s one of my best customers.',
-      position: 0,
-    },
-    {
-      body: 'Rocco came here looking for you.',
-      position: 0,
-    },
-  ],
-  lodgeBankGuildBeforeQuestRandom3: [
-    {
-      body: 'Just a little advice, Master $firstName- visit the pub whenever you’ve got a problem.',
-      position: 0,
-    },
-    {
-      body: 'The pub owner, Carlotta, helped out your father, the Duke, quite a bit when he was your age.',
-      position: 0,
-    },
-  ],
-  palaceBeforeQuest: [
-    {
-      body: 'Welcome Master $firstName. Duke $lastName was here looking for you.',
-      position: 0,
-      exitBuilding: true,
-    },
-  ],
-  itemShopBeforeQuest: [
-    {
-      body: 'Hello there Master $firstName. Rocco was here earlier looking for you.',
-      position: 0,
-      exitBuilding: true,
-    },
-  ],
-  shipyardBeforeQuest: [
-    {
-      body: 'Say, there’s a ship being built by Duke $lastName’s orders! I wonder who’s going to use it?',
-      position: 0,
-    },
-    {
-      body: 'Rocco, probably.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'That reminds me, Rocco was in here looking for you.',
-      position: 0,
-      exitBuilding: true,
-    },
-  ],
-  questFromFather: [
+  houseBeforeQuest: [
     {
       body: 'Father, did you send for me?',
       characterId: '1',
@@ -493,6 +324,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Now $firstName, my only son, please be very careful! May fair weather be with you on your voyage.',
       characterId: '20',
       position: 1,
+      completeQuest: true,
       exitBuilding: true,
     },
   ],
@@ -511,6 +343,53 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'Well then, Master $firstName, please be careful. The sea’s a fickle lady. She can change unexpectedly. ',
       characterId: '7',
+      position: 1,
+      exitBuilding: true,
+    },
+  ],
+  pubBeforeQuest: [
+    {
+      body: 'Well isn’t this a rare treat, Master $firstName.',
+      characterId: '98',
+      position: 1,
+    },
+    {
+      body: 'Hey $firstName, how about playing a tune for me on that lute of yours? I feel like singing!',
+      characterId: '99',
+      position: 1,
+    },
+    {
+      body: 'Lucia! You should be more polite to the son of a noble.',
+      characterId: '98',
+      position: 1,
+    },
+    {
+      body: 'Oh, don’t worry, Lucia and I have been friends forever!',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'By the way, $firstName, Rocco came by here looking for you. He said the Duke was calling for you.',
+      characterId: '98',
+      position: 1,
+    },
+    {
+      body: 'My father? Well then, I apologize, but I’d better be going.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Oh, $firstName! You’re leaving already?!',
+      characterId: '99',
+      position: 1,
+      completeQuest: true,
+      exitBuilding: true,
+    },
+  ],
+  pubBeforeQuest2: [
+    {
+      body: 'Master $firstName, I think you’d better be heading home now.',
+      characterId: '98',
       position: 1,
       exitBuilding: true,
     },
@@ -634,6 +513,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Thanks for the advice Carlotta. Thank you Lucia.',
       characterId: '1',
       position: 2,
+      completeQuest: true,
       exitBuilding: true,
     },
   ],
@@ -643,6 +523,37 @@ const questData = asInferredKeysWithValue<Message[]>()({
       characterId: '99',
       position: 1,
       exitBuilding: true,
+    },
+  ],
+  // Only the Lodge doesn’t trigger an exit
+  lodgeBankGuildBeforeQuestRandom1: [
+    {
+      body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
+      position: 0,
+    },
+    {
+      body: 'You’re part of the $lastName family, so I guess you’ll be taking a trip soon, right?',
+      position: 0,
+    },
+  ],
+  lodgeBankGuildBeforeQuestRandom2: [
+    {
+      body: 'Welcome Master $lastName. You know, your father’s one of my best customers.',
+      position: 0,
+    },
+    {
+      body: 'Rocco came here looking for you.',
+      position: 0,
+    },
+  ],
+  lodgeBankGuildBeforeQuestRandom3: [
+    {
+      body: 'Just a little advice, Master $firstName- visit the pub whenever you’ve got a problem.',
+      position: 0,
+    },
+    {
+      body: 'The pub owner, Carlotta, helped out your father, the Duke, quite a bit when he was your age.',
+      position: 0,
     },
   ],
   lodgeBankGuildAfterQuestRandom1: [
@@ -668,9 +579,23 @@ const questData = asInferredKeysWithValue<Message[]>()({
       position: 0,
     },
   ],
+  palaceBeforeQuest: [
+    {
+      body: 'Welcome Master $firstName. Duke $lastName was here looking for you.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
   palaceAfterQuest: [
     {
       body: 'Master $firstName, the Duke has ordered everyone to treat you as a commoner. So, I’m afraid I must ask you not to enter the Palace anymore.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  itemShopBeforeQuest: [
+    {
+      body: 'Hello there Master $firstName. Rocco was here earlier looking for you.',
       position: 0,
       exitBuilding: true,
     },
@@ -695,10 +620,33 @@ const questData = asInferredKeysWithValue<Message[]>()({
       action: () => {
         // TODO give Rapier
       },
+      completeQuest: true,
     },
     {
       body: 'Be careful out there. And remember, a weapon’s useless if you don’t equip yourself with it.',
       position: 0,
+    },
+  ],
+  itemShopAfterQuest2: [
+    {
+      body: 'Be careful out there. And remember, a weapon’s useless if you don’t equip yourself with it.',
+      position: 0,
+    },
+  ],
+  shipyardBeforeQuest: [
+    {
+      body: 'Say, there’s a ship being built by Duke $lastName’s orders! I wonder who’s going to use it?',
+      position: 0,
+    },
+    {
+      body: 'Rocco, probably.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'That reminds me, Rocco was in here looking for you.',
+      position: 0,
+      exitBuilding: true,
     },
   ],
   shipyardAfterQuest: [
@@ -721,18 +669,40 @@ const questData = asInferredKeysWithValue<Message[]>()({
       action: () => {
         // TODO give ship
       },
+      completeQuest: true,
       exitBuilding: true,
     },
   ],
-  harborAfterQuestBeforeEnrico: [
+  churchBeforeQuest: [
     {
-      body: 'Hey Master $firstName, Father Felippe of the church in Lisbon was looking for you.',
+      body: 'Master $firstName, is there anyone in the Duke $lastName’s household that could possibly take a trip?',
       position: 0,
     },
     {
-      body: 'Hmm, I wonder what he wants.',
+      body: 'I’m afraid not. My father is too busy, and I’ve no experience.',
       characterId: '1',
       position: 2,
+    },
+    {
+      body: 'I’m looking for a reliable man to... Well, never mind.',
+      position: 0,
+    },
+    {
+      body: 'Oh, that reminds me, Rocco was here looking for you.',
+      position: 0,
+    },
+    {
+      body: 'I see. Well then, I guess I’ll go back to the house.',
+      characterId: '1',
+      position: 2,
+      completeQuest: true,
+      exitBuilding: true,
+    },
+  ],
+  churchBeforeQuest2: [
+    {
+      body: 'Master $firstName, are you going to go to the house now?',
+      position: 0,
       exitBuilding: true,
     },
   ],
@@ -832,9 +802,237 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Aye, ye’ve got a point there.',
       characterId: '32',
       position: 2,
+      completeQuest: true,
       action: () => {
         // TODO add Enrico to party
       },
+    },
+  ],
+  // Accept/Donate/Refuse not implemented
+  churchAfterEnrico: [
+    {
+      body: 'Oh Master $firstName. Thank you so much for agreeing to take Brother Enrico.',
+      position: 0,
+    },
+    {
+      body: 'I managed to get together some gold for you. Please use it wisely.',
+      position: 0,
+    },
+    {
+      body: 'Thank you very much. I promise to put it to good use.',
+      characterId: '1',
+      position: 2,
+      completeQuest: true,
+    },
+  ],
+  churchAfterEnricoAfterGift: [
+    {
+      body: 'Oh Master $firstName. Thank you so much for agreeing to take Brother Enrico.',
+      position: 0,
+    },
+  ],
+  harborBeforeQuest: [
+    {
+      body: 'Master $firstName, whenever you have a problem, just go on over to the pub.',
+      position: 0,
+    },
+    {
+      body: 'The pub owner, Carlotta, helped out the Duke quite a bit when he was your age.',
+      position: 0,
+    },
+  ],
+  harborAfterQuest: [
+    {
+      body: 'We can’t sail the seas without a ship, now can we? Let’s go to the shipyard.',
+      characterId: '32',
+      position: 1,
+    },
+  ],
+  harborAfterQuestAfterShip: [
+    {
+      body: 'Hey Master $firstName, Father Felippe of the church in Lisbon was looking for you.',
+      position: 0,
+    },
+    {
+      body: 'Hmm, I wonder what he wants.',
+      characterId: '1',
+      position: 2,
+      exitBuilding: true,
+    },
+  ],
+  harborAfterQuestAfterShipAfterEnrico: [
+    {
+      body: 'We’ll be food for the whales if we don’t get our hands on a bit o’ gold. Why don’t ye go to the pub and ask Carlotta for help?',
+      characterId: '32',
+      position: 1,
+    },
+  ],
+  harborAfterQuestAfterShipAfterEnrico2: [
+    {
+      body: 'We’re running pretty low on gold, mate. Ye should go ask Carlotta at the pub. She helped the Duke out when he was younger.',
+      characterId: '32',
+      position: 1,
+    },
+  ],
+  harborAfterQuestAfterShipAfterEnricoAfterPub: [
+    {
+      body: 'Cap’n, don’t ye think we could use a little bit more money?',
+      characterId: '32',
+      position: 1,
+    },
+  ],
+  harborFinal: [
+    {
+      body: 'So what’s the plan of action?',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'Well, I thought we’d just sail around from port to port.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Hah! That’s not a very bright plan.',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'Why not?',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Gold. It takes a heap o’ gold to keep a ship like this afloat.',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'Water’s free, but ye’d be amazed at how much it costs to feed a crew.',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'So are you saying that this money won’t be enough?',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well, it ought to last us about a month. But resting on that fact won’t get us any more!',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'But ye’re on the right track. Sailing around from port to port is a good beginning because...',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'Ah! You figure we can trade and make a profit along the way, right?',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'Ah, now here’s a mate who’s using his noggin!',
+      characterId: '32',
+      position: 1,
+    },
+    {
+      body: 'But even if we decide to trade, I don’t know what to buy where and where to sell what.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well, for example, we should buy goods particular to each port. Like Lisbon’s rock salt.',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'Hmmm...',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'I’m a missionary, but the subject of economics fascinates me. It’s been a hobby of mine to study the market.',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'If we buy rock salt for 40 gold pieces here, we should be able to sell it for at least 60 gold pieces in Seville.',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'Captain, Brother Enrico seems to have a head for numbers, so why don’t ye make him the bookkeeper on our ship?',
+      characterId: '32',
+      position: 1,
+    },
+    // if yes
+    {
+      body: 'Not a bad idea. Welcome to the crew, Brother Enrico.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Oh, and I’d like you to be first mate, Rocco.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well, I do have a pretty good idea of prices at the ports I’ve read about.',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'If we check our log of goods, I should be able to figure out which port will pay the most for each item.',
+      characterId: '33',
+      position: 1,
+    },
+    // if no
+    {
+      body: 'No, it’s not right to ask Brother Enrico to do such work.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well, actually, I wouldn’t mind it in the least. I’d be glad to help!',
+      characterId: '33',
+      position: 1,
+    },
+    {
+      body: 'Well then, perhaps I’ll ask you again when we start to trade.',
+      characterId: '1',
+      position: 2,
+    },
+  ],
+  marketBeforeQuest: [
+    {
+      body: 'Welcome Master $lastName. It’s always a pleasure to see the son of my favorite customer, the Duke.',
+      position: 0,
+    },
+    {
+      body: 'Rocco was just here looking for you.',
+      position: 0,
+    },
+    {
+      body: 'By the way, you can sell our rock salt for a pretty profit in the Mediterranean.',
+      position: 0,
+    },
+    {
+      body: 'Furthermore, a trade route between here and Seville, with their porcelain, turns a nice profit as well.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  marketAfterQuestBeforeShip: [
+    {
+      body: 'Master $firstName, my apologies, but you don’t have a ship yet to store any goods.',
+      position: 0,
+    },
+    {
+      body: 'Come back once you’ve gotten your ship. Thank you, I’m looking forward to doing business with you soon!',
+      position: 0,
+      exitBuilding: true,
     },
   ],
 });

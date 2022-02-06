@@ -25,9 +25,17 @@ const characterData: CharacterData = {
     name: 'Duke Franco',
     color: 'text-red-600',
   },
+  '20': {
+    name: 'Duchess Christiana',
+    color: 'text-yellow-600',
+  },
   '32': {
     name: 'Old Sea Hand Rocco',
     color: 'text-amber-800',
+  },
+  '33': {
+    name: 'Brother Enrico',
+    color: 'text-purple-800',
   },
   '98': {
     name: 'Carlotta, Owner of the Pub',
@@ -35,7 +43,7 @@ const characterData: CharacterData = {
   },
   '99': {
     name: 'Lucia the Waitress',
-    color: 'text-yellow-600',
+    color: 'text-pink-600',
   },
 };
 

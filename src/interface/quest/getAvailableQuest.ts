@@ -1,14 +1,39 @@
 import state from '../../state/state';
 import { finishedQuest } from '../../state/selectors';
 import { QuestId } from './questData';
+import { sample } from '../../utils';
+
+const between22and24 = (timePassed: number) => {
+  const timePassedToday = timePassed % 1440;
+
+  return timePassedToday >= 1320 || timePassedToday === 0;
+};
 
 const getAvailableQuest = (): QuestId | null => {
-  if (state.portId !== '1') {
+  const { portId, buildingId, timePassed } = state;
+
+  if (portId !== '1' || !buildingId) {
     return null;
   }
 
-  if (state.buildingId === '2') {
-    if (!finishedQuest('questFromFather')) {
+  if (buildingId === '8') {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'houseBeforeQuest';
+    }
+
+    if (!finishedQuest('houseAfterQuestAndPub')) {
+      if (finishedQuest('pubAfterQuest') && between22and24(timePassed)) {
+        return 'houseAfterQuestAndPub';
+      } 
+        return 'houseAfterQuest';
+      
+    }
+
+    return 'houseAfterQuestAndPub2';
+  }
+
+  if (buildingId === '2') {
+    if (!finishedQuest('houseBeforeQuest')) {
       if (!finishedQuest('pubBeforeQuest')) {
         return 'pubBeforeQuest';
       }
@@ -19,30 +44,94 @@ const getAvailableQuest = (): QuestId | null => {
     if (!finishedQuest('pubAfterQuest')) {
       return 'pubAfterQuest';
     }
-  }
 
-  if (state.buildingId === '5') {
-    if (!finishedQuest('questFromFather')) {
-      if (!finishedQuest('lodgeBankGuildBeforeQuestRandom1')) {
-        return 'lodgeBankGuildBeforeQuestRandom1';
-      }
+    if (!finishedQuest('houseAfterQuestAndPub')) {
+      return 'pubAfterQuest2';
     }
   }
 
-  if (state.buildingId === '8') {
-    if (!finishedQuest('questFromFather')) {
-      return 'questFromFather';
+  if (['5', '7', '9'].includes(buildingId)) {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return sample([
+        'lodgeBankGuildBeforeQuestRandom1',
+        'lodgeBankGuildBeforeQuestRandom2',
+        'lodgeBankGuildBeforeQuestRandom3',
+      ]);
     }
 
-    return 'houseAfterQuest';
+    return sample([
+      'lodgeBankGuildAfterQuestRandom1',
+      'lodgeBankGuildAfterQuestRandom2',
+      'lodgeBankGuildAfterQuestRandom3',
+    ]);
   }
 
-  if (state.buildingId === '11') {
-    if (!finishedQuest('questFromFather')) {
+  if (buildingId === '6') {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'palaceBeforeQuest';
+    }
+
+    return 'palaceAfterQuest';
+  }
+
+  if (buildingId === '10') {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'itemShopBeforeQuest';
+    }
+
+    if (!finishedQuest('itemShopAfterQuest')) {
+      return 'itemShopAfterQuest';
+    }
+
+    return 'itemShopAfterQuest2';
+  }
+
+  if (buildingId === '3') {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'shipyardBeforeQuest';
+    }
+
+    if (!finishedQuest('shipyardAfterQuest')) {
+      return 'shipyardAfterQuest';
+    }
+
+    return null;
+  }
+
+  if (buildingId === '11') {
+    if (!finishedQuest('houseBeforeQuest')) {
       if (!finishedQuest('churchBeforeQuest')) {
         return 'churchBeforeQuest';
       }
+
+      return 'churchBeforeQuest2';
     }
+
+    if (!finishedQuest('churchAfterEnrico')) {
+      if (!finishedQuest('churchAfterQuest')) {
+        return 'churchAfterQuest';
+      }
+
+      return 'churchAfterEnrico';
+    }
+
+    return 'churchAfterEnricoAfterGift';
+  }
+
+  if (buildingId === '1') {
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'marketBeforeQuest';
+    }
+
+    if (!finishedQuest('shipyardAfterQuest')) {
+      return 'marketAfterQuestBeforeShip';
+    }
+
+    return null;
+  }
+
+  if (buildingId === '4') {
+    // TODO
   }
 
   return null;
