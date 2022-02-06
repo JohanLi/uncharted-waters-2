@@ -6,6 +6,7 @@ import { shipData } from '../data/shipData';
 import { Provisions } from '../world/fleets';
 import { minutesUntilNextMorning } from '../interface/interfaceUtils';
 import type { QuestId } from '../interface/quest/questData';
+import { getPlayerFleet } from './selectorsFleet';
 
 export const updateGeneral = () => {
   updateInterface.general({
@@ -125,5 +126,24 @@ export const receiveGold = (amount: number) => {
 export const checkIn = () => {
   updateInterface.fade(() => {
     exitBuilding(true);
+  });
+};
+
+export const exitBuildingIfNotLodge = () => {
+  if (state.buildingId !== '5') {
+    exitBuilding(true);
+  }
+};
+
+export const receiveShip = () => {
+  const { durability, minimumCrew } = shipData['6'];
+
+  // TODO use buyUsedShip()
+  getPlayerFleet().push({
+    id: '6',
+    name: 'Hermes II',
+    crew: minimumCrew,
+    cargo: [],
+    durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
 };

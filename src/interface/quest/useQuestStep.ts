@@ -39,6 +39,7 @@ export default function useQuestStep() {
       return;
     }
 
+    // TODO investigate if the early return is still needed, seeing as we also have exitBuildingIfNotLodge()
     if (message.exitBuilding) {
       exitBuilding();
       return;

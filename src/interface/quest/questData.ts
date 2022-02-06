@@ -1,4 +1,8 @@
-import { receiveGold } from '../../state/actionsPort';
+import {
+  exitBuildingIfNotLodge,
+  receiveGold,
+  receiveShip,
+} from '../../state/actionsPort';
 import { asInferredKeysWithValue } from '../../utils';
 
 export const messagePositions = [0, 1, 2] as const;
@@ -235,7 +239,6 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  // between 22 and 24
   houseAfterQuestAndPub: [
     {
       body: 'Oh $firstName, I just can’t understand why your father must forbid you from coming in the house.',
@@ -525,7 +528,6 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  // Only the Lodge doesn’t trigger an exit
   lodgeBankGuildBeforeQuestRandom1: [
     {
       body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
@@ -534,6 +536,9 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'You’re part of the $lastName family, so I guess you’ll be taking a trip soon, right?',
       position: 0,
+      action: () => {
+        exitBuildingIfNotLodge();
+      },
     },
   ],
   lodgeBankGuildBeforeQuestRandom2: [
@@ -544,6 +549,9 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'Rocco came here looking for you.',
       position: 0,
+      action: () => {
+        exitBuildingIfNotLodge();
+      },
     },
   ],
   lodgeBankGuildBeforeQuestRandom3: [
@@ -554,6 +562,9 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'The pub owner, Carlotta, helped out your father, the Duke, quite a bit when he was your age.',
       position: 0,
+      action: () => {
+        exitBuildingIfNotLodge();
+      },
     },
   ],
   lodgeBankGuildAfterQuestRandom1: [
@@ -667,7 +678,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Her name’s the Hermes II. She’s got a triangle sail, easy for landlubbers to control.',
       position: 0,
       action: () => {
-        // TODO give ship
+        receiveShip();
       },
       completeQuest: true,
       exitBuilding: true,

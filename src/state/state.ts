@@ -41,7 +41,7 @@ const state = {
   timePassed: START_TIME_PASSED,
   fleets,
   dayAtSea: 0,
-  gold: 2000,
+  gold: 0,
   quests: [] as QuestId[],
   usedShipsAtPort: {},
 } as State;

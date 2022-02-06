@@ -31,20 +31,20 @@ export const fleets: Fleets = {
     position: undefined,
     ships: [
       {
-        id: '6',
-        name: 'Hermes II',
-        crew: 10,
+        id: '22',
+        name: 'Test ship',
+        crew: 30,
         cargo: [
           {
             type: 'water',
-            quantity: 20,
+            quantity: 100,
           },
           {
             type: 'food',
-            quantity: 20,
+            quantity: 100,
           },
         ],
-        durability: 1,
+        durability: 51,
       },
     ],
   },
