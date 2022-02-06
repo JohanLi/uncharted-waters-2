@@ -51,8 +51,24 @@ export default function useQuestStep() {
   const messageBoxes = getMessageBoxes(messages, step);
   const currentMessageBox = messageBoxes[message.position];
 
-  if (acknowledge(message) && currentMessageBox) {
-    currentMessageBox.acknowledge = next;
+  if (currentMessageBox) {
+    if (acknowledge(message)) {
+      currentMessageBox.acknowledge = next;
+    }
+
+    // TODO not the best looking solution
+    if (message.confirm) {
+      currentMessageBox.confirm = {
+        yes: () => {
+          message.confirm?.yes();
+          next();
+        },
+        no: () => {
+          message.confirm?.no();
+          next();
+        },
+      };
+    }
   }
 
   return { messageBoxes };

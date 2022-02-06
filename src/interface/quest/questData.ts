@@ -980,44 +980,56 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Captain, Brother Enrico seems to have a head for numbers, so why don’t ye make him the bookkeeper on our ship?',
       characterId: '32',
       position: 1,
-      completeQuest: true,
-    },
-    // if yes
-    {
-      body: 'Not a bad idea. Welcome to the crew, Brother Enrico.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'Oh, and I’d like you to be first mate, Rocco.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'Well, I do have a pretty good idea of prices at the ports I’ve read about.',
-      characterId: '33',
-      position: 1,
-    },
-    {
-      body: 'If we check our log of goods, I should be able to figure out which port will pay the most for each item.',
-      characterId: '33',
-      position: 1,
-    },
-    // if no
-    {
-      body: 'No, it’s not right to ask Brother Enrico to do such work.',
-      characterId: '1',
-      position: 2,
-    },
-    {
-      body: 'Well, actually, I wouldn’t mind it in the least. I’d be glad to help!',
-      characterId: '33',
-      position: 1,
-    },
-    {
-      body: 'Well then, perhaps I’ll ask you again when we start to trade.',
-      characterId: '1',
-      position: 2,
+      confirm: {
+        yes: () => {
+          questData.harborFinal.push(
+            {
+              body: 'Not a bad idea. Welcome to the crew, Brother Enrico.',
+              characterId: '1',
+              position: 2,
+            },
+            {
+              body: 'Oh, and I’d like you to be first mate, Rocco.',
+              characterId: '1',
+              position: 2,
+              action: () => {
+                // TODO assign Rocco as First Mate and Enrico as Bookkeeper
+              },
+            },
+            {
+              body: 'Well, I do have a pretty good idea of prices at the ports I’ve read about.',
+              characterId: '33',
+              position: 1,
+            },
+            {
+              body: 'If we check our log of goods, I should be able to figure out which port will pay the most for each item.',
+              characterId: '33',
+              position: 1,
+              completeQuest: true,
+            },
+          );
+        },
+        no: () => {
+          questData.harborFinal.push(
+            {
+              body: 'No, it’s not right to ask Brother Enrico to do such work.',
+              characterId: '1',
+              position: 2,
+            },
+            {
+              body: 'Well, actually, I wouldn’t mind it in the least. I’d be glad to help!',
+              characterId: '33',
+              position: 1,
+            },
+            {
+              body: 'Well then, perhaps I’ll ask you again when we start to trade.',
+              characterId: '1',
+              position: 2,
+              completeQuest: true,
+            },
+          );
+        },
+      },
     },
   ],
   marketBeforeQuest: [
