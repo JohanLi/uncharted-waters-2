@@ -817,6 +817,9 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'I managed to get together some gold for you. Please use it wisely.',
       position: 0,
+      action: () => {
+        receiveGold(1000);
+      },
     },
     {
       body: 'Thank you very much. I promise to put it to good use.',
@@ -841,14 +844,14 @@ const questData = asInferredKeysWithValue<Message[]>()({
       position: 0,
     },
   ],
-  harborAfterQuest: [
+  harborBeforeShip: [
     {
       body: 'We can’t sail the seas without a ship, now can we? Let’s go to the shipyard.',
       characterId: '32',
       position: 1,
     },
   ],
-  harborAfterQuestAfterShip: [
+  harborBeforeEnrico: [
     {
       body: 'Hey Master $firstName, Father Felippe of the church in Lisbon was looking for you.',
       position: 0,
@@ -860,21 +863,21 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  harborAfterQuestAfterShipAfterEnrico: [
+  harborAfterEnrico: [
     {
       body: 'We’ll be food for the whales if we don’t get our hands on a bit o’ gold. Why don’t ye go to the pub and ask Carlotta for help?',
       characterId: '32',
       position: 1,
     },
   ],
-  harborAfterQuestAfterShipAfterEnrico2: [
+  harborAfterEnrico2: [
     {
       body: 'We’re running pretty low on gold, mate. Ye should go ask Carlotta at the pub. She helped the Duke out when he was younger.',
       characterId: '32',
       position: 1,
     },
   ],
-  harborAfterQuestAfterShipAfterEnricoAfterPub: [
+  harborAfterEnricoBeforeMother: [
     {
       body: 'Cap’n, don’t ye think we could use a little bit more money?',
       characterId: '32',
@@ -966,6 +969,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Captain, Brother Enrico seems to have a head for numbers, so why don’t ye make him the bookkeeper on our ship?',
       characterId: '32',
       position: 1,
+      completeQuest: true,
     },
     // if yes
     {

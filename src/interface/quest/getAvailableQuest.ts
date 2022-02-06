@@ -24,9 +24,8 @@ const getAvailableQuest = (): QuestId | null => {
     if (!finishedQuest('houseAfterQuestAndPub')) {
       if (finishedQuest('pubAfterQuest') && between22and24(timePassed)) {
         return 'houseAfterQuestAndPub';
-      } 
-        return 'houseAfterQuest';
-      
+      }
+      return 'houseAfterQuest';
     }
 
     return 'houseAfterQuestAndPub2';
@@ -131,7 +130,33 @@ const getAvailableQuest = (): QuestId | null => {
   }
 
   if (buildingId === '4') {
-    // TODO
+    if (!finishedQuest('houseBeforeQuest')) {
+      return 'harborBeforeQuest';
+    }
+
+    if (!finishedQuest('shipyardAfterQuest')) {
+      return 'harborBeforeShip';
+    }
+
+    if (!finishedQuest('churchAfterQuest')) {
+      return 'harborBeforeEnrico';
+    }
+
+    if (!finishedQuest('pubAfterQuest')) {
+      if (!finishedQuest('churchAfterEnrico')) {
+        return 'harborAfterEnrico';
+      }
+
+      return 'harborAfterEnrico2';
+    }
+
+    if (!finishedQuest('houseAfterQuestAndPub')) {
+      return 'harborAfterEnricoBeforeMother';
+    }
+
+    if (!finishedQuest('harborFinal')) {
+      return 'harborFinal';
+    }
   }
 
   return null;
