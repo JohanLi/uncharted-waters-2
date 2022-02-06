@@ -8,7 +8,7 @@ const getAvailableQuest = (): QuestId | null => {
   }
 
   if (state.buildingId === '2') {
-    if (!finishedQuest('obtainedQuestFromFather')) {
+    if (!finishedQuest('questFromFather')) {
       if (!finishedQuest('pubBeforeQuest')) {
         return 'pubBeforeQuest';
       }
@@ -22,23 +22,23 @@ const getAvailableQuest = (): QuestId | null => {
   }
 
   if (state.buildingId === '5') {
-    if (!finishedQuest('obtainedQuestFromFather')) {
-      if (!finishedQuest('lodgeBeforeQuest')) {
-        return 'lodgeBeforeQuest';
+    if (!finishedQuest('questFromFather')) {
+      if (!finishedQuest('lodgeBankGuildBeforeQuestRandom1')) {
+        return 'lodgeBankGuildBeforeQuestRandom1';
       }
     }
   }
 
   if (state.buildingId === '8') {
-    if (!finishedQuest('obtainedQuestFromFather')) {
-      return 'obtainedQuestFromFather';
+    if (!finishedQuest('questFromFather')) {
+      return 'questFromFather';
     }
 
-    return 'expelled';
+    return 'houseAfterQuest';
   }
 
   if (state.buildingId === '11') {
-    if (!finishedQuest('obtainedQuestFromFather')) {
+    if (!finishedQuest('questFromFather')) {
       if (!finishedQuest('churchBeforeQuest')) {
         return 'churchBeforeQuest';
       }

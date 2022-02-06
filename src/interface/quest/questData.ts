@@ -75,16 +75,6 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  lodgeBeforeQuest: [
-    {
-      body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
-      position: 0,
-    },
-    {
-      body: 'You’re part of the $lastName family, so I guess you’ll be taking a trip soon, right?',
-      position: 0,
-    },
-  ],
   churchBeforeQuest: [
     {
       body: 'Master $firstName, is there anyone in the Duke $lastName’s household that could possibly take a trip?',
@@ -110,7 +100,104 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  obtainedQuestFromFather: [
+  churchBeforeQuest2: [
+    {
+      body: 'Master $firstName, are you going to go to the house now?',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  harborBeforeQuest: [
+    {
+      body: 'Master $firstName, whenever you have a problem, just go on over to the pub.',
+      position: 0,
+    },
+    {
+      body: 'The pub owner, Carlotta, helped out the Duke quite a bit when he was your age.',
+      position: 0,
+    },
+  ],
+  marketBeforeQuest: [
+    {
+      body: 'Welcome Master $lastName. It’s always a pleasure to see the son of my favorite customer, the Duke.',
+      position: 0,
+    },
+    {
+      body: 'Rocco was just here looking for you.',
+      position: 0,
+    },
+    {
+      body: 'By the way, you can sell our rock salt for a pretty profit in the Mediterranean.',
+      position: 0,
+    },
+    {
+      body: 'Furthermore, a trade route between here and Seville, with their porcelain, turns a nice profit as well.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  // Only the Lodge doesn’t trigger an exit
+  lodgeBankGuildBeforeQuestRandom1: [
+    {
+      body: 'Well this is a surprise, Master $firstName. Are you avoiding something?',
+      position: 0,
+    },
+    {
+      body: 'You’re part of the $lastName family, so I guess you’ll be taking a trip soon, right?',
+      position: 0,
+    },
+  ],
+  lodgeBankGuildBeforeQuestRandom2: [
+    {
+      body: 'Welcome Master $lastName. You know, your father’s one of my best customers.',
+      position: 0,
+    },
+    {
+      body: 'Rocco came here looking for you.',
+      position: 0,
+    },
+  ],
+  lodgeBankGuildBeforeQuestRandom3: [
+    {
+      body: 'Just a little advice, Master $firstName- visit the pub whenever you’ve got a problem.',
+      position: 0,
+    },
+    {
+      body: 'The pub owner, Carlotta, helped out your father, the Duke, quite a bit when he was your age.',
+      position: 0,
+    },
+  ],
+  palaceBeforeQuest: [
+    {
+      body: 'Welcome Master $firstName. Duke $lastName was here looking for you.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  itemShopBeforeQuest: [
+    {
+      body: 'Hello there Master $firstName. Rocco was here earlier looking for you.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  shipyardBeforeQuest: [
+    {
+      body: 'Say, there’s a ship being built by Duke $lastName’s orders! I wonder who’s going to use it?',
+      position: 0,
+    },
+    {
+      body: 'Rocco, probably.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'That reminds me, Rocco was in here looking for you.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  questFromFather: [
     {
       body: 'Father, did you send for me?',
       characterId: '1',
@@ -309,9 +396,120 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
-  expelled: [
+  houseAfterQuest: [
     {
       body: 'I’m awfully sorry, but the Duke’s orders were quite specific. You are not to enter the house.',
+      characterId: '7',
+      position: 1,
+      exitBuilding: true,
+    },
+  ],
+  // between 22 and 24
+  houseAfterQuestAndPub: [
+    {
+      body: 'Oh $firstName, I just can’t understand why your father must forbid you from coming in the house.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'Please don’t worry, Mother. I promise that I’ll find the secret of Atlantis, and then I’ll be back.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Aye, me lady, all members of the $lastName family have got to go to sea at one time or another.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'Besides, me thinks there’s trouble brewing between the Captain, I mean the Duke, and some other noble.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'I agree. He’s had several arguments with that noble, Martinez.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'That’s the problem. If it weren’t for Martinez, the Duke could search for the secret of Atlantis himself, and $firstName could stay here.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'And that’s why he wants another Captain to take his place.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'Oh, dear Rocco, you’re a lot brighter than you look. It’s like you’re reading the Duke’s mind!',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'That’s because I’ve known the Duke since he was kneehigh to a grasshopper!',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'And whether foul or fair cause, I’m all for sending the boy out to learn the ways of the world.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'There’s nothing better than a hardy stint at sea to toughen a lad up.',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'If that’s the case, then I trust you’ll look out for $firstName, my only son.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: '$firstName, I heard from Lucia that there’s not too much money for the voyage.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'This was all so sudden, I couldn’t get everything ready, but please take this.',
+      characterId: '20',
+      position: 1,
+      action: () => {
+        // TODO give Aquamarine Tiara
+      },
+    },
+    {
+      body: 'This is the aquamarine tiara your father gave to me.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'Sell this for however much you can. But don’t tell your father.',
+      characterId: '20',
+      position: 1,
+    },
+    {
+      body: 'Now $firstName, my only son, please be very careful! May fair weather be with you on your voyage.',
+      characterId: '20',
+      position: 1,
+      exitBuilding: true,
+    },
+  ],
+  houseAfterQuestAndPub2: [
+    {
+      body: 'I’m awfully sorry, but the Duke’s orders were quite specific. You are not to enter the house.',
+      characterId: '7',
+      position: 1,
+    },
+
+    {
+      body: 'I know that. I just thought that I’d say good-bye before I got started on my trip.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well then, Master $firstName, please be careful. The sea’s a fickle lady. She can change unexpectedly. ',
       characterId: '7',
       position: 1,
       exitBuilding: true,
@@ -437,6 +635,206 @@ const questData = asInferredKeysWithValue<Message[]>()({
       characterId: '1',
       position: 2,
       exitBuilding: true,
+    },
+  ],
+  pubAfterQuest2: [
+    {
+      body: 'I heard that your mother wants you to come to the house between 10 and 12 at night.',
+      characterId: '99',
+      position: 1,
+      exitBuilding: true,
+    },
+  ],
+  lodgeBankGuildAfterQuestRandom1: [
+    {
+      body: 'Master $firstName, is it true that everyone’s to treat you as a commoner?',
+      position: 0,
+    },
+    {
+      body: 'Yes that’s right. So just treat me like a regular sailor, OK?',
+      characterId: '1',
+      position: 2,
+    },
+  ],
+  lodgeBankGuildAfterQuestRandom2: [
+    {
+      body: 'Master $firstName, I’m sure you’ll find the secret of Atlantis.',
+      position: 0,
+    },
+  ],
+  lodgeBankGuildAfterQuestRandom3: [
+    {
+      body: 'Say, Master $firstName, you’re leaving pretty soon, aren’t you?',
+      position: 0,
+    },
+  ],
+  palaceAfterQuest: [
+    {
+      body: 'Master $firstName, the Duke has ordered everyone to treat you as a commoner. So, I’m afraid I must ask you not to enter the Palace anymore.',
+      position: 0,
+      exitBuilding: true,
+    },
+  ],
+  itemShopAfterQuest: [
+    {
+      body: 'Welcome Master $firstName. I have something for you.',
+      position: 0,
+    },
+    {
+      body: 'For me?',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Your Butler Marco came by here and asked me to give this rapier to you if you stopped by.',
+      position: 0,
+    },
+    {
+      body: 'It’s already been paid for, so please take it.',
+      position: 0,
+      action: () => {
+        // TODO give Rapier
+      },
+    },
+    {
+      body: 'Be careful out there. And remember, a weapon’s useless if you don’t equip yourself with it.',
+      position: 0,
+    },
+  ],
+  shipyardAfterQuest: [
+    {
+      body: 'Ahoy there, is our ship finished yet?',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'Why if it isn’t Rocco! Aye, mate, she’s all finished.',
+      position: 0,
+    },
+    {
+      body: 'I built ’er exactly as Duke Leon ordered. A Latin, just like the one he first sailed on.',
+      position: 0,
+    },
+    {
+      body: 'Her name’s the Hermes II. She’s got a triangle sail, easy for landlubbers to control.',
+      position: 0,
+      action: () => {
+        // TODO give ship
+      },
+      exitBuilding: true,
+    },
+  ],
+  harborAfterQuestBeforeEnrico: [
+    {
+      body: 'Hey Master $firstName, Father Felippe of the church in Lisbon was looking for you.',
+      position: 0,
+    },
+    {
+      body: 'Hmm, I wonder what he wants.',
+      characterId: '1',
+      position: 2,
+      exitBuilding: true,
+    },
+  ],
+  churchAfterQuest: [
+    {
+      body: 'I’m glad you could make it, Master $firstName.',
+      position: 0,
+    },
+    {
+      body: 'I heard you had something on your mind. What is it?',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Well, actually, I have something to ask of you.',
+      position: 0,
+    },
+    {
+      body: 'Wait a minute. You’re looking for a sailor, right?',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Yes. And I have heard rumors about you, Master $firstName. About your voyage.',
+      position: 0,
+    },
+    {
+      body: 'My colleagues and I have long been fascinated by the riddle of the existence of Atlantis. We admire your endeavor.',
+      position: 0,
+    },
+    {
+      body: 'And along with that, I have a favor to ask of you, young Master.',
+      position: 0,
+    },
+    {
+      body: 'Enrico, Brother Enrico! Over here please.',
+      position: 0,
+    },
+    {
+      body: 'Yes sir!',
+      characterId: '33',
+      position: 2,
+    },
+    {
+      body: 'Brother Enrico is a Franciscan missionary.',
+      position: 0,
+    },
+    {
+      body: 'Master $firstName, we’d like to spread the teachings of the Christian faith in the East.',
+      position: 0,
+    },
+    {
+      body: 'I know this may be a great deal to ask, but we want you to take him to the land of Zipangu.',
+      position: 0,
+    },
+    {
+      body: 'Did you say Zipangu?! I heard from my father that it’s a beautiful island in the far east, that Marco Polo wrote about, but...',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'There’s no way I could do that now. I’ve never even left the land of Iberia!',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'But I want to exchange knowledge with them, and teach them my faith.',
+      characterId: '33',
+      position: 2,
+    },
+    {
+      body: 'The Vatican commissioned me to go there as a missionary.',
+      characterId: '33',
+      position: 2,
+    },
+    {
+      body: 'Please. Take me to Zipangu.',
+      characterId: '33',
+      position: 2,
+    },
+    {
+      body: 'Well, since you’re willing to go that far, I guess I can’t refuse. But I really can’t say how many years it will take.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Are ye sure ye want to do this? I mean, a promise like that, well...',
+      characterId: '32',
+      position: 2,
+    },
+    {
+      body: 'Well, Zipangu is certainly far away, but if we take it day by day, and make progress little by little, we’ll make it.',
+      characterId: '1',
+      position: 2,
+    },
+    {
+      body: 'Aye, ye’ve got a point there.',
+      characterId: '32',
+      position: 2,
+      action: () => {
+        // TODO add Enrico to party
+      },
     },
   ],
 });
