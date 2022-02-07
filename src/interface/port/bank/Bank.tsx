@@ -17,7 +17,8 @@ const bankOptions = ['Deposit', 'Withdraw', 'Borrow', 'Repay'] as const;
 type BankOptions = typeof bankOptions[number];
 
 export default function Bank() {
-  const { selectOption, next, back, reset, state } = useBuilding<BankOptions>();
+  const { selectOption, next, back, reset, state } =
+    useBuilding<BankOptions>(true);
 
   const depositAmount = useRef(0);
   const withdrawAmount = useRef(0);
@@ -37,7 +38,7 @@ export default function Bank() {
       }))}
       onSelect={(s) => selectOption(s)}
       onCancel={back}
-      hidden={option !== null}
+      hidden={option !== null || step === -1}
     />
   );
 
@@ -270,6 +271,13 @@ export default function Bank() {
         acknowledge: reset,
       };
     }
+  }
+
+  if (step === -1) {
+    vendorMessage = {
+      body: 'Thank you for choosing Marco Polo Bank.',
+      acknowledge: back,
+    };
   }
 
   return (

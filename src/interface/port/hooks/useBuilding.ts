@@ -5,7 +5,7 @@ type State<T> = { option: T | null; step: number };
 
 const initialState = { option: null, step: 0 };
 
-const useBuilding = <T extends string>() => {
+const useBuilding = <T extends string>(exitMessage = false) => {
   const [state, setState] = useState<State<T>>(initialState);
 
   const selectOption = (option: T) => {
@@ -28,20 +28,30 @@ const useBuilding = <T extends string>() => {
   };
 
   const back = (steps = 1) => {
-    if (state.step > 0) {
-      setState({
-        ...state,
-        step: state.step - steps,
-      });
+    const step = state.step - steps;
+
+    if (state.option) {
+      if (step > 0) {
+        setState({
+          ...state,
+          step,
+        });
+        return;
+      }
+
+      reset();
       return;
     }
 
-    if (!state.option) {
+    if ((!exitMessage && step < 0) || (exitMessage && step < -1)) {
       exitBuilding();
       return;
     }
 
-    reset();
+    setState({
+      ...state,
+      step,
+    });
   };
 
   return { state, selectOption, next, back, reset };
