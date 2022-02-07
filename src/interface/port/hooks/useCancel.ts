@@ -6,7 +6,7 @@ export default function useCancel(onCancel?: () => void) {
       return undefined;
     }
 
-    const onKeyup = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
       if (pressedKey === 'escape') {
@@ -20,11 +20,11 @@ export default function useCancel(onCancel?: () => void) {
       onCancel();
     };
 
-    window.addEventListener('keyup', onKeyup);
+    window.addEventListener('keydown', onKeydown);
     window.addEventListener('contextmenu', onContextMenu);
 
     return () => {
-      window.removeEventListener('keyup', onKeyup);
+      window.removeEventListener('keydown', onKeydown);
       window.removeEventListener('contextmenu', onContextMenu);
     };
   });

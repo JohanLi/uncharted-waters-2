@@ -5,7 +5,7 @@ import Menu from '../common/Menu';
 import BuildingWrapper from './BuildingWrapper';
 import { donate, pray } from '../../state/actionsPort';
 import { getAtMosque, getGold } from '../../state/selectors';
-import BankInput from './bank/BankInput';
+import InputNumeric from '../common/InputNumeric';
 
 const churchOptions = ['Pray', 'Donate'] as const;
 type ChurchOptions = typeof churchOptions[number];
@@ -53,7 +53,7 @@ export default function Church() {
 
     if (step === 0) {
       if (!gold) {
-        // TODO this should be a characterMessage,
+        // TODO this should be a characterMessage
         vendorMessage = {
           body: `You have no gold.`,
         };
@@ -63,7 +63,7 @@ export default function Church() {
         };
 
         children = (
-          <BankInput
+          <InputNumeric
             limit={gold}
             onComplete={(amount) => {
               if (donate(amount) >= 10) {

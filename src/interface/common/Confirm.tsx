@@ -51,7 +51,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
   }, [delayedValueToSubmit]);
 
   useEffect(() => {
-    const onKeyup = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
       if (['a', 'd', 'arrowleft', 'arrowright'].includes(pressedKey)) {
@@ -72,10 +72,10 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
       }
     };
 
-    window.addEventListener('keyup', onKeyup);
+    window.addEventListener('keydown', onKeydown);
 
     return () => {
-      window.removeEventListener('keyup', onKeyup);
+      window.removeEventListener('keydown', onKeydown);
     };
   }, [yesHighlighted]);
 

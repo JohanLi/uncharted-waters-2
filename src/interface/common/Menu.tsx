@@ -41,6 +41,16 @@ export default function Menu<T extends number | string>({
 
     const onKeydown = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
+
+      if (['e', 'enter'].includes(pressedKey)) {
+        if (!options[activeIndex].disabled) {
+          onSelect(options[activeIndex].value);
+        }
+
+        e.preventDefault();
+        return;
+      }
+
       let newActiveIndex = activeIndex;
 
       if (['s', 'arrowdown'].includes(pressedKey)) {
@@ -64,24 +74,10 @@ export default function Menu<T extends number | string>({
       setActiveIndex(newActiveIndex);
     };
 
-    const onKeyup = (e: KeyboardEvent) => {
-      const pressedKey = e.key.toLowerCase();
-
-      if (['e', 'enter'].includes(pressedKey)) {
-        if (!options[activeIndex].disabled) {
-          onSelect(options[activeIndex].value);
-        }
-
-        e.preventDefault();
-      }
-    };
-
     window.addEventListener('keydown', onKeydown);
-    window.addEventListener('keyup', onKeyup);
 
     return () => {
       window.removeEventListener('keydown', onKeydown);
-      window.removeEventListener('keyup', onKeyup);
     };
   }, [activeIndex, hidden]);
 

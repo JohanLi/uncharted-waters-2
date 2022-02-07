@@ -13,7 +13,7 @@ export default function Acknowledge({ onAcknowledge }: Props) {
       return undefined;
     }
 
-    const onKeyup = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
       if (['e', 'enter', 'escape'].includes(pressedKey)) {
@@ -22,10 +22,10 @@ export default function Acknowledge({ onAcknowledge }: Props) {
       }
     };
 
-    window.addEventListener('keyup', onKeyup);
+    window.addEventListener('keydown', onKeydown);
 
     return () => {
-      window.removeEventListener('keyup', onKeyup);
+      window.removeEventListener('keydown', onKeydown);
     };
   });
 
