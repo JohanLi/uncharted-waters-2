@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import getAvailableQuest from './getAvailableQuest';
 import questData, { Message } from './questData';
@@ -12,7 +12,7 @@ export const acknowledge = (message: Pick<Message, 'confirm'> | null) =>
 export default function useQuestStep() {
   const [step, setStep] = useState(0);
 
-  const availableQuest = getAvailableQuest();
+  const { current: availableQuest } = useRef(getAvailableQuest());
 
   if (availableQuest === null) {
     return null;

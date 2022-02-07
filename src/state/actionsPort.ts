@@ -151,21 +151,29 @@ export const receiveShip = () => {
 export const deposit = (amount: number) => {
   state.savings += amount;
   state.gold -= amount;
+
+  updateGeneral();
 };
 
 export const withdraw = (amount: number) => {
   state.savings -= amount;
   state.gold += amount;
+
+  updateGeneral();
 };
 
 export const borrow = (amount: number) => {
   state.debt += amount;
   state.gold += amount;
+
+  updateGeneral();
 };
 
 export const repay = (amount: number) => {
   state.debt -= amount;
   state.gold -= amount;
+
+  updateGeneral();
 };
 
 // TODO implement luck
@@ -174,6 +182,8 @@ export const pray = () => {};
 export const donate = (amount: number) => {
   const percent = (amount / state.gold) * 100;
   state.gold -= amount;
+
+  updateGeneral();
 
   return percent;
 };
