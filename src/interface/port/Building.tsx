@@ -8,6 +8,7 @@ import { buildings } from '../../data/buildingData';
 import useBuilding from './hooks/useBuilding';
 import Lodge from './Lodge';
 import Bank from './bank/Bank';
+import Church from './Church';
 
 interface Props {
   buildingId: string;
@@ -30,6 +31,10 @@ export default function Building({ buildingId }: Props) {
 
   if (buildingId === '9') {
     return <Bank />;
+  }
+
+  if (buildingId === '11') {
+    return <Church />;
   }
 
   const { back } = useBuilding();

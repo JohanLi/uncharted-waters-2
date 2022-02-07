@@ -2,6 +2,7 @@ import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
+import { getPortData } from '../port/portUtils';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
@@ -64,3 +65,6 @@ export const getCreditLine = () => Math.max(0, CREDIT_LINE - state.debt);
 export const getDebt = () => state.debt;
 
 export const getRepayAmount = () => Math.min(state.debt, state.gold);
+
+export const getAtMosque = () =>
+  state.portId && getPortData(state.portId).tileset === 2;

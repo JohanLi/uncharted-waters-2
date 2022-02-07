@@ -167,3 +167,13 @@ export const repay = (amount: number) => {
   state.debt -= amount;
   state.gold -= amount;
 };
+
+// TODO implement luck
+export const pray = () => {};
+
+export const donate = (amount: number) => {
+  const percent = (amount / state.gold) * 100;
+  state.gold -= amount;
+
+  return percent;
+};
