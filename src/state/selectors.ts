@@ -52,3 +52,15 @@ export const getUsedShips = () => {
   state.usedShipsAtPort[state.portId!] = usedShips;
   return usedShips;
 };
+
+export const getGold = () => state.gold;
+
+export const getSavings = () => state.savings;
+
+const CREDIT_LINE = 1000;
+
+export const getCreditLine = () => Math.max(0, CREDIT_LINE - state.debt);
+
+export const getDebt = () => state.debt;
+
+export const getRepayAmount = () => Math.min(state.debt, state.gold);

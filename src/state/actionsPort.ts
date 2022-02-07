@@ -147,3 +147,23 @@ export const receiveShip = () => {
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
 };
+
+export const deposit = (amount: number) => {
+  state.savings += amount;
+  state.gold -= amount;
+};
+
+export const withdraw = (amount: number) => {
+  state.savings -= amount;
+  state.gold += amount;
+};
+
+export const borrow = (amount: number) => {
+  state.debt += amount;
+  state.gold += amount;
+};
+
+export const repay = (amount: number) => {
+  state.debt -= amount;
+  state.gold -= amount;
+};

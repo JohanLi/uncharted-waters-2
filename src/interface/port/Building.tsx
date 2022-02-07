@@ -7,24 +7,29 @@ import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
 import useBuilding from './hooks/useBuilding';
 import Lodge from './Lodge';
+import Bank from './bank/Bank';
 
 interface Props {
   buildingId: string;
 }
 
 export default function Building({ buildingId }: Props) {
-  const { name, options } = buildings[buildingId];
+  const { options } = buildings[buildingId];
 
-  if (name === 'Harbor') {
-    return <Harbor />;
-  }
-
-  if (name === 'Shipyard') {
+  if (buildingId === '3') {
     return <Shipyard />;
   }
 
-  if (name === 'Lodge') {
+  if (buildingId === '4') {
+    return <Harbor />;
+  }
+
+  if (buildingId === '5') {
     return <Lodge />;
+  }
+
+  if (buildingId === '9') {
+    return <Bank />;
   }
 
   const { back } = useBuilding();

@@ -33,6 +33,8 @@ export interface State {
   gold: number;
   quests: QuestId[];
   usedShipsAtPort: UsedShipsAtPort;
+  savings: number;
+  debt: number;
 }
 
 const state = {
@@ -44,6 +46,8 @@ const state = {
   gold: 0,
   quests: [] as QuestId[],
   usedShipsAtPort: {},
+  savings: 0,
+  debt: 0,
 } as State;
 
 export default state;
