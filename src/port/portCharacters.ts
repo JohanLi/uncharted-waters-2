@@ -5,34 +5,23 @@ import { Map } from '../map';
 import { Building } from '../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
-import portCharactersData from '../data/portCharactersData';
 import { applyPositionDelta } from '../utils';
-
-const FRAMES_PER_CHARACTER = 8;
-const FRAMES_PER_STATIONARY_CHARACTER = 2;
-const STATIONARY_FROM_ID = 4;
-
-export const getStartFrame = (id: number) => {
-  if (id <= STATIONARY_FROM_ID) {
-    return (id - 1) * FRAMES_PER_CHARACTER;
-  }
-
-  return (
-    (STATIONARY_FROM_ID - 1) * FRAMES_PER_CHARACTER +
-    (id - STATIONARY_FROM_ID) * FRAMES_PER_STATIONARY_CHARACTER
-  );
-};
+import {
+  getStartFrame,
+  portNpcData,
+  portPlayerData,
+} from '../data/portCharactersData';
 
 const createPortCharacters = (
   map: Map,
   building: Building,
   isSupplyPort: boolean,
 ) => {
-  const { id, spawn } = portCharactersData[0];
+  const { type, spawn } = portPlayerData;
 
   const player = createPlayer(
     applyPositionDelta(building.get(spawn.buildingId), spawn.offset),
-    getStartFrame(id),
+    getStartFrame(type),
     's',
   );
 
@@ -100,26 +89,23 @@ const createPortCharacters = (
         return;
       }
 
-      // TODO add special case where additional NPCs should spawn to blockade the port
-      for (let i = 1; i < 8; i += 1) {
-        const {
-          id: npcId,
-          spawn: npcSpawn,
-          isStationary = false,
-        } = portCharactersData[i];
+      portNpcData
+        .filter((npc) => npc.type !== 'GUARD') // TODO implement blockade
+        .forEach((npc) => {
+          const { type: npcId, spawn: npcSpawn, isStationary = false } = npc;
 
-        npcs.push(
-          createNpc(
-            applyPositionDelta(
-              building.get(npcSpawn.buildingId),
-              npcSpawn.offset,
+          npcs.push(
+            createNpc(
+              applyPositionDelta(
+                building.get(npcSpawn.buildingId),
+                npcSpawn.offset,
+              ),
+              getStartFrame(npcId),
+              's',
+              isStationary,
             ),
-            getStartFrame(npcId),
-            's',
-            isStationary,
-          ),
-        );
-      }
+          );
+        });
     },
     despawnNpcs: () => {
       while (npcs.length) {
