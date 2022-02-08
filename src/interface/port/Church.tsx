@@ -56,6 +56,7 @@ export default function Church() {
         // TODO this should be a characterMessage
         vendorMessage = {
           body: `You have no gold.`,
+          acknowledge: reset,
         };
       } else {
         vendorMessage = {
