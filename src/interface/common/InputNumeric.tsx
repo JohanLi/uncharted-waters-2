@@ -31,6 +31,7 @@ export default function InputNumeric({
         e.preventDefault();
         onComplete(value);
       }}
+      data-test="inputNumeric"
     >
       <div className="flex-1 pr-4">
         <input
