@@ -1,4 +1,10 @@
-import { setState } from '../utils';
+import {
+  clickMenu,
+  clickMenu2,
+  goldIs,
+  setState,
+  vendorMessageIncludes,
+} from '../utils';
 
 describe('Buildings', () => {
   context('Lodge', () => {
@@ -6,14 +12,11 @@ describe('Buildings', () => {
       setState({ portId: '2', buildingId: '5' });
       cy.visit('');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'You must be tired.',
-      );
+      vendorMessageIncludes('You must be tired.');
     });
 
     it('check in and wake up at 8 am the next day outside', () => {
-      cy.get('[data-test=menu]').contains('Check In').click();
+      clickMenu('Check In');
 
       cy.get('[data-test=left]')
         .should('include.text', 'May 18 1522')
@@ -28,46 +31,31 @@ describe('Buildings', () => {
       setState({ portId: '2', buildingId: '11', gold: 1000 });
       cy.visit('');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Welcome to our church.',
-      );
+      vendorMessageIncludes('Welcome to our church');
     });
 
     it('pray', () => {
-      cy.get('[data-test=menu]').contains('Pray').click();
+      clickMenu('Pray');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Let’s pray that God will protect you.',
-      );
+      vendorMessageIncludes('Let’s pray that God');
 
       cy.get('[data-test=building]').click();
     });
 
     it('donate', () => {
-      cy.get('[data-test=menu]').contains('Donate').click();
+      clickMenu('Donate');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'How much can you give?',
-      );
+      vendorMessageIncludes('How much can you give?');
 
       cy.get('[data-test=inputNumeric]').type('1000').submit();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Thank you for your generous donation.',
-      );
+      vendorMessageIncludes('Thank you for your generous donation');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=menu]').contains('Donate').click();
+      clickMenu('Donate');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'You have no gold.',
-      );
+      vendorMessageIncludes('You have no gold.');
 
       cy.get('[data-test=building]').click();
     });
@@ -75,10 +63,7 @@ describe('Buildings', () => {
     it('exiting with message', () => {
       cy.get('[data-test=building]').rightclick();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'May God bless you in your travels!',
-      );
+      vendorMessageIncludes('May God bless you in your travels!');
 
       cy.get('[data-test=building]').click();
 
@@ -88,17 +73,14 @@ describe('Buildings', () => {
 
   context('Harbor', () => {
     it('greeting', () => {
-      setState({ portId: '2', buildingId: '4' });
+      setState({ portId: '2', buildingId: '4', gold: 1000 });
       cy.visit('');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Ahoy there, matey',
-      );
+      vendorMessageIncludes('Ahoy there, matey');
     });
 
     it('supply', () => {
-      cy.get('[data-test=menu]').contains('Supply').click();
+      clickMenu('Supply');
 
       cy.get('[data-test=harborSupply]')
         .should('include.text', 'Test ship')
@@ -118,25 +100,26 @@ describe('Buildings', () => {
 
       cy.get('[data-test=harborSupply]').should('include.text', '120');
 
+      goldIs(600);
+
       cy.get('[data-test=building]').rightclick();
     });
 
     it('sail', () => {
-      cy.get('[data-test=menu]').contains('Sail').click();
+      clickMenu('Sail');
 
       cy.get('[data-test=building]').should('not.exist');
     });
   });
 
   context('Shipyard', () => {
+    const boughtShipName = 'Test Balsa';
+
     it('greeting', () => {
       setState({ portId: '2', buildingId: '3', gold: 2000 });
       cy.visit('');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'What brings you to this shipyard?',
-      );
+      vendorMessageIncludes('What brings you to this shipyard?');
     });
 
     it('used ship', () => {
@@ -144,84 +127,69 @@ describe('Buildings', () => {
         cy.stub(win.Math, 'random').returns(0);
       });
 
-      cy.get('[data-test=menu]').contains('Used Ship').click();
+      clickMenu('Used Ship');
 
-      cy.get('[data-test=menu2]').contains('Balsa').click();
+      clickMenu2('Balsa');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        '100 years ago!',
-      );
+      vendorMessageIncludes('100 years ago!');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        '1200 gold pieces',
-      );
+      vendorMessageIncludes('1200 gold pieces');
 
       cy.get('[data-test=confirmNo]').click();
 
-      cy.get('[data-test=menu]').contains('Used Ship').click();
+      clickMenu('Used Ship');
 
-      cy.get('[data-test=menu2]').contains('Balsa').click();
-
-      cy.get('[data-test=building]').click();
-
-      cy.get('[data-test=confirmYes]').click();
-
-      cy.get('[data-test=shipNameInput]').type('Test Balsa').submit();
-
-      cy.get('[data-test=left]').should('include.text', '800');
-
-      cy.get('[data-test=menu]').contains('Used Ship').click();
-
-      cy.get('[data-test=menu2]').contains('Balsa').click();
+      clickMenu2('Balsa');
 
       cy.get('[data-test=building]').click();
 
       cy.get('[data-test=confirmYes]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'don’t have enough gold',
-      );
+      cy.get('[data-test=shipNameInput]').type(boughtShipName).submit();
+
+      goldIs(800);
+
+      clickMenu('Used Ship');
+
+      clickMenu2('Balsa');
+
+      cy.get('[data-test=building]').click();
+
+      cy.get('[data-test=confirmYes]').click();
+
+      vendorMessageIncludes('don’t have enough gold');
 
       cy.get('[data-test=building]').click();
     });
 
     it('repair', () => {
-      cy.get('[data-test=menu]').contains('Repair').click();
+      clickMenu('Repair');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'already in tiptop shape',
-      );
+      vendorMessageIncludes('already in tiptop shape');
 
       cy.get('[data-test=building]').click();
     });
 
     it('sell', () => {
-      cy.get('[data-test=menu]').contains('Sell').click();
+      clickMenu('Sell');
 
-      cy.get('[data-test=menu2]').contains('Test Balsa').click();
+      clickMenu2(boughtShipName);
 
       cy.get('[data-test=confirmNo]').click();
 
-      cy.get('[data-test=menu]').contains('Sell').click();
+      clickMenu('Sell');
 
-      cy.get('[data-test=menu2]').contains('Test Balsa').click();
+      clickMenu2(boughtShipName);
 
       cy.get('[data-test=confirmYes]').click();
 
-      cy.get('[data-test=left]').should('include.text', '1400');
+      goldIs(1400);
 
-      cy.get('[data-test=menu]').contains('Sell').click();
+      clickMenu('Sell');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'only have the flag ship',
-      );
+      vendorMessageIncludes('only have the flag ship');
 
       cy.get('[data-test=building]').click();
     });
@@ -238,152 +206,101 @@ describe('Buildings', () => {
       setState({ portId: '2', buildingId: '9', gold: 1000 });
       cy.visit('');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Marco Polo Bank',
-      );
+      vendorMessageIncludes('Marco Polo Bank');
     });
 
     it('deposit', () => {
-      cy.get('[data-test=menu]').contains('Deposit').click();
+      clickMenu('Deposit');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'don’t have any gold in your account',
-      );
+      vendorMessageIncludes('don’t have any gold in your account');
 
       cy.get('[data-test=building]').click();
 
       cy.get('[data-test=inputNumeric]').type('1000').submit();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'deposit 1000 gold pieces',
-      );
+      vendorMessageIncludes('deposit 1000 gold pieces');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Now you have 1000 gold',
-      );
+      vendorMessageIncludes('Now you have 1000 gold');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=menu]').contains('Deposit').click();
+      clickMenu('Deposit');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'don’t have any gold to deposit',
-      );
+      vendorMessageIncludes('don’t have any gold to deposit');
 
       cy.get('[data-test=building]').click();
     });
 
     it('withdraw', () => {
-      cy.get('[data-test=menu]').contains('Withdraw').click();
+      clickMenu('Withdraw');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Now you have 1000 gold',
-      );
+      vendorMessageIncludes('Now you have 1000 gold');
 
       cy.get('[data-test=building]').click();
 
       cy.get('[data-test=inputNumeric]').type('1000').submit();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Here is 1000 gold',
-      );
+      vendorMessageIncludes('Here is 1000 gold');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Now you have 0 gold',
-      );
+      vendorMessageIncludes('Now you have 0 gold');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=menu]').contains('Withdraw').click();
+      clickMenu('Withdraw');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'don’t have any gold in your account',
-      );
+      vendorMessageIncludes('don’t have any gold in your account');
 
       cy.get('[data-test=building]').click();
     });
 
     it('borrow', () => {
-      cy.get('[data-test=menu]').contains('Borrow').click();
+      clickMenu('Borrow');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'credit line is 1000 gold',
-      );
+      vendorMessageIncludes('credit line is 1000 gold');
 
       cy.get('[data-test=building]').click();
 
       cy.get('[data-test=inputNumeric]').type('1000').submit();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'lend you 1000 gold',
-      );
+      vendorMessageIncludes('lend you 1000 gold');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'invest our loan wisely',
-      );
+      vendorMessageIncludes('invest our loan wisely');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=menu]').contains('Borrow').click();
+      clickMenu('Borrow');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'no way we can give you a loan',
-      );
+      vendorMessageIncludes('no way we can give you a loan');
 
       cy.get('[data-test=building]').click();
     });
 
     it('repay', () => {
-      cy.get('[data-test=menu]').contains('Repay').click();
+      clickMenu('Repay');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'debt is 1000 gold',
-      );
+      vendorMessageIncludes('debt is 1000 gold');
 
       cy.get('[data-test=building]').click();
 
       cy.get('[data-test=inputNumeric]').type('1000').submit();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Thank you for your payment',
-      );
+      vendorMessageIncludes('Thank you for your payment');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'takes care of your debt!',
-      );
+      vendorMessageIncludes('takes care of your debt!');
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=menu]').contains('Repay').click();
+      clickMenu('Repay');
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'don’t owe us any money',
-      );
+      vendorMessageIncludes('don’t owe us any money');
 
       cy.get('[data-test=building]').click();
     });
@@ -391,10 +308,7 @@ describe('Buildings', () => {
     it('exiting with message', () => {
       cy.get('[data-test=building]').rightclick();
 
-      cy.get('[data-test=vendorMessageBox]').should(
-        'include.text',
-        'Thank you for choosing Marco Polo Bank',
-      );
+      vendorMessageIncludes('Thank you for choosing Marco Polo Bank');
 
       cy.get('[data-test=building]').click();
 
