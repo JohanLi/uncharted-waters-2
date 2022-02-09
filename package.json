@@ -8,7 +8,8 @@
     "prettier": "prettier --write src/",
     "tsc": "tsc --noEmit",
     "test": "jest --verbose",
-    "test:e2e": "cypress open",
+    "test:endToEnd": "cypress run",
+    "cypress": "cypress open",
     "build": "rm -rf build/ && webpack --mode production"
   },
   "author": "Johan Li",

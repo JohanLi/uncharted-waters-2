@@ -1,4 +1,4 @@
-name: 'Unit tests'
+name: 'End-to-end tests'
 on: ['push']
 
 jobs:
@@ -17,4 +17,4 @@ jobs:
       - name: Run tests
         run: |
           npm ci
-          npm test
+          npm test:endToEnd
