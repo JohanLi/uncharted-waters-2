@@ -21,7 +21,7 @@ export default function HarborSupply({ back }: Props) {
 
   return (
     <>
-      <div className="absolute top-[48px] left-[16px]">
+      <div className="absolute top-[48px] left-[16px]" data-test="harborSupply">
         <MessageBox>
           <div className="px-4 py-2">
             <div className="flex items-center">
