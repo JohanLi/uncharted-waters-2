@@ -3,7 +3,7 @@ import { setState } from '../utils';
 describe('Buildings', () => {
   it('Lodge', () => {
     setState({ portId: '2', buildingId: '5' });
-    cy.visit('http://localhost:8080');
+    cy.visit('');
 
     cy.get('[data-test=vendorMessageBox]').should(
       'include.text',
@@ -21,7 +21,7 @@ describe('Buildings', () => {
 
   it('Church', () => {
     setState({ portId: '2', buildingId: '11', gold: 1000 });
-    cy.visit('http://localhost:8080');
+    cy.visit('');
 
     cy.get('[data-test=vendorMessageBox]').should(
       'include.text',
@@ -74,7 +74,7 @@ describe('Buildings', () => {
 
   it('Harbor', () => {
     setState({ portId: '2', buildingId: '4' });
-    cy.visit('http://localhost:8080');
+    cy.visit('');
 
     cy.get('[data-test=vendorMessageBox]').should(
       'include.text',
@@ -104,6 +104,99 @@ describe('Buildings', () => {
     cy.get('[data-test=building]').rightclick();
 
     cy.get('[data-test=menu]').contains('Sail').click();
+
+    cy.get('[data-test=building]').should('not.exist');
+  });
+
+  it.only('Shipyard', () => {
+    setState({ portId: '2', buildingId: '3', gold: 2000 });
+    cy.visit('', {
+      onBeforeLoad(win) {
+        cy.stub(win.Math, 'random').returns(0);
+      },
+    });
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      'What brings you to this shipyard?',
+    );
+
+    cy.get('[data-test=menu]').contains('Used Ship').click();
+
+    cy.get('[data-test=menu2]').contains('Balsa').click();
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      '100 years ago!',
+    );
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      '1200 gold pieces',
+    );
+
+    cy.get('[data-test=confirmNo]').click();
+
+    cy.get('[data-test=menu]').contains('Used Ship').click();
+
+    cy.get('[data-test=menu2]').contains('Balsa').click();
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=confirmYes]').click();
+
+    cy.get('[data-test=shipNameInput]').type('Test Balsa').submit();
+
+    cy.get('[data-test=left]').should('include.text', '800');
+
+    cy.get('[data-test=menu]').contains('Used Ship').click();
+
+    cy.get('[data-test=menu2]').contains('Balsa').click();
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=confirmYes]').click();
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      'don’t have enough gold',
+    );
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=menu]').contains('Repair').click();
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      'already in tiptop shape',
+    );
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=menu]').contains('Sell').click();
+
+    cy.get('[data-test=menu2]').contains('Test Balsa').click();
+
+    cy.get('[data-test=confirmNo]').click();
+
+    cy.get('[data-test=menu]').contains('Sell').click();
+
+    cy.get('[data-test=menu2]').contains('Test Balsa').click();
+
+    cy.get('[data-test=confirmYes]').click();
+
+    cy.get('[data-test=left]').should('include.text', '1400');
+
+    cy.get('[data-test=menu]').contains('Sell').click();
+
+    cy.get('[data-test=vendorMessageBox]').should(
+      'include.text',
+      'only have the flag ship',
+    );
+
+    cy.get('[data-test=building]').click().rightclick();
 
     cy.get('[data-test=building]').should('not.exist');
   });

@@ -28,6 +28,7 @@ export default function ShipyardShipNameInput({ onSubmit, onCancel }: Props) {
               e.preventDefault();
               onSubmit(name);
             }}
+            data-test="shipNameInput"
           >
             <div className="flex-1 pr-4">
               <input
