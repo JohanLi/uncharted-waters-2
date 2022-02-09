@@ -26,6 +26,7 @@ export const isDay = () => {
 
 export const shouldUpdateWorldStatus = () => state.timePassed % 240 === 0;
 
+// TODO remove hard-coded values
 export const positionAdjacentToPort = (portId: string) => {
   if (portId === '1') {
     return {
@@ -34,7 +35,10 @@ export const positionAdjacentToPort = (portId: string) => {
     };
   }
 
-  throw Error('Method is not implemented for ports other than Lisbon');
+  return {
+    x: 0,
+    y: 0,
+  };
 };
 
 export const finishedQuest = (id: QuestId) => state.quests.includes(id);

@@ -14,7 +14,7 @@ interface Props {
   inlined?: true;
 }
 
-export default function InputNumeric({
+export default function InputNumber({
   limit,
   onComplete,
   onCancel,
@@ -53,10 +53,12 @@ export default function InputNumeric({
 
             setValue(amount);
           }}
+          onClick={() => setValue(0)}
           autoFocus
+          data-test="inputNumberInput"
         />
       </div>
-      <button type="submit">
+      <button type="submit" data-test="inputNumberButton">
         <img
           src={Assets.images.dialogSubmit.toDataURL()}
           alt=""

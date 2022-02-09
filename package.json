@@ -4,10 +4,12 @@
   "description": "Browser-based remake of Uncharted Waters: New Horizons (大航海時代II)",
   "scripts": {
     "start": "webpack serve --mode development",
-    "lint": "eslint src/ --ext .ts --ext .tsx",
-    "prettier": "prettier --write src/",
+    "lint": "eslint src/ cypress/ --ext .ts --ext .tsx",
+    "prettier": "prettier --write src/ cypress/",
     "tsc": "tsc --noEmit",
     "test": "jest --verbose",
+    "test:endToEnd": "cypress run",
+    "cypress": "cypress open",
     "build": "rm -rf build/ && webpack --mode production"
   },
   "author": "Johan Li",
@@ -52,6 +54,7 @@
     "babel-loader": "^8.2.3",
     "compression-webpack-plugin": "^9.2.0",
     "css-loader": "^6.5.1",
+    "cypress": "^9.4.1",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.0",

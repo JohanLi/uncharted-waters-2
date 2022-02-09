@@ -5,7 +5,7 @@ import Menu from '../common/Menu';
 import BuildingWrapper from './BuildingWrapper';
 import { donate, pray } from '../../state/actionsPort';
 import { getAtMosque, getGold } from '../../state/selectors';
-import InputNumeric from '../common/InputNumeric';
+import InputNumber from '../common/InputNumber';
 
 const churchOptions = ['Pray', 'Donate'] as const;
 type ChurchOptions = typeof churchOptions[number];
@@ -64,7 +64,7 @@ export default function Church() {
         };
 
         children = (
-          <InputNumeric
+          <InputNumber
             limit={gold}
             onComplete={(amount) => {
               if (donate(amount) >= 10) {

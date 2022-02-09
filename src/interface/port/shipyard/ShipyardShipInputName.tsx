@@ -12,7 +12,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export default function ShipyardShipNameInput({ onSubmit, onCancel }: Props) {
+export default function ShipyardShipInputName({ onSubmit, onCancel }: Props) {
   const [name, setName] = useState('');
 
   useCancel(onCancel);
@@ -43,6 +43,7 @@ export default function ShipyardShipNameInput({ onSubmit, onCancel }: Props) {
                   setName(e.target.value)
                 }
                 autoFocus
+                data-test="inputNameInput"
               />
             </div>
             <button type="submit">

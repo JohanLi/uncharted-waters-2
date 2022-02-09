@@ -82,7 +82,10 @@ export default function Menu<T extends number | string>({
   }, [activeIndex, hidden]);
 
   return (
-    <div className={hidden ? 'hidden' : ''}>
+    <div
+      className={hidden ? 'hidden' : ''}
+      data-test={`menu${wide ? '2' : ''}`}
+    >
       <MessageBox>
         <div className={wide ? 'w-[280px]' : 'w-[208px]'}>
           {Boolean(title) && (

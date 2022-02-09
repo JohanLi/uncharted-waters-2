@@ -173,6 +173,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
             }
           }}
           role="button"
+          data-test="confirmYes"
         />
         <div
           className="absolute top-8 left-[148px] w-[120px] h-16 cursor-pointer"
@@ -186,6 +187,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
             }
           }}
           role="button"
+          data-test="confirmNo"
         />
       </div>
     </div>

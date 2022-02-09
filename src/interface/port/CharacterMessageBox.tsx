@@ -68,7 +68,10 @@ export default function CharacterMessageBox({ messageBox, position }: Props) {
   const { name, color } = characterData[characterId];
 
   return (
-    <div className={positionClassMap[position]}>
+    <div
+      className={positionClassMap[position]}
+      data-test={`characterMessageBox${position}`}
+    >
       <MessageBox>
         <div className="flex w-[592px] h-[256px] text-2xl p-4">
           <img

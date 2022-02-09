@@ -11,7 +11,7 @@ import {
   getGold,
   getRepayAmount,
 } from '../../../state/selectors';
-import InputNumeric from '../../common/InputNumeric';
+import InputNumber from '../../common/InputNumber';
 
 const bankOptions = ['Deposit', 'Withdraw', 'Borrow', 'Repay'] as const;
 type BankOptions = typeof bankOptions[number];
@@ -73,7 +73,7 @@ export default function Bank() {
       };
 
       children = (
-        <InputNumeric
+        <InputNumber
           limit={gold}
           onComplete={(amount) => {
             deposit(amount);
@@ -123,7 +123,7 @@ export default function Bank() {
       };
 
       children = (
-        <InputNumeric
+        <InputNumber
           limit={savings}
           onComplete={(amount) => {
             withdraw(amount);
@@ -173,7 +173,7 @@ export default function Bank() {
       };
 
       children = (
-        <InputNumeric
+        <InputNumber
           limit={creditLine}
           onComplete={(amount) => {
             borrow(amount);
@@ -232,7 +232,7 @@ export default function Bank() {
         };
 
         children = (
-          <InputNumeric
+          <InputNumber
             limit={repayAmount}
             onComplete={(amount) => {
               repay(amount);

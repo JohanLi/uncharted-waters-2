@@ -44,6 +44,7 @@ export default function BuildingWrapper(props: Props) {
       style={{
         backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
       }}
+      data-test="building"
     >
       <VendorMessageBox buildingId={buildingId} messageBox={messageBoxes[0]} />
       <CharacterMessageBox messageBox={messageBoxes[1]} position={1} />

@@ -37,6 +37,12 @@ export interface State {
   debt: number;
 }
 
+export const SAVED_STATE_KEY = 'savedState';
+
+const savedState = JSON.parse(
+  window.localStorage.getItem(SAVED_STATE_KEY) || '{}',
+);
+
 const state = {
   portId: START_PORT_ID,
   buildingId: null,
@@ -48,6 +54,7 @@ const state = {
   usedShipsAtPort: {},
   savings: 0,
   debt: 0,
+  ...savedState,
 } as State;
 
 export default state;

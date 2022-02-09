@@ -29,7 +29,7 @@ const generateUsedShips = (portId: string) => {
 
   const usedShips: UsedShips = {};
 
-  for (let i = 0; i <= amount; i += 1) {
+  for (let i = 0; i < amount; i += 1) {
     usedShips[generateId()] = sample(shipPoolMeetingRequirements);
   }
 

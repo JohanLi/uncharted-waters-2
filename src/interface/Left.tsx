@@ -35,7 +35,10 @@ export default function Left({
   const inPort = portId !== null;
 
   return (
-    <div className={classNames(hudClass, 'flex flex-col justify-between')}>
+    <div
+      className={classNames(hudClass, 'flex flex-col justify-between')}
+      data-test="left"
+    >
       <div>
         <div className="text-2xl font-bold whitespace-nowrap">
           {getDate(timePassed)}
