@@ -1,6 +1,6 @@
 import { clickMenu, setState, vendorMessageIncludes } from '../utils';
 
-describe.only('Common UI', () => {
+describe('Common UI', () => {
   context('InputNumber', () => {
     const gold = 1000;
 
