@@ -6,7 +6,7 @@ import MessageBox from '../../common/MessageBox';
 import { Provisions } from '../../../world/fleets';
 import { getAvailableSpace } from '../../../state/selectorsFleet';
 import { provisionCost, supplyShip } from '../../../state/actionsPort';
-import InputNumeric from '../../common/InputNumeric';
+import InputNumber from '../../common/InputNumber';
 
 export type ShipProvision = {
   shipNumber: number;
@@ -40,7 +40,7 @@ export default function HarborSupplyInput({
             `Lumber will cost us ${provisionCost[provision]} gold pieces per plank. How many planks will we buy?`}
           {provision === 'shot' &&
             `Cannonballs will cost us ${provisionCost[provision]} gold pieces per barrel. How many barrels will we buy?`}{' '}
-          <InputNumeric
+          <InputNumber
             limit={availableSpace}
             onComplete={(quantity) => {
               supplyShip(shipNumber, provision, quantity);

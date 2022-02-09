@@ -15,7 +15,7 @@ describe('Buildings', () => {
       vendorMessageIncludes('You must be tired.');
     });
 
-    it('check in and wake up at 8 am the next day outside', () => {
+    it('check in', () => {
       clickMenu('Check In');
 
       cy.get('[data-test=left]')
@@ -47,7 +47,7 @@ describe('Buildings', () => {
 
       vendorMessageIncludes('How much can you give?');
 
-      cy.get('[data-test=inputNumeric]').type('1000').submit();
+      cy.get('[data-test=inputNumberInput]').type('1000{enter}');
 
       vendorMessageIncludes('Thank you for your generous donation');
 
@@ -88,7 +88,7 @@ describe('Buildings', () => {
         .first()
         .click();
 
-      cy.get('[data-test=inputNumeric]').type('50').submit();
+      cy.get('[data-test=inputNumberInput]').type('50{enter}');
 
       cy.get('[data-test=harborSupply]')
         .should('include.text', '150')
@@ -96,7 +96,7 @@ describe('Buildings', () => {
         .first()
         .click();
 
-      cy.get('[data-test=inputNumeric]').type('20').submit();
+      cy.get('[data-test=inputNumberInput]').type('20{enter}');
 
       cy.get('[data-test=harborSupply]').should('include.text', '120');
 
@@ -147,7 +147,7 @@ describe('Buildings', () => {
 
       cy.get('[data-test=confirmYes]').click();
 
-      cy.get('[data-test=shipNameInput]').type(boughtShipName).submit();
+      cy.get('[data-test=inputNameInput]').type(boughtShipName).type('{enter}');
 
       goldIs(800);
 
@@ -216,7 +216,7 @@ describe('Buildings', () => {
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=inputNumeric]').type('1000').submit();
+      cy.get('[data-test=inputNumberInput]').type('1000{enter}');
 
       vendorMessageIncludes('deposit 1000 gold pieces');
 
@@ -240,7 +240,7 @@ describe('Buildings', () => {
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=inputNumeric]').type('1000').submit();
+      cy.get('[data-test=inputNumberInput]').type('1000{enter}');
 
       vendorMessageIncludes('Here is 1000 gold');
 
@@ -264,7 +264,7 @@ describe('Buildings', () => {
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=inputNumeric]').type('1000').submit();
+      cy.get('[data-test=inputNumberInput]').type('1000{enter}');
 
       vendorMessageIncludes('lend you 1000 gold');
 
@@ -288,7 +288,7 @@ describe('Buildings', () => {
 
       cy.get('[data-test=building]').click();
 
-      cy.get('[data-test=inputNumeric]').type('1000').submit();
+      cy.get('[data-test=inputNumberInput]').type('1000{enter}');
 
       vendorMessageIncludes('Thank you for your payment');
 

@@ -15,7 +15,7 @@ import {
 import BuildingWrapper from '../BuildingWrapper';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
-import ShipyardShipNameInput from './ShipyardShipNameInput';
+import ShipyardShipInputName from './ShipyardShipInputName';
 import { canAfford, getUsedShips } from '../../../state/selectors';
 
 const shipyardOptions = [
@@ -118,7 +118,7 @@ export default function Shipyard() {
           };
 
           children = (
-            <ShipyardShipNameInput
+            <ShipyardShipInputName
               onSubmit={(usedShipName) => {
                 buyUsedShip(usedShipId, usedShipName);
                 setUsedShipId(undefined);

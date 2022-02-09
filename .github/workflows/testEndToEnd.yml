@@ -17,4 +17,4 @@ jobs:
       - name: Run tests
         run: |
           npm ci
-          npm test:endToEnd
+          npm run test:endToEnd
