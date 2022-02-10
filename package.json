@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "lint": "eslint src/ cypress/ --ext .ts --ext .tsx",
-    "prettier": "prettier --write src/",
+    "prettier": "prettier --write src/ cypress/",
     "tsc": "tsc --noEmit",
     "test": "jest --verbose",
     "test:endToEnd": "cypress run",
