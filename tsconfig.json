@@ -16,6 +16,5 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES2019"
-  },
-  "exclude": ["tests"]
+  }
 }
