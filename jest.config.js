@@ -8,5 +8,5 @@ module.exports = {
     '\\.(png|bin|ogg|mp3)$': 'identity-obj-proxy',
   },
   testEnvironment: 'jsdom',
-  testMatch: ["**/*.test.{ts,tsx}"],
+  testMatch: ['**/*.test.{ts,tsx}'],
 };

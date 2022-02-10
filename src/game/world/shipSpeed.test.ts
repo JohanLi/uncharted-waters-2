@@ -1,6 +1,6 @@
 import getShipSpeed from './shipSpeed';
 
-jest.mock('../data/shipData', () => ({
+jest.mock('../../data/shipData', () => ({
   shipData: {
     '1': {
       name: 'Slow ship to prevent hitting the speed cap',

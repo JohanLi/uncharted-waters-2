@@ -1,7 +1,7 @@
 import { getPortData, portAdjacentAt } from './portUtils';
-import { regularPorts, SUPPLY_PORT_BUILDINGS } from '../data/portData';
+import { regularPorts, SUPPLY_PORT_BUILDINGS } from '../../data/portData';
 
-jest.mock('../data/portData', () => ({
+jest.mock('../../data/portData', () => ({
   regularPorts: [
     {
       name: 'Lisbon',

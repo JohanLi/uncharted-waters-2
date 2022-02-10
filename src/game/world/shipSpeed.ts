@@ -1,6 +1,6 @@
-import { shipData, shipWindFactorMap } from '../data/shipData';
+import { shipData, shipWindFactorMap } from '../../data/shipData';
 import { getHeadingWindDelta, hasOars } from './worldUtils';
-import type { Velocity } from '../state/state';
+import type { Velocity } from '../../state/state';
 import type { Ship } from './fleets';
 
 /*

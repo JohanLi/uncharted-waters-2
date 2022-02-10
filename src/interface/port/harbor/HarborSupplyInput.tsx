@@ -3,7 +3,7 @@
 import React from 'react';
 
 import MessageBox from '../../common/MessageBox';
-import { Provisions } from '../../../world/fleets';
+import { Provisions } from '../../../game/world/fleets';
 import { getAvailableSpace } from '../../../state/selectorsFleet';
 import { provisionCost, supplyShip } from '../../../state/actionsPort';
 import InputNumber from '../../common/InputNumber';

@@ -1,5 +1,5 @@
 import type { Position } from './types';
-import { getPortData } from './port/portUtils';
+import { getPortData } from './game/port/portUtils';
 
 const createBuilding = (portId: string) => ({
   get: (id: string): Position => {

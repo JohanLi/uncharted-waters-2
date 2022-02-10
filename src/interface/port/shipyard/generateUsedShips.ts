@@ -1,4 +1,4 @@
-import { getPortData } from '../../../port/portUtils';
+import { getPortData } from '../../../game/port/portUtils';
 import { shipyardsToShips } from '../../../data/portShipyardData';
 import { generateId, random, sample } from '../../../utils';
 import { UsedShips } from '../../../state/state';

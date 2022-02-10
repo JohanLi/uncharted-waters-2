@@ -1,10 +1,10 @@
 import { mocked } from 'jest-mock';
 
 import { getSeaArea, getWind, getIsSummer, getCurrent } from './windCurrent';
-import { random } from '../utils';
-import { START_DATE } from '../constants';
+import { random } from '../../utils';
+import { START_DATE } from '../../constants';
 
-jest.mock('../utils', () => ({
+jest.mock('../../utils', () => ({
   random: jest.fn(),
 }));
 
@@ -43,7 +43,7 @@ describe('getIsSummer', () => {
   });
 });
 
-jest.mock('../assets', () => ({
+jest.mock('../../assets', () => ({
   data: {
     windsCurrent: {
       0: 0,

@@ -6,9 +6,9 @@ import {
   supplyPorts,
   SUPPLY_PORT_BUILDINGS,
   SUPPLY_PORT_TILESET,
-} from '../data/portData';
-import { Position } from '../types';
-import { markets } from '../data/portExtraData';
+} from '../../data/portData';
+import { Position } from '../../types';
+import { markets } from '../../data/portExtraData';
 
 export type PortData = (
   | (RegularPort & { isSupplyPort: false })

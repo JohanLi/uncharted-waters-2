@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { VolumeOffIcon, VolumeUpIcon } from '@heroicons/react/solid';
 
-import { getRegionOrIfSupplyPort } from '../../port/portUtils';
+import { getRegionOrIfSupplyPort } from '../../game/port/portUtils';
 
 import mastInTheMist from './assets/mast-in-the-mist.ogg';
 import themeOfJoao from './assets/theme-of-joão.ogg';

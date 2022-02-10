@@ -1,5 +1,5 @@
-import type { Position } from '../types';
-import { START_POSITION_X, START_POSITION_Y } from '../constants';
+import type { Position } from '../../types';
+import { START_POSITION_X, START_POSITION_Y } from '../../constants';
 
 export const provisions = ['water', 'food', 'lumber', 'shot'] as const;
 export type Provisions = typeof provisions[number];

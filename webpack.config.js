@@ -36,7 +36,7 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/interface/index.html',
-        favicon: './src/interface/assets/favicon.ico',
+        favicon: './src/interface/favicon.ico',
       }),
     ],
   };

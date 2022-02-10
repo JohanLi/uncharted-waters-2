@@ -1,7 +1,7 @@
 import createWorldPlayer from './worldPlayer';
-import { Position } from '../types';
+import { Position } from '../../types';
 
-jest.mock('../state/updateInterface', () => ({
+jest.mock('../../state/updateInterface', () => ({
   playerFleetDirection: () => {},
   playerFleetSpeed: () => {},
 }));

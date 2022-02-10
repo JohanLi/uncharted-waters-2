@@ -1,11 +1,11 @@
-import Assets from '../assets';
-import createMap from '../map';
-import PercentNextMove from '../percentNextMove';
+import Assets from '../../assets';
+import createMap from '../../map';
+import PercentNextMove from '../../percentNextMove';
 import createWorldCharacters from './worldCharacters';
-import { getTimeOfDay } from '../state/selectors';
-import { worldTimeTick } from '../state/actionsWorld';
+import { getTimeOfDay } from '../../state/selectors';
+import { worldTimeTick } from '../../state/actionsWorld';
 import { drawCamera, drawCharacter, getCameraPosition } from './sharedUtils';
-import { TILE_SIZE } from '../constants';
+import { TILE_SIZE } from '../../constants';
 
 const createWorld = () => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;

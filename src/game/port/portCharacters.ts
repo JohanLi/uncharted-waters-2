@@ -1,16 +1,16 @@
-import Input from '../input';
+import Input from '../../input';
 
-import { Position } from '../types';
-import { Map } from '../map';
-import { Building } from '../building';
+import { Position } from '../../types';
+import { Map } from '../../map';
+import { Building } from '../../building';
 import createPlayer, { PortPlayer } from './portPlayer';
 import createNpc, { PortNpc } from './portNpc';
-import { applyPositionDelta } from '../utils';
+import { applyPositionDelta } from '../../utils';
 import {
   getStartFrame,
   portNpcData,
   portPlayerData,
-} from '../data/portCharactersData';
+} from '../../data/portCharactersData';
 
 const createPortCharacters = (
   map: Map,

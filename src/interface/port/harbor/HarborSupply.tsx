@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import MessageBox from '../../common/MessageBox';
 import { getLoadPercent, getPlayerFleet } from '../../../state/selectorsFleet';
 import ProgressBar from '../../common/ProgressBar';
-import { provisions } from '../../../world/fleets';
+import { provisions } from '../../../game/world/fleets';
 import HarborSupplyInput, { ShipProvision } from './HarborSupplyInput';
 import { classNames } from '../../interfaceUtils';
 import useCancel from '../hooks/useCancel';

@@ -1,7 +1,7 @@
 import { START_PORT_ID, START_TIME_PASSED } from '../constants';
-import { Provisions, fleets, Fleets } from '../world/fleets';
-import type { Port } from '../port/port';
-import type { World } from '../world/world';
+import { Provisions, fleets, Fleets } from '../game/world/fleets';
+import type { Port } from '../game/port/port';
+import type { World } from '../game/world/world';
 import type { QuestId } from '../interface/quest/questData';
 
 export type Stage = 'world' | 'port' | 'building';

@@ -1,7 +1,7 @@
-import { TILE_SIZE, WORLD_MAP_COLUMNS } from '../constants';
+import { TILE_SIZE, WORLD_MAP_COLUMNS } from '../../constants';
 import type { WorldPlayer } from './worldPlayer';
-import type { Map } from '../map';
-import type { Position } from '../types';
+import type { Map } from '../../map';
+import type { Position } from '../../types';
 
 export const drawCamera = (
   context: CanvasRenderingContext2D,

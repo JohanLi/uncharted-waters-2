@@ -3,7 +3,7 @@ import { sample } from '../utils';
 import state from './state';
 import { getUsedShips, isDay } from './selectors';
 import { shipData } from '../data/shipData';
-import { Provisions } from '../world/fleets';
+import { Provisions } from '../game/world/fleets';
 import { minutesUntilNextMorning } from '../interface/interfaceUtils';
 import type { QuestId } from '../interface/quest/questData';
 import { getPlayerFleet } from './selectorsFleet';

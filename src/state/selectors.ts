@@ -2,7 +2,7 @@ import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Stage } from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
-import { getPortData } from '../port/portUtils';
+import { getPortData } from '../game/port/portUtils';
 
 export const getStage = (): Stage => {
   if (!state.portId) {

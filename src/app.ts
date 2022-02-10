@@ -1,8 +1,8 @@
 import Assets from './assets';
 import Input from './input';
 import renderInterface from './interface/Interface';
-import createWorld from './world/world';
-import createPort from './port/port';
+import createWorld from './game/world/world';
+import createPort from './game/port/port';
 
 import state from './state/state';
 import { updateGeneral } from './state/actionsPort';

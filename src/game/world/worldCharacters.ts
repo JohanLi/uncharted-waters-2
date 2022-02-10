@@ -1,12 +1,12 @@
-import Input from '../input';
-import type { Position } from '../types';
-import { Map } from '../map';
+import Input from '../../input';
+import type { Position } from '../../types';
+import { Map } from '../../map';
 import createWorldPlayer from './worldPlayer';
 import createWorldNpc, { WorldNpc } from './worldNpc';
-import state from '../state/state';
+import state from '../../state/state';
 import type { Ship } from './fleets';
 import { hasOars } from './worldUtils';
-import { dock } from '../state/actionsWorld';
+import { dock } from '../../state/actionsWorld';
 
 const FRAMES_PER_SHIP = 8;
 const SHIP_VARIANTS = 2;

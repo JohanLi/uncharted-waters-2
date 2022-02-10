@@ -1,4 +1,4 @@
-import { Position } from '../types';
+import { Position } from '../../types';
 
 export const getHeadingWindDelta = (d1: number, d2: number) => {
   const delta = Math.abs(d1 - d2);

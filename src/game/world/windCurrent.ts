@@ -1,5 +1,5 @@
-import Assets from '../assets';
-import { random } from '../utils';
+import Assets from '../../assets';
+import { random } from '../../utils';
 
 export const getSeaArea = (position: { x: number; y: number }) => {
   const areaColumn = Math.floor(position.x / 72);

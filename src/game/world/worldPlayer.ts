@@ -3,12 +3,12 @@ import {
   Direction,
   directionToChanges,
   Position,
-} from '../types';
+} from '../../types';
 import getShipSpeed from './shipSpeed';
 import { sailors } from './fleets';
-import state, { Velocity } from '../state/state';
-import { directionMap } from '../input';
-import updateInterface from '../state/updateInterface';
+import state, { Velocity } from '../../state/state';
+import { directionMap } from '../../input';
+import updateInterface from '../../state/updateInterface';
 import { calculateDestination } from './worldUtils';
 import { getXWrapAround } from './sharedUtils';
 

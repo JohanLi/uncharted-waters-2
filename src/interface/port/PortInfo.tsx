@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { getRegionOrIfSupplyPort, getPortData } from '../../port/portUtils';
+import {
+  getRegionOrIfSupplyPort,
+  getPortData,
+} from '../../game/port/portUtils';
 
 interface Props {
   portId: string;

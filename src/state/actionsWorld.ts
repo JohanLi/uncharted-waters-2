@@ -1,6 +1,6 @@
 import state from './state';
-import { portAdjacentAt } from '../port/portUtils';
-import createPort from '../port/port';
+import { portAdjacentAt } from '../game/port/portUtils';
+import createPort from '../game/port/port';
 import Input from '../input';
 import updateInterface from './updateInterface';
 import { updateGeneral } from './actionsPort';
@@ -9,7 +9,7 @@ import {
   getIsSummer,
   getSeaArea,
   getWind,
-} from '../world/windCurrent';
+} from '../game/world/windCurrent';
 import { START_DATE } from '../constants';
 import {
   getTimeOfDay,

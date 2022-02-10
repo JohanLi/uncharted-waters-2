@@ -3,8 +3,8 @@ import {
   Direction,
   directionToChanges,
   Position,
-} from '../types';
-import { enterBuilding } from '../state/actionsPort';
+} from '../../types';
+import { enterBuilding } from '../../state/actionsPort';
 
 interface AlternativeDestination {
   direction: Direction;

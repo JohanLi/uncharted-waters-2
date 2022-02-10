@@ -1,8 +1,8 @@
 import Assets from './assets';
 import { Position } from './types';
-import { PortData } from './port/portUtils';
+import { PortData } from './game/port/portUtils';
 import { WORLD_MAP_COLUMNS } from './constants';
-import { getXWrapAround } from './world/sharedUtils';
+import { getXWrapAround } from './game/world/sharedUtils';
 import { CollisionIndices, tilesets } from './data/portExtraData';
 
 interface Cache {

@@ -3,8 +3,8 @@ import {
   Direction,
   directionToChanges,
   Position,
-} from '../types';
-import { sample, directions, random } from '../utils';
+} from '../../types';
+import { sample, directions, random } from '../../utils';
 
 const createPortNpc = (
   startPosition: Position,

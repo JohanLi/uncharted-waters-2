@@ -1,16 +1,16 @@
-import Assets from '../assets';
-import createMap from '../map';
-import PercentNextMove from '../percentNextMove';
-import createBuilding from '../building';
+import Assets from '../../assets';
+import createMap from '../../map';
+import PercentNextMove from '../../percentNextMove';
+import createBuilding from '../../building';
 import createPortCharacters from './portCharacters';
 import { getPortData } from './portUtils';
-import { getTimeOfDay, isDay } from '../state/selectors';
+import { getTimeOfDay, isDay } from '../../state/selectors';
 import {
   drawCamera,
   drawCharacter,
   getCameraPosition,
 } from '../world/sharedUtils';
-import { TILE_SIZE } from '../constants';
+import { TILE_SIZE } from '../../constants';
 
 const createPort = (portId: string) => {
   const canvas = document.getElementById('camera') as HTMLCanvasElement;
