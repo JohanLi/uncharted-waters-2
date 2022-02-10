@@ -84,7 +84,7 @@ export default function CharacterMessageBox({ messageBox, position }: Props) {
             {body}
             {acknowledge && (
               <img
-                src={Assets.images.dialogCaretDown.toDataURL()}
+                src={Assets.images('dialogCaretDown').toDataURL()}
                 alt=""
                 className="w-8 h-8 animate-ping mx-auto mt-8"
               />

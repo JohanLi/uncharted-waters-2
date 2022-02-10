@@ -26,13 +26,13 @@ test('assets', async () => {
 
   await Assets.load();
 
-  expect(Assets.images.portTilesets.constructor.name).toEqual(
+  expect(Assets.images('portTilesets').constructor.name).toEqual(
     'HTMLCanvasElement',
   );
-  expect(Assets.images.dialogCorner.constructor.name).toEqual(
+  expect(Assets.images('dialogCorner').constructor.name).toEqual(
     'HTMLCanvasElement',
   );
-  expect(Assets.data.portTilemaps).toEqual(new Uint8Array(tilemap));
+  expect(Assets.data('portTilemaps')).toEqual(new Uint8Array(tilemap));
   expect(Assets.buildings('12')).toEqual(dataUrl);
   expect(Assets.characters('128')).toEqual(dataUrl);
   expect(Assets.indicators(0)).toEqual(dataUrl);

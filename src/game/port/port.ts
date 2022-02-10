@@ -56,7 +56,7 @@ const createPort = (portId: string) => {
 
       drawCharacter(
         context,
-        Assets.images.portCharacters,
+        Assets.images('portCharacters'),
         player,
         camera,
         PercentNextMove.get(),
@@ -67,7 +67,7 @@ const createPort = (portId: string) => {
       npcs.forEach((npc) => {
         drawCharacter(
           context,
-          Assets.images.portCharacters,
+          Assets.images('portCharacters'),
           npc,
           camera,
           PercentNextMove.get(),

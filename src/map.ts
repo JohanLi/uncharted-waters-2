@@ -39,11 +39,11 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
   if (portData) {
     tilemapColumns = 96;
     tilemapRows = 96;
-    tilemap = Assets.data.portTilemaps.slice(
+    tilemap = Assets.data('portTilemaps').slice(
       portData.tilemap * tilemapColumns * tilemapRows,
       (portData.tilemap + 1) * tilemapColumns * tilemapRows,
     );
-    tileset = Assets.images.portTilesets;
+    tileset = Assets.images('portTilesets');
     collisionIndices = tilesets[portData.tileset].collisionIndices;
 
     getTilesetOffset = (time: number) => {
@@ -64,8 +64,8 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
   } else {
     tilemapColumns = WORLD_MAP_COLUMNS;
     tilemapRows = 1080;
-    tilemap = Assets.data.worldTilemap;
-    tileset = Assets.images.worldTileset;
+    tilemap = Assets.data('worldTilemap');
+    tileset = Assets.images('worldTileset');
 
     getTilesetOffset = (time: number) => {
       let timeOffset: number;

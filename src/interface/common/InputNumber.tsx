@@ -60,7 +60,7 @@ export default function InputNumber({
       </div>
       <button type="submit" data-test="inputNumberButton">
         <img
-          src={Assets.images.dialogSubmit.toDataURL()}
+          src={Assets.images('dialogSubmit').toDataURL()}
           alt=""
           className="w-[92px] h-[44px]"
         />

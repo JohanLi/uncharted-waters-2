@@ -28,7 +28,7 @@ export default function ShipyardShipBox({ shipId, customShipName }: Props) {
     <div
       className="absolute top-[256px] w-[736px] h-[304px]"
       style={{
-        background: `url('${Assets.images.dialogShip.toDataURL()}')`,
+        background: `url('${Assets.images('dialogShip').toDataURL()}')`,
         backgroundSize: '736px 304px',
       }}
     >

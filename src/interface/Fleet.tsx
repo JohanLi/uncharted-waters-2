@@ -1,3 +1,6 @@
+// TODO
+/* eslint-disable react/no-array-index-key */
+
 import React, { useMemo } from 'react';
 import Assets from '../assets';
 import { TILE_SIZE } from '../constants';
@@ -22,7 +25,7 @@ export default function Fleet() {
     const context = canvas.getContext('2d', { alpha: false })!;
 
     context.drawImage(
-      Assets.images.worldTileset,
+      Assets.images('worldTileset'),
       0,
       TILE_SIZE * TILESET_OFFSET,
       TILE_SIZE,

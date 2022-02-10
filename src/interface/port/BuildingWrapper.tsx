@@ -42,7 +42,9 @@ export default function BuildingWrapper(props: Props) {
     <div
       className="w-full h-full bg-[length:256px_128px]"
       style={{
-        backgroundImage: `url('${Assets.images.buildingBackground.toDataURL()}')`,
+        backgroundImage: `url('${Assets.images(
+          'buildingBackground',
+        ).toDataURL()}')`,
       }}
       data-test="building"
     >

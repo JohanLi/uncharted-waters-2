@@ -48,7 +48,7 @@ export default function ShipyardShipInputName({ onSubmit, onCancel }: Props) {
             </div>
             <button type="submit">
               <img
-                src={Assets.images.dialogSubmit.toDataURL()}
+                src={Assets.images('dialogSubmit').toDataURL()}
                 alt=""
                 className="w-[92px] h-[44px]"
               />

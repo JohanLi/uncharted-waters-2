@@ -148,8 +148,8 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
           className="w-72 h-28"
           src={
             yesHighlighted
-              ? Assets.images.dialogYes.toDataURL()
-              : Assets.images.dialogNo.toDataURL()
+              ? Assets.images('dialogYes').toDataURL()
+              : Assets.images('dialogNo').toDataURL()
           }
           alt=""
         />

@@ -23,7 +23,7 @@ export default function VendorMessageBox({ buildingId, messageBox }: Props) {
                 {messageBox.body}
                 {messageBox.acknowledge && (
                   <img
-                    src={Assets.images.dialogCaretDown.toDataURL()}
+                    src={Assets.images('dialogCaretDown').toDataURL()}
                     alt=""
                     className="w-8 h-8 animate-ping mx-auto mt-8"
                   />

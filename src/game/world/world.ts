@@ -47,7 +47,7 @@ const createWorld = () => {
       npcs.forEach((npc) => {
         drawCharacter(
           context,
-          Assets.images.worldShips,
+          Assets.images('worldShips'),
           npc,
           camera,
           PercentNextMove.get(),
@@ -57,7 +57,7 @@ const createWorld = () => {
       // player drawn last as there’s no collision at sea
       drawCharacter(
         context,
-        Assets.images.worldShips,
+        Assets.images('worldShips'),
         player,
         camera,
         PercentNextMove.get(),
