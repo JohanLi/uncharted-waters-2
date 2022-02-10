@@ -4,5 +4,5 @@
     "lib": ["ES2019", "dom"],
     "types": ["cypress"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.spec.ts", "**/*.ts"]
 }
