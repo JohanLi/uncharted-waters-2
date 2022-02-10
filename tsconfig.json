@@ -17,5 +17,5 @@
     "strict": true,
     "target": "ES2019"
   },
-  "exclude": ["cypress"]
+  "exclude": ["tests"]
 }
