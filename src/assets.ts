@@ -59,7 +59,7 @@ const slice = (key: InterfaceImages, i: number, widthPerSlice: number) => {
 };
 
 const loadImage = (url: string, upscale: boolean) =>
-  new Promise<HTMLCanvasElement>((resolve) => {
+  new Promise<HTMLCanvasElement>((resolve, reject) => {
     const img = new Image();
     img.src = url;
 
@@ -75,6 +75,8 @@ const loadImage = (url: string, upscale: boolean) =>
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
       resolve(canvas);
     };
+
+    img.onerror = () => reject(Error('Failed loading image'));
   });
 
 const loadBinary = async (url: string) => {
