@@ -75,4 +75,3 @@ The interface alone is too simple to warrant using Redux.
   needs to be serialized and stored in localStorage, on a server, or both.
 - Using a service worker so the game can be played offline.
 - Pathfinding for NPC fleets.
-- End-to-end testing using Cypress.
