@@ -6,10 +6,8 @@
     "start": "webpack serve --mode development",
     "lint": "eslint src/ cypress/ --ext .ts --ext .tsx",
     "prettier": "prettier --write src/ cypress/",
-    "tsc": "tsc --noEmit",
-    "test": "jest --verbose",
-    "test:endToEnd": "cypress run",
-    "cypress": "cypress open",
+    "test": "jest",
+    "test-e2e": "cypress open",
     "build": "rm -rf build/ && webpack --mode production"
   },
   "author": "Johan Li",

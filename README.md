@@ -1,5 +1,7 @@
 # Uncharted Waters: New Horizons
 
+![build status](https://github.com/JohanLi/uncharted-waters-2/actions/workflows/build.yml/badge.svg?branch=master)
+
 [Uncharted Waters: New Horizons](https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons)
 (大航海時代II) is an open world RPG and simulation game from 1994, set during
 the Age of Exploration. Being the favorite game of my childhood, I’m remaking
@@ -75,4 +77,3 @@ The interface alone is too simple to warrant using Redux.
   needs to be serialized and stored in localStorage, on a server, or both.
 - Using a service worker so the game can be played offline.
 - Pathfinding for NPC fleets.
-- End-to-end testing using Cypress.
