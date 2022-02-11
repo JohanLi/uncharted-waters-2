@@ -4,6 +4,7 @@ import type { Port } from '../game/port/port';
 import type { World } from '../game/world/world';
 import type { QuestId } from '../interface/quest/questData';
 import { ItemId } from '../data/itemData';
+import stateDev from './stateDev';
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -58,6 +59,7 @@ const state = {
   debt: 0,
   items: [],
   ...savedState,
+  ...stateDev,
 } as State;
 
 export default state;

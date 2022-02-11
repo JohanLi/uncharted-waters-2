@@ -31,7 +31,7 @@ const useBuilding = <T extends string>(exitMessage = false) => {
     const step = state.step - steps;
 
     if (state.option) {
-      if (step > 0) {
+      if (step >= 0) {
         setState({
           ...state,
           step,

@@ -25,7 +25,7 @@ module.exports = {
     project: ['./tsconfig.json'],
   },
   plugins: ['react', '@typescript-eslint'],
-  ignorePatterns: 'cypress',
+  ignorePatterns: 'tests',
   rules: {
     // https://redux-toolkit.js.org/usage/immer-reducers#linting-state-mutations
     'no-param-reassign': [
