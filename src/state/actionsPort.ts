@@ -7,6 +7,7 @@ import { Provisions } from '../game/world/fleets';
 import { minutesUntilNextMorning } from '../interface/interfaceUtils';
 import type { QuestId } from '../interface/quest/questData';
 import { getPlayerFleet } from './selectorsFleet';
+import { itemData, ItemId } from '../data/itemData';
 
 export const updateGeneral = () => {
   updateInterface.general({
@@ -186,4 +187,33 @@ export const donate = (amount: number) => {
   updateGeneral();
 
   return percent;
+};
+
+export const buyItem = (id: ItemId) => {
+  const { price } = itemData[id];
+
+  if (price > state.gold) {
+    return false;
+  }
+
+  state.gold -= price;
+  state.items.push(id);
+
+  updateGeneral();
+
+  return true;
+};
+
+export const ITEM_SHOP_SELL_MULTIPLIER = 0.5;
+
+export const sellItem = (i: number) => {
+  const id = state.items[i];
+  const { price } = itemData[id];
+
+  state.gold += price * ITEM_SHOP_SELL_MULTIPLIER;
+  state.items.splice(i, 1);
+
+  updateGeneral();
+
+  return true;
 };

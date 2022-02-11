@@ -55,7 +55,7 @@ export default function BuildingWrapper(props: Props) {
         <div className="absolute top-[190px] left-[768px]">{menu}</div>
       )}
       {!!menu2 && (
-        <div className="absolute top-[190px] left-[696px]">{menu2}</div>
+        <div className="absolute top-[190px] left-[696px] z-20">{menu2}</div>
       )}
       {children}
       {!!confirm && (

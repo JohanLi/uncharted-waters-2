@@ -9,6 +9,7 @@ import useBuilding from './hooks/useBuilding';
 import Lodge from './Lodge';
 import Bank from './bank/Bank';
 import Church from './Church';
+import ItemShop from './ItemShop';
 
 interface Props {
   buildingId: string;
@@ -31,6 +32,10 @@ export default function Building({ buildingId }: Props) {
 
   if (buildingId === '9') {
     return <Bank />;
+  }
+
+  if (buildingId === '10') {
+    return <ItemShop />;
   }
 
   if (buildingId === '11') {

@@ -139,7 +139,7 @@ export default function Confirm({ onYes, onNo, initialPosition }: Props) {
 
   return (
     <div
-      className="absolute z-10"
+      className="absolute z-20"
       ref={yesOrNoElement}
       style={{ top: initialPosition.y, left: initialPosition.x }}
     >
