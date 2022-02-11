@@ -7,6 +7,7 @@ import {
   getPlayerItems,
   getItemShopStock,
   getPlayerItem,
+  getGold,
 } from '../../state/selectors';
 import { itemData, ItemId } from '../../data/itemData';
 import ItemShopItemBox from '../ItemShopItemBox';
@@ -52,28 +53,35 @@ export default function ItemShop() {
   let children: ReactNode;
 
   if (option === 'Buy') {
-    vendorMessage = {
-      body: !hasBought.current
-        ? 'I’m sure you’ll find something you like.'
-        : 'Are you interested in anything else?',
-    };
+    if (getGold()) {
+      vendorMessage = {
+        body: !hasBought.current
+          ? 'I’m sure you’ll find something you like.'
+          : 'Are you interested in anything else?',
+      };
 
-    menu2 = (
-      <Menu
-        title="Item"
-        options={getItemShopStock().map((item) => ({
-          label: item.name,
-          value: item.id,
-        }))}
-        onSelect={(itemId) => {
-          setSelectedItemId(itemId);
-          next();
-        }}
-        onCancel={back}
-        wide
-        hidden={step !== 0}
-      />
-    );
+      menu2 = (
+        <Menu
+          title="Item"
+          options={getItemShopStock().map((item) => ({
+            label: item.name,
+            value: item.id,
+          }))}
+          onSelect={(itemId) => {
+            setSelectedItemId(itemId);
+            next();
+          }}
+          onCancel={back}
+          wide
+          hidden={step !== 0}
+        />
+      );
+    } else {
+      vendorMessage = {
+        body: 'It seems you have no gold.',
+        acknowledge: back,
+      };
+    }
 
     children = <ItemShopItemBox />;
 
