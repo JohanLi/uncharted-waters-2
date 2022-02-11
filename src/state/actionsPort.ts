@@ -189,14 +189,17 @@ export const donate = (amount: number) => {
   return percent;
 };
 
-export const buyItem = (id: ItemId) => {
-  const { price } = itemData[id];
+export const buyItem = (id: ItemId, gift = false) => {
+  if (!gift) {
+    const { price } = itemData[id];
 
-  if (price > state.gold) {
-    return false;
+    if (price > state.gold) {
+      return false;
+    }
+
+    state.gold -= price;
   }
 
-  state.gold -= price;
   state.items.push(id);
 
   updateGeneral();

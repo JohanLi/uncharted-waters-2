@@ -1,4 +1,5 @@
 import {
+  buyItem,
   exitBuildingIfNotLodge,
   receiveGold,
   receiveShip,
@@ -310,7 +311,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       characterId: '20',
       position: 1,
       action: () => {
-        // TODO give Aquamarine Tiara
+        buyItem('53', true);
       },
     },
     {
@@ -629,7 +630,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'It’s already been paid for, so please take it.',
       position: 0,
       action: () => {
-        // TODO give Rapier
+        buyItem('4', true);
       },
       completeQuest: true,
     },
