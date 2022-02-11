@@ -6,6 +6,7 @@ import dialogNo from './dialogNo.png';
 import dialogSubmit from './dialogSubmit.png';
 import buildingBackground from './buildingBackground.png';
 import buildings from './buildings.png';
+import items from './items.png';
 import characters from './characters.png';
 import worldIndicators from './worldIndicators.png';
 import worldWater from './worldWater.png';
@@ -23,6 +24,7 @@ const interfaceImages = {
   dialogSubmit,
   buildingBackground,
   buildings,
+  items,
   characters,
   worldIndicators,
   worldWater,
