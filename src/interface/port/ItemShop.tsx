@@ -84,8 +84,6 @@ export default function ItemShop() {
       };
     }
 
-    children = <ItemShopItemBox />;
-
     if (selectedItemId) {
       if (step === 1) {
         const item = itemData[selectedItemId];
@@ -157,8 +155,6 @@ export default function ItemShop() {
           hidden={step !== 0}
         />
       );
-
-      children = <ItemShopItemBox />;
     }
 
     if (selectedItemI !== undefined) {
