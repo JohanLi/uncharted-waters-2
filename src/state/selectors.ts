@@ -74,6 +74,11 @@ export const getRepayAmount = () => Math.min(state.debt, state.gold);
 export const getAtMosque = () =>
   state.portId && getPortData(state.portId).tileset === 2;
 
+const secretItemShopOpen = () => {
+  const timeOfDay = getTimeOfDay();
+  return timeOfDay >= 120 && timeOfDay < 180;
+};
+
 export const getItemShopStock = () => {
   if (!state.portId) {
     return [];
@@ -88,7 +93,7 @@ export const getItemShopStock = () => {
   const items = [...port.itemShop.regular];
   const secretItem = port.itemShop.secret;
 
-  if (secretItem) {
+  if (secretItem && secretItemShopOpen()) {
     items.push(secretItem);
   }
 
