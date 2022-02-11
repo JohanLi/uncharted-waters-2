@@ -22,7 +22,8 @@ type ItemShopOptions = typeof itemShopOptions[number];
 
 // TODO haggling, items that cannot be sold, equipment limit
 export default function ItemShop() {
-  const { selectOption, next, back, state } = useBuilding<ItemShopOptions>();
+  const { selectOption, next, back, reset, state } =
+    useBuilding<ItemShopOptions>();
 
   const hasBought = useRef(false);
   const [selectedItemId, setSelectedItemId] = useState<ItemId>();
@@ -93,11 +94,17 @@ export default function ItemShop() {
           body: `The ${item.name} will cost you ${item.price} gold pieces.`,
           confirm: {
             yes: () => {
-              if (buyItem(selectedItemId)) {
-                hasBought.current = true;
+              if (!buyItem(selectedItemId)) {
+                next();
+                return;
+              }
+
+              hasBought.current = true;
+
+              if (getGold()) {
                 back();
               } else {
-                next();
+                reset();
               }
             },
             no: () => {
@@ -168,7 +175,12 @@ export default function ItemShop() {
             yes: () => {
               sellItem(selectedItemI);
               hasSold.current = true;
-              back();
+
+              if (getPlayerItems().length) {
+                back();
+              } else {
+                reset();
+              }
             },
             no: () => {
               setSelectedItemI(undefined);

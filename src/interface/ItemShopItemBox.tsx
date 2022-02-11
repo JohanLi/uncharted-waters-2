@@ -54,6 +54,7 @@ export default function ItemShopItemBox({ item }: Props) {
         background: `url('${Assets.images('dialogShip').toDataURL()}')`,
         backgroundSize: '736px 304px',
       }}
+      data-test="itemShopItemBox"
     >
       {inner}
     </div>
