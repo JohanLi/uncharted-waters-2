@@ -9,27 +9,8 @@ on:
         default: 'prod'
 
 jobs:
-  unit_tests_tsc:
+  unit_tests_tsc_build_deploy:
     # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
-    runs-on: 'ubuntu-20.04'
-    steps:
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - uses: 'actions/checkout@v2'
-        with:
-          lfs: true
-
-      - run: npm ci
-      - run: npx jest --verbose
-      - run: tsc --noEmit
-
-  build_deploy:
-    needs: unit_tests_tsc
     runs-on: 'ubuntu-20.04'
     steps:
       - run: echo "domain=dev.johan.li" >> $GITHUB_ENV
@@ -50,6 +31,9 @@ jobs:
           lfs: true
 
       - run: npm ci
+      - run: npx jest --verbose
+      - run: tsc --noEmit
+
       - run: npm run build
 
       - run: |
@@ -60,7 +44,7 @@ jobs:
       - run: rsync -r build/ root@46.101.83.57:/home/johanli/${{ env.domain }}/uncharted-waters-2/ --delete -e "ssh -o StrictHostKeyChecking=no"
 
   end_to_end_tests_chrome_firefox:
-    needs: build_deploy
+    needs: unit_tests_tsc_build_deploy
     runs-on: 'ubuntu-20.04'
     steps:
       - run: echo "domain=dev.johan.li" >> $GITHUB_ENV
@@ -87,7 +71,7 @@ jobs:
           CYPRESS_BASE_URL: https://${{ env.domain }}/uncharted-waters-2/
 
   end_to_end_tests_edge:
-    needs: build_deploy
+    needs: unit_tests_tsc_build_deploy
     # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
     # The Ubuntu 20.04 runner doesn't have Edge pre-installed
     runs-on: 'macos-11'
