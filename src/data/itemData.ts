@@ -654,18 +654,12 @@ export const getAttackOrDefenseDisplay = (
     let letter = 'D';
 
     if (rating > 40) {
-      letter = '*';
-    }
-
-    if (rating > 30) {
+      letter = '☆';
+    } else if (rating > 30) {
       letter = 'A';
-    }
-
-    if (rating > 20) {
+    } else if (rating > 20) {
       letter = 'B';
-    }
-
-    if (rating > 10) {
+    } else if (rating > 10) {
       letter = 'C';
     }
 
@@ -681,18 +675,12 @@ export const getAttackOrDefenseDisplay = (
     let letter = 'D';
 
     if (rating > 40) {
-      letter = '*';
-    }
-
-    if (rating > 30) {
+      letter = '☆';
+    } else if (rating > 30) {
       letter = 'A';
-    }
-
-    if (rating > 20) {
+    } else if (rating > 20) {
       letter = 'B';
-    }
-
-    if (rating > 10) {
+    } else if (rating > 10) {
       letter = 'C';
     }
 
