@@ -29,24 +29,7 @@ export interface Fleets {
 export const fleets: Fleets = {
   1: {
     position: undefined,
-    ships: [
-      {
-        id: '22',
-        name: 'Test ship',
-        crew: 30,
-        cargo: [
-          {
-            type: 'water',
-            quantity: 100,
-          },
-          {
-            type: 'food',
-            quantity: 100,
-          },
-        ],
-        durability: 51,
-      },
-    ],
+    ships: [],
   },
   2: {
     position: {

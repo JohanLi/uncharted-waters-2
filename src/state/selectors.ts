@@ -1,21 +1,9 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
-import state, { Stage } from './state';
+import state from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
 import { getPortData } from '../game/port/portUtils';
 import { itemData } from '../data/itemData';
-
-export const getStage = (): Stage => {
-  if (!state.portId) {
-    return 'world';
-  }
-
-  if (state.buildingId) {
-    return 'building';
-  }
-
-  return 'port';
-};
 
 export const getTimeOfDay = () => state.timePassed % 1440;
 

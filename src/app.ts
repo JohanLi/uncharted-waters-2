@@ -6,7 +6,6 @@ import createPort from './game/port/port';
 
 import state from './state/state';
 import { updateGeneral } from './state/actionsPort';
-import { getStage } from './state/selectors';
 import { setDockedFleetPositions } from './state/actionsWorld';
 
 const start = async () => {
@@ -17,22 +16,25 @@ const start = async () => {
 
   updateGeneral();
 
-  if (state.portId) {
-    state.port = createPort(state.portId);
-    setDockedFleetPositions(state.portId);
-  }
-
-  state.world = createWorld();
+  setDockedFleetPositions();
 
   const loop = () => {
-    const stage = getStage();
+    if (state.portId !== null) {
+      if (!state.port) {
+        state.port = createPort(state.portId);
+      }
 
-    if (stage === 'port') {
-      state.port.update();
-      state.port.draw();
+      if (state.buildingId === null) {
+        state.port.update();
+        state.port.draw();
+      }
     }
 
-    if (stage === 'world') {
+    if (state.portId === null) {
+      if (!state.world) {
+        state.world = createWorld();
+      }
+
       state.world.update();
       state.world.draw();
     }

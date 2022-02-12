@@ -67,7 +67,13 @@ const updateProvisions = () => {
 };
 
 export const updateWorldStatus = () => {
-  const seaArea = getSeaArea(state.world.characters().player().position());
+  const { position } = state.fleets['1'];
+
+  if (!position) {
+    throw Error('Player fleet position is not set');
+  }
+
+  const seaArea = getSeaArea(position);
 
   const wind = getWind(seaArea, getIsSummer(START_DATE, state.timePassed));
   const current = getCurrent(seaArea);
@@ -102,11 +108,15 @@ export const worldTimeTick = () => {
     - The player at the start of the game
     - NPC sailors who have respawned
  */
-export const setDockedFleetPositions = (portId: string) => {
+export const setDockedFleetPositions = () => {
   const playerFleet = state.fleets[1];
 
   if (!playerFleet.position) {
-    playerFleet.position = positionAdjacentToPort(portId);
+    if (state.portId === null) {
+      throw Error('Player fleet must start with a position if not in port');
+    }
+
+    playerFleet.position = positionAdjacentToPort(state.portId);
   }
 };
 

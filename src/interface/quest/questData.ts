@@ -854,6 +854,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
     {
       body: 'The pub owner, Carlotta, helped out the Duke quite a bit when he was your age.',
       position: 0,
+      exitBuilding: true, // added as it’ll otherwise confuse new players — there’s nothing you can do at this point
     },
   ],
   harborBeforeShip: [
@@ -861,6 +862,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'We can’t sail the seas without a ship, now can we? Let’s go to the shipyard.',
       characterId: '32',
       position: 1,
+      exitBuilding: true, // added as it’ll otherwise confuse new players — there’s nothing you can do at this point
     },
   ],
   harborBeforeEnrico: [

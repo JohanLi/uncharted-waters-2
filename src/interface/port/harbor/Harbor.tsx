@@ -6,6 +6,7 @@ import BuildingWrapper from '../BuildingWrapper';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
 import HarborSupply from './HarborSupply';
+import { getPlayerFleet } from '../../../state/selectorsFleet';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
 type HarborOptions = typeof harborOptions[number];
@@ -34,7 +35,7 @@ export default function Harbor() {
       options={harborOptions.map((s) => ({
         label: s,
         value: s,
-        disabled: harborDisabledOptions.includes(s),
+        disabled: harborDisabledOptions.includes(s) || !getPlayerFleet().length,
       }))}
       onSelect={(s) => selectOption(s)}
       onCancel={back}
