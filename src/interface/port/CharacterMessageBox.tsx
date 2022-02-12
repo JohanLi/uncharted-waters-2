@@ -47,7 +47,7 @@ const characterData: CharacterData = {
   },
 };
 
-type Position = 1 | 2;
+export type Position = 1 | 2;
 
 interface Props {
   messageBox: CharacterMessageBoxType;

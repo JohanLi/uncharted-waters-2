@@ -71,47 +71,6 @@ describe('Buildings', () => {
     });
   });
 
-  context('Harbor', () => {
-    it('greeting', () => {
-      setState({ portId: '2', buildingId: '4', gold: 1000 });
-      cy.visit('');
-
-      vendorMessageIncludes('Ahoy there, matey');
-    });
-
-    it('supply', () => {
-      clickMenu('Supply');
-
-      cy.get('[data-test=harborSupply]')
-        .should('include.text', 'Test ship')
-        .contains('100')
-        .first()
-        .click();
-
-      cy.get('[data-test=inputNumberInput]').type('50{enter}');
-
-      cy.get('[data-test=harborSupply]')
-        .should('include.text', '150')
-        .contains('100')
-        .first()
-        .click();
-
-      cy.get('[data-test=inputNumberInput]').type('20{enter}');
-
-      cy.get('[data-test=harborSupply]').should('include.text', '120');
-
-      goldIs(600);
-
-      cy.get('[data-test=building]').rightclick();
-    });
-
-    it('sail', () => {
-      clickMenu('Sail');
-
-      cy.get('[data-test=building]').should('not.exist');
-    });
-  });
-
   context('Shipyard', () => {
     const boughtShipName = 'Test Balsa';
 
