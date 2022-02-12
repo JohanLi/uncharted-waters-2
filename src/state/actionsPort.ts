@@ -46,12 +46,12 @@ const USED_SHIP_DURABILITY = 0.85;
 
 export const buyUsedShip = (id: string, shipName: string) => {
   const usedShip = getUsedShips();
-  const { durability, minimumCrew, basePrice } = shipData[usedShip[id]];
+  const { durability, basePrice } = shipData[usedShip[id]];
 
   state.fleets['1'].ships.push({
     id: usedShip[id],
     name: shipName,
-    crew: minimumCrew,
+    crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
@@ -136,17 +136,20 @@ export const exitBuildingIfNotLodge = () => {
   }
 };
 
-export const receiveShip = () => {
-  const { durability, minimumCrew } = shipData['6'];
+export const receiveFirstShip = () => {
+  const id = '6';
 
-  // TODO use buyUsedShip()
+  const { durability } = shipData[id];
+
   getPlayerFleet().push({
-    id: '6',
+    id,
     name: 'Hermes II',
-    crew: minimumCrew,
+    crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
+
+  updateGeneral();
 };
 
 export const deposit = (amount: number) => {

@@ -2,7 +2,7 @@ import {
   buyItem,
   exitBuildingIfNotLodge,
   receiveGold,
-  receiveShip,
+  receiveFirstShip,
 } from '../../state/actionsPort';
 import { asInferredKeysWithValue } from '../../utils';
 
@@ -679,7 +679,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Her name’s the Hermes II. She’s got a triangle sail, easy for landlubbers to control.',
       position: 0,
       action: () => {
-        receiveShip();
+        receiveFirstShip();
       },
       completeQuest: true,
       exitBuilding: true,
