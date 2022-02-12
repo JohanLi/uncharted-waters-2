@@ -27,11 +27,11 @@ export interface Fleets {
 }
 
 export const fleets: Fleets = {
-  1: {
+  '1': {
     position: undefined,
     ships: [],
   },
-  2: {
+  '2': {
     position: {
       x: START_POSITION_X - 2,
       y: START_POSITION_Y - 8,
@@ -46,7 +46,7 @@ export const fleets: Fleets = {
       },
     ],
   },
-  3: {
+  '3': {
     position: {
       x: START_POSITION_X,
       y: START_POSITION_Y + 4,

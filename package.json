@@ -4,7 +4,7 @@
   "description": "Browser-based remake of Uncharted Waters: New Horizons (大航海時代II)",
   "scripts": {
     "start": "webpack serve --mode development",
-    "lint": "eslint src/ tests/ --ext .ts --ext .tsx",
+    "lint": "eslint src/ --ext .ts --ext .tsx",
     "prettier": "prettier --write src/ tests/",
     "test": "jest",
     "test-e2e": "cypress open",
