@@ -1,12 +1,11 @@
 import { asInferredKeysWithValue } from '../utils';
 
-const itemCategories = {
+// 5 and 6 are not used at all. 13 and above are not implemented
+export const itemCategories = {
   '1': 'Straight Sword',
   '2': 'Fencing Sword',
   '3': 'Curved Sword',
   '4': 'Heavy Sword',
-  '5': 'Shield',
-  '6': 'Protector',
   '7': 'Armor',
   '8': 'Measuring Instrument',
   '9': 'Voyager’s Aid',
@@ -17,7 +16,7 @@ const itemCategories = {
 
 type CategoryId = keyof typeof itemCategories;
 
-type Item = {
+export type Item = {
   name: string;
   description: string;
   price: number;
@@ -26,7 +25,7 @@ type Item = {
   categoryId: CategoryId;
 };
 
-const itemData = asInferredKeysWithValue<Item>()({
+export const itemData = asInferredKeysWithValue<Item>()({
   '1': {
     name: 'Dagger',
     description:
@@ -645,4 +644,51 @@ const itemData = asInferredKeysWithValue<Item>()({
 
 export type ItemId = keyof typeof itemData;
 
-export default itemData;
+export const getAttackOrDefenseDisplay = (
+  rating: number,
+  categoryId: CategoryId,
+) => {
+  const isWeapon = ['1', '2', '3', '4'].includes(categoryId);
+
+  if (isWeapon) {
+    let letter = 'D';
+
+    if (rating > 40) {
+      letter = '☆';
+    } else if (rating > 30) {
+      letter = 'A';
+    } else if (rating > 20) {
+      letter = 'B';
+    } else if (rating > 10) {
+      letter = 'C';
+    }
+
+    return {
+      label: 'Attack',
+      letter,
+    };
+  }
+
+  const isArmor = categoryId === '7';
+
+  if (isArmor) {
+    let letter = 'D';
+
+    if (rating > 40) {
+      letter = '☆';
+    } else if (rating > 30) {
+      letter = 'A';
+    } else if (rating > 20) {
+      letter = 'B';
+    } else if (rating > 10) {
+      letter = 'C';
+    }
+
+    return {
+      label: 'Defense',
+      letter,
+    };
+  }
+
+  return null;
+};

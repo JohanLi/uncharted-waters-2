@@ -139,8 +139,6 @@ describe('Buildings', () => {
 
       cy.get('[data-test=confirmNo]').click();
 
-      clickMenu('Used Ship');
-
       clickMenu2('Balsa');
 
       cy.get('[data-test=building]').click();
@@ -151,8 +149,6 @@ describe('Buildings', () => {
 
       goldIs(800);
 
-      clickMenu('Used Ship');
-
       clickMenu2('Balsa');
 
       cy.get('[data-test=building]').click();
@@ -161,7 +157,7 @@ describe('Buildings', () => {
 
       vendorMessageIncludes('don’t have enough gold');
 
-      cy.get('[data-test=building]').click();
+      cy.get('[data-test=building]').click().rightclick();
     });
 
     it('repair', () => {
@@ -179,15 +175,11 @@ describe('Buildings', () => {
 
       cy.get('[data-test=confirmNo]').click();
 
-      clickMenu('Sell');
-
       clickMenu2(boughtShipName);
 
       cy.get('[data-test=confirmYes]').click();
 
       goldIs(1400);
-
-      clickMenu('Sell');
 
       vendorMessageIncludes('only have the flag ship');
 

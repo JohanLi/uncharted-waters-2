@@ -3,6 +3,7 @@ import { Provisions, fleets, Fleets } from '../game/world/fleets';
 import type { Port } from '../game/port/port';
 import type { World } from '../game/world/world';
 import type { QuestId } from '../interface/quest/questData';
+import { ItemId } from '../data/itemData';
 
 export type Stage = 'world' | 'port' | 'building';
 
@@ -35,6 +36,7 @@ export interface State {
   usedShipsAtPort: UsedShipsAtPort;
   savings: number;
   debt: number;
+  items: ItemId[];
 }
 
 export const SAVED_STATE_KEY = 'savedState';
@@ -54,6 +56,7 @@ const state = {
   usedShipsAtPort: {},
   savings: 0,
   debt: 0,
+  items: [],
   ...savedState,
 } as State;
 

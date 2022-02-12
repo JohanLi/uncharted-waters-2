@@ -3,6 +3,7 @@ import state, { Stage } from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
 import { getPortData } from '../game/port/portUtils';
+import { itemData } from '../data/itemData';
 
 export const getStage = (): Stage => {
   if (!state.portId) {
@@ -72,3 +73,40 @@ export const getRepayAmount = () => Math.min(state.debt, state.gold);
 
 export const getAtMosque = () =>
   state.portId && getPortData(state.portId).tileset === 2;
+
+const secretItemShopOpen = () => {
+  const timeOfDay = getTimeOfDay();
+  return timeOfDay >= 120 && timeOfDay < 180;
+};
+
+export const getItemShopStock = () => {
+  if (!state.portId) {
+    return [];
+  }
+
+  const port = getPortData(state.portId);
+
+  if (port.isSupplyPort || !port.itemShop) {
+    return [];
+  }
+
+  const items = [...port.itemShop.regular];
+  const secretItem = port.itemShop.secret;
+
+  if (secretItem && secretItemShopOpen()) {
+    items.push(secretItem);
+  }
+
+  return items.map((itemId) => ({
+    id: itemId,
+    name: itemData[itemId].name,
+  }));
+};
+
+export const getPlayerItems = () =>
+  state.items.map((itemId) => ({
+    id: itemId,
+    name: itemData[itemId].name,
+  }));
+
+export const getPlayerItem = (i: number) => itemData[state.items[i]];

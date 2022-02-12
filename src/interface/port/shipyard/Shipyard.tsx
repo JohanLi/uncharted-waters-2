@@ -35,8 +35,7 @@ const shipyardDisabledOptions: ShipyardOptions[] = [
 ];
 
 export default function Shipyard() {
-  const { selectOption, back, next, reset, state } =
-    useBuilding<ShipyardOptions>();
+  const { selectOption, back, next, state } = useBuilding<ShipyardOptions>();
 
   const [usedShipId, setUsedShipId] = useState<string>();
 
@@ -122,7 +121,7 @@ export default function Shipyard() {
               onSubmit={(usedShipName) => {
                 buyUsedShip(usedShipId, usedShipName);
                 setUsedShipId(undefined);
-                reset();
+                back(3);
               }}
               onCancel={() => {
                 setUsedShipId(undefined);
@@ -198,7 +197,7 @@ export default function Shipyard() {
             yes: () => {
               sellShipNumber(selectedShipNumberToSell);
               setSelectedShipNumberToSell(undefined);
-              reset();
+              back();
             },
             no: () => {
               setSelectedShipNumberToSell(undefined);

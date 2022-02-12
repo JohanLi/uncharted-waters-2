@@ -111,7 +111,8 @@ const Assets = {
   images: (id: GameImages | InterfaceImages) => loadedAssets[id],
   data: (id: DataAssets) => loadedAssets[id],
   buildings: (id: string) => slice('buildings', Number(id) - 1, 136),
-  items: (id: string) => slice('items', Number(id) - 1, 48),
+  // multiple items can share the same image
+  items: (i: number) => slice('items', i, 48),
   characters: (id: string) => slice('characters', Number(id) - 1, 64),
   indicators: (direction: number) => slice('worldIndicators', direction, 80),
   ships: (id: string) => slice('ships', Number(id) - 1, 128),
