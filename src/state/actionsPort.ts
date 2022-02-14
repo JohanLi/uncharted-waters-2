@@ -132,7 +132,7 @@ export const checkIn = () => {
 
 export const exitBuildingIfNotLodge = () => {
   if (state.buildingId !== '5') {
-    exitBuilding(true);
+    exitBuilding();
   }
 };
 
