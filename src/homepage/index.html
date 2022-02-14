@@ -3,50 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <title>Uncharted Waters: New Horizons (大航海時代II)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="bg-black min-w-[1640px]">
-    <div class="py-16 flex items-center justify-center">
+    <div class="py-16 flex items-center justify-center bg-[#080808]">
       <div id="game">
         <div class="flex items-center justify-center flex-col text-white">
-          <svg class="animate-spin h-24 w-24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <svg
+            class="animate-spin h-24 w-24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
           </svg>
           <div class="mt-8">Game is loading...</div>
         </div>
       </div>
     </div>
-    <div class="py-16 text-base" style="background-image: url('<%= require('./images/world-map.png') %>');background-repeat: no-repeat;background-position: center center;">
+    <div
+      class="py-16 text-base"
+      style="
+        background-image: url('<%= require('./images/world-map.png') %>');
+        background-repeat: no-repeat;
+        background-position: center center;
+      "
+    >
       <div class="max-w-4xl mx-auto text-white">
         <div class="flex">
           <div class="w-96 pr-16">
             <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
             <ul class="list-disc pl-4">
+              <li>WASD keys <span class="text-gray-500">movement</span></li>
               <li>
-                WASD keys <span class="text-gray-500">movement</span>
+                E, Enter or right-click
+                <span class="text-gray-500">confirm, select</span>
               </li>
               <li>
-                E, Enter or right-click <span class="text-gray-500">confirm, select</span>
-              </li>
-              <li>
-                Escape or left-click <span class="text-gray-500">cancel, exit</span>
+                Escape or left-click
+                <span class="text-gray-500">cancel, exit</span>
               </li>
             </ul>
           </div>
           <div class="flex-1">
             <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
             <p class="">
-              This is a remake of Uncharted Waters: New Horizons, an open world RPG and simulation game released in 1994 and developed by Koei. The game is set during the Age of Exploration, dealing with sailing and trading.
-
-              The remake is far from complete and merely a side project of mine, so any progress made will be sporadic. Visit my blog for updates. The code for this game is available on GitHub.
+              This is a remake of Uncharted Waters: New Horizons, an open world
+              RPG and simulation game released in 1994 and developed by Koei.
+              The game is set during the Age of Exploration, dealing with
+              sailing and trading. The remake is far from complete and merely a
+              side project of mine, so any progress made will be sporadic. Visit
+              my blog for updates. The code for this game is available on
+              GitHub.
             </p>
           </div>
         </div>
         <div class="flex flex-col items-center mt-32">
-          <img class="w-[896px] h-auto" src="<%= require('./images/sailing.png') %>" />
+          <img
+            class="w-[896px] h-auto"
+            src="<%= require('./images/sailing.png') %>"
+          />
           <p class="text-2xl font-bold mt-16 px-16 leading-normal">
             1552. The Age of Exploration. Three brave voyagers are each about to
             begin a life of adventure...
@@ -59,30 +92,47 @@
         <div class="flex-1 pr-16">
           <div class="text-4xl font-bold text-blue-500">João Franco</div>
           <div class="text-xl mt-8 leading-normal text-blue-200">
-            As the son of Duke Leon Franco, João sails for the glory of Portugal.
-            In his travels around the globe he hopes to discover the secret of the
-            lost land of Atlantis.
+            As the son of Duke Leon Franco, João sails for the glory of
+            Portugal. In his travels around the globe he hopes to discover the
+            secret of the lost land of Atlantis.
           </div>
         </div>
-        <div class="w-64 h-64" style="background-image: url('<%= require('./images/joao-franco.png') %>'); background-position: 0 0;" id="anim">
-
-        </div>
+        <div
+          class="w-64 h-64"
+          style="
+            background-image: url('<%= require('./images/joao-franco.png') %>');
+            background-position: 0 0;
+          "
+          id="anim"
+        ></div>
         <script>
           setInterval(() => {
-            document.getElementById('anim').style.backgroundPosition = '256px 0';
+            document.getElementById('anim').style.backgroundPosition =
+              '256px 0';
 
-            setTimeout(() => document.getElementById('anim').style.backgroundPosition = '0 0', 100)
+            setTimeout(
+              () =>
+                (document.getElementById('anim').style.backgroundPosition =
+                  '0 0'),
+              100,
+            );
           }, 4000);
         </script>
       </div>
       <div class="py-16 flex items-center">
-        <div class="w-[456px] h-[280px]" style="background-image: url('<%= require('./images/otto-baynes.png') %>'); background-position: 0 0;">
-        </div>
+        <div
+          class="w-[456px] h-[280px]"
+          style="
+            background-image: url('<%= require('./images/otto-baynes.png') %>');
+            background-position: 0 0;
+          "
+        ></div>
         <div class="flex-1 pl-16">
           <div class="text-4xl font-bold text-indigo-500">Otto Baynes</div>
-          <div class="text-xl mt-8 leading-normal text-indigo-200 ">
-            A Royal Knight of the British Empire, Otto is on a secret mission for King Henry VIII.
-            Sailing as a privateer, his goal is to defeat the Spanish Fleet.
+          <div class="text-xl mt-8 leading-normal text-indigo-200">
+            A Royal Knight of the British Empire, Otto is on a secret mission
+            for King Henry VIII. Sailing as a privateer, his goal is to defeat
+            the Spanish Fleet.
           </div>
         </div>
       </div>
@@ -90,17 +140,28 @@
         <div class="flex-1 pr-16">
           <div class="text-4xl font-bold text-red-500">Catalina Erantzo</div>
           <div class="text-xl mt-8 leading-normal text-red-200">
-            This red-haired pirate hails from Spain. She seeks revenge on Portugal for the
-            mysterious loss of two men — her brother and her beloved.
+            This red-haired pirate hails from Spain. She seeks revenge on
+            Portugal for the mysterious loss of two men — her brother and her
+            beloved.
           </div>
         </div>
-        <div class="w-[456px] h-[280px]" style="background-image: url('<%= require('./images/catalina-erantzo.png') %>'); background-position: 0 0;">
-        </div>
+        <div
+          class="w-[456px] h-[280px]"
+          style="
+            background-image: url('<%= require('./images/catalina-erantzo.png') %>');
+            background-position: 0 0;
+          "
+        ></div>
       </div>
       <div class="py-16 flex">
         <div class="w-1/2 pt-32">
-          <div class="w-[320px] h-[280px]" style="background-image: url('<%= require('./images/enemies.png') %>'); background-position: 0 0;">
-          </div>
+          <div
+            class="w-[320px] h-[280px]"
+            style="
+              background-image: url('<%= require('./images/enemies.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
           <div class="text-2xl font-bold leading-normal text-gray-500 mt-16">
             while others are determined to stand in their way.
           </div>
@@ -109,8 +170,13 @@
           <div class="text-2xl font-bold leading-normal text-gray-500 mb-16">
             Some provide help and support,
           </div>
-          <div class="w-[272px] h-[272px] ml-auto" style="background-image: url('<%= require('./images/friends.png') %>'); background-position: 0 0;">
-          </div>
+          <div
+            class="w-[272px] h-[272px] ml-auto"
+            style="
+              background-image: url('<%= require('./images/friends.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
         </div>
       </div>
       <div class="text-2xl font-bold mt-16 px-16 leading-normal">
