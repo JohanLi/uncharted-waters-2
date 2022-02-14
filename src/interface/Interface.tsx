@@ -7,8 +7,6 @@ import PortInfo from './port/PortInfo';
 import Provisions from './world/Provisions';
 import Indicators from './world/Indicators';
 import Camera from './Camera';
-import Tabs, { Tab } from './Tabs';
-import Fleet from './Fleet';
 import updateInterface from '../state/updateInterface';
 import Building from './port/Building';
 import { classNames } from './interfaceUtils';
@@ -33,11 +31,8 @@ function Interface() {
 
   const inPort = portId !== null;
 
-  const [currentTab, setCurrentTab] = useState<Tab>('Home');
-
   return (
     <div className="[image-rendering:pixelated]">
-      <Tabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       <div className="flex items-stretch">
         <Left
           portId={portId}
@@ -54,11 +49,8 @@ function Interface() {
           )}
           onAnimationEnd={onAnimationEnd}
         >
-          {currentTab === 'Home' && buildingId !== null && (
-            <Building buildingId={buildingId} />
-          )}
-          {currentTab === 'Fleet' && <Fleet />}
-          <div className={currentTab !== 'Home' || buildingId ? 'hidden' : ''}>
+          {buildingId !== null && <Building buildingId={buildingId} />}
+          <div className={buildingId ? 'hidden' : ''}>
             <Camera />
           </div>
         </div>

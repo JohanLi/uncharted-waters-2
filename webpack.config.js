@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -25,7 +26,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/i,
-          use: ['style-loader', 'css-loader', 'postcss-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
         },
         {
           test: /\.(ogg|mp3|png|bin)$/,
@@ -34,9 +35,12 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name]-[contenthash].css',
+      }),
       new HtmlWebpackPlugin({
-        template: './src/interface/index.html',
-        favicon: './src/interface/favicon.ico',
+        template: './src/homepage/index.html',
+        favicon: './src/homepage/favicon.ico',
       }),
     ],
   };
