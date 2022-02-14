@@ -45,4 +45,4 @@ const start = async () => {
   requestAnimationFrame(loop);
 };
 
-// start();
+start();

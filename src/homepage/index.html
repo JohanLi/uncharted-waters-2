@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Browser-based remake of Uncharted Waters: New Horizons (大航海時代II)"
+    />
     <title>Uncharted Waters: New Horizons (大航海時代II)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,15 +18,15 @@
   <body class="min-w-[1640px] bg-black">
     <div class="py-16 flex items-center justify-center bg-[#080808]">
       <div id="game">
-        <div class="flex items-center justify-center flex-col min-h-[464px] text-white">
+        <div class="flex items-center justify-center flex-col min-h-[464px]">
           <svg
-            class="animate-spin h-24 w-24"
+            class="animate-spin h-24 w-24 text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
           >
             <circle
-              class="text-gray-800"
+              class="opacity-25"
               cx="12"
               cy="12"
               r="10"
@@ -29,11 +34,12 @@
               stroke-width="4"
             ></circle>
             <path
+              class="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          <div class="mt-8">Game is loading...</div>
+          <div class="mt-8 text-white">Game is loading...</div>
         </div>
       </div>
     </div>
@@ -79,14 +85,14 @@
             >.
           </p>
         </div>
-        <div class="col-span-2 text-gray-500 text-right">
+        <div class="col-span-2">
           <a
             href="https://github.com/JohanLi/uncharted-waters-2"
-            class="hover:text-gray-400 mb-4 inline-block"
+            class="inline-block text-gray-500 hover:text-gray-400 text-right"
           >
             <svg
               viewBox="0 0 16 16"
-              class="w-16 h-16"
+              class="w-16 h-16 ml-auto"
               fill="currentColor"
               aria-hidden="true"
             >
@@ -94,14 +100,16 @@
                 d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
               ></path>
             </svg>
+            <p class="mt-4">Check this project out on GitHub.</p>
           </a>
-          <p>It’s open-source — check it out on GitHub!</p>
         </div>
       </div>
       <div>
         <img
-          class="w-[896px] h-auto"
           src="<%= require('./images/sailing.png') %>"
+          width="896"
+          height="200"
+          alt="Uncharted Waters: New Horizons sailing"
         />
         <p
           class="text-2xl font-bold mt-8 leading-normal max-w-2xl text-gray-500"
@@ -123,17 +131,16 @@
           </div>
         </div>
         <div
-          class="w-64 h-64"
+          class="w-64 h-64 animate-blink"
           style="
             background-image: url('<%= require('./images/joao-franco.png') %>');
             background-position: 0 0;
           "
-          id="anim"
         ></div>
       </div>
       <div class="flex items-center">
         <div
-          class="w-[456px] h-[280px]"
+          class="w-[456px] h-[280px] animate-blink"
           style="
             background-image: url('<%= require('./images/otto-baynes.png') %>');
             background-position: 0 0;
@@ -158,7 +165,7 @@
           </div>
         </div>
         <div
-          class="w-[456px] h-[280px]"
+          class="w-[456px] h-[280px] animate-blink"
           style="
             background-image: url('<%= require('./images/catalina-erantzo.png') %>');
             background-position: 0 0;
@@ -174,16 +181,20 @@
               background-position: 0 0;
             "
           ></div>
-          <div class="text-2xl font-bold leading-normal text-orange-500 mt-8 max-w-xl">
+          <div
+            class="text-2xl font-bold leading-normal text-orange-500 mt-8 max-w-xl"
+          >
             while others are determined to stand in their way.
           </div>
         </div>
         <div>
-          <div class="text-2xl font-bold leading-normal text-pink-500 mb-8 max-w-xl">
+          <div
+            class="text-2xl font-bold leading-normal text-pink-500 mb-8 max-w-xl"
+          >
             Some provide help and support,
           </div>
           <div
-            class="w-[272px] h-[272px] ml-auto"
+            class="w-[272px] h-[272px] ml-auto animate-blink-friends"
             style="
               background-image: url('<%= require('./images/friends.png') %>');
               background-position: 0 0;
@@ -198,15 +209,42 @@
       </div>
     </div>
     <script>
-      setInterval(() => {
-        document.getElementById('anim').style.backgroundPosition = '256px 0';
+      const random = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      };
 
-        setTimeout(
-          () =>
-            (document.getElementById('anim').style.backgroundPosition = '0 0'),
-          100,
-        );
-      }, 4000);
+      const blink = (element, characters = 1) => {
+        const width = element.offsetWidth;
+
+        let character = 0;
+
+        if (characters > 1) {
+          character = random(0, characters - 1);
+        }
+
+        const offset = character * width * 2;
+
+        setTimeout(() => {
+          element.style.backgroundPosition = `-${width + offset}px 0`;
+
+          setTimeout(() => {
+            element.style.backgroundPosition = `-${width * 2 + offset}px 0`;
+
+            setTimeout(() => {
+              element.style.backgroundPosition = `0 0`;
+              blink(element, characters);
+            }, 100);
+          }, 100);
+        }, random(1000, 6000 / characters));
+      };
+
+      document.querySelectorAll('.animate-blink').forEach((element) => {
+        blink(element);
+      });
+
+      blink(document.querySelector('.animate-blink-friends'), 3);
     </script>
   </body>
 </html>
