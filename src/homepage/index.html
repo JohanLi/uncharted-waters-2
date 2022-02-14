@@ -10,7 +10,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-black min-w-[1640px]">
+  <body class="min-w-[1640px] bg-black">
     <div class="py-16 flex items-center justify-center bg-[#080808]">
       <div id="game">
         <div class="flex items-center justify-center flex-col text-white">
@@ -38,58 +38,84 @@
         </div>
       </div>
     </div>
-    <div
-      class="py-16 text-base"
-      style="
-        background-image: url('<%= require('./images/world-map.png') %>');
-        background-repeat: no-repeat;
-        background-position: center center;
-      "
-    >
-      <div class="max-w-4xl mx-auto text-white">
-        <div class="flex">
-          <div class="w-96 pr-16">
-            <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
-            <ul class="list-disc pl-4">
-              <li>WASD keys <span class="text-gray-500">movement</span></li>
-              <li>
-                E, Enter or right-click
-                <span class="text-gray-500">confirm, select</span>
-              </li>
-              <li>
-                Escape or left-click
-                <span class="text-gray-500">cancel, exit</span>
-              </li>
-            </ul>
-          </div>
-          <div class="flex-1">
-            <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
-            <p class="">
-              This is a remake of Uncharted Waters: New Horizons, an open world
-              RPG and simulation game released in 1994 and developed by Koei.
-              The game is set during the Age of Exploration, dealing with
-              sailing and trading. The remake is far from complete and merely a
-              side project of mine, so any progress made will be sporadic. Visit
-              my blog for updates. The code for this game is available on
-              GitHub.
-            </p>
-          </div>
+    <div class="max-w-[1280px] mx-auto py-16 text-white text-base space-y-32">
+      <div class="grid grid-cols-12 gap-16">
+        <div class="col-span-4">
+          <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
+          <ul class="list-disc ml-4 leading-loose">
+            <li>WASD keys <span class="text-gray-500">movement</span></li>
+            <li>
+              E, Enter or right-click
+              <span class="text-gray-500">confirm, select</span>
+            </li>
+            <li>
+              Escape or left-click
+              <span class="text-gray-500">cancel, exit</span>
+            </li>
+          </ul>
         </div>
-        <div class="flex flex-col items-center mt-32">
-          <img
-            class="w-[896px] h-auto"
-            src="<%= require('./images/sailing.png') %>"
-          />
-          <p class="text-2xl font-bold mt-16 px-16 leading-normal">
-            1552. The Age of Exploration. Three brave voyagers are each about to
-            begin a life of adventure...
+        <div class="col-span-6 pr-16">
+          <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
+          <p class="">
+            This is a remake of
+            <a
+              class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
+              href="https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons"
+              >Uncharted Waters: New Horizons</a
+            >, an open-world role-playing game released in 1994. Set during the
+            Age of Exploration, you sail around the world, trading goods and
+            fighting pirates.
+          </p>
+          <p class="mt-8">
+            It’s a side project of mine that I started in 2017 when I was
+            working for the game publisher Paradox Interactive. Being a web
+            developer, I decided to make a game that could run in the browser.
+          </p>
+          <p class="mt-8">
+            Every now and then, I post updates to my
+            <a
+              class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
+              href="https://johan.li"
+              >personal website</a
+            >.
           </p>
         </div>
+        <div class="col-span-2 text-gray-500 text-right">
+          <a
+            href="https://github.com/JohanLi/uncharted-waters-2"
+            class="hover:text-gray-400 mb-4 inline-block"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              class="w-16 h-16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+          </a>
+          <p>It’s open-source — check it out on GitHub!</p>
+        </div>
       </div>
-    </div>
-    <div class="max-w-4xl mx-auto text-white text-base pb-32">
-      <div class="py-16 flex items-center">
-        <div class="flex-1 pr-16">
+      <div>
+        <img
+          class="w-[896px] h-auto"
+          src="<%= require('./images/sailing.png') %>"
+        />
+        <p
+          class="text-2xl font-bold mt-8 leading-normal max-w-2xl text-gray-500"
+        >
+          1552.
+          <br />
+          The Age of Exploration.
+          <br />
+          Three brave voyagers are each about to begin a life of adventure...
+        </p>
+      </div>
+      <div class="flex items-center justify-end">
+        <div class="max-w-xl pr-16">
           <div class="text-4xl font-bold text-blue-500">João Franco</div>
           <div class="text-xl mt-8 leading-normal text-blue-200">
             As the son of Duke Leon Franco, João sails for the glory of
@@ -105,21 +131,8 @@
           "
           id="anim"
         ></div>
-        <script>
-          setInterval(() => {
-            document.getElementById('anim').style.backgroundPosition =
-              '256px 0';
-
-            setTimeout(
-              () =>
-                (document.getElementById('anim').style.backgroundPosition =
-                  '0 0'),
-              100,
-            );
-          }, 4000);
-        </script>
       </div>
-      <div class="py-16 flex items-center">
+      <div class="flex items-center">
         <div
           class="w-[456px] h-[280px]"
           style="
@@ -127,17 +140,17 @@
             background-position: 0 0;
           "
         ></div>
-        <div class="flex-1 pl-16">
-          <div class="text-4xl font-bold text-indigo-500">Otto Baynes</div>
-          <div class="text-xl mt-8 leading-normal text-indigo-200">
+        <div class="max-w-xl pl-16">
+          <div class="text-4xl font-bold text-violet-500">Otto Baynes</div>
+          <div class="text-xl mt-8 leading-normal text-violet-200">
             A Royal Knight of the British Empire, Otto is on a secret mission
             for King Henry VIII. Sailing as a privateer, his goal is to defeat
             the Spanish Fleet.
           </div>
         </div>
       </div>
-      <div class="py-16 flex items-center">
-        <div class="flex-1 pr-16">
+      <div class="flex items-center justify-end">
+        <div class="max-w-xl pr-16">
           <div class="text-4xl font-bold text-red-500">Catalina Erantzo</div>
           <div class="text-xl mt-8 leading-normal text-red-200">
             This red-haired pirate hails from Spain. She seeks revenge on
@@ -153,8 +166,8 @@
           "
         ></div>
       </div>
-      <div class="py-16 flex">
-        <div class="w-1/2 pt-32">
+      <div class="flex justify-between">
+        <div class="mt-32">
           <div
             class="w-[320px] h-[280px]"
             style="
@@ -162,12 +175,12 @@
               background-position: 0 0;
             "
           ></div>
-          <div class="text-2xl font-bold leading-normal text-gray-500 mt-16">
+          <div class="text-2xl font-bold leading-normal text-orange-500 mt-8 max-w-xl">
             while others are determined to stand in their way.
           </div>
         </div>
-        <div class="w-1/2 text-right">
-          <div class="text-2xl font-bold leading-normal text-gray-500 mb-16">
+        <div>
+          <div class="text-2xl font-bold leading-normal text-pink-500 mb-8 max-w-xl">
             Some provide help and support,
           </div>
           <div
@@ -179,9 +192,22 @@
           ></div>
         </div>
       </div>
-      <div class="text-2xl font-bold mt-16 px-16 leading-normal">
+      <div
+        class="text-4xl font-bold mx-auto leading-normal text-gray-500 max-w-xl pb-32"
+      >
         Now it’s up to you to guide them on the path to glory.
       </div>
     </div>
+    <script>
+      setInterval(() => {
+        document.getElementById('anim').style.backgroundPosition = '256px 0';
+
+        setTimeout(
+          () =>
+            (document.getElementById('anim').style.backgroundPosition = '0 0'),
+          100,
+        );
+      }, 4000);
+    </script>
   </body>
 </html>
