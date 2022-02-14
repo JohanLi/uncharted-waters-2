@@ -15,8 +15,7 @@ export default function useCancel(onCancel?: () => void) {
       }
     };
 
-    const onContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
+    const onContextMenu = () => {
       onCancel();
     };
 

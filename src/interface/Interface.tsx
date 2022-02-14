@@ -48,6 +48,7 @@ function Interface() {
             fade ? 'fade-out' : '',
           )}
           onAnimationEnd={onAnimationEnd}
+          onContextMenu={(e) => e.preventDefault()}
         >
           {buildingId !== null && <Building buildingId={buildingId} />}
           <div className={buildingId ? 'hidden' : ''}>

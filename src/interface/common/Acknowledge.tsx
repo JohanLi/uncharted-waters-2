@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useEffect, MouseEvent } from 'react';
+import React, { useEffect } from 'react';
 
 interface Props {
   onAcknowledge: (() => void) | undefined;
@@ -33,8 +33,7 @@ export default function Acknowledge({ onAcknowledge }: Props) {
     return null;
   }
 
-  const onClickOrContextMenu = (e: MouseEvent) => {
-    e.preventDefault();
+  const onClickOrContextMenu = () => {
     onAcknowledge();
   };
 
