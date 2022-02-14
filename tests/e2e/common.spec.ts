@@ -72,7 +72,7 @@ describe('Common UI', () => {
       clickMenu('Donate');
 
       cy.get('[data-test=inputNumberInput]').should('exist');
-      cy.get('body').trigger('keydown', { key: 'Escape' });
+      cy.get('#game').trigger('keydown', { key: 'Escape' });
       cy.get('[data-test=inputNumberInput]').should('not.exist');
     });
   });
