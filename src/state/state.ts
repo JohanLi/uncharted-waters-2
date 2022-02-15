@@ -68,14 +68,6 @@ const state = {
   mates: [
     {
       sailorId: '1',
-      role: 0,
-    },
-    {
-      sailorId: '32',
-      role: 'firstMate',
-    },
-    {
-      sailorId: '33',
     },
   ],
   ...savedState,
