@@ -9,7 +9,7 @@ import Menu from './common/Menu';
 export default function Items() {
   const items = getPlayerItems();
 
-  const [selectedItemI, setSelectedItemI] = useState(0);
+  const [selectedI, setSelectedI] = useState(0);
 
   if (!items.length) {
     return (
@@ -21,7 +21,7 @@ export default function Items() {
     );
   }
 
-  const { id } = items[selectedItemI] || {};
+  const { id } = items[selectedI] || {};
 
   return (
     <MessageBox>
@@ -33,7 +33,7 @@ export default function Items() {
               value: i,
             }))}
             onSelect={() => {}}
-            onActiveIndex={setSelectedItemI}
+            onActiveIndex={setSelectedI}
           />
         </div>
         <div className="relative w-[736px] h-[304px]">

@@ -37,6 +37,7 @@ export interface State {
   savings: number;
   debt: number;
   items: ItemId[];
+  mates: string[];
 }
 
 export const SAVED_STATE_KEY = 'savedState';
@@ -57,6 +58,7 @@ const state = {
   savings: 0,
   debt: 0,
   items: [],
+  mates: ['1', '32', '33'],
   ...savedState,
 } as State;
 

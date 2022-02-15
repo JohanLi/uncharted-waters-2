@@ -13,6 +13,7 @@ import Sound from './sound/Sound';
 import Fleet from './Fleet';
 import Popover from './common/Popover';
 import Items from './Items';
+import Mates from './Mates';
 
 interface Props {
   portId: string | null;
@@ -57,6 +58,9 @@ export default function Left({
       </div>
       {inPort && (
         <div className="select-none">
+          <Popover label="Mates">
+            <Mates />
+          </Popover>
           <Popover label="Fleet">
             <Fleet />
           </Popover>

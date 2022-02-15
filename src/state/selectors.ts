@@ -4,6 +4,7 @@ import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
 import { getPortData } from '../game/port/portUtils';
 import { itemData } from '../data/itemData';
+import { sailorData } from '../data/sailorData';
 
 export const getTimeOfDay = () => state.timePassed % 1440;
 
@@ -98,3 +99,9 @@ export const getPlayerItems = () =>
   }));
 
 export const getPlayerItem = (i: number) => itemData[state.items[i]];
+
+export const getMates = () =>
+  state.mates.map((sailorId) => ({
+    id: sailorId,
+    ...sailorData[sailorId],
+  }));
