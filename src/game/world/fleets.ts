@@ -28,8 +28,44 @@ export interface Fleets {
 
 export const fleets: Fleets = {
   '1': {
-    position: undefined,
-    ships: [],
+    position: {
+      x: START_POSITION_X - 2,
+      y: START_POSITION_Y - 8,
+    },
+    ships: [
+      {
+        id: '22',
+        name: 'Test ship',
+        crew: 10,
+        cargo: [
+          {
+            type: 'water',
+            quantity: 0,
+          },
+          {
+            type: 'food',
+            quantity: 10,
+          },
+        ],
+        durability: 51,
+      },
+      {
+        id: '22',
+        name: 'Test ship',
+        crew: 10,
+        cargo: [
+          {
+            type: 'water',
+            quantity: 0,
+          },
+          {
+            type: 'food',
+            quantity: 10,
+          },
+        ],
+        durability: 51,
+      },
+    ],
   },
   '2': {
     position: {

@@ -40,22 +40,19 @@ export default function Fleet() {
   }, []);
 
   return (
-    <div>
-      <div
-        className="w-full h-[608px] relative"
-        style={{ background: `url('${backgroundImage}')` }}
-      >
-        {getPlayerFleet().map((ship, i) => (
-          <img
-            src={Assets.ships(ship.id)}
-            alt=""
-            className="absolute w-64 h-48"
-            style={{ top: `${positions[i].y}px`, left: `${positions[i].x}px` }}
-            key={i}
-          />
-        ))}
-      </div>
-      <div className="w-full h-[192px]" />
+    <div
+      className="w-[1280px] h-[608px] overflow-hidden"
+      style={{ background: `url('${backgroundImage}')` }}
+    >
+      {getPlayerFleet().map((ship, i) => (
+        <img
+          src={Assets.ships(ship.id)}
+          alt=""
+          className="absolute w-64 h-48"
+          style={{ top: `${positions[i].y}px`, left: `${positions[i].x}px` }}
+          key={i}
+        />
+      ))}
     </div>
   );
 }

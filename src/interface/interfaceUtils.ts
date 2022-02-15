@@ -3,7 +3,7 @@ import { START_DATE } from '../constants';
 export const classNames = (...classes: string[]): string =>
   classes.filter(Boolean).join(' ');
 
-export const hudClass = 'w-[180px] p-5 text-[#aaaaaa] text-lg';
+export const hudClass = 'w-[180px] text-[#aaaaaa] text-lg';
 
 export const getDate = (timePassed: number) => {
   const date = new Date(START_DATE);
