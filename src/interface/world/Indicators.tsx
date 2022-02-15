@@ -49,7 +49,10 @@ export default function Indicators({ hidden }: Props) {
 
   return (
     <div
-      className={classNames('h-full flex items-center', hidden ? 'hidden' : '')}
+      className={classNames(
+        'h-full flex items-center p-5',
+        hidden ? 'hidden' : '',
+      )}
     >
       <div className="w-full">
         <div>

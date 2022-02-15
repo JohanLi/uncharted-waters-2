@@ -3,6 +3,9 @@ import {
   exitBuildingIfNotLodge,
   receiveGold,
   receiveFirstShip,
+  assignFirstRoles,
+  recruitRocco,
+  recruitEnrico,
 } from '../../state/actionsPort';
 import { asInferredKeysWithValue } from '../../utils';
 
@@ -228,6 +231,9 @@ const questData = asInferredKeysWithValue<Message[]>()({
       body: 'Righto, Rocco, but first I’ve got to say good-bye to Lucia and Carlotta.',
       characterId: '1',
       position: 2,
+      action: () => {
+        recruitRocco();
+      },
       completeQuest: true,
       exitBuilding: true,
     },
@@ -816,7 +822,7 @@ const questData = asInferredKeysWithValue<Message[]>()({
       position: 2,
       completeQuest: true,
       action: () => {
-        // TODO add Enrico to party
+        recruitEnrico();
       },
     },
   ],
@@ -985,6 +991,8 @@ const questData = asInferredKeysWithValue<Message[]>()({
       position: 1,
       confirm: {
         yes: () => {
+          assignFirstRoles();
+
           questData.harborFinal.push(
             {
               body: 'Not a bad idea. Welcome to the crew, Brother Enrico.',
@@ -995,9 +1003,6 @@ const questData = asInferredKeysWithValue<Message[]>()({
               body: 'Oh, and I’d like you to be first mate, Rocco.',
               characterId: '1',
               position: 2,
-              action: () => {
-                // TODO assign Rocco as First Mate and Enrico as Bookkeeper
-              },
             },
             {
               body: 'Well, I do have a pretty good idea of prices at the ports I’ve read about.',

@@ -6,6 +6,7 @@ import Assets from '../assets';
 import { TILE_SIZE } from '../constants';
 import { Position } from '../types';
 import { getPlayerFleet } from '../state/selectorsFleet';
+import MessageBox from './common/MessageBox';
 
 const positions: Position[] = [
   { x: 512, y: 320 },
@@ -40,9 +41,9 @@ export default function Fleet() {
   }, []);
 
   return (
-    <div>
+    <MessageBox>
       <div
-        className="w-full h-[608px] relative"
+        className="w-[1280px] h-[608px]"
         style={{ background: `url('${backgroundImage}')` }}
       >
         {getPlayerFleet().map((ship, i) => (
@@ -55,7 +56,6 @@ export default function Fleet() {
           />
         ))}
       </div>
-      <div className="w-full h-[192px]" />
-    </div>
+    </MessageBox>
   );
 }

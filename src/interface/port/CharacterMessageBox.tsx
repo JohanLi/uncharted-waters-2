@@ -12,6 +12,7 @@ type CharacterData = {
   };
 };
 
+// TODO remove as sailorData exists now
 const characterData: CharacterData = {
   '1': {
     name: 'João',

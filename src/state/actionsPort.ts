@@ -149,7 +149,26 @@ export const receiveFirstShip = () => {
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
 
+  state.mates[0].role = 0;
+
   updateGeneral();
+};
+
+export const recruitRocco = () => {
+  state.mates.push({
+    sailorId: '32',
+  });
+};
+
+export const recruitEnrico = () => {
+  state.mates.push({
+    sailorId: '33',
+  });
+};
+
+export const assignFirstRoles = () => {
+  state.mates[1].role = 'firstMate';
+  state.mates[2].role = 'bookKeeper';
 };
 
 export const deposit = (amount: number) => {

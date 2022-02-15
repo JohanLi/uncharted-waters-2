@@ -10,6 +10,10 @@ import {
 } from './interfaceUtils';
 import updateInterface from '../state/updateInterface';
 import Sound from './sound/Sound';
+import Fleet from './Fleet';
+import Popover from './common/Popover';
+import Items from './Items';
+import Mates from './Mates';
 
 interface Props {
   portId: string | null;
@@ -39,7 +43,7 @@ export default function Left({
       className={classNames(hudClass, 'flex flex-col justify-between')}
       data-test="left"
     >
-      <div>
+      <div className="p-5">
         <div className="text-2xl font-bold whitespace-nowrap">
           {getDate(timePassed)}
         </div>
@@ -52,7 +56,20 @@ export default function Left({
         <div className="mb-4 text-right text-xl">{getCoins(gold)}</div>
         {Boolean(children) && <div>{children}</div>}
       </div>
-      <div className="text-right">
+      {inPort && (
+        <div className="select-none">
+          <Popover label="Mates">
+            <Mates />
+          </Popover>
+          <Popover label="Fleet">
+            <Fleet />
+          </Popover>
+          <Popover label="Items">
+            <Items />
+          </Popover>
+        </div>
+      )}
+      <div className="p-5 text-right">
         <Sound portId={portId} buildingId={buildingId} />
       </div>
     </div>

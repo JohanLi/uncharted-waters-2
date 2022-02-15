@@ -35,9 +35,6 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: '[name]-[contenthash].css',
-      }),
       new HtmlWebpackPlugin({
         template: './src/homepage/index.html',
         favicon: './src/homepage/favicon.ico',
@@ -49,16 +46,19 @@ module.exports = (env, argv) => {
     config.mode = 'production';
     delete config.devtool;
 
-    /*
-      The tilemap bin files are large, but compress to less than 100 kb each.
-      As of now, Brotli is still non-trivial to set up for nginx, so we’ll
-      use gzip.
-      Another approach is to add a MIME type for bin, and rely on Cloudflare’s
-      Brotli compression.
-     */
     config.plugins.push(
+      /*
+        The tilemap bin files are large, but compress to less than 100 kb each.
+        As of now, Brotli is still non-trivial to set up for nginx, so we’ll
+        use gzip.
+        Another approach is to add a MIME type for bin, and rely on Cloudflare’s
+        Brotli compression.
+       */
       new CompressionPlugin({
         test: /\.(js|css|html|bin)$/,
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name]-[contenthash].css',
       }),
     );
   } else {
@@ -74,7 +74,10 @@ module.exports = (env, argv) => {
     config.module.rules[0].options = {
       plugins: [require.resolve('react-refresh/babel')],
     };
-    config.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
+    config.plugins.push(
+      new ReactRefreshWebpackPlugin({ overlay: false }),
+      new MiniCssExtractPlugin(),
+    );
   }
 
   return config;

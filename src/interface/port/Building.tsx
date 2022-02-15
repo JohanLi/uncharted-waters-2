@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Shipyard from './shipyard/Shipyard';
-import Menu from '../common/Menu';
+import BuildingMenu from '../common/BuildingMenu';
 import Harbor from './harbor/Harbor';
 import BuildingWrapper from './BuildingWrapper';
 import { buildings } from '../../data/buildingData';
@@ -45,7 +45,7 @@ export default function Building({ buildingId }: Props) {
   const { back } = useBuilding();
 
   const menu = (
-    <Menu
+    <BuildingMenu
       options={options.map((option) => ({
         label: option,
         value: option,

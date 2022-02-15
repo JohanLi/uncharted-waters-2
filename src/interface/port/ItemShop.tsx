@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import Menu from '../common/Menu';
+import BuildingMenu from '../common/BuildingMenu';
 import BuildingWrapper from './BuildingWrapper';
 import {
   getPlayerItems,
@@ -38,7 +38,7 @@ export default function ItemShop() {
   };
 
   const menu: ReactNode = (
-    <Menu
+    <BuildingMenu
       options={itemShopOptions.map((s) => ({
         label: s,
         value: s,
@@ -62,7 +62,7 @@ export default function ItemShop() {
       };
 
       menu2 = (
-        <Menu
+        <BuildingMenu
           title="Item"
           options={getItemShopStock().map((item) => ({
             label: item.name,
@@ -73,7 +73,7 @@ export default function ItemShop() {
             next();
           }}
           onCancel={back}
-          wide
+          level2
           hidden={step !== 0}
         />
       );
@@ -140,7 +140,7 @@ export default function ItemShop() {
       };
 
       menu2 = (
-        <Menu
+        <BuildingMenu
           title="Item"
           options={items.map((item, i) => ({
             label: item.name,
@@ -151,7 +151,7 @@ export default function ItemShop() {
             next();
           }}
           onCancel={back}
-          wide
+          level2
           hidden={step !== 0}
         />
       );
