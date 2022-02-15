@@ -15,10 +15,13 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-w-[1640px] bg-black">
-    <div class="py-16 flex items-center justify-center bg-[#080808]">
-      <div id="game">
-        <div class="flex items-center justify-center flex-col min-h-[464px]">
+  <body class="min-w-[1640px]">
+    <div class="py-16 flex items-center justify-center bg-black">
+      <div
+        class="flex items-center justify-center w-[1640px] h-[800px]"
+        id="game"
+      >
+        <div class="flex flex-col items-center">
           <svg
             class="animate-spin h-24 w-24 text-white"
             xmlns="http://www.w3.org/2000/svg"
@@ -43,169 +46,177 @@
         </div>
       </div>
     </div>
-    <div class="max-w-[1280px] mx-auto py-16 text-white text-base space-y-32">
-      <div class="grid grid-cols-12 gap-16">
-        <div class="col-span-4">
-          <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
-          <ul class="list-disc ml-4 leading-loose">
-            <li>WASD keys <span class="text-gray-500">movement</span></li>
-            <li>
-              E, Enter or right-click
-              <span class="text-gray-500">confirm, select</span>
-            </li>
-            <li>
-              Escape or left-click
-              <span class="text-gray-500">cancel, exit</span>
-            </li>
-          </ul>
-        </div>
-        <div class="col-span-6 pr-16">
-          <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
-          <p class="">
-            This is a remake of
-            <a
-              class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
-              href="https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons"
-              >Uncharted Waters: New Horizons</a
-            >, an open-world role-playing game released in 1994. Set during the
-            Age of Exploration, you sail around the world, trading goods and
-            fighting pirates.
-          </p>
-          <p class="mt-8">
-            It’s a side project of mine that I started in 2017 when I was
-            working for the game publisher Paradox Interactive. Being a web
-            developer, I decided to make a game that could run in the browser.
-          </p>
-          <p class="mt-8">
-            Every now and then, I post updates to my
-            <a
-              class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
-              href="https://johan.li"
-              >personal website</a
-            >.
-          </p>
-        </div>
-        <div class="col-span-2">
-          <a
-            href="https://github.com/JohanLi/uncharted-waters-2"
-            class="inline-block text-gray-500 hover:text-gray-400 text-right"
-          >
-            <svg
-              viewBox="0 0 16 16"
-              class="w-16 h-16 ml-auto"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
-              ></path>
-            </svg>
-            <p class="mt-4">Check this project out on GitHub.</p>
-          </a>
-        </div>
-      </div>
-      <div>
-        <img
-          src="<%= require('./images/sailing.png') %>"
-          width="896"
-          height="200"
-          alt="Uncharted Waters: New Horizons sailing"
-        />
-        <p
-          class="text-2xl font-bold mt-8 leading-normal max-w-2xl text-gray-500"
-        >
-          1552.
-          <br />
-          The Age of Exploration.
-          <br />
-          Three brave voyagers are each about to begin a life of adventure...
-        </p>
-      </div>
-      <div class="flex items-center justify-end">
-        <div class="max-w-xl pr-16">
-          <div class="text-4xl font-bold text-blue-500">João Franco</div>
-          <div class="text-xl mt-8 leading-normal text-blue-200">
-            As the son of Duke Leon Franco, João sails for the glory of
-            Portugal. In his travels around the globe he hopes to discover the
-            secret of the lost land of Atlantis.
-          </div>
-        </div>
-        <div
-          class="w-64 h-64 animate-blink"
-          style="
-            background-image: url('<%= require('./images/joao-franco.png') %>');
-            background-position: 0 0;
-          "
-        ></div>
-      </div>
-      <div class="flex items-center">
-        <div
-          class="w-[456px] h-[280px] animate-blink"
-          style="
-            background-image: url('<%= require('./images/otto-baynes.png') %>');
-            background-position: 0 0;
-          "
-        ></div>
-        <div class="max-w-xl pl-16">
-          <div class="text-4xl font-bold text-violet-500">Otto Baynes</div>
-          <div class="text-xl mt-8 leading-normal text-violet-200">
-            A Royal Knight of the British Empire, Otto is on a secret mission
-            for King Henry VIII. Sailing as a privateer, his goal is to defeat
-            the Spanish Fleet.
-          </div>
-        </div>
-      </div>
-      <div class="flex items-center justify-end">
-        <div class="max-w-xl pr-16">
-          <div class="text-4xl font-bold text-red-500">Catalina Erantzo</div>
-          <div class="text-xl mt-8 leading-normal text-red-200">
-            This red-haired pirate hails from Spain. She seeks revenge on
-            Portugal for the mysterious loss of two men — her brother and her
-            beloved.
-          </div>
-        </div>
-        <div
-          class="w-[456px] h-[280px] animate-blink"
-          style="
-            background-image: url('<%= require('./images/catalina-erantzo.png') %>');
-            background-position: 0 0;
-          "
-        ></div>
-      </div>
-      <div class="flex justify-between">
-        <div class="mt-32">
-          <div
-            class="w-[320px] h-[280px]"
-            style="
-              background-image: url('<%= require('./images/enemies.png') %>');
-              background-position: 0 0;
-            "
-          ></div>
-          <div
-            class="text-2xl font-bold leading-normal text-orange-500 mt-8 max-w-xl"
-          >
-            while others are determined to stand in their way.
-          </div>
-        </div>
-        <div>
-          <div
-            class="text-2xl font-bold leading-normal text-pink-500 mb-8 max-w-xl"
-          >
-            Some will provide help and support,
-          </div>
-          <div
-            class="w-[272px] h-[272px] ml-auto animate-blink-friends"
-            style="
-              background-image: url('<%= require('./images/friends.png') %>');
-              background-position: 0 0;
-            "
-          ></div>
-        </div>
-      </div>
+    <div class="bg-gray-900">
       <div
-        class="text-4xl font-bold mx-auto leading-normal text-gray-500 max-w-xl pb-32"
+        class="max-w-[1280px] mx-auto py-16 text-white text-base space-y-16 bg-gray-900"
       >
-        It’s up to you to guide them on the path to glory.
+        <div class="grid grid-cols-12 gap-16">
+          <div class="col-span-4">
+            <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
+            <ul class="list-disc ml-4 leading-loose">
+              <li>WASD keys <span class="text-gray-500">movement</span></li>
+              <li>
+                E, Enter or right-click
+                <span class="text-gray-500">confirm, select</span>
+              </li>
+              <li>
+                Escape or left-click
+                <span class="text-gray-500">cancel, exit</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-span-6 pr-16">
+            <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
+            <p class="">
+              This is a remake of
+              <a
+                class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
+                href="https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons"
+                >Uncharted Waters: New Horizons</a
+              >, an open-world role-playing game released in 1994. Set during
+              the Age of Exploration, you sail around the world, trading goods
+              and fighting pirates.
+            </p>
+            <p class="mt-8">
+              It’s a side project of mine that I started in 2017 when I was
+              working for the game publisher Paradox Interactive. Being a web
+              developer, I decided to make a game that could run in the browser.
+            </p>
+            <p class="mt-8">
+              Every now and then, I post updates to my
+              <a
+                class="text-sky-400 hover:text-sky-300 font-medium border-b hover:border-b-2 border-b-sky-400 hover:border-b-sky-300"
+                href="https://johan.li"
+                >personal website</a
+              >.
+            </p>
+          </div>
+          <div class="col-span-2">
+            <a
+              href="https://github.com/JohanLi/uncharted-waters-2"
+              class="inline-block text-gray-500 hover:text-gray-400 text-right"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                class="w-16 h-16 ml-auto"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                ></path>
+              </svg>
+              <p class="mt-4">Check this project out on GitHub.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-black">
+      <div class="max-w-[1280px] mx-auto py-16 text-white text-base space-y-16">
+        <div>
+          <img
+            src="<%= require('./images/sailing.png') %>"
+            width="896"
+            height="200"
+            alt="Uncharted Waters: New Horizons sailing"
+          />
+          <p
+            class="text-2xl font-bold mt-8 leading-normal max-w-2xl text-gray-500"
+          >
+            1552.
+            <br />
+            The Age of Exploration.
+            <br />
+            Three brave voyagers are each about to begin a life of adventure...
+          </p>
+        </div>
+        <div class="flex items-center justify-end">
+          <div class="max-w-xl pr-16">
+            <div class="text-4xl font-bold text-blue-500">João Franco</div>
+            <div class="text-xl mt-8 leading-normal text-blue-200">
+              As the son of Duke Leon Franco, João sails for the glory of
+              Portugal. In his travels around the globe he hopes to discover the
+              secret of the lost land of Atlantis.
+            </div>
+          </div>
+          <div
+            class="w-64 h-64 animate-blink"
+            style="
+              background-image: url('<%= require('./images/joao-franco.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-[456px] h-[280px] animate-blink"
+            style="
+              background-image: url('<%= require('./images/otto-baynes.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+          <div class="max-w-xl pl-16">
+            <div class="text-4xl font-bold text-violet-500">Otto Baynes</div>
+            <div class="text-xl mt-8 leading-normal text-violet-200">
+              A Royal Knight of the British Empire, Otto is on a secret mission
+              for King Henry VIII. Sailing as a privateer, his goal is to defeat
+              the Spanish Fleet.
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end">
+          <div class="max-w-xl pr-16">
+            <div class="text-4xl font-bold text-red-500">Catalina Erantzo</div>
+            <div class="text-xl mt-8 leading-normal text-red-200">
+              This red-haired pirate hails from Spain. She seeks revenge on
+              Portugal for the mysterious loss of two men — her brother and her
+              beloved.
+            </div>
+          </div>
+          <div
+            class="w-[456px] h-[280px] animate-blink"
+            style="
+              background-image: url('<%= require('./images/catalina-erantzo.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+        </div>
+        <div class="flex justify-between">
+          <div class="mt-32">
+            <div
+              class="w-[320px] h-[280px]"
+              style="
+                background-image: url('<%= require('./images/enemies.png') %>');
+                background-position: 0 0;
+              "
+            ></div>
+            <div
+              class="text-2xl font-bold leading-normal text-gray-500 mt-8 max-w-xl"
+            >
+              while others are determined to stand in their way.
+            </div>
+          </div>
+          <div>
+            <div
+              class="text-2xl font-bold leading-normal text-gray-500 mb-8 max-w-xl"
+            >
+              Some provide help and support,
+            </div>
+            <div
+              class="w-[272px] h-[272px] ml-auto animate-blink-friends"
+              style="
+                background-image: url('<%= require('./images/friends.png') %>');
+                background-position: 0 0;
+              "
+            ></div>
+          </div>
+        </div>
+        <div
+          class="text-4xl font-bold mx-auto leading-normal text-gray-500 max-w-xl pb-32"
+        >
+          It’s up to you to guide them on the path to glory.
+        </div>
       </div>
     </div>
     <script>
