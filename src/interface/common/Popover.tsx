@@ -51,20 +51,20 @@ export default function Popover({ label, children }: Props) {
         leaveTo="opacity-0"
       >
         <div
-          className="fixed inset-0 bg-black bg-opacity-75 transition-opacity z-10"
+          className="fixed inset-0 bg-black bg-opacity-75 transition-opacity z-30"
           onClick={() => setActive(false)}
         />
       </Transition>
       <div
         className={classNames(
-          'relative cursor-pointer p-5 text-right hover:bg-gray-800',
+          'relative cursor-pointer p-5 hover:bg-gray-800',
           active ? 'bg-gray-800' : '',
         )}
         onClick={() => setActive(true)}
       >
-        {label}
+        <div className="text-right">{label}</div>
         {active && (
-          <div className="absolute left-full bottom-1/2 translate-y-1/2 z-20 rounded-lg shadow-xl overflow-hidden">
+          <div className="absolute left-full bottom-1/2 translate-y-1/2 z-40">
             {children}
           </div>
         )}

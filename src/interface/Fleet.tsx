@@ -6,6 +6,7 @@ import Assets from '../assets';
 import { TILE_SIZE } from '../constants';
 import { Position } from '../types';
 import { getPlayerFleet } from '../state/selectorsFleet';
+import MessageBox from './common/MessageBox';
 
 const positions: Position[] = [
   { x: 512, y: 320 },
@@ -40,19 +41,21 @@ export default function Fleet() {
   }, []);
 
   return (
-    <div
-      className="w-[1280px] h-[608px] overflow-hidden"
-      style={{ background: `url('${backgroundImage}')` }}
-    >
-      {getPlayerFleet().map((ship, i) => (
-        <img
-          src={Assets.ships(ship.id)}
-          alt=""
-          className="absolute w-64 h-48"
-          style={{ top: `${positions[i].y}px`, left: `${positions[i].x}px` }}
-          key={i}
-        />
-      ))}
-    </div>
+    <MessageBox>
+      <div
+        className="w-[1280px] h-[608px]"
+        style={{ background: `url('${backgroundImage}')` }}
+      >
+        {getPlayerFleet().map((ship, i) => (
+          <img
+            src={Assets.ships(ship.id)}
+            alt=""
+            className="absolute w-64 h-48"
+            style={{ top: `${positions[i].y}px`, left: `${positions[i].x}px` }}
+            key={i}
+          />
+        ))}
+      </div>
+    </MessageBox>
   );
 }

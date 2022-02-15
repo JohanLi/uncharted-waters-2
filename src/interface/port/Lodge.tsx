@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import Menu from '../common/Menu';
+import BuildingMenu from '../common/BuildingMenu';
 import BuildingWrapper from './BuildingWrapper';
 import { checkIn } from '../../state/actionsPort';
 
@@ -26,7 +26,7 @@ export default function Lodge() {
   };
 
   const menu = (
-    <Menu
+    <BuildingMenu
       options={lodgeOptions.map((s) => ({
         label: s,
         value: s,

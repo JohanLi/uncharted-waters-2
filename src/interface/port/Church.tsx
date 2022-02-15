@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
-import Menu from '../common/Menu';
+import BuildingMenu from '../common/BuildingMenu';
 import BuildingWrapper from './BuildingWrapper';
 import { donate, pray } from '../../state/actionsPort';
 import { getAtMosque, getGold } from '../../state/selectors';
@@ -25,7 +25,7 @@ export default function Church() {
   };
 
   let menu: ReactNode = (
-    <Menu
+    <BuildingMenu
       options={churchOptions.map((s) => ({
         label: s,
         value: s,

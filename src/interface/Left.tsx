@@ -12,6 +12,7 @@ import updateInterface from '../state/updateInterface';
 import Sound from './sound/Sound';
 import Fleet from './Fleet';
 import Popover from './common/Popover';
+import Items from './Items';
 
 interface Props {
   portId: string | null;
@@ -56,8 +57,11 @@ export default function Left({
       </div>
       {inPort && (
         <div className="select-none">
-          <Popover label="View fleet">
+          <Popover label="Fleet">
             <Fleet />
+          </Popover>
+          <Popover label="Items">
+            <Items />
           </Popover>
         </div>
       )}

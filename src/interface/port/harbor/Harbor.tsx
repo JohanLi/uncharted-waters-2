@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import Menu from '../../common/Menu';
+import BuildingMenu from '../../common/BuildingMenu';
 import { setSail } from '../../../state/actionsWorld';
 import BuildingWrapper from '../BuildingWrapper';
 import useBuilding from '../hooks/useBuilding';
@@ -33,7 +33,7 @@ export default function Harbor() {
   let characterMessage: CharacterMessageBoxType = null;
 
   const menu = (
-    <Menu
+    <BuildingMenu
       options={harborOptions.map((s) => ({
         label: s,
         value: s,

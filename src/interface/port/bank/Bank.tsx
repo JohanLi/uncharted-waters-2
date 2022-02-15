@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef } from 'react';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
-import Menu from '../../common/Menu';
+import BuildingMenu from '../../common/BuildingMenu';
 import BuildingWrapper from '../BuildingWrapper';
 import { borrow, deposit, repay, withdraw } from '../../../state/actionsPort';
 import {
@@ -31,7 +31,7 @@ export default function Bank() {
   };
 
   const menu = (
-    <Menu
+    <BuildingMenu
       options={bankOptions.map((s) => ({
         label: s,
         value: s,

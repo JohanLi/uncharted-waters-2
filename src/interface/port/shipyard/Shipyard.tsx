@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import Menu from '../../common/Menu';
+import BuildingMenu from '../../common/BuildingMenu';
 import {
   buyUsedShip,
   SELL_SHIP_MODIFIER,
@@ -49,7 +49,7 @@ export default function Shipyard() {
   };
 
   const menu = (
-    <Menu
+    <BuildingMenu
       options={shipyardOptions.map((s) => ({
         label: s,
         value: s,
@@ -69,7 +69,7 @@ export default function Shipyard() {
     const usedShips = getUsedShips();
 
     menu2 = (
-      <Menu
+      <BuildingMenu
         title="Ship Model"
         options={Object.entries(usedShips).map(([id, shipId]) => ({
           label: shipData[shipId].name,
@@ -80,7 +80,7 @@ export default function Shipyard() {
           next();
         }}
         onCancel={back}
-        wide
+        level2
         hidden={step !== 0}
       />
     );
@@ -159,7 +159,7 @@ export default function Shipyard() {
       }
     } else {
       menu2 = (
-        <Menu
+        <BuildingMenu
           title="Your Ships"
           options={getPlayerFleet().map((ship, i) => ({
             label: ship.name,
@@ -170,7 +170,7 @@ export default function Shipyard() {
             next();
           }}
           onCancel={back}
-          wide
+          level2
           hidden={step !== 0}
         />
       );
