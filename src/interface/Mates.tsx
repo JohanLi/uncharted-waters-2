@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { getMates } from '../state/selectors';
+import { getMates, getRoleDisplay } from '../state/selectors';
 import MessageBox from './common/MessageBox';
 import Menu from './common/Menu';
 import Assets from '../assets';
@@ -13,8 +13,17 @@ export default function Mates() {
 
   const [selectedI, setSelectedI] = useState(0);
 
-  const { id, name, age, stats, navigationLevel, battleLevel, skills, color } =
-    mates[selectedI];
+  const {
+    sailorId,
+    role,
+    name,
+    age,
+    stats,
+    navigationLevel,
+    battleLevel,
+    skills,
+    color,
+  } = mates[selectedI];
 
   return (
     <MessageBox>
@@ -31,27 +40,31 @@ export default function Mates() {
         </div>
         <div className="relative text-black text-2xl p-8">
           <div className="flex items-center">
-            <img src={Assets.characters(id)} className="w-32 h-40" alt="" />
+            <img
+              src={Assets.characters(sailorId)}
+              className="w-32 h-40"
+              alt=""
+            />
             <div className="pl-8">
               <div className={classNames('text-4xl font-bold', color)}>
                 {name}
               </div>
               <div className="text-lg text-gray-500">Age {age}</div>
               <div className="mt-4">
-                <div>Commodore of Hermes II</div>
+                <div>{getRoleDisplay(role)}</div>
                 <div>Loyal to Portugal</div>
               </div>
             </div>
           </div>
           <div className="flex mt-8">
             <div className="w-72 mr-8 pr-8 space-y-8">
-              {id === '1' && (
+              {sailorId === '1' && (
                 <div className="flex justify-between">
                   <div>Rank</div>
-                  <div>Commoner</div>
+                  <div>None</div>
                 </div>
               )}
-              {id !== '1' && (
+              {sailorId !== '1' && (
                 <div className="flex justify-between">
                   <div>Wages</div>
                   <div>10</div>

@@ -1,10 +1,11 @@
 import { START_POSITION_X, START_POSITION_Y } from '../constants';
-import state from './state';
+import state, { Role } from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
 import { getPortData } from '../game/port/portUtils';
 import { itemData } from '../data/itemData';
 import { sailorData } from '../data/sailorData';
+import { getPlayerFleet } from './selectorsFleet';
 
 export const getTimeOfDay = () => state.timePassed % 1440;
 
@@ -101,7 +102,41 @@ export const getPlayerItems = () =>
 export const getPlayerItem = (i: number) => itemData[state.items[i]];
 
 export const getMates = () =>
-  state.mates.map((sailorId) => ({
-    id: sailorId,
-    ...sailorData[sailorId],
+  state.mates.map((mate) => ({
+    ...mate,
+    ...sailorData[mate.sailorId],
   }));
+
+export const getRoleDisplay = (role?: Role) => {
+  const fleet = getPlayerFleet();
+
+  if (!fleet.length) {
+    return '';
+  }
+
+  const flagshipName = fleet[0].name;
+
+  if (role === undefined) {
+    return `Navigator of ${flagshipName}`;
+  }
+
+  if (role === 'firstMate') {
+    return `First Mate of ${flagshipName}`;
+  }
+
+  if (role === 'bookKeeper') {
+    return `Bookkeeper of ${flagshipName}`;
+  }
+
+  if (role === 'chiefNavigator') {
+    return `Chief Navigator of ${flagshipName}`;
+  }
+
+  if (role === 0) {
+    return `Commodore of ${flagshipName}`;
+  }
+
+  const shipName = fleet[role].name;
+
+  return `Captain of ${shipName}`;
+};
