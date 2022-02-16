@@ -4,6 +4,7 @@ import { PortData } from './game/port/portUtils';
 import { WORLD_MAP_COLUMNS } from './constants';
 import { getXWrapAround } from './game/world/sharedUtils';
 import { CollisionIndices, tilesets } from './data/portExtraData';
+import { applyPositionDelta, getPositionDelta } from './utils';
 
 interface Cache {
   [tilesetOffset: string]: CachedCanvas;
@@ -11,17 +12,13 @@ interface Cache {
 
 interface CachedCanvas {
   context: CanvasRenderingContext2D;
-  x: number;
-  y: number;
+  position: Position;
 }
 
 interface Options {
-  x: number;
-  y: number;
-  xOffsetFrom?: number;
-  xOffsetTo?: number;
-  yOffsetFrom?: number;
-  yOffsetTo?: number;
+  position: Position;
+  offsetFrom?: Position;
+  offsetTo?: Position;
   tilesetOffset: number;
 }
 
@@ -104,23 +101,24 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
     };
   }
 
-  const tiles = (x: number, y: number): number =>
+  const tiles = ({ x, y }: Position) =>
     tilemap[y * tilemapColumns + getXWrapAround(x)] || 0;
 
   const drawImage = (context: CanvasRenderingContext2D, options: Options) => {
     const {
-      x,
-      y,
-      xOffsetFrom = 0,
-      xOffsetTo = visibleArea[0],
-      yOffsetFrom = 0,
-      yOffsetTo = visibleArea[1],
+      position,
+      offsetFrom = { x: 0, y: 0 },
+      offsetTo = { x: visibleArea[0], y: visibleArea[1] },
       tilesetOffset,
     } = options;
 
-    for (let yOffset = yOffsetFrom; yOffset < yOffsetTo; yOffset += 1) {
-      for (let xOffset = xOffsetFrom; xOffset < xOffsetTo; xOffset += 1) {
-        const tile = tiles(x + xOffset, y + yOffset);
+    for (let yOffset = offsetFrom.y; yOffset < offsetTo.y; yOffset += 1) {
+      for (let xOffset = offsetFrom.x; xOffset < offsetTo.x; xOffset += 1) {
+        const tile = tiles({
+          x: position.x + xOffset,
+          y: position.y + yOffset,
+        });
+
         context.drawImage(
           tileset,
           tile * tileSize,
@@ -151,15 +149,10 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
   };
 
   return {
-    draw: (x: number, y: number, time: number): HTMLCanvasElement => {
-      if (x < 0 || y < 0) {
+    draw: (position: Position, time: number): HTMLCanvasElement => {
+      if (position.x < 0 || position.y < 0) {
         throw Error('Out of bounds');
       }
-
-      // TODO reimplement this together with unit tests
-      // if (x > tilemapColumns - visibleArea[0] || y > tilemapRows - visibleArea[1]) {
-      //   throw Error('Out of bounds');
-      // }
 
       const tilesetOffset = getTilesetOffset(time);
 
@@ -170,111 +163,113 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
 
         const context = canvas.getContext('2d', { alpha: false })!;
 
-        drawImage(context, { x, y, tilesetOffset });
+        drawImage(context, { position, tilesetOffset });
 
         cache[tilesetOffset] = {
           context,
-          x,
-          y,
+          position,
         };
 
         return canvas;
       }
 
-      const xDiff = x - cache[tilesetOffset].x;
-      const yDiff = y - cache[tilesetOffset].y;
+      const delta = getPositionDelta(position, cache[tilesetOffset].position);
 
-      if (xDiff === 0 && yDiff === 0) {
+      if (delta.x === 0 && delta.y === 0) {
         return cache[tilesetOffset].context.canvas;
       }
 
       if (
-        Math.abs(xDiff) >= visibleArea[0] ||
-        Math.abs(yDiff) >= visibleArea[1]
+        Math.abs(delta.x) >= visibleArea[0] ||
+        Math.abs(delta.y) >= visibleArea[1]
       ) {
-        drawImage(cache[tilesetOffset].context, { x, y, tilesetOffset });
+        drawImage(cache[tilesetOffset].context, { position, tilesetOffset });
 
-        cache[tilesetOffset].x = x;
-        cache[tilesetOffset].y = y;
+        cache[tilesetOffset].position = position;
         return cache[tilesetOffset].context.canvas;
       }
 
-      let xFrom = 0;
-      let yFrom = 0;
+      const from = {
+        x: 0,
+        y: 0,
+      };
 
-      if (xDiff < 0) {
-        xFrom = -xDiff;
+      if (delta.x < 0) {
+        from.x = -delta.x;
       }
 
-      if (yDiff < 0) {
-        yFrom = -yDiff;
+      if (delta.y < 0) {
+        from.y = -delta.y;
       }
 
-      const xTo = visibleArea[0] - Math.abs(xDiff);
-      const yTo = visibleArea[1] - Math.abs(yDiff);
+      const to = {
+        x: visibleArea[0] - Math.abs(delta.x),
+        y: visibleArea[1] - Math.abs(delta.y),
+      };
 
       cache[tilesetOffset].context.drawImage(
         cache[tilesetOffset].context.canvas,
-        (xFrom + xDiff) * tileSize,
-        (yFrom + yDiff) * tileSize,
-        xTo * tileSize,
-        yTo * tileSize,
-        xFrom * tileSize,
-        yFrom * tileSize,
-        xTo * tileSize,
-        yTo * tileSize,
+        (from.x + delta.x) * tileSize,
+        (from.y + delta.y) * tileSize,
+        to.x * tileSize,
+        to.y * tileSize,
+        from.x * tileSize,
+        from.y * tileSize,
+        to.x * tileSize,
+        to.y * tileSize,
       );
 
-      if (xDiff !== 0) {
-        let xOffsetFrom = visibleArea[0] - xDiff;
-        const yOffsetFrom = 0;
+      if (delta.x !== 0) {
+        const offsetFrom = {
+          x: visibleArea[0] - delta.x,
+          y: 0,
+        };
 
-        if (xDiff < 0) {
-          xOffsetFrom = 0;
+        if (delta.x < 0) {
+          offsetFrom.x = 0;
         }
 
-        const xOffsetTo = xOffsetFrom + Math.abs(xDiff);
-        const yOffsetTo = visibleArea[1];
+        const offsetTo = {
+          x: offsetFrom.x + Math.abs(delta.x),
+          y: visibleArea[1],
+        };
 
         drawImage(cache[tilesetOffset].context, {
-          x,
-          y,
-          xOffsetFrom,
-          xOffsetTo,
-          yOffsetFrom,
-          yOffsetTo,
+          position,
+          offsetFrom,
+          offsetTo,
           tilesetOffset,
         });
       }
 
-      if (yDiff !== 0) {
-        let xOffsetFrom = 0;
-        let yOffsetFrom = visibleArea[1] - yDiff;
+      if (delta.y !== 0) {
+        const offsetFrom = {
+          x: 0,
+          y: visibleArea[1] - delta.y,
+        };
 
-        if (xDiff < 0) {
-          xOffsetFrom = -xDiff;
+        if (delta.x < 0) {
+          offsetFrom.x = -delta.x;
         }
 
-        if (yDiff < 0) {
-          yOffsetFrom = 0;
+        if (delta.y < 0) {
+          offsetFrom.y = 0;
         }
 
-        const xOffsetTo = xOffsetFrom + visibleArea[0] - Math.abs(xDiff);
-        const yOffsetTo = yOffsetFrom + Math.abs(yDiff);
+        const offsetTo = applyPositionDelta(offsetFrom, {
+          x: visibleArea[0] - Math.abs(delta.x),
+          y: Math.abs(delta.y),
+        });
 
         drawImage(cache[tilesetOffset].context, {
-          x,
-          y,
-          xOffsetFrom,
-          xOffsetTo,
-          yOffsetFrom,
-          yOffsetTo,
+          position,
+          offsetFrom,
+          offsetTo,
           tilesetOffset,
         });
       }
 
-      cache[tilesetOffset].x = x;
-      cache[tilesetOffset].y = y;
+      cache[tilesetOffset].position = position;
 
       return cache[tilesetOffset].context.canvas;
     },
@@ -289,8 +284,8 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
       ];
 
       if (portData) {
-        return offsetsToCheck.some(({ x, y }, i) => {
-          const tile = tiles(position.x + x, position.y + y);
+        return offsetsToCheck.some((offset, i) => {
+          const tile = tiles(applyPositionDelta(position, offset));
 
           if (tile >= collisionIndices.either) {
             return true;
@@ -306,8 +301,8 @@ const createMap = (visibleArea: [number, number], portData?: PortData) => {
 
       offsetsToCheck.push({ x: 0, y: 0 }, { x: 1, y: 0 });
 
-      return offsetsToCheck.some(({ x, y }) => {
-        const tile = tiles(position.x + x, position.y + y);
+      return offsetsToCheck.some((offset) => {
+        const tile = tiles(applyPositionDelta(position, offset));
         return tile >= 50;
       });
     },

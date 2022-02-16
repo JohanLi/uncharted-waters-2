@@ -10,7 +10,7 @@ export const drawCamera = (
   timeOfDay: number,
 ) => {
   context.drawImage(
-    map.draw(Math.floor(camera.x), Math.floor(camera.y), timeOfDay),
+    map.draw({ x: Math.floor(camera.x), y: Math.floor(camera.y) }, timeOfDay),
     Math.floor((camera.x % 1) * TILE_SIZE),
     Math.floor((camera.y % 1) * TILE_SIZE),
     camera.width * TILE_SIZE,

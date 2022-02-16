@@ -17,6 +17,11 @@ export const applyPositionDelta = (p1: Position, p2: Position) => ({
   y: p1.y + p2.y,
 });
 
+export const getPositionDelta = (p1: Position, p2: Position) => ({
+  x: p1.x - p2.x,
+  y: p1.y - p2.y,
+});
+
 export const generateId = () => nanoid(6);
 
 /*
