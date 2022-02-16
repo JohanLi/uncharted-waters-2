@@ -115,7 +115,7 @@ export const getMates = () =>
     ...sailorData[mate.sailorId],
   }));
 
-export const getRoleDisplay = (role?: Role) => {
+export const getRoleDisplay = (role: Role) => {
   const fleet = getPlayerFleet();
 
   if (!fleet.length) {
@@ -124,7 +124,7 @@ export const getRoleDisplay = (role?: Role) => {
 
   const flagshipName = fleet[0].name;
 
-  if (role === undefined) {
+  if (role === null) {
     return `Navigator of ${flagshipName}`;
   }
 

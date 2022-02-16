@@ -3,10 +3,10 @@ import { sample } from '../utils';
 import state from './state';
 import { getUsedShips, isDay } from './selectors';
 import { shipData } from '../data/shipData';
-import { Provisions } from '../game/world/fleets';
+import { Provisions, Ship } from '../game/world/fleets';
 import { minutesUntilNextMorning } from '../interface/interfaceUtils';
 import type { QuestId } from '../interface/quest/questData';
-import { getPlayerFleet } from './selectorsFleet';
+import { getPlayerFleet, getPlayerFleetShip } from './selectorsFleet';
 import { itemData, ItemId } from '../data/itemData';
 
 export const updateGeneral = () => {
@@ -42,9 +42,31 @@ export const exitBuilding = (sleep = false) => {
   updateGeneral();
 };
 
-// TODO needs to be checked by Shipyard as well
-const getAvailableSailor = () =>
-  state.mates.find(({ role }) => !Number.isNaN(role));
+export const getAvailableSailorId = () =>
+  state.mates.find(({ role }) => role === null || Number.isNaN(role))?.sailorId;
+
+export const addShip = (ship: Omit<Ship, 'sailorId'>) => {
+  const sailorId = getAvailableSailorId();
+  const fleet = getPlayerFleet();
+
+  if (!sailorId) {
+    throw Error('Tried to add a ship to fleet despite no available sailors');
+  }
+
+  fleet.push({
+    ...ship,
+    sailorId,
+  });
+
+  for (let i = 0; i < state.mates.length; i += 1) {
+    if (state.mates[i].sailorId === sailorId) {
+      state.mates[i].role = fleet.length - 1;
+      break;
+    }
+  }
+
+  updateGeneral();
+};
 
 const USED_SHIP_DURABILITY = 0.85;
 
@@ -52,37 +74,35 @@ export const buyUsedShip = (id: string, shipName: string) => {
   const usedShip = getUsedShips();
   const { durability, basePrice } = shipData[usedShip[id]];
 
-  const availableSailor = getAvailableSailor();
+  state.gold -= basePrice;
 
-  if (!availableSailor) {
-    throw Error('Bought a ship without an available sailor');
-  }
-
-  state.fleets['1'].ships.push({
+  addShip({
     id: usedShip[id],
     name: shipName,
     crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
-    sailorId: availableSailor.sailorId,
   });
 
-  state.gold -= basePrice;
-
   delete usedShip[id];
-
-  updateGeneral();
 };
 
 export const SELL_SHIP_MODIFIER = 0.5;
 
 export const sellShipNumber = (shipNumber: number) => {
-  const sellPrice =
-    shipData[state.fleets['1'].ships[shipNumber].id].basePrice *
-    SELL_SHIP_MODIFIER;
+  const { id, sailorId } = getPlayerFleetShip(shipNumber);
 
-  state.fleets['1'].ships.splice(shipNumber, 1);
+  const sellPrice = shipData[id].basePrice * SELL_SHIP_MODIFIER;
+
+  getPlayerFleet().splice(shipNumber, 1);
   state.gold += sellPrice;
+
+  for (let i = 0; i < state.mates.length; i += 1) {
+    if (state.mates[i].sailorId === sailorId) {
+      state.mates[i].role = null;
+      break;
+    }
+  }
 
   updateGeneral();
 };
@@ -152,29 +172,26 @@ export const receiveFirstShip = () => {
 
   const { durability } = shipData[id];
 
-  getPlayerFleet().push({
+  addShip({
     id,
     name: 'Hermes II',
     crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
-    sailorId: '1',
   });
-
-  state.mates[0].role = 0;
-
-  updateGeneral();
 };
 
 export const recruitRocco = () => {
   state.mates.push({
     sailorId: '32',
+    role: null,
   });
 };
 
 export const recruitEnrico = () => {
   state.mates.push({
     sailorId: '33',
+    role: null,
   });
 };
 

@@ -33,10 +33,21 @@ describe('Shipyard', () => {
                 },
               ],
               durability: 51,
+              sailorId: '1',
             },
           ],
         },
       },
+      mates: [
+        {
+          sailorId: '1',
+          role: null,
+        },
+        {
+          sailorId: '32',
+          role: null,
+        },
+      ],
     });
     cy.visit('');
 
@@ -111,5 +122,58 @@ describe('Shipyard', () => {
     cy.get('[data-test=building]').rightclick();
 
     cy.get('[data-test=building]').should('not.exist');
+  });
+
+  it('cannot buy used ship if no available sailors', () => {
+    setState({
+      portId: '2',
+      buildingId: '3',
+      gold: 2000,
+      fleets: {
+        '1': {
+          position: undefined,
+          ships: [
+            {
+              id: '22',
+              name: 'Test ship',
+              crew: 30,
+              cargo: [
+                {
+                  type: 'water',
+                  quantity: 100,
+                },
+                {
+                  type: 'food',
+                  quantity: 100,
+                },
+              ],
+              durability: 51,
+              sailorId: '1',
+            },
+          ],
+        },
+      },
+      mates: [
+        {
+          sailorId: '1',
+          role: 0,
+        },
+      ],
+    });
+    cy.reload();
+
+    cy.window().then((win) => {
+      cy.stub(win.Math, 'random').returns(0);
+    });
+
+    clickMenu('Used Ship');
+
+    clickMenu2('Balsa');
+
+    cy.get('[data-test=building]').click();
+
+    cy.get('[data-test=confirmYes]').click();
+
+    vendorMessageIncludes('don’t have a sailor available to captain');
   });
 });

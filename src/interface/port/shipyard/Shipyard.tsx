@@ -3,6 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import BuildingMenu from '../../common/BuildingMenu';
 import {
   buyUsedShip,
+  getAvailableSailorId,
   SELL_SHIP_MODIFIER,
   sellShipNumber,
 } from '../../../state/actionsPort';
@@ -111,7 +112,24 @@ export default function Shipyard() {
       }
 
       if (step === 3) {
-        if (canAfford(shipData[usedShips[usedShipId]].basePrice)) {
+        if (!canAfford(shipData[usedShips[usedShipId]].basePrice)) {
+          vendorMessage = {
+            body: 'I’m afraid you don’t have enough gold.',
+            acknowledge: () => {
+              setUsedShipId(undefined);
+              back(3);
+            },
+          };
+        } else if (!getAvailableSailorId()) {
+          // the original game offers you to swap ship
+          vendorMessage = {
+            body: 'You don’t have a sailor available to captain this ship.',
+            acknowledge: () => {
+              setUsedShipId(undefined);
+              back(3);
+            },
+          };
+        } else {
           vendorMessage = {
             body: 'All right, it’s yers. Time to name yer ship.',
           };
@@ -129,14 +147,6 @@ export default function Shipyard() {
               }}
             />
           );
-        } else {
-          vendorMessage = {
-            body: 'I’m afraid you don’t have enough gold.',
-            acknowledge: () => {
-              setUsedShipId(undefined);
-              back(3);
-            },
-          };
         }
       }
     }

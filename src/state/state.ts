@@ -19,11 +19,16 @@ export type ProvisionsType = {
 type UsedShipsAtPort = { [key: string]: UsedShips };
 export type UsedShips = { [key: string]: string };
 
-export type Role = 'firstMate' | 'bookKeeper' | 'chiefNavigator' | number;
+export type Role =
+  | number
+  | 'firstMate'
+  | 'bookKeeper'
+  | 'chiefNavigator'
+  | null;
 
 type Mate = {
   sailorId: string;
-  role?: Role;
+  role: Role;
 };
 
 export interface State {
@@ -68,8 +73,9 @@ const state = {
   mates: [
     {
       sailorId: '1',
+      role: null,
     },
-  ],
+  ] as Mate[],
   ...savedState,
 } as State;
 
