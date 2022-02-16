@@ -23,10 +23,9 @@ export type Sailor = {
   navigationLevel: number;
   battleLevel: number;
   skills: SailorSkills[];
-  color: string;
 };
 
-export const sailorData: { [key: string]: Sailor } = {
+const sailorData: { [key: string]: Sailor } = {
   '1': {
     name: 'João Franco',
     age: 18,
@@ -43,7 +42,6 @@ export const sailorData: { [key: string]: Sailor } = {
     navigationLevel: 1,
     battleLevel: 1,
     skills: ['Negotiation'],
-    color: 'text-blue-600',
   },
   '32': {
     name: 'Rocco Alemkel',
@@ -61,7 +59,6 @@ export const sailorData: { [key: string]: Sailor } = {
     navigationLevel: 30,
     battleLevel: 32,
     skills: ['Celestial Navigation', 'Gunnery'],
-    color: 'text-amber-800',
   },
   '33': {
     name: 'Enrico Malione',
@@ -79,6 +76,7 @@ export const sailorData: { [key: string]: Sailor } = {
     navigationLevel: 1,
     battleLevel: 1,
     skills: ['Accounting'],
-    color: 'text-purple-800',
   },
 };
+
+export default sailorData;

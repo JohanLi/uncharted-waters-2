@@ -14,12 +14,12 @@ import type { Ship } from './fleets';
   Consider imposing a heavier penalty sailing into the wind, if the gameplay
   doesn’t get tedious.
 
-  It’s also worth looking into requiring higher captain stats to handle
+  It’s also worth looking into requiring higher sailor stats to handle
   end-game ships so mid-tier ships have their uses outside exploration.
  */
 const getShipSpeed = (
   ship: Pick<Ship, 'id' | 'crew' | 'cargo'>,
-  captain: { navLvl: number; seamanship: number },
+  sailor: { navigationLevel: number; seamanship: number },
   heading: number,
   wind: Velocity,
 ) => {
@@ -45,7 +45,7 @@ const getShipSpeed = (
     ship.cargo.reduce((total, { quantity }) => total + quantity, 0) + crew;
   const cargoFactor = Math.min(1.5, 1.8 - capacityUsed / capacity);
 
-  const navigationLevelFactor = (10 + captain.navLvl) / 10;
+  const navigationLevelFactor = (10 + sailor.navigationLevel) / 10;
 
   const isHeadwindOrSideHeadWind = directionDelta >= 3;
   const tackingFactor = isHeadwindOrSideHeadWind ? tacking / 100 : 1;
@@ -58,7 +58,7 @@ const getShipSpeed = (
       navigationLevelFactor,
   );
 
-  return (baseSpeed * tackingFactor * captain.seamanship) / 75;
+  return (baseSpeed * tackingFactor * sailor.seamanship) / 75;
 };
 
 export default getShipSpeed;

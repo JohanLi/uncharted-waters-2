@@ -42,11 +42,21 @@ export const exitBuilding = (sleep = false) => {
   updateGeneral();
 };
 
+// TODO needs to be checked by Shipyard as well
+const getAvailableSailor = () =>
+  state.mates.find(({ role }) => !Number.isNaN(role));
+
 const USED_SHIP_DURABILITY = 0.85;
 
 export const buyUsedShip = (id: string, shipName: string) => {
   const usedShip = getUsedShips();
   const { durability, basePrice } = shipData[usedShip[id]];
+
+  const availableSailor = getAvailableSailor();
+
+  if (!availableSailor) {
+    throw Error('Bought a ship without an available sailor');
+  }
 
   state.fleets['1'].ships.push({
     id: usedShip[id],
@@ -54,6 +64,7 @@ export const buyUsedShip = (id: string, shipName: string) => {
     crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
+    sailorId: availableSailor.sailorId,
   });
 
   state.gold -= basePrice;
@@ -147,6 +158,7 @@ export const receiveFirstShip = () => {
     crew: 0,
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
+    sailorId: '1',
   });
 
   state.mates[0].role = 0;

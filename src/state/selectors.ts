@@ -3,7 +3,7 @@ import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
 import { getPortData } from '../game/port/portUtils';
 import { itemData } from '../data/itemData';
-import { sailorData } from '../data/sailorData';
+import sailorData from '../data/sailorData';
 import { getPlayerFleet } from './selectorsFleet';
 import createMap from '../map';
 import { applyPositionDelta } from '../utils';

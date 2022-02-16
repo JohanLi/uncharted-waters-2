@@ -7,6 +7,7 @@ import Assets from '../assets';
 import ProgressBar from './common/ProgressBar';
 import { classNames } from './interfaceUtils';
 import { sailorSkills } from '../data/sailorData';
+import characterData from '../data/characterData';
 
 export default function Mates() {
   const mates = getMates();
@@ -22,8 +23,9 @@ export default function Mates() {
     navigationLevel,
     battleLevel,
     skills,
-    color,
   } = mates[selectedI];
+
+  const { color } = characterData[sailorId];
 
   return (
     <MessageBox>

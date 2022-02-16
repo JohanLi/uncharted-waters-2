@@ -14,6 +14,7 @@ export interface Ship {
   crew: number;
   cargo: Cargo[];
   durability: number;
+  sailorId: string;
 }
 
 interface Fleet {
@@ -29,19 +30,5 @@ export const fleets: Fleets = {
   '1': {
     position: undefined,
     ships: [],
-  },
-};
-
-export interface Sailors {
-  [key: string]: {
-    navLvl: number;
-    seamanship: number;
-  };
-}
-
-export const sailors: Sailors = {
-  1: {
-    navLvl: 1,
-    seamanship: 75,
   },
 };

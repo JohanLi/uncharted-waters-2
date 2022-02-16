@@ -5,12 +5,12 @@ import {
   Position,
 } from '../../types';
 import getShipSpeed from './shipSpeed';
-import { sailors } from './fleets';
 import state, { Velocity } from '../../state/state';
 import { directionMap } from '../../input';
 import updateInterface from '../../state/updateInterface';
 import { calculateDestination } from './worldUtils';
 import { getXWrapAround } from './sharedUtils';
+import sailorData from '../../data/sailorData';
 
 const createWorldPlayer = (
   startPosition: Position,
@@ -122,10 +122,16 @@ const createWorldPlayer = (
         return;
       }
 
+      const ship = state.fleets[1].ships[0];
+      const {
+        navigationLevel,
+        stats: { seamanship },
+      } = sailorData[ship.sailorId];
+
       speed = heading
         ? getShipSpeed(
-            state.fleets[1].ships[0],
-            sailors[1],
+            ship,
+            { navigationLevel, seamanship },
             directionMap[heading],
             state.wind,
           )
