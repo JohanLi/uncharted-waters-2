@@ -52,7 +52,7 @@
       >
         <div class="grid grid-cols-12 gap-16">
           <div class="col-span-4">
-            <h2 class="text-2xl font-bold mb-4 text-green-500">Controls</h2>
+            <h2 class="text-2xl font-bold mb-4 text-green-600">Controls</h2>
             <ul class="list-disc ml-4 leading-loose">
               <li>WASD keys <span class="text-gray-500">movement</span></li>
               <li>
@@ -66,7 +66,7 @@
             </ul>
           </div>
           <div class="col-span-6 pr-16">
-            <h1 class="text-2xl font-bold mb-4 text-green-500">About</h1>
+            <h1 class="text-2xl font-bold mb-4 text-green-600">About</h1>
             <p class="">
               This is a remake of
               <a
@@ -122,17 +122,17 @@
             alt="Uncharted Waters: New Horizons sailing"
           />
           <p
-            class="text-2xl font-bold mt-8 leading-normal max-w-2xl text-gray-500"
+            class="text-2xl font-bold mt-8 leading-normal text-gray-500"
           >
             1552.
             <br />
             The Age of Exploration.
             <br />
-            Three brave voyagers are each about to begin a life of adventure...
+            Six brave voyagers are each about to begin a life of adventure...
           </p>
         </div>
         <div class="flex items-center justify-end">
-          <div class="max-w-xl pr-16">
+          <div class="max-w-lg mr-16">
             <div class="text-4xl font-bold text-blue-500">João Franco</div>
             <div class="text-xl mt-8 leading-normal text-blue-200">
               As the son of Duke Leon Franco, João sails for the glory of
@@ -156,7 +156,7 @@
               background-position: 0 0;
             "
           ></div>
-          <div class="max-w-xl pl-16">
+          <div class="max-w-lg ml-16">
             <div class="text-4xl font-bold text-violet-500">Otto Baynes</div>
             <div class="text-xl mt-8 leading-normal text-violet-200">
               A Royal Knight of the British Empire, Otto is on a secret mission
@@ -166,7 +166,7 @@
           </div>
         </div>
         <div class="flex items-center justify-end">
-          <div class="max-w-xl pr-16">
+          <div class="max-w-lg mr-8">
             <div class="text-4xl font-bold text-red-500">Catalina Erantzo</div>
             <div class="text-xl mt-8 leading-normal text-red-200">
               This red-haired pirate hails from Spain. She seeks revenge on
@@ -181,6 +181,57 @@
               background-position: 0 0;
             "
           ></div>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-[326px] h-[280px] animate-blink"
+            style="
+              background-image: url('<%= require('./images/ernst-von-bohr.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+          <div class="max-w-lg ml-16">
+            <div class="text-4xl font-bold text-slate-500">Ernst von Bohr</div>
+            <div class="text-xl mt-8 leading-normal text-slate-200">
+              Ernst is a famous geographer from Holland. At the request of his
+              cartographer friend Mercator, he sets sail to plot out a detailed
+              map of the world.
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end">
+          <div class="max-w-lg mr-8">
+            <div class="text-4xl font-bold text-orange-500">Pietro Conti</div>
+            <div class="text-xl mt-8 leading-normal text-orange-200">
+              The Conti family went bankrupt long ago, leaving Pietro a large
+              debt. But that won’t stop him from exploring the world in search
+              of treasure and exotic items.
+            </div>
+          </div>
+          <div
+            class="w-[304px] h-[280px] animate-blink"
+            style="
+              background-image: url('<%= require('./images/pietro-conti.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-[366px] h-[280px] animate-blink"
+            style="
+              background-image: url('<%= require('./images/ali-vezas.png') %>');
+              background-position: 0 0;
+            "
+          ></div>
+          <div class="max-w-lg ml-16">
+            <div class="text-4xl font-bold text-amber-500">Ali Vezas</div>
+            <div class="text-xl mt-8 leading-normal text-amber-200">
+              Ali has struggled to make ends meet in Istanbul since he was a
+              child. Now, with a merchant ship, he will try to make his fortune,
+              trading in foreign lands.
+            </div>
+          </div>
         </div>
         <div class="flex justify-between">
           <div class="mt-32">
@@ -212,10 +263,24 @@
             ></div>
           </div>
         </div>
-        <div
-          class="text-4xl font-bold mx-auto leading-normal text-gray-500 max-w-xl pb-32"
-        >
-          It’s up to you to guide them on the path to glory.
+        <div class="flex items-center justify-center text-gray-500">
+          <div class="text-4xl font-bold leading-normal max-w-lg mr-16">
+            It’s up to you to guide them on the path to glory.
+          </div>
+          <button type="button" id="scrollToTop">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-16 w-16 cursor-pointer"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -256,6 +321,14 @@
       });
 
       blink(document.querySelector('.animate-blink-friends'), 3);
+
+      document.getElementById('scrollToTop').addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      });
     </script>
   </body>
 </html>
