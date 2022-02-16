@@ -1,5 +1,4 @@
 import type { Position } from '../../types';
-import { START_POSITION_X, START_POSITION_Y } from '../../constants';
 
 export const provisions = ['water', 'food', 'lumber', 'shot'] as const;
 export type Provisions = typeof provisions[number];
@@ -30,36 +29,6 @@ export const fleets: Fleets = {
   '1': {
     position: undefined,
     ships: [],
-  },
-  '2': {
-    position: {
-      x: START_POSITION_X - 2,
-      y: START_POSITION_Y - 8,
-    },
-    ships: [
-      {
-        id: '19',
-        name: '',
-        crew: 5,
-        cargo: [],
-        durability: 1,
-      },
-    ],
-  },
-  '3': {
-    position: {
-      x: START_POSITION_X,
-      y: START_POSITION_Y + 4,
-    },
-    ships: [
-      {
-        id: '1',
-        name: '',
-        crew: 10,
-        cargo: [],
-        durability: 1,
-      },
-    ],
   },
 };
 

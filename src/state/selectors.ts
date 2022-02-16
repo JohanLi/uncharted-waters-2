@@ -1,4 +1,3 @@
-import { START_POSITION_X, START_POSITION_Y } from '../constants';
 import state, { Role } from './state';
 import generateUsedShips from '../interface/port/shipyard/generateUsedShips';
 import type { QuestId } from '../interface/quest/questData';
@@ -6,6 +5,8 @@ import { getPortData } from '../game/port/portUtils';
 import { itemData } from '../data/itemData';
 import { sailorData } from '../data/sailorData';
 import { getPlayerFleet } from './selectorsFleet';
+import createMap from '../map';
+import { applyPositionDelta } from '../utils';
 
 export const getTimeOfDay = () => state.timePassed % 1440;
 
@@ -17,19 +18,26 @@ export const isDay = () => {
 
 export const shouldUpdateWorldStatus = () => state.timePassed % 240 === 0;
 
-// TODO remove hard-coded values
 export const positionAdjacentToPort = (portId: string) => {
-  if (portId === '1') {
-    return {
-      x: START_POSITION_X,
-      y: START_POSITION_Y,
-    };
+  const { x, y } = getPortData(portId);
+  const map = createMap([0, 0]);
+
+  const offsetsToCheck = [
+    { x: 0, y: -2 },
+    { x: 2, y: 0 },
+    { x: 0, y: 2 },
+    { x: -2, y: 0 },
+  ];
+
+  const positionNoCollision = offsetsToCheck
+    .map((offset) => applyPositionDelta({ x, y }, offset))
+    .find((position) => !map.collisionAt(position));
+
+  if (!positionNoCollision) {
+    throw Error('No available tile was found adjacent to port');
   }
 
-  return {
-    x: 0,
-    y: 0,
-  };
+  return positionNoCollision;
 };
 
 export const finishedQuest = (id: QuestId) => state.quests.includes(id);

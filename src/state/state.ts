@@ -1,4 +1,4 @@
-import { START_PORT_ID, START_TIME_PASSED } from '../constants';
+import { START_TIME_PASSED } from '../constants';
 import { Provisions, fleets, Fleets } from '../game/world/fleets';
 import type { Port } from '../game/port/port';
 import type { World } from '../game/world/world';
@@ -54,7 +54,7 @@ const savedState = JSON.parse(
 );
 
 const state = {
-  portId: START_PORT_ID,
+  portId: '1',
   buildingId: null,
   timePassed: START_TIME_PASSED,
   fleets,
