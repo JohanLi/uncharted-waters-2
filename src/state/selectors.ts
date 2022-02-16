@@ -19,7 +19,7 @@ export const isDay = () => {
 export const shouldUpdateWorldStatus = () => state.timePassed % 240 === 0;
 
 export const positionAdjacentToPort = (portId: string) => {
-  const { x, y } = getPortData(portId);
+  const { position } = getPortData(portId);
   const map = createMap([0, 0]);
 
   const offsetsToCheck = [
@@ -30,8 +30,8 @@ export const positionAdjacentToPort = (portId: string) => {
   ];
 
   const positionNoCollision = offsetsToCheck
-    .map((offset) => applyPositionDelta({ x, y }, offset))
-    .find((position) => !map.collisionAt(position));
+    .map((offset) => applyPositionDelta(position, offset))
+    .find((p) => !map.collisionAt(p));
 
   if (!positionNoCollision) {
     throw Error('No available tile was found adjacent to port');

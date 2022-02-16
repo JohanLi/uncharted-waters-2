@@ -1,11 +1,11 @@
 import { MarketId, RegionId } from './portExtraData';
 import { IndustryId } from './portShipyardData';
 import { ItemId } from './itemData';
+import { Position } from '../types';
 
 export interface RegularPort {
   name: string;
-  x: number;
-  y: number;
+  position: Position;
   economy: number;
   industry: number;
   allegiances: number[];
@@ -21,17 +21,16 @@ export interface RegularPort {
 }
 
 export interface BuildingLocations {
-  [key: string]: {
-    x: number;
-    y: number;
-  };
+  [key: string]: Position;
 }
 
 export const regularPorts: RegularPort[] = [
   {
     name: 'Lisbon',
-    x: 840,
-    y: 358,
+    position: {
+      x: 840,
+      y: 358,
+    },
     economy: 780,
     industry: 770,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -91,8 +90,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Seville',
-    x: 862,
-    y: 372,
+    position: {
+      x: 862,
+      y: 372,
+    },
     economy: 770,
     industry: 810,
     allegiances: [0, 100, 0, 0, 0, 0],
@@ -157,8 +158,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Istanbul',
-    x: 1072,
-    y: 344,
+    position: {
+      x: 1072,
+      y: 344,
+    },
     economy: 810,
     industry: 720,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -223,8 +226,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Barcelona',
-    x: 914,
-    y: 342,
+    position: {
+      x: 914,
+      y: 342,
+    },
     economy: 590,
     industry: 540,
     allegiances: [0, 100, 0, 0, 0, 0],
@@ -280,8 +285,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Algiers',
-    x: 920,
-    y: 376,
+    position: {
+      x: 920,
+      y: 376,
+    },
     economy: 160,
     industry: 180,
     allegiances: [0, 0, 20, 0, 0, 0],
@@ -329,8 +336,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Tunis',
-    x: 962,
-    y: 372,
+    position: {
+      x: 962,
+      y: 372,
+    },
     economy: 130,
     industry: 160,
     allegiances: [0, 0, 15, 0, 0, 0],
@@ -367,8 +376,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Valencia',
-    x: 898,
-    y: 356,
+    position: {
+      x: 898,
+      y: 356,
+    },
     economy: 320,
     industry: 300,
     allegiances: [0, 100, 0, 0, 0, 0],
@@ -424,8 +435,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Marseille',
-    x: 932,
-    y: 326,
+    position: {
+      x: 932,
+      y: 326,
+    },
     economy: 350,
     industry: 290,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -482,8 +495,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Genoa',
-    x: 950,
-    y: 320,
+    position: {
+      x: 950,
+      y: 320,
+    },
     economy: 750,
     industry: 760,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -543,8 +558,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Pisa',
-    x: 960,
-    y: 328,
+    position: {
+      x: 960,
+      y: 328,
+    },
     economy: 620,
     industry: 540,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -604,8 +621,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Naples',
-    x: 980,
-    y: 348,
+    position: {
+      x: 980,
+      y: 348,
+    },
     economy: 630,
     industry: 640,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -662,8 +681,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Syracuse',
-    x: 990,
-    y: 376,
+    position: {
+      x: 990,
+      y: 376,
+    },
     economy: 240,
     industry: 220,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -716,8 +737,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Palma',
-    x: 916,
-    y: 358,
+    position: {
+      x: 916,
+      y: 358,
+    },
     economy: 290,
     industry: 285,
     allegiances: [0, 98, 0, 0, 0, 0],
@@ -762,8 +785,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Venice',
-    x: 978,
-    y: 318,
+    position: {
+      x: 978,
+      y: 318,
+    },
     economy: 740,
     industry: 730,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -824,8 +849,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Ragusa',
-    x: 1008,
-    y: 338,
+    position: {
+      x: 1008,
+      y: 338,
+    },
     economy: 150,
     industry: 140,
     allegiances: [0, 0, 0, 0, 100, 0],
@@ -873,8 +900,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Candia',
-    x: 1050,
-    y: 386,
+    position: {
+      x: 1050,
+      y: 386,
+    },
     economy: 180,
     industry: 160,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -915,8 +944,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Athens',
-    x: 1044,
-    y: 366,
+    position: {
+      x: 1044,
+      y: 366,
+    },
     economy: 640,
     industry: 540,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -973,8 +1004,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Salonika',
-    x: 1036,
-    y: 344,
+    position: {
+      x: 1036,
+      y: 344,
+    },
     economy: 110,
     industry: 120,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -1019,8 +1052,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Alexandria',
-    x: 1078,
-    y: 416,
+    position: {
+      x: 1078,
+      y: 416,
+    },
     economy: 720,
     industry: 700,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -1081,8 +1116,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Jaffa',
-    x: 1110,
-    y: 410,
+    position: {
+      x: 1110,
+      y: 410,
+    },
     economy: 140,
     industry: 150,
     allegiances: [0, 0, 95, 0, 0, 0],
@@ -1123,8 +1160,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Beirut',
-    x: 1112,
-    y: 402,
+    position: {
+      x: 1112,
+      y: 402,
+    },
     economy: 270,
     industry: 250,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -1180,8 +1219,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Nicosia',
-    x: 1098,
-    y: 386,
+    position: {
+      x: 1098,
+      y: 386,
+    },
     economy: 150,
     industry: 160,
     allegiances: [0, 0, 98, 0, 0, 0],
@@ -1218,8 +1259,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Tripoli',
-    x: 978,
-    y: 406,
+    position: {
+      x: 978,
+      y: 406,
+    },
     economy: 420,
     industry: 400,
     allegiances: [0, 0, 90, 0, 0, 0],
@@ -1268,8 +1311,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Kaffa',
-    x: 1106,
-    y: 316,
+    position: {
+      x: 1106,
+      y: 316,
+    },
     economy: 340,
     industry: 350,
     allegiances: [0, 0, 35, 0, 0, 0],
@@ -1314,8 +1359,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Azov',
-    x: 1130,
-    y: 302,
+    position: {
+      x: 1130,
+      y: 302,
+    },
     economy: 110,
     industry: 115,
     allegiances: [0, 0, 20, 0, 0, 0],
@@ -1368,8 +1415,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Trebizond',
-    x: 1138,
-    y: 344,
+    position: {
+      x: 1138,
+      y: 344,
+    },
     economy: 360,
     industry: 370,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -1421,8 +1470,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Ceuta',
-    x: 864,
-    y: 384,
+    position: {
+      x: 864,
+      y: 384,
+    },
     economy: 85,
     industry: 90,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -1459,8 +1510,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bordeaux',
-    x: 890,
-    y: 314,
+    position: {
+      x: 890,
+      y: 314,
+    },
     economy: 600,
     industry: 580,
     allegiances: [0, 0, 0, 80, 0, 0],
@@ -1516,8 +1569,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Nantes',
-    x: 886,
-    y: 296,
+    position: {
+      x: 886,
+      y: 296,
+    },
     economy: 560,
     industry: 570,
     allegiances: [0, 0, 0, 80, 0, 0],
@@ -1569,8 +1624,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'London',
-    x: 900,
-    y: 262,
+    position: {
+      x: 900,
+      y: 262,
+    },
     economy: 720,
     industry: 740,
     allegiances: [0, 0, 0, 100, 0, 0],
@@ -1631,8 +1688,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bristol',
-    x: 880,
-    y: 264,
+    position: {
+      x: 880,
+      y: 264,
+    },
     economy: 320,
     industry: 380,
     allegiances: [0, 0, 0, 100, 0, 0],
@@ -1681,8 +1740,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Dublin',
-    x: 856,
-    y: 252,
+    position: {
+      x: 856,
+      y: 252,
+    },
     economy: 370,
     industry: 350,
     allegiances: [0, 0, 0, 93, 0, 0],
@@ -1735,8 +1796,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Antwerp',
-    x: 934,
-    y: 258,
+    position: {
+      x: 934,
+      y: 258,
+    },
     economy: 660,
     industry: 670,
     allegiances: [0, 0, 0, 0, 0, 100],
@@ -1797,8 +1860,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Amsterdam',
-    x: 936,
-    y: 248,
+    position: {
+      x: 936,
+      y: 248,
+    },
     economy: 700,
     industry: 730,
     allegiances: [0, 0, 0, 0, 0, 100],
@@ -1859,8 +1924,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Copenhagen',
-    x: 974,
-    y: 230,
+    position: {
+      x: 974,
+      y: 230,
+    },
     economy: 530,
     industry: 510,
     allegiances: [0, 0, 0, 0, 0, 98],
@@ -1921,8 +1988,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Hamburg',
-    x: 960,
-    y: 244,
+    position: {
+      x: 960,
+      y: 244,
+    },
     economy: 600,
     industry: 620,
     allegiances: [0, 0, 0, 0, 0, 95],
@@ -1978,8 +2047,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Oslo',
-    x: 962,
-    y: 190,
+    position: {
+      x: 962,
+      y: 190,
+    },
     economy: 190,
     industry: 185,
     allegiances: [0, 0, 0, 80, 0, 0],
@@ -2016,8 +2087,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Stockholm',
-    x: 1014,
-    y: 196,
+    position: {
+      x: 1014,
+      y: 196,
+    },
     economy: 480,
     industry: 470,
     allegiances: [0, 0, 0, 85, 0, 0],
@@ -2074,8 +2147,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Lubeck',
-    x: 964,
-    y: 242,
+    position: {
+      x: 964,
+      y: 242,
+    },
     economy: 320,
     industry: 300,
     allegiances: [0, 0, 0, 0, 0, 85],
@@ -2128,8 +2203,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Danzig',
-    x: 1008,
-    y: 240,
+    position: {
+      x: 1008,
+      y: 240,
+    },
     economy: 370,
     industry: 280,
     allegiances: [0, 0, 0, 0, 0, 90],
@@ -2186,8 +2263,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Riga',
-    x: 1042,
-    y: 218,
+    position: {
+      x: 1042,
+      y: 218,
+    },
     economy: 150,
     industry: 160,
     allegiances: [0, 0, 0, 0, 0, 85],
@@ -2232,8 +2311,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bergen',
-    x: 930,
-    y: 192,
+    position: {
+      x: 930,
+      y: 192,
+    },
     economy: 145,
     industry: 150,
     allegiances: [0, 0, 0, 0, 0, 80],
@@ -2274,8 +2355,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Caracas',
-    x: 464,
-    y: 588,
+    position: {
+      x: 464,
+      y: 588,
+    },
     economy: 220,
     industry: 210,
     allegiances: [0, 95, 0, 0, 0, 0],
@@ -2323,8 +2406,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Cartegena',
-    x: 412,
-    y: 592,
+    position: {
+      x: 412,
+      y: 592,
+    },
     economy: 190,
     industry: 130,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -2376,8 +2461,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Havana',
-    x: 376,
-    y: 502,
+    position: {
+      x: 376,
+      y: 502,
+    },
     economy: 210,
     industry: 220,
     allegiances: [0, 93, 0, 0, 0, 0],
@@ -2422,8 +2509,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Margarita',
-    x: 482,
-    y: 584,
+    position: {
+      x: 482,
+      y: 584,
+    },
     economy: 40,
     industry: 45,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -2472,8 +2561,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Panama',
-    x: 388,
-    y: 600,
+    position: {
+      x: 388,
+      y: 600,
+    },
     economy: 160,
     industry: 190,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -2521,8 +2612,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Porto Velho',
-    x: 386,
-    y: 596,
+    position: {
+      x: 386,
+      y: 596,
+    },
     economy: 60,
     industry: 75,
     allegiances: [0, 95, 0, 0, 0, 0],
@@ -2563,8 +2656,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Santo Domingo',
-    x: 454,
-    y: 540,
+    position: {
+      x: 454,
+      y: 540,
+    },
     economy: 150,
     industry: 160,
     allegiances: [0, 98, 0, 0, 0, 0],
@@ -2620,8 +2715,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Veracruz',
-    x: 296,
-    y: 532,
+    position: {
+      x: 296,
+      y: 532,
+    },
     economy: 80,
     industry: 75,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -2662,8 +2759,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Jamaica',
-    x: 408,
-    y: 542,
+    position: {
+      x: 408,
+      y: 542,
+    },
     economy: 60,
     industry: 80,
     allegiances: [0, 90, 0, 0, 0, 0],
@@ -2719,8 +2818,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Guatemala',
-    x: 328,
-    y: 564,
+    position: {
+      x: 328,
+      y: 564,
+    },
     economy: 70,
     industry: 65,
     allegiances: [0, 97, 0, 0, 0, 0],
@@ -2765,8 +2866,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Pernambuco',
-    x: 624,
-    y: 722,
+    position: {
+      x: 624,
+      y: 722,
+    },
     economy: 215,
     industry: 240,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -2819,8 +2922,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Rio de Janeiro',
-    x: 594,
-    y: 824,
+    position: {
+      x: 594,
+      y: 824,
+    },
     economy: 45,
     industry: 50,
     allegiances: [90, 0, 0, 0, 0, 0],
@@ -2873,8 +2978,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Maracaibo',
-    x: 434,
-    y: 590,
+    position: {
+      x: 434,
+      y: 590,
+    },
     economy: 120,
     industry: 105,
     allegiances: [0, 95, 0, 0, 0, 0],
@@ -2915,8 +3022,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Santiago',
-    x: 412,
-    y: 526,
+    position: {
+      x: 412,
+      y: 526,
+    },
     economy: 80,
     industry: 105,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -2968,8 +3077,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Cayenne',
-    x: 556,
-    y: 642,
+    position: {
+      x: 556,
+      y: 642,
+    },
     economy: 70,
     industry: 65,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3006,8 +3117,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Madeira',
-    x: 794,
-    y: 402,
+    position: {
+      x: 794,
+      y: 402,
+    },
     economy: 240,
     industry: 230,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -3052,8 +3165,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Santa Cruz',
-    x: 794,
-    y: 438,
+    position: {
+      x: 794,
+      y: 438,
+    },
     economy: 90,
     industry: 80,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3098,8 +3213,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'San Jorge',
-    x: 882,
-    y: 596,
+    position: {
+      x: 882,
+      y: 596,
+    },
     economy: 210,
     industry: 190,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -3152,8 +3269,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bissau',
-    x: 796,
-    y: 546,
+    position: {
+      x: 796,
+      y: 546,
+    },
     economy: 85,
     industry: 100,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3194,8 +3313,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Luanda',
-    x: 974,
-    y: 704,
+    position: {
+      x: 974,
+      y: 704,
+    },
     economy: 90,
     industry: 75,
     allegiances: [96, 0, 0, 0, 0, 0],
@@ -3240,8 +3361,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Argin',
-    x: 790,
-    y: 494,
+    position: {
+      x: 790,
+      y: 494,
+    },
     economy: 200,
     industry: 185,
     allegiances: [100, 0, 0, 0, 0, 0],
@@ -3293,8 +3416,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bathurst',
-    x: 792,
-    y: 538,
+    position: {
+      x: 792,
+      y: 538,
+    },
     economy: 75,
     industry: 60,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3335,8 +3460,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Timbuktu',
-    x: 874,
-    y: 530,
+    position: {
+      x: 874,
+      y: 530,
+    },
     economy: 430,
     industry: 35,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3389,8 +3516,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Abidjan',
-    x: 868,
-    y: 594,
+    position: {
+      x: 868,
+      y: 594,
+    },
     economy: 90,
     industry: 75,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3431,8 +3560,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Sofala',
-    x: 1108,
-    y: 762,
+    position: {
+      x: 1108,
+      y: 762,
+    },
     economy: 390,
     industry: 400,
     allegiances: [85, 0, 0, 0, 0, 0],
@@ -3477,8 +3608,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Malindi',
-    x: 1138,
-    y: 662,
+    position: {
+      x: 1138,
+      y: 662,
+    },
     economy: 370,
     industry: 360,
     allegiances: [95, 0, 0, 0, 0, 0],
@@ -3519,8 +3652,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Mogadishu',
-    x: 1174,
-    y: 614,
+    position: {
+      x: 1174,
+      y: 614,
+    },
     economy: 90,
     industry: 70,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3557,8 +3692,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Mombasa',
-    x: 1134,
-    y: 670,
+    position: {
+      x: 1134,
+      y: 670,
+    },
     economy: 380,
     industry: 390,
     allegiances: [90, 0, 0, 0, 0, 0],
@@ -3615,8 +3752,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Mozambique',
-    x: 1140,
-    y: 734,
+    position: {
+      x: 1140,
+      y: 734,
+    },
     economy: 180,
     industry: 160,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3669,8 +3808,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Quelimane',
-    x: 1120,
-    y: 748,
+    position: {
+      x: 1120,
+      y: 748,
+    },
     economy: 60,
     industry: 60,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3711,8 +3852,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Aden',
-    x: 1178,
-    y: 540,
+    position: {
+      x: 1178,
+      y: 540,
+    },
     economy: 210,
     industry: 260,
     allegiances: [90, 0, 0, 0, 0, 0],
@@ -3753,8 +3896,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Hormuz',
-    x: 1240,
-    y: 450,
+    position: {
+      x: 1240,
+      y: 450,
+    },
     economy: 100,
     industry: 90,
     allegiances: [95, 0, 0, 0, 0, 0],
@@ -3799,8 +3944,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Massawa',
-    x: 1146,
-    y: 528,
+    position: {
+      x: 1146,
+      y: 528,
+    },
     economy: 90,
     industry: 85,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -3856,8 +4003,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Cairo',
-    x: 1096,
-    y: 428,
+    position: {
+      x: 1096,
+      y: 428,
+    },
     economy: 510,
     industry: 480,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -3917,8 +4066,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Basra',
-    x: 1190,
-    y: 426,
+    position: {
+      x: 1190,
+      y: 426,
+    },
     economy: 480,
     industry: 500,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -3963,8 +4114,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Mecca',
-    x: 1136,
-    y: 488,
+    position: {
+      x: 1136,
+      y: 488,
+    },
     economy: 500,
     industry: 80,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -4024,8 +4177,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Quatar',
-    x: 1216,
-    y: 458,
+    position: {
+      x: 1216,
+      y: 458,
+    },
     economy: 130,
     industry: 160,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -4066,8 +4221,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Shiraz',
-    x: 1222,
-    y: 450,
+    position: {
+      x: 1222,
+      y: 450,
+    },
     economy: 70,
     industry: 80,
     allegiances: [0, 0, 100, 0, 0, 0],
@@ -4116,8 +4273,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Muscat',
-    x: 1252,
-    y: 464,
+    position: {
+      x: 1252,
+      y: 464,
+    },
     economy: 180,
     industry: 230,
     allegiances: [0, 0, 95, 0, 0, 0],
@@ -4162,8 +4321,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Diu',
-    x: 1296,
-    y: 458,
+    position: {
+      x: 1296,
+      y: 458,
+    },
     economy: 75,
     industry: 80,
     allegiances: [87, 0, 0, 0, 0, 0],
@@ -4200,8 +4361,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Cochin',
-    x: 1352,
-    y: 562,
+    position: {
+      x: 1352,
+      y: 562,
+    },
     economy: 130,
     industry: 120,
     allegiances: [90, 0, 0, 0, 0, 0],
@@ -4250,8 +4413,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Ceylon',
-    x: 1380,
-    y: 576,
+    position: {
+      x: 1380,
+      y: 576,
+    },
     economy: 180,
     industry: 210,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4307,8 +4472,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Amboa',
-    x: 1654,
-    y: 652,
+    position: {
+      x: 1654,
+      y: 652,
+    },
     economy: 50,
     industry: 50,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4349,8 +4516,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Goa',
-    x: 1342,
-    y: 536,
+    position: {
+      x: 1342,
+      y: 536,
+    },
     economy: 540,
     industry: 560,
     allegiances: [85, 0, 0, 0, 0, 0],
@@ -4406,8 +4575,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Malacca',
-    x: 1506,
-    y: 606,
+    position: {
+      x: 1506,
+      y: 606,
+    },
     economy: 90,
     industry: 95,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4448,8 +4619,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Ternate',
-    x: 1654,
-    y: 622,
+    position: {
+      x: 1654,
+      y: 622,
+    },
     economy: 80,
     industry: 85,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4490,8 +4663,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Banda',
-    x: 1668,
-    y: 660,
+    position: {
+      x: 1668,
+      y: 660,
+    },
     economy: 45,
     industry: 40,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4532,8 +4707,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Dili',
-    x: 1654,
-    y: 684,
+    position: {
+      x: 1654,
+      y: 684,
+    },
     economy: 40,
     industry: 45,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4570,8 +4747,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Pasei',
-    x: 1480,
-    y: 604,
+    position: {
+      x: 1480,
+      y: 604,
+    },
     economy: 35,
     industry: 40,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4608,8 +4787,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Sunda',
-    x: 1540,
-    y: 666,
+    position: {
+      x: 1540,
+      y: 666,
+    },
     economy: 40,
     industry: 55,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4650,8 +4831,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Calicut',
-    x: 1348,
-    y: 552,
+    position: {
+      x: 1348,
+      y: 552,
+    },
     economy: 530,
     industry: 560,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4708,8 +4891,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Bankao',
-    x: 1530,
-    y: 628,
+    position: {
+      x: 1530,
+      y: 628,
+    },
     economy: 50,
     industry: 45,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4750,8 +4935,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Zeiton',
-    x: 1614,
-    y: 454,
+    position: {
+      x: 1614,
+      y: 454,
+    },
     economy: 520,
     industry: 570,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4808,8 +4995,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Macao',
-    x: 1582,
-    y: 474,
+    position: {
+      x: 1582,
+      y: 474,
+    },
     economy: 480,
     industry: 490,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4866,8 +5055,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Hanoi',
-    x: 1532,
-    y: 482,
+    position: {
+      x: 1532,
+      y: 482,
+    },
     economy: 300,
     industry: 340,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4911,8 +5102,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Changan',
-    x: 1560,
-    y: 388,
+    position: {
+      x: 1560,
+      y: 388,
+    },
     economy: 580,
     industry: 280,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -4969,8 +5162,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Sakai',
-    x: 1716,
-    y: 390,
+    position: {
+      x: 1716,
+      y: 390,
+    },
     economy: 420,
     industry: 410,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -5023,8 +5218,10 @@ export const regularPorts: RegularPort[] = [
   },
   {
     name: 'Nagasaki',
-    x: 1676,
-    y: 402,
+    position: {
+      x: 1676,
+      y: 402,
+    },
     economy: 210,
     industry: 220,
     allegiances: [0, 0, 0, 0, 0, 0],
@@ -5074,160 +5271,219 @@ export const regularPorts: RegularPort[] = [
 
 export interface SupplyPortBase {
   name: string;
-  x: number;
-  y: number;
+  position: Position;
 }
 
 export const supplyPorts: SupplyPortBase[] = [
   {
     name: 'Hekla',
-    x: 784,
-    y: 210,
+    position: {
+      x: 784,
+      y: 210,
+    },
   },
   {
     name: 'Narvik',
-    x: 998,
-    y: 114,
+    position: {
+      x: 998,
+      y: 114,
+    },
   },
   {
     name: 'Cape Town',
-    x: 1006,
-    y: 860,
+    position: {
+      x: 1006,
+      y: 860,
+    },
   },
   {
     name: 'Belgrade',
-    x: 1012,
-    y: 312,
+    position: {
+      x: 1012,
+      y: 312,
+    },
   },
   {
     name: 'Tamatave',
-    x: 1192,
-    y: 758,
+    position: {
+      x: 1192,
+      y: 758,
+    },
   },
   {
     name: 'Dikson',
-    x: 1386,
-    y: 60,
+    position: {
+      x: 1386,
+      y: 60,
+    },
   },
   {
     name: 'Lushun',
-    x: 1632,
-    y: 360,
+    position: {
+      x: 1632,
+      y: 360,
+    },
   },
   {
     name: 'Leveque',
-    x: 1652,
-    y: 716,
+    position: {
+      x: 1652,
+      y: 716,
+    },
   },
   {
     name: 'Mindanao',
-    x: 1656,
-    y: 578,
+    position: {
+      x: 1656,
+      y: 578,
+    },
   },
   {
     name: 'Tiksi',
-    x: 1676,
-    y: 78,
+    position: {
+      x: 1676,
+      y: 78,
+    },
   },
   {
     name: 'Ezo',
-    x: 1740,
-    y: 334,
+    position: {
+      x: 1740,
+      y: 334,
+    },
   },
   {
     name: 'Geelong',
-    x: 1748,
-    y: 884,
+    position: {
+      x: 1748,
+      y: 884,
+    },
   },
   {
     name: 'Guam',
-    x: 1758,
-    y: 538,
+    position: {
+      x: 1758,
+      y: 538,
+    },
   },
   {
     name: 'Moresby',
-    x: 1770,
-    y: 686,
+    position: {
+      x: 1770,
+      y: 686,
+    },
   },
   {
     name: 'Korf',
-    x: 1880,
-    y: 200,
+    position: {
+      x: 1880,
+      y: 200,
+    },
   },
   {
     name: 'Wanganui',
-    x: 1930,
-    y: 900,
+    position: {
+      x: 1930,
+      y: 900,
+    },
   },
   {
     name: 'Suva',
-    x: 1960,
-    y: 738,
+    position: {
+      x: 1960,
+      y: 738,
+    },
   },
   {
     name: 'Nome',
-    x: 2062,
-    y: 156,
+    position: {
+      x: 2062,
+      y: 156,
+    },
   },
   {
     name: 'Naalehu',
-    x: 2120,
-    y: 498,
+    position: {
+      x: 2120,
+      y: 498,
+    },
   },
   {
     name: 'Tahiti',
-    x: 2134,
-    y: 732,
+    position: {
+      x: 2134,
+      y: 732,
+    },
   },
   {
     name: 'Juneau',
-    x: 70,
-    y: 228,
+    position: {
+      x: 70,
+      y: 228,
+    },
   },
   {
     name: 'Coppermine',
-    x: 152,
-    y: 122,
+    position: {
+      x: 152,
+      y: 122,
+    },
   },
   {
     name: 'Santa Barbara',
-    x: 174,
-    y: 448,
+    position: {
+      x: 174,
+      y: 448,
+    },
   },
   {
     name: 'Churchill',
-    x: 330,
-    y: 242,
+    position: {
+      x: 330,
+      y: 242,
+    },
   },
   {
     name: 'Callao',
-    x: 394,
-    y: 724,
+    position: {
+      x: 394,
+      y: 724,
+    },
   },
   {
     name: 'Valparaiso',
-    x: 424,
-    y: 892,
+    position: {
+      x: 424,
+      y: 892,
+    },
   },
   {
     name: 'Mollendo',
-    x: 430,
-    y: 778,
+    position: {
+      x: 430,
+      y: 778,
+    },
   },
   {
     name: 'Cape Cod',
-    x: 466,
-    y: 372,
+    position: {
+      x: 466,
+      y: 372,
+    },
   },
   {
     name: 'Montevideo',
-    x: 516,
-    y: 906,
+    position: {
+      x: 516,
+      y: 906,
+    },
   },
   {
     name: 'Forel',
-    x: 660,
-    y: 190,
+    position: {
+      x: 660,
+      y: 190,
+    },
   },
 ];
 

@@ -47,11 +47,15 @@ export const getPortData = (id: string): PortData => {
   };
 };
 
-const portCoordinates = regularPorts
-  .map(({ x, y }) => ({ x, y }))
-  .concat(supplyPorts.map(({ x, y }) => ({ x, y })));
+let portCoordinates: Position[];
 
 export const portAdjacentAt = ({ x, y }: Position) => {
+  if (!portCoordinates) {
+    portCoordinates = regularPorts
+      .map(({ position }) => position)
+      .concat(supplyPorts.map(({ position }) => position));
+  }
+
   const i = portCoordinates.findIndex((portCoordinate) => {
     const deltaX = Math.abs(portCoordinate.x - x);
     const deltaY = Math.abs(portCoordinate.y - y);
