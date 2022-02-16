@@ -5,8 +5,10 @@ jest.mock('../../data/portData', () => ({
   regularPorts: [
     {
       name: 'Lisbon',
-      x: 840,
-      y: 358,
+      position: {
+        x: 840,
+        y: 358,
+      },
       buildings: {
         '1': {
           x: 41,
@@ -16,8 +18,10 @@ jest.mock('../../data/portData', () => ({
     },
     {
       name: 'Nagasaki',
-      x: 1676,
-      y: 402,
+      position: {
+        x: 1676,
+        y: 402,
+      },
       buildings: {
         '1': {
           x: 41,
@@ -29,13 +33,17 @@ jest.mock('../../data/portData', () => ({
   supplyPorts: [
     {
       name: 'Hekla',
-      x: 784,
-      y: 210,
+      position: {
+        x: 784,
+        y: 210,
+      },
     },
     {
       name: 'Forel',
-      x: 660,
-      y: 190,
+      position: {
+        x: 660,
+        y: 190,
+      },
     },
   ],
 }));

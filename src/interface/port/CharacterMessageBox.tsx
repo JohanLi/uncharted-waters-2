@@ -5,7 +5,7 @@ import { classNames } from '../interfaceUtils';
 import MessageBox from '../common/MessageBox';
 import { CharacterMessageBoxType } from '../quest/getMessageBoxes';
 import characterData from '../../data/characterData';
-import sailorData from '../../data/sailorData';
+import getSailor from '../../data/sailorData';
 
 export type Position = 1 | 2;
 
@@ -27,7 +27,7 @@ export default function CharacterMessageBox({ messageBox, position }: Props) {
   const { body, characterId, acknowledge } = messageBox;
 
   const { name, color = 'text-black' } =
-    characterData[characterId] || sailorData[characterId];
+    characterData[characterId] || getSailor(characterId);
 
   return (
     <div

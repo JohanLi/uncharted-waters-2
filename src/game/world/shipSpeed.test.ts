@@ -1,4 +1,6 @@
+import { mocked } from 'jest-mock';
 import getShipSpeed from './shipSpeed';
+import getSailor, { Sailor } from '../../data/sailorData';
 
 jest.mock('../../data/shipData', () => ({
   shipData: {
@@ -33,12 +35,27 @@ jest.mock('../../data/shipData', () => ({
   },
 }));
 
-const sailor = { navigationLevel: 1, seamanship: 80 };
+jest.mock('../../data/sailorData', () => jest.fn());
+
+const sailor = { navigationLevel: 1, stats: { seamanship: 80 } } as Sailor;
 
 describe('getShipSpeed', () => {
+  beforeEach(() => {
+    mocked(getSailor).mockReturnValue(sailor);
+  });
+
+  test('calls getSailor', () => {
+    getShipSpeed({ id: '1', cargo: [], crew: 5, sailorId: '1234' }, 0, {
+      direction: 0,
+      speed: 0,
+    });
+
+    expect(getSailor).toHaveBeenCalledWith('1234');
+  });
+
   test('higher the faster the wind speed', () => {
     const byWindSpeed = (speed: number) =>
-      getShipSpeed({ id: '1', cargo: [], crew: 5 }, sailor, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew: 5, sailorId: '1' }, 0, {
         direction: 0,
         speed,
       });
@@ -50,7 +67,7 @@ describe('getShipSpeed', () => {
 
   test('ships with oars have a minimum "wind speed" of 3', () => {
     const byWindSpeed = (speed: number) =>
-      getShipSpeed({ id: '19', cargo: [], crew: 5 }, sailor, 0, {
+      getShipSpeed({ id: '19', cargo: [], crew: 5, sailorId: '1' }, 0, {
         direction: 0,
         speed,
       });
@@ -62,7 +79,7 @@ describe('getShipSpeed', () => {
 
   test('depends on wind direction relative to heading', () => {
     const byWindDirection = (direction: number) =>
-      getShipSpeed({ id: '1', cargo: [], crew: 5 }, sailor, 3, {
+      getShipSpeed({ id: '1', cargo: [], crew: 5, sailorId: '1' }, 3, {
         direction,
         speed: 3,
       });
@@ -75,7 +92,7 @@ describe('getShipSpeed', () => {
 
   test('depends on having enough navigation crew', () => {
     const byCrew = (crew: number) =>
-      getShipSpeed({ id: '1', cargo: [], crew }, sailor, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew, sailorId: '1' }, 0, {
         direction: 0,
         speed: 3,
       });
@@ -86,7 +103,7 @@ describe('getShipSpeed', () => {
 
   test('exceeding minimum navigation crew provides no boost', () => {
     const byCrew = (crew: number) =>
-      getShipSpeed({ id: '1', cargo: [], crew }, sailor, 0, {
+      getShipSpeed({ id: '1', cargo: [], crew, sailorId: '1' }, 0, {
         direction: 0,
         speed: 3,
       });
@@ -97,8 +114,12 @@ describe('getShipSpeed', () => {
   test('load starts affecting speed when above 30%', () => {
     const byCargo = (total: number) =>
       getShipSpeed(
-        { id: '1', cargo: [{ type: 'water', quantity: total }], crew: 5 },
-        sailor,
+        {
+          id: '1',
+          cargo: [{ type: 'water', quantity: total }],
+          crew: 5,
+          sailorId: '1',
+        },
         0,
         { direction: 0, speed: 3 },
       );
@@ -109,33 +130,41 @@ describe('getShipSpeed', () => {
   });
 
   test('is increased by the sailor’s Navigation Level', () => {
-    const byNavigationLevel = (navigationLevel: number) =>
-      getShipSpeed(
-        { id: '1', cargo: [], crew: 5 },
-        { navigationLevel, seamanship: 80 },
-        0,
-        { direction: 0, speed: 3 },
-      );
+    const byNavigationLevel = (navigationLevel: number) => {
+      mocked(getSailor).mockReturnValue({
+        navigationLevel,
+        stats: { seamanship: 80 },
+      } as Sailor);
+
+      return getShipSpeed({ id: '1', cargo: [], crew: 5, sailorId: '1' }, 0, {
+        direction: 0,
+        speed: 3,
+      });
+    };
 
     expect(byNavigationLevel(2)).toBeGreaterThan(byNavigationLevel(1));
     expect(byNavigationLevel(20)).toBeGreaterThan(byNavigationLevel(5));
   });
 
   test('is affected by the sailor’s Seamanship', () => {
-    const bySeamanship = (seamanship: number) =>
-      getShipSpeed(
-        { id: '1', cargo: [], crew: 5 },
-        { navigationLevel: 1, seamanship },
-        0,
-        { direction: 0, speed: 3 },
-      );
+    const bySeamanship = (seamanship: number) => {
+      mocked(getSailor).mockReturnValue({
+        navigationLevel: 1,
+        stats: { seamanship },
+      } as Sailor);
+
+      return getShipSpeed({ id: '1', cargo: [], crew: 5, sailorId: '1' }, 0, {
+        direction: 0,
+        speed: 3,
+      });
+    };
 
     expect(bySeamanship(100)).toBeGreaterThan(bySeamanship(80));
   });
 
   test('ship’s tacking rating is used when sailing with a side headwind or headwind', () => {
     const byWindDirection = (direction: number) =>
-      getShipSpeed({ id: '2', cargo: [], crew: 5 }, sailor, 0, {
+      getShipSpeed({ id: '2', cargo: [], crew: 5, sailorId: '1' }, 0, {
         direction,
         speed: 3,
       });
@@ -146,20 +175,13 @@ describe('getShipSpeed', () => {
   });
 
   test('is capped at 40', () => {
-    const fast = getShipSpeed(
-      { id: '1', cargo: [], crew: 5 },
-      { navigationLevel: 90, seamanship: 100 },
-      0,
-      { direction: 0, speed: 7 },
-    );
+    mocked(getSailor).mockReturnValue({
+      navigationLevel: 90,
+      stats: { seamanship: 100 },
+    } as Sailor);
 
-    expect(fast).toEqual(40);
-  });
-
-  test('is capped at 40', () => {
     const fast = getShipSpeed(
-      { id: '1', cargo: [], crew: 5 },
-      { navigationLevel: 90, seamanship: 100 },
+      { id: '1', cargo: [], crew: 5, sailorId: '1' },
       0,
       { direction: 0, speed: 7 },
     );

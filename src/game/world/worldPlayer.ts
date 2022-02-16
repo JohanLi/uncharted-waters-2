@@ -10,7 +10,6 @@ import { directionMap } from '../../input';
 import updateInterface from '../../state/updateInterface';
 import { calculateDestination } from './worldUtils';
 import { getXWrapAround } from './sharedUtils';
-import sailorData from '../../data/sailorData';
 
 const createWorldPlayer = (
   startPosition: Position,
@@ -123,18 +122,9 @@ const createWorldPlayer = (
       }
 
       const ship = state.fleets[1].ships[0];
-      const {
-        navigationLevel,
-        stats: { seamanship },
-      } = sailorData[ship.sailorId];
 
       speed = heading
-        ? getShipSpeed(
-            ship,
-            { navigationLevel, seamanship },
-            directionMap[heading],
-            state.wind,
-          )
+        ? getShipSpeed(ship, directionMap[heading], state.wind)
         : 0;
 
       lastHeading = heading;

@@ -79,4 +79,6 @@ const sailorData: { [key: string]: Sailor } = {
   },
 };
 
-export default sailorData;
+const getSailor = (id: string) => sailorData[id];
+
+export default getSailor;
