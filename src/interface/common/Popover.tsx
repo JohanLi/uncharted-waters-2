@@ -15,6 +15,10 @@ export default function Popover({ label, children }: Props) {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
+    if (!active) {
+      return undefined;
+    }
+
     const onKeydown = (e: KeyboardEvent) => {
       const pressedKey = e.key.toLowerCase();
 
