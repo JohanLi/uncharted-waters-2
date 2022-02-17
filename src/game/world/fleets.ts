@@ -14,7 +14,6 @@ export interface Ship {
   crew: number;
   cargo: Cargo[];
   durability: number;
-  sailorId: string;
 }
 
 interface Fleet {

@@ -2,7 +2,7 @@ import { shipData, shipWindFactorMap } from '../../data/shipData';
 import { getHeadingWindDelta, hasOars } from './worldUtils';
 import type { Velocity } from '../../state/state';
 import type { Ship } from './fleets';
-import getSailor from '../../data/sailorData';
+import { Sailor } from '../../data/sailorData';
 
 /*
   In contrast to the original game, we do not round down during each step of
@@ -19,7 +19,8 @@ import getSailor from '../../data/sailorData';
   end-game ships so mid-tier ships have their uses outside exploration.
  */
 const getShipSpeed = (
-  ship: Pick<Ship, 'id' | 'crew' | 'cargo' | 'sailorId'>,
+  ship: Pick<Ship, 'id' | 'crew' | 'cargo'>,
+  sailor: Pick<Sailor, 'navigationLevel' | 'stats'>,
   heading: number,
   wind: Velocity,
 ) => {
@@ -45,11 +46,7 @@ const getShipSpeed = (
     ship.cargo.reduce((total, { quantity }) => total + quantity, 0) + crew;
   const cargoFactor = Math.min(1.5, 1.8 - capacityUsed / capacity);
 
-  const {
-    navigationLevel,
-    stats: { seamanship },
-  } = getSailor(ship.sailorId);
-  const navigationLevelFactor = (10 + navigationLevel) / 10;
+  const navigationLevelFactor = (10 + sailor.navigationLevel) / 10;
 
   const isHeadwindOrSideHeadWind = directionDelta >= 3;
   const tackingFactor = isHeadwindOrSideHeadWind ? tacking / 100 : 1;
@@ -62,7 +59,7 @@ const getShipSpeed = (
       navigationLevelFactor,
   );
 
-  return (baseSpeed * tackingFactor * seamanship) / 75;
+  return (baseSpeed * tackingFactor * sailor.stats.seamanship) / 75;
 };
 
 export default getShipSpeed;

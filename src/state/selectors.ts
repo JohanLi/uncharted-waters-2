@@ -115,6 +115,16 @@ export const getMates = () =>
     ...getSailor(mate.sailorId),
   }));
 
+export const getCaptain = (shipI: Number) => {
+  const mate = state.mates.find(({ role }) => role === shipI);
+
+  if (!mate) {
+    throw Error('No captain was found for the provided ship');
+  }
+
+  return getSailor(mate.sailorId);
+};
+
 export const getRoleDisplay = (role: Role) => {
   const fleet = getPlayerFleet();
 

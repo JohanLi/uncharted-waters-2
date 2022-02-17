@@ -53,10 +53,7 @@ export const addShip = (ship: Omit<Ship, 'sailorId'>) => {
     throw Error('Tried to add a ship to fleet despite no available sailors');
   }
 
-  fleet.push({
-    ...ship,
-    sailorId,
-  });
+  fleet.push(ship);
 
   for (let i = 0; i < state.mates.length; i += 1) {
     if (state.mates[i].sailorId === sailorId) {
@@ -64,8 +61,6 @@ export const addShip = (ship: Omit<Ship, 'sailorId'>) => {
       break;
     }
   }
-
-  updateGeneral();
 };
 
 const USED_SHIP_DURABILITY = 0.85;
@@ -85,24 +80,39 @@ export const buyUsedShip = (id: string, shipName: string) => {
   });
 
   delete usedShip[id];
+
+  updateGeneral();
 };
 
 export const SELL_SHIP_MODIFIER = 0.5;
 
 export const sellShipNumber = (shipNumber: number) => {
-  const { id, sailorId } = getPlayerFleetShip(shipNumber);
+  const { id } = getPlayerFleetShip(shipNumber);
+
+  const fleet = getPlayerFleet();
+  fleet.splice(shipNumber, 1);
 
   const sellPrice = shipData[id].basePrice * SELL_SHIP_MODIFIER;
-
-  getPlayerFleet().splice(shipNumber, 1);
   state.gold += sellPrice;
 
   for (let i = 0; i < state.mates.length; i += 1) {
-    if (state.mates[i].sailorId === sailorId) {
+    if (state.mates[i].role === shipNumber) {
       state.mates[i].role = null;
       break;
     }
   }
+
+  if (fleet.length && shipNumber === 0) {
+    const mate = state.mates.find(({ role }) => role === 1);
+
+    if (mate) {
+      mate.role = null;
+    }
+
+    state.mates[0].role = 0;
+  }
+
+  console.log(state);
 
   updateGeneral();
 };
@@ -179,6 +189,8 @@ export const receiveFirstShip = () => {
     cargo: [],
     durability: Math.floor(durability * USED_SHIP_DURABILITY),
   });
+
+  updateGeneral();
 };
 
 export const recruitRocco = () => {

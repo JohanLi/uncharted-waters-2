@@ -33,7 +33,6 @@ describe('Shipyard', () => {
                 },
               ],
               durability: 51,
-              sailorId: '1',
             },
           ],
         },
@@ -41,7 +40,7 @@ describe('Shipyard', () => {
       mates: [
         {
           sailorId: '1',
-          role: null,
+          role: 0,
         },
         {
           sailorId: '32',
@@ -148,7 +147,6 @@ describe('Shipyard', () => {
                 },
               ],
               durability: 51,
-              sailorId: '1',
             },
           ],
         },
