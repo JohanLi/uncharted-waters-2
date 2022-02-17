@@ -1070,6 +1070,13 @@ const questData = asInferredKeysWithValue<Message[]>()({
       exitBuilding: true,
     },
   ],
+  pubCarlottaGreeting: [
+    {
+      body: 'Hello $firstName, would you like some rum?',
+      characterId: '98',
+      position: 2,
+    },
+  ],
 });
 
 export type QuestId = keyof typeof questData;

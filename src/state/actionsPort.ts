@@ -112,8 +112,6 @@ export const sellShipNumber = (shipNumber: number) => {
     state.mates[0].role = 0;
   }
 
-  console.log(state);
-
   updateGeneral();
 };
 
@@ -208,8 +206,19 @@ export const recruitEnrico = () => {
 };
 
 export const assignFirstRoles = () => {
-  state.mates[1].role = 'firstMate';
-  state.mates[2].role = 'bookKeeper';
+  if (Number.isNaN(state.mates[1].role)) {
+    state.mates[1].role = 'firstMate';
+  }
+
+  if (Number.isNaN(state.mates[2].role)) {
+    state.mates[2].role = 'bookKeeper';
+  }
+
+  /*
+    In the original game, no check is done before assigning Rocco and Enrico their roles.
+    If you hand them ships, they’ll be assigned First Mate and Bookkeeper while still
+    remaining as captains (allowing them to captain 2 ships each).
+   */
 };
 
 export const deposit = (amount: number) => {
@@ -282,4 +291,32 @@ export const sellItem = (i: number) => {
   updateGeneral();
 
   return true;
+};
+
+// cost in the original game is economy / 20 + 5
+export const CREW_COST = 40;
+
+export const recruitCrew = (amount: number) => {
+  let remaining = amount;
+
+  const ships = getPlayerFleet();
+
+  for (let i = 0; i < ships.length; i += 1) {
+    if (!remaining) {
+      return;
+    }
+
+    let assign = shipData[ships[i].id].minimumCrew - ships[i].crew;
+
+    if (assign > remaining) {
+      assign = remaining;
+    }
+
+    ships[i].crew += assign;
+    remaining -= assign;
+  }
+
+  state.gold -= amount * CREW_COST;
+
+  updateGeneral();
 };

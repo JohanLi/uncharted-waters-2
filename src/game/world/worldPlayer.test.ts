@@ -6,6 +6,8 @@ jest.mock('../../state/updateInterface', () => ({
   playerFleetSpeed: () => {},
 }));
 
+jest.mock('../../state/selectors');
+
 jest.mock('./shipSpeed', () => () => 40);
 
 const collisionAt = (collisionTiles: Position[]) => (position: Position) =>

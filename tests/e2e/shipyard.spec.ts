@@ -22,16 +22,7 @@ describe('Shipyard', () => {
               id: '22',
               name: 'Test ship',
               crew: 30,
-              cargo: [
-                {
-                  type: 'water',
-                  quantity: 100,
-                },
-                {
-                  type: 'food',
-                  quantity: 100,
-                },
-              ],
+              cargo: [],
               durability: 51,
             },
           ],
@@ -136,16 +127,7 @@ describe('Shipyard', () => {
               id: '22',
               name: 'Test ship',
               crew: 30,
-              cargo: [
-                {
-                  type: 'water',
-                  quantity: 100,
-                },
-                {
-                  type: 'food',
-                  quantity: 100,
-                },
-              ],
+              cargo: [],
               durability: 51,
             },
           ],

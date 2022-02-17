@@ -45,3 +45,13 @@ export const getDaysProvisionsWillLast = () => {
     Math.min(totalWater / totalCrew, totalFood / totalCrew) * 10,
   );
 };
+
+export const getCrewNeeded = () => {
+  let count = 0;
+
+  getPlayerFleet().forEach((ship) => {
+    count += shipData[ship.id].minimumCrew - ship.crew;
+  });
+
+  return count;
+};
