@@ -47,6 +47,8 @@ const getAvailableQuest = (): QuestId | null => {
     if (!finishedQuest('houseAfterQuestAndPub')) {
       return 'pubAfterQuest2';
     }
+
+    return 'pubCarlottaGreeting';
   }
 
   if (['5', '7', '9'].includes(buildingId)) {
