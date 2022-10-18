@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { VolumeOffIcon, VolumeUpIcon } from '@heroicons/react/solid';
+import { SpeakerXMarkIcon, SpeakerWaveIcon } from '@heroicons/react/24/solid';
 
 import { getRegionOrIfSupplyPort } from '../../game/port/portUtils';
 
@@ -128,8 +128,8 @@ export default function Sound({ portId, buildingId }: Props) {
       className="select-none cursor-pointer p-2 inline-block align-bottom"
       onClick={() => setSoundOn(!soundOn)}
     >
-      {soundOn && <VolumeUpIcon className="h-8 w-8 text-lime-400" />}
-      {!soundOn && <VolumeOffIcon className="h-8 w-8 text-red-600" />}
+      {soundOn && <SpeakerWaveIcon className="h-8 w-8 text-lime-400" />}
+      {!soundOn && <SpeakerXMarkIcon className="h-8 w-8 text-red-600" />}
     </div>
   );
 }

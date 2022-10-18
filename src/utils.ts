@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid';
-
 import { Direction, Position } from './types';
 
 export const directions: Direction[] = ['n', 'e', 's', 'w'];
@@ -22,7 +20,8 @@ export const getPositionDelta = (p1: Position, p2: Position) => ({
   y: p1.y - p2.y,
 });
 
-export const generateId = () => nanoid(6);
+// nanoid(6) would’ve been preferred, but there’s this: https://github.com/ai/nanoid/issues/363
+export const generateId = () => Math.random();
 
 /*
  This allows us to infer an object’s keys, while defining the type of the values
