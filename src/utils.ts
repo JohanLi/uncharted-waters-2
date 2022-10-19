@@ -21,7 +21,7 @@ export const getPositionDelta = (p1: Position, p2: Position) => ({
 });
 
 // nanoid(6) would’ve been preferred, but there’s this: https://github.com/ai/nanoid/issues/363
-export const generateId = () => Math.random();
+export const generateId = () => Math.round(window.performance.now()).toString();
 
 /*
  This allows us to infer an object’s keys, while defining the type of the values

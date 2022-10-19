@@ -2,31 +2,20 @@ name: 'Build'
 on:
   push:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment'
-        required: true
-        default: 'prod'
 
 jobs:
   unit_tests_tsc_build_deploy:
     # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
     runs-on: 'ubuntu-20.04'
     steps:
-      - run: echo "domain=dev.johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment != 'prod' }}
-
-      - run: echo "domain=johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment == 'prod' }}
-
-      - uses: actions/cache@v2
+      - uses: 'actions/cache@v3'
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: 'actions/checkout@v2'
+      - uses: 'actions/checkout@v3'
         with:
           lfs: true
 
@@ -34,41 +23,24 @@ jobs:
       - run: npx jest --verbose
       - run: tsc --noEmit
 
-      - run: npm run build
-
-      - run: |
-          mkdir ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - run: rsync -r build/ root@46.101.83.57:/home/johanli/${{ env.domain }}/uncharted-waters-2/ --delete -e "ssh -o StrictHostKeyChecking=no"
-
   end_to_end_tests_chrome_firefox:
     needs: unit_tests_tsc_build_deploy
     runs-on: 'ubuntu-20.04'
     steps:
-      - run: echo "domain=dev.johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment != 'prod' }}
-
-      - run: echo "domain=johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment == 'prod' }}
-
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: 'actions/checkout@v2'
+      - uses: 'actions/checkout@v3'
+        with:
+          lfs: true
 
       - run: npm ci
-      - run: npx cypress run --browser chrome
-        env:
-          CYPRESS_BASE_URL: https://${{ env.domain }}/uncharted-waters-2/
-      - run: npx cypress run --browser firefox
-        env:
-          CYPRESS_BASE_URL: https://${{ env.domain }}/uncharted-waters-2/
+      - run: npm run test:e2e
+      - run: npm run test:e2e-firefox
 
   end_to_end_tests_edge:
     needs: unit_tests_tsc_build_deploy
@@ -76,22 +48,16 @@ jobs:
     # The Ubuntu 20.04 runner doesn't have Edge pre-installed
     runs-on: 'macos-11'
     steps:
-      - run: echo "domain=dev.johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment != 'prod' }}
-
-      - run: echo "domain=johan.li" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.environment == 'prod' }}
-
-      - uses: actions/cache@v2
+      - uses: 'actions/cache@v3'
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: 'actions/checkout@v2'
+      - uses: 'actions/checkout@v3'
+        with:
+          lfs: true
 
       - run: npm ci
-      - run: npx cypress run --browser edge
-        env:
-          CYPRESS_BASE_URL: https://${{ env.domain }}/uncharted-waters-2/
+      - run: npm run test:e2e-edge
