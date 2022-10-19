@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import Right from './Right';
 import Left from './Left';
@@ -14,11 +14,27 @@ import useFade from './port/hooks/useFade';
 
 import './global.css';
 
-function Interface() {
+type Props = {
+  /*
+    The state of Interface is updated outside of React. This is made possible
+    by assigning setStates to an outside object. Calls to that object’s methods
+    are delayed until Interface has mounted.
+
+    Using a shared Redux Store could be a solution, but changes don’t happen
+    fast enough.
+   */
+  resolve: () => void;
+};
+
+function Interface({ resolve }: Props) {
   const [portId, setPortId] = useState<string | null>(null);
   const [buildingId, setBuildingId] = useState<string | null>(null);
   const [timePassed, setTimePassed] = useState(0);
   const [gold, setGold] = useState(0);
+
+  useEffect(() => {
+    resolve();
+  }, []);
 
   updateInterface.general = (general) => {
     setPortId(general.portId);
@@ -64,13 +80,15 @@ function Interface() {
   );
 }
 
-const renderInterface = () => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <Interface />
-    </React.StrictMode>,
-    document.getElementById('game'),
-  );
-};
+const renderInterface = () =>
+  new Promise<void>((resolve) => {
+    const container = document.getElementById('game');
+    const root = createRoot(container!);
+    root.render(
+      <React.StrictMode>
+        <Interface resolve={resolve} />
+      </React.StrictMode>,
+    );
+  });
 
 export default renderInterface;

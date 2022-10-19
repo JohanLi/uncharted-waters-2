@@ -12,7 +12,7 @@ const start = async () => {
   await Assets.load();
   Input.setup();
 
-  renderInterface();
+  await renderInterface();
 
   updateGeneral();
 
