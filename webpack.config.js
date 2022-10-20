@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
           use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
         },
         {
-          test: /\.(ogg|mp3|png|bin)$/,
+          test: /\.(ogg|mp3|png|wasm)$/,
           type: 'asset/resource',
         },
       ],
@@ -64,7 +64,7 @@ module.exports = (env, argv) => {
       plugins: [require.resolve('react-refresh/babel')],
     };
     config.plugins.push(
-      new ReactRefreshWebpackPlugin({ overlay: false }),
+      new ReactRefreshWebpackPlugin({overlay: false}),
       new MiniCssExtractPlugin(),
     );
   }

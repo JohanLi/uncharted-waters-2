@@ -1,6 +1,11 @@
-import portTilemaps from './portTilemaps.bin';
-import worldTilemap from './worldTilemap.bin';
-import windsCurrent from './windsCurrent.bin';
+/*
+  The files below are given a .wasm extension so they automatically get served
+  with a content-type that enables compression. .json works as well.
+ */
+
+import portTilemaps from './portTilemaps.wasm';
+import worldTilemap from './worldTilemap.wasm';
+import windsCurrent from './windsCurrent.wasm';
 
 const dataAssets = {
   portTilemaps,

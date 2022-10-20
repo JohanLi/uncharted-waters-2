@@ -6,6 +6,6 @@ declare module '*.css' {
 }
 
 declare module '*.png';
-declare module '*.bin';
+declare module '*.wasm';
 declare module '*.ogg';
 declare module '*.mp3';
