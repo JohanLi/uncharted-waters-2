@@ -1,29 +1,10 @@
-name: 'Build'
+name: 'Tests'
 on:
   push:
   workflow_dispatch:
 
 jobs:
-  unit_tests_tsc_build_deploy:
-    # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
-    runs-on: 'ubuntu-20.04'
-    steps:
-      - uses: 'actions/cache@v3'
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - uses: 'actions/checkout@v3'
-        with:
-          lfs: true
-
-      - run: npm ci
-      - run: npx jest --verbose
-      - run: tsc --noEmit
-
-  end_to_end_tests_chrome_firefox:
+  chrome_firefox:
     needs: unit_tests_tsc_build_deploy
     runs-on: 'ubuntu-20.04'
     steps:
@@ -39,10 +20,12 @@ jobs:
           lfs: true
 
       - run: npm ci
+      - run: npx jest --verbose
+      - run: tsc --noEmit
       - run: npm run test:e2e
       - run: npm run test:e2e-firefox
 
-  end_to_end_tests_edge:
+  edge:
     needs: unit_tests_tsc_build_deploy
     # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
     # The Ubuntu 20.04 runner doesn't have Edge pre-installed
@@ -60,4 +43,6 @@ jobs:
           lfs: true
 
       - run: npm ci
+      - run: npx jest --verbose
+      - run: tsc --noEmit
       - run: npm run test:e2e-edge

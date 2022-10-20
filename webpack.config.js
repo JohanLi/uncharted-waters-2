@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -47,16 +46,6 @@ module.exports = (env, argv) => {
     delete config.devtool;
 
     config.plugins.push(
-      /*
-        The tilemap bin files are large, but compress to less than 100 kb each.
-        As of now, Brotli is still non-trivial to set up for nginx, so we’ll
-        use gzip.
-        Another approach is to add a MIME type for bin, and rely on Cloudflare’s
-        Brotli compression.
-       */
-      new CompressionPlugin({
-        test: /\.(js|css|html|bin)$/,
-      }),
       new MiniCssExtractPlugin({
         filename: '[name]-[contenthash].css',
       }),
