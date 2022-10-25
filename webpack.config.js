@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+// used for hosting on johan.li/uncharted-waters-2
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -12,6 +15,7 @@ module.exports = (env, argv) => {
       filename: '[contenthash].js',
       path: `${__dirname}/build/`,
       assetModuleFilename: '[name]-[contenthash][ext]',
+      publicPath: PUBLIC_PATH,
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
