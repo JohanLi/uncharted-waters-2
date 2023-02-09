@@ -1,6 +1,6 @@
 # Uncharted Waters: New Horizons
 
-![build status](https://github.com/JohanLi/uncharted-waters-2/actions/workflows/build.yml/badge.svg?branch=master)
+[![Tests](https://github.com/JohanLi/uncharted-waters-2/actions/workflows/tests.yml/badge.svg)](https://github.com/JohanLi/uncharted-waters-2/actions/workflows/tests.yml)
 
 [Uncharted Waters: New Horizons](https://en.wikipedia.org/wiki/Uncharted_Waters#Uncharted_Waters:_New_Horizons)
 (大航海時代II) is an open world RPG and simulation game from 1994, set during
