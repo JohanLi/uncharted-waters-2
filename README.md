@@ -12,7 +12,7 @@ transitioning to doing consulting work — this side project lets prospective
 employers see my code.
 
 <p align="center">
-  <img src="https://media.githubusercontent.com/media/JohanLi/uncharted-waters-2/readme-assets/uncharted-waters-2.png" alt="Uncharted Waters: New Horizons">
+  <img src=".github/readme/uncharted-waters-2.png" alt="Uncharted Waters: New Horizons">
   Screenshots of the original game
 </p>
 
@@ -47,7 +47,7 @@ can call **updateInterface**, which wraps React’s `useState` hooks.
 **Assets** makes sure the images and game data is loaded before the game starts.
 
 <p align="center">
-  <img src="https://media.githubusercontent.com/media/JohanLi/uncharted-waters-2/readme-assets/architecture.png" alt="Architecture" width="560">
+  <img src=".github/readme/architecture.png" alt="Architecture" width="560">
 </p>
 
 The two parts maintain their own local state, e.g., keeping track of the

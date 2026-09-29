@@ -4,3 +4,6 @@
 *.bin filter=lfs diff=lfs merge=lfs -text
 *.ogg filter=lfs diff=lfs merge=lfs -text
 *.mp3 filter=lfs diff=lfs merge=lfs -text
+
+# README images are small; keep them as regular files so they render everywhere, forks included
+.github/readme/** -filter -diff -merge -text

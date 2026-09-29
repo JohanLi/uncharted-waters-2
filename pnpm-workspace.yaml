@@ -1,2 +1,5 @@
 allowBuilds:
   unrs-resolver: false
+
+# refuse versions published less than a day ago (in minutes); CI enforces this too
+minimumReleaseAge: 1440
