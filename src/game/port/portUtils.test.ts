@@ -1,7 +1,9 @@
+import { describe, expect, test, vi } from 'vitest';
 import { getPortData, portAdjacentAt } from './portUtils';
 import { regularPorts, SUPPLY_PORT_BUILDINGS } from '../../data/portData';
 
-jest.mock('../../data/portData', () => ({
+vi.mock('../../data/portData', async (importOriginal) => ({
+  ...(await importOriginal<object>()),
   regularPorts: [
     {
       name: 'Lisbon',

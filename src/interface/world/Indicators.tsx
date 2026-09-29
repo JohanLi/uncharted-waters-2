@@ -5,7 +5,7 @@
   CPU usage.
  */
 
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import Assets from '../../assets';
 import updateInterface from '../../state/updateInterface';

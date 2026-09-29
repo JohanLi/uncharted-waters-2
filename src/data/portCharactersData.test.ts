@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { getStartFrame } from './portCharactersData';
 
 test('Characters up to and including MAN have 8 frames each', () => {

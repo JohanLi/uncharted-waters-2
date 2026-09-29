@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { getPlayerItems } from '../state/selectors';
 import { itemData } from '../data/itemData';

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import BuildingMenu from '../../common/BuildingMenu';
 import {
@@ -27,7 +27,7 @@ const shipyardOptions = [
   'Remodel',
   'Invest',
 ] as const;
-type ShipyardOptions = typeof shipyardOptions[number];
+type ShipyardOptions = (typeof shipyardOptions)[number];
 
 const shipyardDisabledOptions: ShipyardOptions[] = [
   'New Ship',

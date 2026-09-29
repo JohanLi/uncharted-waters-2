@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y-x/click-events-have-key-events */
+/* eslint-disable jsx-a11y-x/no-static-element-interactions */
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SpeakerXMarkIcon, SpeakerWaveIcon } from '@heroicons/react/24/solid';
 
 import { getRegionOrIfSupplyPort } from '../../game/port/portUtils';
@@ -89,7 +89,7 @@ export default function Sound({ portId, buildingId }: Props) {
   const [soundOn, setSoundOn] = useState(true);
 
   const triggerAutoplay = () => {
-    audioRef.current.play();
+    void audioRef.current.play();
     setHasPlayed(true);
   };
 

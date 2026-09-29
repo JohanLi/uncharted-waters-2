@@ -1,7 +1,8 @@
+import { describe, expect, test, vi } from 'vitest';
 import getShipSpeed from './shipSpeed';
 import { Sailor } from '../../data/sailorData';
 
-jest.mock('../../data/shipData', () => ({
+vi.mock('../../data/shipData', () => ({
   shipData: {
     '1': {
       name: 'Slow ship to prevent hitting the speed cap',

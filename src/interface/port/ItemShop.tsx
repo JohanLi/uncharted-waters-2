@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import BuildingMenu from '../common/BuildingMenu';
@@ -18,7 +18,7 @@ import {
 } from '../../state/actionsPort';
 
 const itemShopOptions = ['Buy', 'Sell'] as const;
-type ItemShopOptions = typeof itemShopOptions[number];
+type ItemShopOptions = (typeof itemShopOptions)[number];
 
 // TODO haggling, items that cannot be sold, equipment limit
 export default function ItemShop() {

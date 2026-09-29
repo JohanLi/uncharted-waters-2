@@ -7,6 +7,7 @@
       name="description"
       content="Browser-based remake of Uncharted Waters: New Horizons (大航海時代II)"
     />
+    <link rel="icon" href="/src/homepage/favicon.ico" />
     <title>Uncharted Waters: New Horizons (大航海時代II)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,6 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <script type="module" src="/src/app.ts"></script>
   </head>
   <body class="min-w-[1640px]">
     <div class="py-16 flex items-center justify-center bg-black">
@@ -116,7 +118,7 @@
       <div class="max-w-[1280px] mx-auto py-16 text-white text-base space-y-16">
         <div>
           <img
-            src="<%= require('./images/sailing.png') %>"
+            src="/src/homepage/images/sailing.png"
             width="896"
             height="200"
             alt="Uncharted Waters: New Horizons sailing"
@@ -141,7 +143,7 @@
           <div
             class="w-64 h-64 animate-blink"
             style="
-              background-image: url('<%= require('./images/joao-franco.png') %>');
+              background-image: url('/src/homepage/images/joao-franco.png');
               background-position: 0 0;
             "
           ></div>
@@ -150,7 +152,7 @@
           <div
             class="w-[456px] h-[280px] animate-blink"
             style="
-              background-image: url('<%= require('./images/otto-baynes.png') %>');
+              background-image: url('/src/homepage/images/otto-baynes.png');
               background-position: 0 0;
             "
           ></div>
@@ -175,7 +177,7 @@
           <div
             class="w-[456px] h-[280px] animate-blink"
             style="
-              background-image: url('<%= require('./images/catalina-erantzo.png') %>');
+              background-image: url('/src/homepage/images/catalina-erantzo.png');
               background-position: 0 0;
             "
           ></div>
@@ -184,7 +186,7 @@
           <div
             class="w-[326px] h-[280px] animate-blink"
             style="
-              background-image: url('<%= require('./images/ernst-von-bohr.png') %>');
+              background-image: url('/src/homepage/images/ernst-von-bohr.png');
               background-position: 0 0;
             "
           ></div>
@@ -209,7 +211,7 @@
           <div
             class="w-[304px] h-[280px] animate-blink"
             style="
-              background-image: url('<%= require('./images/pietro-conti.png') %>');
+              background-image: url('/src/homepage/images/pietro-conti.png');
               background-position: 0 0;
             "
           ></div>
@@ -218,7 +220,7 @@
           <div
             class="w-[366px] h-[280px] animate-blink"
             style="
-              background-image: url('<%= require('./images/ali-vezas.png') %>');
+              background-image: url('/src/homepage/images/ali-vezas.png');
               background-position: 0 0;
             "
           ></div>
@@ -236,7 +238,7 @@
             <div
               class="w-[320px] h-[280px]"
               style="
-                background-image: url('<%= require('./images/enemies.png') %>');
+                background-image: url('/src/homepage/images/enemies.png');
                 background-position: 0 0;
               "
             ></div>
@@ -255,7 +257,7 @@
             <div
               class="w-[272px] h-[272px] ml-auto animate-blink-friends"
               style="
-                background-image: url('<%= require('./images/friends.png') %>');
+                background-image: url('/src/homepage/images/friends.png');
                 background-position: 0 0;
               "
             ></div>

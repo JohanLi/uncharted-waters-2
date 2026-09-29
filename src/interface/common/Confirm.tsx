@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y-x/interactive-supports-focus */
+/* eslint-disable jsx-a11y-x/click-events-have-key-events */
+/* eslint-disable jsx-a11y-x/no-static-element-interactions */
 
 import React, { useEffect, useState, useRef } from 'react';
 import throttle from 'lodash.throttle';

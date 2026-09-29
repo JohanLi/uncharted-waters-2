@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { minutesUntilNextMorning } from './interfaceUtils';
 
 test('minutesUntilNextMorning', () => {

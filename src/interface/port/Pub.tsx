@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import useBuilding from './hooks/useBuilding';
 import {
   CharacterMessageBoxType,
@@ -18,7 +18,7 @@ const pubOptions = [
   'Waitress',
   'Gamble',
 ] as const;
-type PubOptions = typeof pubOptions[number];
+type PubOptions = (typeof pubOptions)[number];
 
 export default function Pub() {
   const { selectOption, next, back, reset, state } = useBuilding<PubOptions>();

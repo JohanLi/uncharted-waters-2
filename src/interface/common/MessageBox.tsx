@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
@@ -7,7 +7,7 @@ const cornerClasses = [
   'top-0 left-0',
   'top-0 right-0 rotate-90',
   'bottom-0 right-0 rotate-180',
-  'bottom-0 left-0 rotate-[270deg]',
+  'bottom-0 left-0 rotate-270',
 ];
 
 interface Props {

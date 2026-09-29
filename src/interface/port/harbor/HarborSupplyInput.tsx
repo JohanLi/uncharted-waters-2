@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
-
-import React from 'react';
-
 import MessageBox from '../../common/MessageBox';
 import { Provisions } from '../../../game/world/fleets';
 import { getAvailableSpace } from '../../../state/selectorsFleet';

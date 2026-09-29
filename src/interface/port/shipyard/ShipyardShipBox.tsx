@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Assets from '../../../assets';
 import { shipData } from '../../../data/shipData';
 

@@ -3,7 +3,6 @@ interface Building {
   options: string[];
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const buildings: { [key: string]: Building } = {
   '1': {
     name: 'Market',

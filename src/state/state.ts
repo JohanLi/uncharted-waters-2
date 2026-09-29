@@ -1,4 +1,4 @@
-import { START_TIME_PASSED } from '../constants';
+import { SAVED_STATE_KEY, START_TIME_PASSED } from '../constants';
 import { Provisions, fleets, Fleets } from '../game/world/fleets';
 import type { Port } from '../game/port/port';
 import type { World } from '../game/world/world';
@@ -20,11 +20,7 @@ type UsedShipsAtPort = { [key: string]: UsedShips };
 export type UsedShips = { [key: string]: string };
 
 export type Role =
-  | number
-  | 'firstMate'
-  | 'bookKeeper'
-  | 'chiefNavigator'
-  | null;
+  number | 'firstMate' | 'bookKeeper' | 'chiefNavigator' | null;
 
 type Mate = {
   sailorId: string;
@@ -52,11 +48,9 @@ export interface State {
   mates: Mate[];
 }
 
-export const SAVED_STATE_KEY = 'savedState';
-
 const savedState = JSON.parse(
   window.localStorage.getItem(SAVED_STATE_KEY) || '{}',
-);
+) as Partial<State>;
 
 const state = {
   portId: '1',

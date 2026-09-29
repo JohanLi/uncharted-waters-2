@@ -9,7 +9,7 @@ const portCharacterType = [
   'GUARD',
   'BEGGAR',
 ] as const;
-type PortCharacterType = typeof portCharacterType[number];
+type PortCharacterType = (typeof portCharacterType)[number];
 
 interface PortCharacterData {
   type: PortCharacterType;

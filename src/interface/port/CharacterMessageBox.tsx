@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Assets from '../../assets';
 import { classNames } from '../interfaceUtils';
 import MessageBox from '../common/MessageBox';

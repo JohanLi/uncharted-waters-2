@@ -3,9 +3,9 @@
   with a content-type that enables compression. .json works as well.
  */
 
-import portTilemaps from './portTilemaps.wasm';
-import worldTilemap from './worldTilemap.wasm';
-import windsCurrent from './windsCurrent.wasm';
+import portTilemaps from './portTilemaps.wasm?url';
+import worldTilemap from './worldTilemap.wasm?url';
+import windsCurrent from './windsCurrent.wasm?url';
 
 const dataAssets = {
   portTilemaps,

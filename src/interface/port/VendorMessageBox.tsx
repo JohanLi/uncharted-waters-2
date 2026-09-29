@@ -1,5 +1,3 @@
-import React from 'react';
-
 import MessageBox from '../common/MessageBox';
 import Assets from '../../assets';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';

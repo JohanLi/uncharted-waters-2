@@ -5,7 +5,7 @@ export const sailorSkills = [
   'Gunnery',
   'Cartography',
 ] as const;
-export type SailorSkills = typeof sailorSkills[number];
+export type SailorSkills = (typeof sailorSkills)[number];
 
 export type Sailor = {
   name: string;

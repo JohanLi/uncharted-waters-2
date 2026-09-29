@@ -10,7 +10,7 @@ import {
 import { asInferredKeysWithValue } from '../../utils';
 
 export const messagePositions = [0, 1, 2] as const;
-export type MessagePosition = typeof messagePositions[number];
+export type MessagePosition = (typeof messagePositions)[number];
 
 export type Message = VendorMessage | CharacterMessage;
 

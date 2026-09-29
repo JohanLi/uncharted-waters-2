@@ -1,7 +1,7 @@
 // TODO
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable @eslint-react/no-array-index-key */
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import Assets from '../assets';
 import { TILE_SIZE } from '../constants';
 import { Position } from '../types';

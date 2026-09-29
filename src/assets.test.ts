@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import Assets from './assets';
 
 describe('assets', () => {
@@ -6,24 +7,28 @@ describe('assets', () => {
   const dataUrl = 'data:image/png;base64...';
 
   beforeEach(() => {
-    global.HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue({
-      drawImage: () => undefined,
-      imageSmoothingEnabled: true,
-    });
+    globalThis.HTMLCanvasElement.prototype.getContext = vi
+      .fn()
+      .mockReturnValue({
+        drawImage: () => undefined,
+        imageSmoothingEnabled: true,
+      });
 
-    global.fetch = jest.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
       arrayBuffer: () => Promise.resolve(tilemap),
     });
 
-    global.HTMLCanvasElement.prototype.toDataURL = jest
+    globalThis.HTMLCanvasElement.prototype.toDataURL = vi
       .fn()
       .mockReturnValue(dataUrl);
   });
 
   test('load', async () => {
-    Object.defineProperty(global.Image.prototype, 'src', {
-      set() {
-        setTimeout(() => this.onload());
+    Object.defineProperty(globalThis.Image.prototype, 'src', {
+      set(this: HTMLImageElement) {
+        setTimeout(() => {
+          this.onload?.(new Event('load'));
+        });
       },
     });
 
@@ -40,9 +45,11 @@ describe('assets', () => {
   });
 
   test('loading should fail on image error', () => {
-    Object.defineProperty(global.Image.prototype, 'src', {
-      set() {
-        setTimeout(() => this.onerror());
+    Object.defineProperty(globalThis.Image.prototype, 'src', {
+      set(this: HTMLImageElement) {
+        setTimeout(() => {
+          this.onerror?.(new Event('error'));
+        });
       },
     });
 

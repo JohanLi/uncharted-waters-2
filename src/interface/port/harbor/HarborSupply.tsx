@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y-x/click-events-have-key-events */
+/* eslint-disable jsx-a11y-x/no-static-element-interactions */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MessageBox from '../../common/MessageBox';
 import { getLoadPercent, getPlayerFleet } from '../../../state/selectorsFleet';
 import ProgressBar from '../../common/ProgressBar';

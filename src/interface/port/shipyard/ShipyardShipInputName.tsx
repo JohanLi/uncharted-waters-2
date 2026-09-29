@@ -1,6 +1,6 @@
-/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable jsx-a11y-x/no-autofocus */
 
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import Assets from '../../../assets';
 import MessageBox from '../../common/MessageBox';
@@ -34,7 +34,7 @@ export default function ShipyardShipInputName({ onSubmit, onCancel }: Props) {
                 className={classNames(
                   'w-full px-4 py-2',
                   'border-2 border-[#d34100]',
-                  'focus:outline-none focus:ring-4 focus:ring-[#f3a261]',
+                  'focus:outline-hidden focus:ring-4 focus:ring-[#f3a261]',
                 )}
                 type="text"
                 required

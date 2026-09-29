@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import BuildingMenu from '../common/BuildingMenu';
@@ -6,7 +6,7 @@ import BuildingWrapper from './BuildingWrapper';
 import { checkIn } from '../../state/actionsPort';
 
 const lodgeOptions = ['Check In', 'Gossip', 'Port Info'] as const;
-type LodgeOptions = typeof lodgeOptions[number];
+type LodgeOptions = (typeof lodgeOptions)[number];
 
 const lodgeDisabledOptions: LodgeOptions[] = ['Gossip', 'Port Info'];
 

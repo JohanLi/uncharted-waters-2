@@ -1,14 +1,17 @@
+import { describe, expect, test, vi } from 'vitest';
 import createWorldPlayer from './worldPlayer';
 import { Position } from '../../types';
 
-jest.mock('../../state/updateInterface', () => ({
-  playerFleetDirection: () => {},
-  playerFleetSpeed: () => {},
+vi.mock('../../state/updateInterface', () => ({
+  default: {
+    playerFleetDirection: () => {},
+    playerFleetSpeed: () => {},
+  },
 }));
 
-jest.mock('../../state/selectors');
+vi.mock('../../state/selectors');
 
-jest.mock('./shipSpeed', () => () => 40);
+vi.mock('./shipSpeed', () => ({ default: () => 40 }));
 
 const collisionAt = (collisionTiles: Position[]) => (position: Position) =>
   collisionTiles.some(

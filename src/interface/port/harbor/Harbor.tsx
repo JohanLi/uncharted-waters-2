@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import BuildingMenu from '../../common/BuildingMenu';
 import { setSail } from '../../../state/actionsWorld';
@@ -17,7 +17,7 @@ import {
 import HarborSummary from './HarborSummary';
 
 const harborOptions = ['Sail', 'Supply', 'Moor'] as const;
-type HarborOptions = typeof harborOptions[number];
+type HarborOptions = (typeof harborOptions)[number];
 
 const harborDisabledOptions: HarborOptions[] = ['Moor'];
 

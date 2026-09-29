@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import Assets from '../../assets';
 import useQuestStep from '../quest/useQuestStep';
@@ -53,7 +53,7 @@ export default function BuildingWrapper(props: Props) {
   if (!dark) {
     return (
       <div
-        className="w-full h-full bg-[length:256px_128px]"
+        className="w-full h-full bg-size-[256px_128px]"
         style={{
           backgroundImage: `url('${Assets.images(
             'buildingBackground',
@@ -90,7 +90,7 @@ export default function BuildingWrapper(props: Props) {
   }
 
   return (
-    <div className="w-full h-full bg-[length:256px_128px]" data-test="building">
+    <div className="w-full h-full bg-size-[256px_128px]" data-test="building">
       <CharacterMessageBox messageBox={messageBoxes[2]} position={2} />
       {children}
       {!!confirm && (

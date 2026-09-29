@@ -1,4 +1,3 @@
-import React from 'react';
 import MessageBox from '../../common/MessageBox';
 import { getLoadPercent, getPlayerFleet } from '../../../state/selectorsFleet';
 import ProgressBar from '../../common/ProgressBar';

@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import useBuilding from './hooks/useBuilding';
 import { VendorMessageBoxType } from '../quest/getMessageBoxes';
 import BuildingMenu from '../common/BuildingMenu';
@@ -8,7 +8,7 @@ import { getAtMosque, getGold } from '../../state/selectors';
 import InputNumber from '../common/InputNumber';
 
 const churchOptions = ['Pray', 'Donate'] as const;
-type ChurchOptions = typeof churchOptions[number];
+type ChurchOptions = (typeof churchOptions)[number];
 
 export default function Church() {
   const { selectOption, next, back, reset, state } =

@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import useBuilding from '../hooks/useBuilding';
 import { VendorMessageBoxType } from '../../quest/getMessageBoxes';
 import BuildingMenu from '../../common/BuildingMenu';
@@ -14,7 +14,7 @@ import {
 import InputNumber from '../../common/InputNumber';
 
 const bankOptions = ['Deposit', 'Withdraw', 'Borrow', 'Repay'] as const;
-type BankOptions = typeof bankOptions[number];
+type BankOptions = (typeof bankOptions)[number];
 
 export default function Bank() {
   const { selectOption, next, back, reset, state } =

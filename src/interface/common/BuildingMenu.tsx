@@ -1,5 +1,3 @@
-import React from 'react';
-
 import MessageBox from './MessageBox';
 import Menu, { Option } from './Menu';
 

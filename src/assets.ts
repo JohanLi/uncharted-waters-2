@@ -31,7 +31,6 @@ const slice = (key: InterfaceImages, i: number, widthPerSlice: number) => {
     return cache;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const image = loadedAssets[key];
 
   const canvas = document.createElement('canvas');
@@ -90,19 +89,19 @@ const Assets = {
       [
         Object.entries(gameImages).map(([key, value]) =>
           loadImage(value, true).then((canvas) => {
-            // @ts-ignore
+            // @ts-expect-error -- key is a string rather than a key of loadedAssets
             loadedAssets[key] = canvas;
           }),
         ),
         Object.entries(interfaceImages).map(([key, value]) =>
           loadImage(value, false).then((canvas) => {
-            // @ts-ignore
+            // @ts-expect-error -- key is a string rather than a key of loadedAssets
             loadedAssets[key] = canvas;
           }),
         ),
         Object.entries(dataAssets).map(([key, value]) =>
           loadBinary(value).then((data) => {
-            // @ts-ignore
+            // @ts-expect-error -- key is a string rather than a key of loadedAssets
             loadedAssets[key] = data;
           }),
         ),

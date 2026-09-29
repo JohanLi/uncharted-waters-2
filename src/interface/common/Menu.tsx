@@ -1,9 +1,9 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y-x/click-events-have-key-events */
+/* eslint-disable jsx-a11y-x/interactive-supports-focus */
 
 // TODO solve issue with multiple Menus being visible (Item Popover while in a building)
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { classNames } from '../interfaceUtils';
 import useCancel from '../port/hooks/useCancel';
@@ -91,7 +91,7 @@ export default function Menu<T extends number | string>({
   return (
     <>
       {options.map(({ label, value, disabled }, i) => {
-        let buttonClass = '';
+        let buttonClass;
 
         if (activeIndex === i) {
           if (disabled) {

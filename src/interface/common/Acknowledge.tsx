@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y-x/click-events-have-key-events */
+/* eslint-disable jsx-a11y-x/no-static-element-interactions */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 interface Props {
   onAcknowledge: (() => void) | undefined;

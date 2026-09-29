@@ -6,8 +6,7 @@ import {
 } from './questData';
 
 export type VendorMessageBoxType =
-  | (Pick<VendorMessage, 'body'> & MessageBoxCommonType)
-  | null;
+  (Pick<VendorMessage, 'body'> & MessageBoxCommonType) | null;
 
 export type CharacterMessageBoxType =
   | (Pick<CharacterMessage, 'body' | 'characterId'> & MessageBoxCommonType)

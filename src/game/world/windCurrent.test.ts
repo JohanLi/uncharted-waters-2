@@ -1,11 +1,10 @@
-import { mocked } from 'jest-mock';
-
+import { describe, expect, test, vi } from 'vitest';
 import { getSeaArea, getWind, getIsSummer, getCurrent } from './windCurrent';
 import { random } from '../../utils';
 import { START_DATE } from '../../constants';
 
-jest.mock('../../utils', () => ({
-  random: jest.fn(),
+vi.mock('../../utils', () => ({
+  random: vi.fn(),
 }));
 
 // The world map is 2160x1080, divided into 30x15 areas, where each area consists of 72x72 tiles
@@ -43,52 +42,54 @@ describe('getIsSummer', () => {
   });
 });
 
-jest.mock('../../assets', () => ({
-  data: () => ({
-    0: 0,
-    450: 1,
-    900: 7,
-    1350: 7,
-    2249: 4,
-    2699: 6,
-  }),
+vi.mock('../../assets', () => ({
+  default: {
+    data: () => ({
+      0: 0,
+      450: 1,
+      900: 7,
+      1350: 7,
+      2249: 4,
+      2699: 6,
+    }),
+  },
 }));
 
 describe('getWind', () => {
   test('direction and speed depends on summer or winter', () => {
-    mocked(random).mockReturnValue(0);
+    vi.mocked(random).mockReturnValue(0);
 
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
     expect(getWind(0, false)).toEqual({ direction: 7, speed: 7 });
   });
 
   test('base speed has a 0.5 chance to be incremented by 1', () => {
-    mocked(random).mockReturnValue(0);
+    vi.mocked(random).mockReturnValue(0);
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
 
-    mocked(random).mockReturnValue(1);
+    vi.mocked(random).mockReturnValue(1);
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 2 });
   });
 
   test('wind speed is capped at 7', () => {
-    mocked(random).mockReturnValue(1);
+    vi.mocked(random).mockReturnValue(1);
     expect(getWind(0, false)).toEqual({ direction: 7, speed: 7 });
   });
 
   test('direction can alternate between 3, with the middle direction having a 0.8 chance', () => {
-    mocked(random).mockReturnValueOnce(80).mockReturnValueOnce(0);
+    vi.mocked(random).mockReturnValueOnce(80).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 0, speed: 1 });
 
-    mocked(random).mockReturnValueOnce(81).mockReturnValueOnce(0);
+    vi.mocked(random).mockReturnValueOnce(81).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 1, speed: 1 });
 
-    mocked(random).mockReturnValueOnce(91).mockReturnValueOnce(0);
+    vi.mocked(random).mockReturnValueOnce(91).mockReturnValueOnce(0);
 
     expect(getWind(0, true)).toEqual({ direction: 7, speed: 1 });
 
-    mocked(random).mockReturnValueOnce(90).mockReturnValueOnce(0);
+    vi.mocked(random).mockReturnValueOnce(90).mockReturnValueOnce(0);
 
     expect(getWind(0, false)).toEqual({ direction: 0, speed: 7 });
   });

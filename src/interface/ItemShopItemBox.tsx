@@ -1,4 +1,3 @@
-import React from 'react';
 import { Item } from '../data/itemData';
 import Assets from '../assets';
 import ItemInfo from './common/ItemInfo';

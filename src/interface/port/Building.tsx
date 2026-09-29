@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Shipyard from './shipyard/Shipyard';
 import BuildingMenu from '../common/BuildingMenu';
 import Harbor from './harbor/Harbor';
@@ -18,6 +16,7 @@ interface Props {
 
 export default function Building({ buildingId }: Props) {
   const { options } = buildings[buildingId];
+  const { back } = useBuilding();
 
   if (buildingId === '2') {
     return <Pub />;
@@ -46,8 +45,6 @@ export default function Building({ buildingId }: Props) {
   if (buildingId === '11') {
     return <Church />;
   }
-
-  const { back } = useBuilding();
 
   const menu = (
     <BuildingMenu

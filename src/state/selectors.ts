@@ -115,7 +115,7 @@ export const getMates = () =>
     ...getSailor(mate.sailorId),
   }));
 
-export const getCaptain = (shipI: Number) => {
+export const getCaptain = (shipI: number) => {
   const mate = state.mates.find(({ role }) => role === shipI);
 
   if (!mate) {

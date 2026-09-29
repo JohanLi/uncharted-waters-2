@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { getMates, getRoleDisplay } from '../state/selectors';
 import MessageBox from './common/MessageBox';

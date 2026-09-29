@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import getMessageBoxes from './getMessageBoxes';
 import { CharacterMessage, VendorMessage } from './questData';
 
