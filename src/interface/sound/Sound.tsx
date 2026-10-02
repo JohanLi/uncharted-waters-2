@@ -84,6 +84,7 @@ interface Props {
 
 export default function Sound({ portId, buildingId }: Props) {
   const audioRef = useRef(getAudioElement());
+  const trackRef = useRef<string | null>(null);
 
   const [hasPlayed, setHasPlayed] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
@@ -99,8 +100,13 @@ export default function Sound({ portId, buildingId }: Props) {
       buildingId,
     });
 
-    // without this check, the track will play from the beginning
-    if (audioRef.current.src !== track) {
+    /*
+      Without this check, the track will play from the beginning.
+      Compare against the last assigned track rather than audio.src, as the
+      latter returns a resolved absolute URL which never equals the import
+     */
+    if (trackRef.current !== track) {
+      trackRef.current = track;
       audioRef.current.src = track;
     }
   }, [portId, buildingId]);
